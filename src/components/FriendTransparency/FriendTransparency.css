@@ -1,0 +1,56 @@
+.friend-transparency {
+  padding: 6rem 2rem;
+  background-color: var(--background-color);
+}
+
+.friend-transparency-container {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.friend-transparency-title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--primary-orange);
+}
+
+.friend-transparency-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 4rem;
+  color: var(--light-text);
+}
+
+.transparency-image {
+  margin-bottom: 3rem;
+}
+
+.transparency-image img {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.features-list {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+}
+
+.feature-item {
+  max-width: 200px;
+}
+
+.feature-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .features-list {
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+  }
+}

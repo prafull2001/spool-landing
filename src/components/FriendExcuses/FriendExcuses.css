@@ -1,0 +1,50 @@
+
+.friend-excuses {
+  padding: 6rem 2rem;
+  background-color: var(--white);
+}
+
+.friend-excuses-container {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.friend-excuses-title {
+  font-size: 2.5rem;
+  margin-bottom: 4rem;
+  color: var(--primary-orange);
+}
+
+.excuse-card {
+  background-color: var(--background-color);
+  padding: 3rem;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.5s ease-in-out;
+}
+
+.excuse-text {
+  font-size: 1.8rem;
+  font-style: italic;
+  margin-bottom: 2rem;
+}
+
+.reactions {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.reaction {
+  font-size: 2rem;
+  transition: transform 0.3s ease;
+}
+
+.reaction:hover {
+  transform: scale(1.2);
+}

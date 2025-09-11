@@ -1,0 +1,72 @@
+
+.ai-insights {
+  padding: 6rem 2rem;
+  background-color: var(--white);
+}
+
+.ai-insights-container {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.ai-insights-title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--primary-orange);
+}
+
+.ai-insights-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 4rem;
+  color: var(--light-text);
+}
+
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.insight-card {
+  background-color: var(--background-color);
+  padding: 2rem;
+  border-radius: 15px;
+  text-align: left;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.insight-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.insight-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.insight-title {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.insight-description {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.insight-images {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.insight-images img {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
