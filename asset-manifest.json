@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/spool-landing/static/css/main.3b76b75b.css",
+    "main.js": "/spool-landing/static/js/main.ce7ad0a9.js",
+    "static/js/453.40479c64.chunk.js": "/spool-landing/static/js/453.40479c64.chunk.js",
+    "static/media/Spool-Logo.png": "/spool-landing/static/media/Spool-Logo.a6a4a67f1d266e87b73c.png",
+    "static/media/homescreen.PNG": "/spool-landing/static/media/homescreen.294879efca4539ef3f6e.PNG",
+    "static/media/realexcuse.jpeg": "/spool-landing/static/media/realexcuse.1d5af90c8227e922e4e1.jpeg",
+    "static/media/howspoolworks.PNG": "/spool-landing/static/media/howspoolworks.81ba0a2f6bbfbd0a8fc2.PNG",
+    "static/media/excuseinsights.PNG": "/spool-landing/static/media/excuseinsights.3d880c0d47db0a7e1179.PNG",
+    "static/media/statsscreen.PNG": "/spool-landing/static/media/statsscreen.dbc458b11886615b1297.PNG",
+    "static/media/voicenote.PNG": "/spool-landing/static/media/voicenote.3a44556d2bc7c5af47bf.PNG",
+    "static/media/friendsexcuse.PNG": "/spool-landing/static/media/friendsexcuse.6326f070b0ad1a42be93.PNG",
+    "static/media/croppedinsights1.PNG": "/spool-landing/static/media/croppedinsights1.3905cc8d72fc8baa9059.PNG",
+    "static/media/croppedstats.PNG": "/spool-landing/static/media/croppedstats.877d2eddb1c3a0a7d3f2.PNG",
+    "static/media/croppedinsights2.PNG": "/spool-landing/static/media/croppedinsights2.c2fa800301ad8138cbd3.PNG",
+    "index.html": "/spool-landing/index.html",
+    "main.3b76b75b.css.map": "/spool-landing/static/css/main.3b76b75b.css.map",
+    "main.ce7ad0a9.js.map": "/spool-landing/static/js/main.ce7ad0a9.js.map",
+    "453.40479c64.chunk.js.map": "/spool-landing/static/js/453.40479c64.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3b76b75b.css",
+    "static/js/main.ce7ad0a9.js"
+  ]
+}
