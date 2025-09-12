@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '../components/Header/Header.js';
 import Footer from '../components/Footer/Footer.js';
@@ -11,40 +10,102 @@ const PrivacyPolicyPage = () => {
       <div className="privacy-policy-container">
         <h1>Privacy Policy</h1>
         
+        <p className="privacy-intro">At Spool, we believe your privacy is fundamental. This Privacy Policy explains how we collect, use, and protect your information when you use our app and services.</p>
+
         <section>
-          <h2>1. Information Collection</h2>
-          <p>We collect information you provide directly to us, such as when you create an account, record a voice note, or communicate with us. This may include your name, email address, and voice recordings.</p>
+          <h2>1. Information We Collect</h2>
+          
+          <h3>Information You Provide</h3>
+          <ul>
+            <li><strong>Account Information:</strong> Name and email address when you join our waitlist</li>
+            <li><strong>App Usage Data:</strong> Screen time metrics and app usage patterns to help you reduce screen time</li>
+            <li><strong>Settings & Preferences:</strong> Your app settings, notifications preferences, and goals</li>
+          </ul>
+          
+          <h3>Automatically Collected Information</h3>
+          <ul>
+            <li><strong>Device Information:</strong> Device type, operating system, and app version</li>
+            <li><strong>Usage Analytics:</strong> How you interact with Spool to improve our services</li>
+            <li><strong>Performance Data:</strong> Crash reports and performance metrics to ensure app reliability</li>
+          </ul>
         </section>
 
         <section>
-          <h2>2. Data Usage and Protection</h2>
-          <p>Your data is used to provide and improve the Spool service, including personalizing your experience and providing insights into your usage patterns. We implement industry-standard security measures to protect your data.</p>
+          <h2>2. How We Use Your Information</h2>
+          <p>We use your information to:</p>
+          <ul>
+            <li>Provide personalized screen time insights and recommendations</li>
+            <li>Help you track and achieve your digital wellness goals</li>
+            <li>Send you important updates about Spool (you can opt out anytime)</li>
+            <li>Improve our app's features and performance</li>
+            <li>Ensure the security and proper functioning of our services</li>
+          </ul>
         </section>
 
         <section>
-          <h2>3. Data Collection and Usage Details</h2>
-          <p>Voice notes are transcribed and analyzed to provide you with insights. This data is anonymized and aggregated to improve our services. We do not share your personal data with third parties without your consent, except as required by law.</p>
+          <h2>3. Information Sharing</h2>
+          <p>We do not sell, rent, or share your personal information with third parties for marketing purposes. We may share information only in these limited circumstances:</p>
+          <ul>
+            <li><strong>With Your Consent:</strong> When you explicitly agree to sharing</li>
+            <li><strong>Service Providers:</strong> Trusted partners who help us operate Spool (under strict privacy agreements)</li>
+            <li><strong>Legal Requirements:</strong> When required by law or to protect our users' safety</li>
+            <li><strong>Business Transfers:</strong> In the unlikely event of a merger or acquisition</li>
+          </ul>
         </section>
 
         <section>
-          <h2>4. Your Rights</h2>
-          <p>You have the right to access, correct, or delete your personal data. You can manage your account settings and communication preferences within the app.</p>
+          <h2>4. Data Security</h2>
+          <p>We implement industry-standard security measures to protect your information, including:</p>
+          <ul>
+            <li>Encryption of data in transit and at rest</li>
+            <li>Regular security audits and updates</li>
+            <li>Limited access to personal data on a need-to-know basis</li>
+            <li>Secure cloud infrastructure with leading providers</li>
+          </ul>
         </section>
 
         <section>
-          <h2>5. Data Retention</h2>
-          <p>We retain your data for as long as your account is active or as needed to provide you with our services. We may retain anonymized data for analytical purposes.</p>
+          <h2>5. Your Privacy Rights</h2>
+          <p>You have the right to:</p>
+          <ul>
+            <li><strong>Access:</strong> Request a copy of your personal information</li>
+            <li><strong>Update:</strong> Correct any inaccurate information</li>
+            <li><strong>Delete:</strong> Request deletion of your account and data</li>
+            <li><strong>Export:</strong> Download your data in a portable format</li>
+            <li><strong>Opt-out:</strong> Unsubscribe from marketing communications</li>
+          </ul>
         </section>
 
         <section>
-          <h2>6. Changes to Privacy Policy</h2>
-          <p>We may update this privacy policy from time to time. We will notify you of any changes by posting the new privacy policy on this page.</p>
+          <h2>6. Data Retention</h2>
+          <p>We retain your information only as long as necessary to provide our services and comply with legal obligations. When you delete your account, we remove your personal information within 30 days, though some anonymized data may be retained for analytics purposes.</p>
         </section>
 
         <section>
-          <h2>7. Contact Us</h2>
-          <p>If you have any questions about this privacy policy, please contact us at privacy@spool.app.</p>
+          <h2>7. Children's Privacy</h2>
+          <p>Spool is not intended for children under 13. We do not knowingly collect personal information from children under 13. If we discover we have collected such information, we will delete it promptly.</p>
         </section>
+
+        <section>
+          <h2>8. International Data Transfers</h2>
+          <p>Your information may be transferred to and processed in countries other than your own. We ensure appropriate safeguards are in place to protect your information during such transfers.</p>
+        </section>
+
+        <section>
+          <h2>9. Changes to This Policy</h2>
+          <p>We may update this Privacy Policy occasionally. We'll notify you of any material changes via email or through the app. Your continued use of Spool after such changes constitutes acceptance of the new policy.</p>
+        </section>
+
+        <section>
+          <h2>Contact Us</h2>
+          <p>If you have any questions about this Privacy Policy or your personal information, please contact us:</p>
+          <p><strong>Email:</strong> <a href="mailto:spoolappteam@gmail.com">spoolappteam@gmail.com</a></p>
+          <p>We're committed to addressing your privacy concerns promptly and transparently.</p>
+        </section>
+
+        <div className="privacy-footer">
+          <p>Thank you for trusting Spool with your digital wellness journey. We're here to help you spend more time living and less time unravelling.</p>
+        </div>
       </div>
       <Footer />
     </>
