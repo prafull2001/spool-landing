@@ -23,16 +23,25 @@
 }
 
 .feature-card {
-  background-color: var(--background-color);
+  background: linear-gradient(145deg, #ffffff, #f0e8df);
   padding: 2rem;
-  border-radius: 15px;
+  border-radius: 20px;
   text-align: left;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 
+    20px 20px 60px #d4cdc5,
+    -20px -20px 60px #ffffff,
+    inset 0 0 0 rgba(255,255,255,0);
+  border: 1px solid rgba(255,255,255,0.3);
 }
 
 .feature-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  transform: translateY(-5px);
+  box-shadow: 
+    25px 25px 75px #d4cdc5,
+    -25px -25px 75px #ffffff,
+    inset 2px 2px 5px rgba(212, 205, 197, 0.2),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.8);
 }
 
 .feature-icon {

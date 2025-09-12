@@ -30,16 +30,25 @@
 }
 
 .insight-card {
-  background-color: var(--background-color);
+  background: linear-gradient(145deg, #ffffff, #f5f0eb);
   padding: 2rem;
-  border-radius: 15px;
+  border-radius: 20px;
   text-align: left;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 
+    15px 15px 30px #d4cdc5,
+    -15px -15px 30px #ffffff,
+    inset 0 0 0 rgba(255,255,255,0);
+  border: 1px solid rgba(255,255,255,0.5);
 }
 
 .insight-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 
+    20px 20px 40px #d4cdc5,
+    -20px -20px 40px #ffffff,
+    inset 1px 1px 3px rgba(212, 205, 197, 0.1),
+    inset -1px -1px 3px rgba(255, 255, 255, 0.9);
 }
 
 .insight-icon {
