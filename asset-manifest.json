@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/spool-landing/static/css/main.3b76b75b.css",
-    "main.js": "/spool-landing/static/js/main.ce7ad0a9.js",
+    "main.js": "/spool-landing/static/js/main.10ff5a01.js",
     "static/js/453.40479c64.chunk.js": "/spool-landing/static/js/453.40479c64.chunk.js",
     "static/media/Spool-Logo.png": "/spool-landing/static/media/Spool-Logo.a6a4a67f1d266e87b73c.png",
     "static/media/homescreen.PNG": "/spool-landing/static/media/homescreen.294879efca4539ef3f6e.PNG",
@@ -16,11 +16,11 @@
     "static/media/croppedinsights2.PNG": "/spool-landing/static/media/croppedinsights2.c2fa800301ad8138cbd3.PNG",
     "index.html": "/spool-landing/index.html",
     "main.3b76b75b.css.map": "/spool-landing/static/css/main.3b76b75b.css.map",
-    "main.ce7ad0a9.js.map": "/spool-landing/static/js/main.ce7ad0a9.js.map",
+    "main.10ff5a01.js.map": "/spool-landing/static/js/main.10ff5a01.js.map",
     "453.40479c64.chunk.js.map": "/spool-landing/static/js/453.40479c64.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.3b76b75b.css",
-    "static/js/main.ce7ad0a9.js"
+    "static/js/main.10ff5a01.js"
   ]
 }
