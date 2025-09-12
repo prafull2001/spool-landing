@@ -39,17 +39,22 @@
 }
 
 .hero-button {
-  background-color: var(--primary-orange);
+  background: linear-gradient(135deg, var(--primary-orange), var(--primary-blue), var(--primary-orange));
+  background-size: 200% 200%;
+  animation: gradient 3s ease infinite;
   color: white;
   padding: 1rem 2rem;
   border-radius: 30px;
   font-size: 1.2rem;
   font-weight: bold;
-  transition: background-color 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: inline-block;
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
 }
 
 .hero-button:hover {
-  background-color: #E55B2A;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
   text-decoration: none;
 }
 

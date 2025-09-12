@@ -33,11 +33,16 @@ const HowSpoolWorks = () => {
   return (
     <section className="how-spool-works">
       <div className="how-spool-works-container">
-        <h2 className="how-spool-works-title">The Spool Flow</h2>
-        <p className="how-spool-works-subtitle">A simple 5-step process that transforms your relationship with technology</p>
+        <h2 className="how-spool-works-title" data-aos="fade-up">The Spool Flow</h2>
+        <p className="how-spool-works-subtitle" data-aos="fade-up" data-aos-delay="100">A simple 5-step process that transforms your relationship with technology</p>
         <ol className="steps-list">
           {steps.map((step, index) => (
-            <li className="step-item" key={index}>
+            <li 
+              className="step-item" 
+              key={index}
+              data-aos="fade-up"
+              data-aos-delay={200 + index * 100}
+            >
               <div className="step-number">{index + 1}</div>
               <div className="step-emoji">{step.icon}</div>
               <div className="step-content">

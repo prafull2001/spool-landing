@@ -26,11 +26,16 @@ const AIInsights = () => {
   return (
     <section className="ai-insights">
       <div className="ai-insights-container">
-        <h2 className="ai-insights-title">AI-Powered Insights</h2>
-        <p className="ai-insights-subtitle">Spool's AI analyzes your voice patterns to give you a deeper understanding of your habits.</p>
+        <h2 className="ai-insights-title" data-aos="fade-up">AI-Powered Insights</h2>
+        <p className="ai-insights-subtitle" data-aos="fade-up" data-aos-delay="100">Spool's AI analyzes your voice patterns to give you a deeper understanding of your habits.</p>
         <div className="insights-grid">
           {insights.map((insight, index) => (
-            <div className="insight-card" key={index}>
+            <div 
+              className="insight-card" 
+              key={index}
+              data-aos="flip-left"
+              data-aos-delay={index * 150}
+            >
               <div className="insight-icon">{insight.icon}</div>
               <h3 className="insight-title">{insight.title}</h3>
               <p className="insight-description">{insight.description}</p>
@@ -38,8 +43,8 @@ const AIInsights = () => {
           ))}
         </div>
         <div className="insight-images">
-          <img src={croppedinsights1} alt="Excuse Insights 1" />
-          <img src={croppedinsights2} alt="Excuse Insights 2" />
+          <img src={croppedinsights1} alt="Excuse Insights 1" data-aos="zoom-in" data-aos-delay="300" />
+          <img src={croppedinsights2} alt="Excuse Insights 2" data-aos="zoom-in" data-aos-delay="400" />
         </div>
       </div>
     </section>

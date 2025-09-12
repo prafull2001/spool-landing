@@ -39,10 +39,15 @@ const Features = () => {
   return (
     <section className="features">
       <div className="features-container">
-        <h2 className="features-title">Everything you need to build a healthier relationship with your phone.</h2>
+        <h2 className="features-title" data-aos="fade-up">Everything you need to build a healthier relationship with your phone.</h2>
         <div className="features-grid">
           {features.map((feature, index) => (
-            <div className="feature-card" key={index}>
+            <div 
+              className="feature-card" 
+              key={index}
+              data-aos="zoom-in"
+              data-aos-delay={index * 100}
+            >
               <div className="feature-icon">{feature.icon}</div>
               <h3 className="feature-card-title">{feature.title}</h3>
               <p className="feature-card-description">{feature.description}</p>
