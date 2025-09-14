@@ -17,7 +17,7 @@
 }
 
 .header-logo img {
-  height: 60px;
+  height: 100px;
 }
 
 .header-nav a {
@@ -28,12 +28,12 @@
 }
 
 .header-nav a:hover {
-  color: var(--primary-orange);
+  color: var(--primary-blue);
   text-decoration: none;
 }
 
 .download-button {
-  background-color: var(--primary-orange);
+  background-color: var(--primary-blue);
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 20px;
@@ -41,7 +41,7 @@
 }
 
 .download-button:hover {
-  background-color: #E55B2A;
+  background-color: #4BA5D3;
   color: white;
 }
 

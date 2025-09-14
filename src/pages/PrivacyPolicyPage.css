@@ -6,7 +6,7 @@
 
 .privacy-policy-container h1 {
   font-size: 3rem;
-  color: var(--primary-orange);
+  color: var(--primary-blue);
   margin-bottom: 2rem;
   text-align: center;
 }
@@ -22,10 +22,10 @@
 
 .privacy-policy-container h2 {
   font-size: 1.8rem;
-  color: var(--primary-blue);
+  color: var(--primary-orange);
   margin-top: 3rem;
   margin-bottom: 1.5rem;
-  border-bottom: 2px solid var(--primary-blue);
+  border-bottom: 2px solid var(--primary-orange);
   padding-bottom: 0.5rem;
 }
 
@@ -75,12 +75,12 @@
 }
 
 .privacy-policy-container a {
-  color: var(--primary-orange);
+  color: var(--primary-blue);
   text-decoration: none;
   transition: all 0.3s ease;
 }
 
 .privacy-policy-container a:hover {
-  color: var(--primary-blue);
+  color: var(--primary-orange);
   text-decoration: underline;
 }
