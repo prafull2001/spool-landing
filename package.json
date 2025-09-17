@@ -1,7 +1,7 @@
 {
   "name": "spool-landing",
   "version": "0.1.0",
-  "homepage": "https://prafull2001.github.io/spool-landing",
+  "homepage": "https://thespoolapp.com",
   "private": true,
   "dependencies": {
     "@testing-library/dom": "^10.4.1",
