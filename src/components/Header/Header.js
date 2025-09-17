@@ -14,7 +14,7 @@ const Header = () => {
         </Link>
         <nav className="header-nav">
           <Link to="/privacy">Privacy</Link>
-          <a href="#" className="download-button">Download</a>
+          <a href="https://spool-app.vercel.app/" className="download-button" target="_blank" rel="noopener noreferrer">Join the Waitlist</a>
         </nav>
       </div>
     </header>

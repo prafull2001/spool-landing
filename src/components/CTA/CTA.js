@@ -7,7 +7,7 @@ const CTA = () => {
     <section className="cta">
       <div className="cta-container">
         <h2 className="cta-title">Ready to take control?</h2>
-        <a href="#" className="cta-button">Download Spool for iOS</a>
+        <a href="https://spool-app.vercel.app/" className="cta-button" target="_blank" rel="noopener noreferrer">Join the Waitlist</a>
       </div>
     </section>
   );
