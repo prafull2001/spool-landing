@@ -9,8 +9,8 @@ const Footer = () => {
       <div className="footer-container">
         <div className="footer-links">
           <Link to="/privacy">Privacy Policy</Link>
-          <a href="#">Contact Us</a>
-          <a href="#">Twitter</a>
+          <Link to="/terms">Terms of Service</Link>
+          <Link to="/support">Contact Us</Link>
         </div>
         <div className="footer-copyright">
           <p>&copy; 2025 Spool. All rights reserved.</p>
