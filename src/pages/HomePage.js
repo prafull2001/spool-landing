@@ -11,6 +11,7 @@ import AIInsights from '../components/AIInsights/AIInsights.js';
 import Stats from '../components/Stats/Stats.js';
 import CTA from '../components/CTA/CTA.js';
 import Footer from '../components/Footer/Footer.js';
+import Popup from '../components/Popup/Popup.js';
 
 const HomePage = () => {
   return (
@@ -24,6 +25,7 @@ const HomePage = () => {
       <Stats />
       <CTA />
       <Footer />
+      <Popup />
     </>
   );
 };
