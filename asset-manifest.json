@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.a4a61f53.css",
-    "main.js": "/static/js/main.46e24465.js",
+    "main.css": "/static/css/main.82e886fc.css",
+    "main.js": "/static/js/main.6b884104.js",
     "static/js/453.40479c64.chunk.js": "/static/js/453.40479c64.chunk.js",
     "static/media/Spool-Logo.png": "/static/media/Spool-Logo.a6a4a67f1d266e87b73c.png",
     "static/media/homescreen.PNG": "/static/media/homescreen.294879efca4539ef3f6e.PNG",
@@ -15,12 +15,12 @@
     "static/media/croppedstats.PNG": "/static/media/croppedstats.877d2eddb1c3a0a7d3f2.PNG",
     "static/media/croppedinsights2.PNG": "/static/media/croppedinsights2.c2fa800301ad8138cbd3.PNG",
     "index.html": "/index.html",
-    "main.a4a61f53.css.map": "/static/css/main.a4a61f53.css.map",
-    "main.46e24465.js.map": "/static/js/main.46e24465.js.map",
+    "main.82e886fc.css.map": "/static/css/main.82e886fc.css.map",
+    "main.6b884104.js.map": "/static/js/main.6b884104.js.map",
     "453.40479c64.chunk.js.map": "/static/js/453.40479c64.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.a4a61f53.css",
-    "static/js/main.46e24465.js"
+    "static/css/main.82e886fc.css",
+    "static/js/main.6b884104.js"
   ]
 }
