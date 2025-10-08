@@ -10,9 +10,36 @@
   margin: 0 auto;
 }
 
+.cta-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #ff6b35, #ff8c42);
+  color: white;
+  padding: 0.5rem 1.5rem;
+  border-radius: 20px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
 .cta-title {
   font-size: 2.5rem;
   color: white;
+  margin-bottom: 1rem;
+}
+
+.cta-subtitle {
+  font-size: 1.3rem;
+  color: rgba(255, 255, 255, 0.9);
   margin-bottom: 2rem;
 }
 
@@ -31,4 +58,25 @@
   background-color: var(--primary-blue);
   color: white;
   text-decoration: none;
+}
+
+.cta-social {
+  margin-top: 2rem;
+}
+
+.cta-social p {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.cta-social a {
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+.cta-social a:hover {
+  border-bottom-color: var(--primary-orange);
 }

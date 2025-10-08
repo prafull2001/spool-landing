@@ -14,7 +14,8 @@ const Header = () => {
         </Link>
         <nav className="header-nav">
           <Link to="/privacy">Privacy</Link>
-          <a href="https://spool-app.vercel.app/" className="download-button" target="_blank" rel="noopener noreferrer">Join the Waitlist</a>
+          <Link to="/support">Support</Link>
+          <a href="https://apps.apple.com/us/app/spool-save-your-thread/id6749428484?platform=iphone" className="download-button" target="_blank" rel="noopener noreferrer">Download App</a>
         </nav>
       </div>
     </header>

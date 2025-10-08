@@ -17,7 +17,7 @@ const PrivacyPolicyPage = () => {
           
           <h3>Information You Provide</h3>
           <ul>
-            <li><strong>Account Information:</strong> Name and email address when you join our waitlist</li>
+            <li><strong>Account Information:</strong> Name and email address when you download our app</li>
             <li><strong>App Usage Data:</strong> Screen time metrics and app usage patterns to help you reduce screen time</li>
             <li><strong>Settings & Preferences:</strong> Your app settings, notifications preferences, and goals</li>
           </ul>
@@ -54,45 +54,28 @@ const PrivacyPolicyPage = () => {
         </section>
 
         <section>
-          <h2>4. Data Security</h2>
-          <p>We implement industry-standard security measures to protect your information, including:</p>
-          <ul>
-            <li>Encryption of data in transit and at rest</li>
-            <li>Regular security audits and updates</li>
-            <li>Limited access to personal data on a need-to-know basis</li>
-            <li>Secure cloud infrastructure with leading providers</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>5. Your Privacy Rights</h2>
+          <h2>4. Your Privacy Rights</h2>
           <p>You have the right to:</p>
           <ul>
             <li><strong>Access:</strong> Request a copy of your personal information</li>
             <li><strong>Update:</strong> Correct any inaccurate information</li>
             <li><strong>Delete:</strong> Request deletion of your account and data</li>
-            <li><strong>Export:</strong> Download your data in a portable format</li>
             <li><strong>Opt-out:</strong> Unsubscribe from marketing communications</li>
           </ul>
         </section>
 
         <section>
-          <h2>6. Data Retention</h2>
+          <h2>5. Data Retention</h2>
           <p>We retain your information only as long as necessary to provide our services and comply with legal obligations. When you delete your account, we remove your personal information within 30 days, though some anonymized data may be retained for analytics purposes.</p>
         </section>
 
         <section>
-          <h2>7. Children's Privacy</h2>
+          <h2>6. Children's Privacy</h2>
           <p>Spool is not intended for children under 13. We do not knowingly collect personal information from children under 13. If we discover we have collected such information, we will delete it promptly.</p>
         </section>
 
         <section>
-          <h2>8. International Data Transfers</h2>
-          <p>Your information may be transferred to and processed in countries other than your own. We ensure appropriate safeguards are in place to protect your information during such transfers.</p>
-        </section>
-
-        <section>
-          <h2>9. Changes to This Policy</h2>
+          <h2>7. Changes to This Policy</h2>
           <p>We may update this Privacy Policy occasionally. We'll notify you of any material changes via email or through the app. Your continued use of Spool after such changes constitutes acceptance of the new policy.</p>
         </section>
 
