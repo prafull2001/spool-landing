@@ -67,9 +67,12 @@
 }
 
 .hero-subtitle {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: var(--light-text);
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--primary-blue);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  font-style: italic;
 }
 
 .hero-available {

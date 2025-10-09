@@ -17,10 +17,43 @@
 }
 
 .how-spool-works-subtitle {
-  font-size: 1.1rem;
-  color: #666;
+  font-size: 1.3rem;
+  color: var(--dark-text);
   margin-bottom: 3rem;
   text-align: center;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.spool-philosophy {
+  background: linear-gradient(135deg, #f0f4f8, #e8ecf0);
+  border-left: 4px solid var(--primary-orange);
+  padding: 2rem;
+  margin: 2rem 0 3rem;
+  border-radius: 10px;
+  position: relative;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.philosophy-text {
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--dark-text);
+  margin: 0;
+  text-align: center;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.spool-philosophy::before {
+  content: '💡';
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  background: white;
+  padding: 0.5rem;
+  border-radius: 50%;
+  font-size: 1.2rem;
 }
 
 .steps-list {

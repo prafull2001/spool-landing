@@ -4,28 +4,28 @@ import './HowSpoolWorks.css';
 const steps = [
   {
     icon: '📱',
-    title: 'Select Your Apps',
-    description: 'Choose which distracting apps you want Spool to monitor.'
+    title: 'Select Distracting Apps',
+    description: 'Choose which social media and entertainment apps trigger your doom scrolling habits.'
   },
   {
     icon: '🚫',
-    title: 'Spool Intervenes',
-    description: 'When you open a blocked app, Spool steps in before it launches.'
+    title: 'Smart Intervention',
+    description: 'When you try to open a blocked app, Spool creates a mindful pause before you scroll.'
   },
   {
     icon: '🎙️',
-    title: 'Record Your Intention',
-    description: 'A 5-second voice note asks: "Why am I opening this app?"'
+    title: 'Voice Check-In',
+    description: 'Record a 5-second voice note asking: "Why am I opening this app right now?"'
   },
   {
     icon: '✅',
-    title: 'Access Granted',
-    description: 'After your voice check-in, you get access to the app.'
+    title: 'Intentional Access',
+    description: 'After your mindful check-in, you can proceed with conscious app usage.'
   },
   {
     icon: '🧘',
-    title: 'Mindful Reflection',
-    description: 'This simple pause is proven to reduce mindless scrolling by 25%.'
+    title: 'Break the Habit',
+    description: 'This proven technique reduces screen time by 25% and stops mindless scrolling.'
   }
 ];
 
@@ -33,8 +33,8 @@ const HowSpoolWorks = () => {
   return (
     <section className="how-spool-works">
       <div className="how-spool-works-container">
-        <h2 className="how-spool-works-title" data-aos="fade-up">The Spool Flow</h2>
-        <p className="how-spool-works-subtitle" data-aos="fade-up" data-aos-delay="100">A simple 5-step process that transforms your relationship with technology</p>
+        <h2 className="how-spool-works-title" data-aos="fade-up">How to Stop Doom Scrolling in 5 Simple Steps</h2>
+        <p className="how-spool-works-subtitle" data-aos="fade-up" data-aos-delay="100">Instead of a daily budget you burn through mindlessly, you actively request a few minutes each time you want to scroll. This turns one big limit into many small, conscious choices.</p>
         <ol className="steps-list">
           {steps.map((step, index) => (
             <li 

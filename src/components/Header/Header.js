@@ -13,6 +13,7 @@ const Header = () => {
           <img src={logo} alt="Spool Logo" />
         </Link>
         <nav className="header-nav">
+          <Link to="/blog">Blog</Link>
           <Link to="/privacy">Privacy</Link>
           <Link to="/support">Support</Link>
           <a href="https://apps.apple.com/us/app/spool-save-your-thread/id6749428484?platform=iphone" className="download-button" target="_blank" rel="noopener noreferrer">Download App</a>

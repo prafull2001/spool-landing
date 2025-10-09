@@ -6,32 +6,32 @@ const features = [
   { 
     icon: '🎙️',
     title: 'Voice Check-ins',
-    description: 'A 5-second voice note is all it takes to mindfully open distracting apps.'
+    description: 'Break mindless scrolling with 5-second voice notes that create awareness before opening distracting apps.'
   },
   { 
     icon: '🧑‍🤝‍🧑',
     title: 'Friend Accountability',
-    description: 'Share your intentions with friends and hold each other accountable.'
+    description: 'Share your digital wellness goals with friends and build supportive habits together.'
   },
   { 
     icon: '📊',
-    title: 'Smart Insights',
-    description: 'Get personalized insights into your app usage and habits.'
+    title: 'Screen Time Insights',
+    description: 'Get AI-powered insights into your phone usage patterns and doom scrolling triggers.'
   },
   { 
     icon: '🚫',
-    title: 'Flexible Blocking',
-    description: 'Customize which apps to block and when.'
+    title: 'Smart App Blocking',
+    description: 'Flexible blocking system that adapts to your schedule and mindful technology goals.'
   },
   { 
     icon: '🧘',
     title: 'Mindful Pauses',
-    description: 'Reduce screen time by an average of 25% with our proven methods.'
+    description: 'Reduce screen time by 25% with proven mindfulness techniques and intentional phone use.'
   },
   { 
     icon: '🔒',
     title: 'Privacy First',
-    description: 'Your data is 100% private and secure. We never share it with anyone.'
+    description: 'Your digital wellness data stays private and secure. We never share personal information.'
   }
 ];
 
@@ -39,7 +39,7 @@ const Features = () => {
   return (
     <section className="features">
       <div className="features-container">
-        <h2 className="features-title" data-aos="fade-up">Everything you need to build a healthier relationship with your phone.</h2>
+        <h2 className="features-title" data-aos="fade-up">Digital Wellness Features to Break Phone Addiction</h2>
         <div className="features-grid">
           {features.map((feature, index) => (
             <div 

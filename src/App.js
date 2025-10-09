@@ -4,6 +4,8 @@ import HomePage from './pages/HomePage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsOfServicePage from './pages/TermsOfServicePage';
 import SupportPage from './pages/SupportPage';
+import BlogPage from './pages/BlogPage';
+import BlogPost from './pages/BlogPost';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -24,6 +26,8 @@ function App() {
         <Route path="/privacy" element={<PrivacyPolicyPage />} />
         <Route path="/terms" element={<TermsOfServicePage />} />
         <Route path="/support" element={<SupportPage />} />
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/blog/:id" element={<BlogPost />} />
       </Routes>
     </Router>
   );
