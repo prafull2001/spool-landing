@@ -18,11 +18,11 @@ const HomePage = () => {
     <>
       <Header />
       <Hero />
-      <Features />
       <HowSpoolWorks />
       <AIInsights />
       <FriendTransparency />
       <Stats />
+      <Features />
       <CTA />
       <Footer />
       <Popup />
