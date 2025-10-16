@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './Popup.css';
+import { getCurrentConfig, getCurrentURL } from '../../config/appConfig';
 
 const Popup = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const config = getCurrentConfig();
+  const url = getCurrentURL();
 
   useEffect(() => {
     // Check if popup has been shown in this session
@@ -24,7 +27,7 @@ const Popup = () => {
   };
 
   const handleDownload = () => {
-    window.open('https://apps.apple.com/us/app/spool-save-your-thread/id6749428484?platform=iphone', '_blank');
+    window.open(url, '_blank');
     handleClose();
   };
 
@@ -38,18 +41,18 @@ const Popup = () => {
         </button>
         
         <div className="popup-header">
-          <div className="popup-emoji">🎉</div>
-          <h2>Spool is Now Live!</h2>
+          <div className="popup-emoji">{config.popup_title.split(' ')[0]}</div>
+          <h2>{config.popup_title.substring(2)}</h2>
         </div>
         
         <div className="popup-body">
-          <p>We're excited to announce that Spool is now available on the App Store!</p>
+          <p>{config.popup_text}</p>
           <p className="popup-subtitle">Start building healthier phone habits with AI-powered voice check-ins.</p>
         </div>
         
         <div className="popup-actions">
           <button className="popup-download-btn" onClick={handleDownload}>
-            Download Now
+            {config.popup_button}
           </button>
           <button className="popup-later-btn" onClick={handleClose}>
             Maybe Later

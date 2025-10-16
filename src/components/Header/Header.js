@@ -2,10 +2,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Header.css';
+import { getCurrentConfig, getCurrentURL } from '../../config/appConfig';
 
 import logo from '../../assets/Spool-Logo.png';
 
 const Header = () => {
+  const config = getCurrentConfig();
+  const url = getCurrentURL();
+
   return (
     <header className="header">
       <div className="header-container">
@@ -16,7 +20,7 @@ const Header = () => {
           <Link to="/blog">Blog</Link>
           <Link to="/privacy">Privacy</Link>
           <Link to="/support">Support</Link>
-          <a href="https://apps.apple.com/us/app/spool-save-your-thread/id6749428484?platform=iphone" className="download-button" target="_blank" rel="noopener noreferrer">Download App</a>
+          <a href={url} className="download-button" target="_blank" rel="noopener noreferrer">{config.header_button}</a>
         </nav>
       </div>
     </header>
