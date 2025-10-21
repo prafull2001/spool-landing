@@ -2,7 +2,7 @@
 // Set IS_APP_LIVE to true when app is available on App Store
 // Set IS_APP_LIVE to false to show waitlist instead
 export const APP_CONFIG = {
-  IS_APP_LIVE: false, // Change this to true when app is live
+  IS_APP_LIVE: true, // Change this to true when app is live
   
   // App Store link (when app is live)
   APP_STORE_URL: "https://apps.apple.com/us/app/spool-save-your-thread/id6749428484?platform=iphone",
