@@ -20,6 +20,9 @@ const Hero = () => {
             <img src={logo} alt="Spool Logo" />
             <span className="hero-brand-name">Spool</span>
           </Link>
+          <div className="hero-brand-excuses">
+            <img src={recordedExcuses} alt="Recorded Excuses" />
+          </div>
         </div>
         <div className="hero-content">
           <h1 className="hero-title">
@@ -31,9 +34,6 @@ const Hero = () => {
           </a>
           <div className="hero-image">
             <img src={appBoquet} alt="Spool App Screenshots" />
-          </div>
-          <div className="hero-excuses-image">
-            <img src={recordedExcuses} alt="Recorded Excuses" />
           </div>
         </div>
       </div>
