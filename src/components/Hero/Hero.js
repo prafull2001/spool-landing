@@ -26,7 +26,7 @@ const Hero = () => {
         </div>
         <div className="hero-content">
           <h1 className="hero-title">
-            <span className="hero-title-main">Your Screen is stealing your focus.</span><br/>
+            <span className="hero-title-main">Doomscrolling is stealing your life.</span><br/>
             <span className="hero-title-accent">Unwind Wisely. 🧵</span>
           </h1>
           <a href={url} className="app-store-button" target="_blank" rel="noopener noreferrer">
