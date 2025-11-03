@@ -11,7 +11,7 @@ const CTA = () => {
     <section className="cta">
       <div className="cta-container">
         <p className="cta-badge">{APP_CONFIG.IS_APP_LIVE ? "🎉 NOW LIVE ON IOS!" : "🧵 COMING SOON!"}</p>
-        <h2 className="cta-title">Ready to take control?</h2>
+        <h2 className="cta-title">Start Unwinding Wisely 🪡</h2>
         <a href={url} className="app-store-cta-button" target="_blank" rel="noopener noreferrer">
           <img src={appStoreBadge} alt="Download on the App Store" />
         </a>
