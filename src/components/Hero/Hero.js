@@ -1,8 +1,10 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Hero.css';
 import { getCurrentConfig, getCurrentURL } from '../../config/appConfig';
 
+import logo from '../../assets/Spool-Logo.png';
 import homescreen from '../../assets/homescreen.PNG';
 
 const Hero = () => {
@@ -11,6 +13,9 @@ const Hero = () => {
 
   return (
     <section className="hero">
+      <Link to="/" className="hero-logo">
+        <img src={logo} alt="Spool Logo" />
+      </Link>
       <div className="hero-content">
         <div className="hero-text" data-aos="fade-right" data-aos-delay="100">
           <h1 className="hero-title">Your Screen is stealing your focus.<span className="hero-title-accent">Unwind Wisely. 🧵</span></h1>

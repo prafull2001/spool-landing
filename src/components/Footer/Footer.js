@@ -9,8 +9,9 @@ const Footer = () => {
       <div className="footer-container">
         <div className="footer-content">
           <div className="footer-section">
-            <h3>Legal</h3>
+            <h3>Resources</h3>
             <div className="footer-links">
+              <Link to="/blog">Blog</Link>
               <Link to="/privacy">Privacy Policy</Link>
               <Link to="/terms">Terms of Service</Link>
               <Link to="/support">Contact Us</Link>

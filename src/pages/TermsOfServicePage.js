@@ -1,12 +1,12 @@
 import React from 'react';
-import Header from '../components/Header/Header.js';
+import Logo from '../components/Logo/Logo.js';
 import Footer from '../components/Footer/Footer.js';
 import './TermsOfServicePage.css';
 
 const TermsOfServicePage = () => {
   return (
     <>
-      <Header />
+      <Logo />
       <div className="terms-container">
         <h1>Terms of Service</h1>
         

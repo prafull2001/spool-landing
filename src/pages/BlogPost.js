@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import Header from '../components/Header/Header';
+import Logo from '../components/Logo/Logo';
 import Footer from '../components/Footer/Footer';
 import './BlogPost.css';
 
@@ -184,7 +184,7 @@ const BlogPost = () => {
   if (!post) {
     return (
       <>
-        <Header />
+        <Logo />
         <div className="blog-post-container">
           <div className="blog-post-content">
             <h1>Post Not Found</h1>
@@ -199,7 +199,7 @@ const BlogPost = () => {
 
   return (
     <>
-      <Header />
+      <Logo />
       <article className="blog-post-container">
         <div className="blog-post-header">
           <Link to="/blog" className="back-to-blog">← Back to Blog</Link>

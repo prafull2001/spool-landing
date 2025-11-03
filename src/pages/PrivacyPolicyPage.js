@@ -1,12 +1,12 @@
 import React from 'react';
-import Header from '../components/Header/Header.js';
+import Logo from '../components/Logo/Logo.js';
 import Footer from '../components/Footer/Footer.js';
 import './PrivacyPolicyPage.css';
 
 const PrivacyPolicyPage = () => {
   return (
     <>
-      <Header />
+      <Logo />
       <div className="privacy-policy-container">
         <h1>Privacy Policy</h1>
         

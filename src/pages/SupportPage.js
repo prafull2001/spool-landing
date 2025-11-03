@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Header from '../components/Header/Header.js';
+import Logo from '../components/Logo/Logo.js';
 import Footer from '../components/Footer/Footer.js';
 import './SupportPage.css';
 
@@ -47,7 +47,7 @@ const SupportPage = () => {
 
   return (
     <>
-      <Header />
+      <Logo />
       <div className="support-page">
         {/* Hero Section */}
         <section className="support-hero">

@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from '../components/Header/Header';
+import Logo from '../components/Logo/Logo';
 import Footer from '../components/Footer/Footer';
 import { Link } from 'react-router-dom';
 import './BlogPage.css';
@@ -34,7 +34,7 @@ const blogPosts = [
 const BlogPage = () => {
   return (
     <>
-      <Header />
+      <Logo />
       <div className="blog-container">
         <div className="blog-header">
           <h1>The Spool Blog</h1>
