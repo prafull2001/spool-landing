@@ -2,29 +2,32 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Hero.css';
-import { getCurrentConfig, getCurrentURL } from '../../config/appConfig';
+import { getCurrentURL } from '../../config/appConfig';
 
 import logo from '../../assets/Spool-Logo.png';
-import homescreen from '../../assets/homescreen.PNG';
+import appBoquet from '../../assets/app_boquet.png';
+import appStoreBadge from '../../assets/app-store-badge.svg';
 
 const Hero = () => {
-  const config = getCurrentConfig();
   const url = getCurrentURL();
 
   return (
     <section className="hero">
-      <Link to="/" className="hero-logo">
-        <img src={logo} alt="Spool Logo" />
-      </Link>
-      <div className="hero-content">
-        <div className="hero-text" data-aos="fade-right" data-aos-delay="100">
-          <h1 className="hero-title">Your Screen is stealing your focus.<span className="hero-title-accent">Unwind Wisely. 🧵</span></h1>
-          <p>Reduce your screen usage using AI voice journals. Turn a mindless act into small conscious decisions.</p>
-          <p className="hero-available">{config.hero_status}</p>
-          <a href={url} className="hero-button" target="_blank" rel="noopener noreferrer">{config.hero_button}</a>
+      <div className="hero-container">
+        <div className="hero-header">
+          <Link to="/" className="hero-logo-center">
+            <img src={logo} alt="Spool Logo" />
+            <span className="hero-brand-name">Spool</span>
+          </Link>
         </div>
-        <div className="hero-image" data-aos="fade-left" data-aos-delay="300">
-          <img src={homescreen} alt="Spool App Homescreen" />
+        <div className="hero-content">
+          <h1 className="hero-title">Your Screen is stealing your focus.<br/><span className="hero-title-accent">Unwind Wisely.</span></h1>
+          <a href={url} className="app-store-button" target="_blank" rel="noopener noreferrer">
+            <img src={appStoreBadge} alt="Download on the App Store" />
+          </a>
+          <div className="hero-image">
+            <img src={appBoquet} alt="Spool App Screenshots" />
+          </div>
         </div>
       </div>
     </section>
