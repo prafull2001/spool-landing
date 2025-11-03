@@ -1,7 +1,7 @@
 
 .cta {
   padding: 6rem 2rem;
-  background-color: var(--primary-blue);
+  background-color: var(--background-color);
   text-align: center;
 }
 
@@ -33,29 +33,30 @@
 
 .cta-title {
   font-size: 2.5rem;
-  color: white;
+  color: var(--primary-blue);
   margin-bottom: 1rem;
 }
 
 .cta-subtitle {
   font-size: 1.3rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--dark-text);
   margin-bottom: 2rem;
 }
 
 .cta-button {
-  background-color: white;
-  color: var(--primary-blue);
+  background-color: var(--primary-blue);
+  color: white;
   padding: 1rem 2rem;
   border-radius: 30px;
   font-size: 1.2rem;
   font-weight: bold;
   transition: all 0.3s ease;
-  border: 2px solid white;
+  border: 2px solid var(--primary-blue);
 }
 
 .cta-button:hover {
-  background-color: var(--primary-blue);
+  background-color: var(--primary-orange);
+  border-color: var(--primary-orange);
   color: white;
   text-decoration: none;
 }
@@ -66,11 +67,11 @@
 
 .cta-social p {
   font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--dark-text);
 }
 
 .cta-social a {
-  color: white;
+  color: var(--primary-blue);
   font-weight: bold;
   text-decoration: none;
   border-bottom: 2px solid transparent;
