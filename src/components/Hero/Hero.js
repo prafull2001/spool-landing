@@ -21,7 +21,10 @@ const Hero = () => {
           </Link>
         </div>
         <div className="hero-content">
-          <h1 className="hero-title">Your Screen is stealing your focus.<br/><span className="hero-title-accent">Unwind Wisely.</span></h1>
+          <h1 className="hero-title">
+            <span className="hero-title-main">Your Screen is stealing your focus.</span><br/>
+            <span className="hero-title-accent">Unwind Wisely. 🧵</span>
+          </h1>
           <a href={url} className="app-store-button" target="_blank" rel="noopener noreferrer">
             <img src={appStoreBadge} alt="Download on the App Store" />
           </a>

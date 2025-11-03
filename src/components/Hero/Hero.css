@@ -38,9 +38,9 @@
 }
 
 .hero-brand-name {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: bold;
-  color: var(--primary-orange);
+  color: var(--primary-blue);
   text-decoration: none;
 }
 
@@ -48,43 +48,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6rem 2rem;
-  background: 
-    radial-gradient(ellipse at top left, rgba(86, 181, 227, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at top right, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
-    radial-gradient(ellipse at bottom left, rgba(86, 181, 227, 0.1) 0%, transparent 50%),
-    radial-gradient(ellipse at bottom right, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
-    var(--background-color);
+  padding: 2rem 2rem 4rem;
+  background: var(--background-color);
   position: relative;
   overflow: hidden;
+  min-height: 100vh;
 }
 
-.hero::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: 
-    radial-gradient(circle at 20% 80%, rgba(86, 181, 227, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255, 107, 53, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(86, 181, 227, 0.05) 0%, transparent 50%);
-  animation: meshMove 20s ease-in-out infinite;
-  pointer-events: none;
-}
-
-@keyframes meshMove {
-  0%, 100% {
-    transform: translate(0, 0) rotate(0deg);
-  }
-  33% {
-    transform: translate(30px, -30px) rotate(120deg);
-  }
-  66% {
-    transform: translate(-20px, 20px) rotate(240deg);
-  }
-}
 
 .hero-content {
   display: flex;
@@ -96,15 +66,21 @@
 }
 
 .hero-title {
-  font-size: 3rem;
   font-weight: bold;
-  color: var(--primary-blue);
   margin-bottom: 2rem;
   line-height: 1.3;
 }
 
-.hero-title-accent {
+.hero-title-main {
+  font-size: 3.5rem;
   color: var(--primary-orange);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.hero-title-accent {
+  font-size: 3rem;
+  color: var(--primary-blue);
 }
 
 .hero-subtitle {
@@ -157,8 +133,6 @@
 .hero-image img {
   width: 100%;
   height: auto;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
 @keyframes fadeIn {
@@ -179,7 +153,10 @@
 }
 
 @media (max-width: 768px) {
-  .hero-title {
+  .hero-title-main {
+    font-size: 2.5rem;
+  }
+  .hero-title-accent {
     font-size: 2rem;
   }
   .hero-brand-name {
