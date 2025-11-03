@@ -43,22 +43,18 @@
   margin-bottom: 2rem;
 }
 
-.cta-button {
-  background-color: var(--primary-blue);
-  color: white;
-  padding: 1rem 2rem;
-  border-radius: 30px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  transition: all 0.3s ease;
-  border: 2px solid var(--primary-blue);
+.app-store-cta-button {
+  display: inline-block;
+  transition: transform 0.3s ease;
 }
 
-.cta-button:hover {
-  background-color: var(--primary-orange);
-  border-color: var(--primary-orange);
-  color: white;
-  text-decoration: none;
+.app-store-cta-button img {
+  height: 60px;
+  width: auto;
+}
+
+.app-store-cta-button:hover {
+  transform: scale(1.05);
 }
 
 .cta-social {
