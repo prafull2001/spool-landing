@@ -39,7 +39,7 @@ const Features = () => {
   return (
     <section className="features">
       <div className="features-container">
-        <h2 className="features-title" data-aos="fade-up">Digital Wellness Features to Break Phone Addiction</h2>
+        <h2 className="features-title" data-aos="fade-up">Start Unwinding Wisely with 🪡</h2>
         <div className="features-grid">
           {features.map((feature, index) => (
             <div 
