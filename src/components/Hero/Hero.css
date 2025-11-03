@@ -135,6 +135,18 @@
   height: auto;
 }
 
+.hero-excuses-image {
+  width: 100%;
+  max-width: 600px;
+  margin: 2rem auto 0;
+  text-align: center;
+}
+
+.hero-excuses-image img {
+  width: 100%;
+  height: auto;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

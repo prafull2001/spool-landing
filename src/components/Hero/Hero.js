@@ -6,6 +6,7 @@ import { getCurrentURL } from '../../config/appConfig';
 
 import logo from '../../assets/Spool-Logo.png';
 import appBoquet from '../../assets/app_boquet.png';
+import recordedExcuses from '../../assets/recorded excuses.png';
 import appStoreBadge from '../../assets/app-store-badge.svg';
 
 const Hero = () => {
@@ -30,6 +31,9 @@ const Hero = () => {
           </a>
           <div className="hero-image">
             <img src={appBoquet} alt="Spool App Screenshots" />
+          </div>
+          <div className="hero-excuses-image">
+            <img src={recordedExcuses} alt="Recorded Excuses" />
           </div>
         </div>
       </div>
