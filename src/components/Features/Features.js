@@ -24,7 +24,7 @@ const Features = () => {
   return (
     <section className="features">
       <div className="features-container">
-        <h2 className="features-title" data-aos="fade-up">Ready to take control</h2>
+        <h2 className="features-title" data-aos="fade-up">Take control today</h2>
         <div className="features-grid">
           {features.map((feature, index) => (
             <div 
