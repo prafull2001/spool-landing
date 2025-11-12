@@ -19,7 +19,7 @@
 .features-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .feature-card {
@@ -46,7 +46,7 @@
 
 .feature-icon {
   font-size: 2.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   text-align: center;
   display: flex;
   justify-content: center;
@@ -62,10 +62,11 @@
 
 .feature-card-title {
   font-size: 1.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
 }
 
 .feature-card-description {
   font-size: 1rem;
-  line-height: 1.5;
+  line-height: 1.4;
+  margin: 0;
 }
