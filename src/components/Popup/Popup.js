@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './Popup.css';
-import { getCurrentConfig, getCurrentURL } from '../../config/appConfig';
+import { getCurrentURL } from '../../config/appConfig';
 import appStoreBadge from '../../assets/app-store-badge.svg';
 
 const Popup = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const config = getCurrentConfig();
   const url = getCurrentURL();
 
   useEffect(() => {

@@ -5,7 +5,6 @@ import './Header.css';
 import { getCurrentConfig, getCurrentURL } from '../../config/appConfig';
 
 import logo from '../../assets/Spool-Logo.png';
-import spooliLogo from '/images/spooli_logo.jpg';
 
 const Header = () => {
   const config = getCurrentConfig();

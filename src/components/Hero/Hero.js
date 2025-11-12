@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import './Hero.css';
 import { getCurrentURL } from '../../config/appConfig';
 
-import logo from '../../assets/Spool-Logo.png';
 import appBoquet from '../../assets/app_boquet.png';
 import recordedExcuses from '../../assets/recorded excuses.png';
 import appStoreBadge from '../../assets/app-store-badge.svg';
