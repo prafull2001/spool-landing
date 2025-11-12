@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Popup.css';
 import { getCurrentConfig, getCurrentURL } from '../../config/appConfig';
+import appStoreBadge from '../../assets/app-store-badge.svg';
 
 const Popup = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -41,22 +42,17 @@ const Popup = () => {
         </button>
         
         <div className="popup-header">
-          <div className="popup-emoji">{config.popup_title.split(' ')[0]}</div>
-          <h2>{config.popup_title.substring(2)}</h2>
+          <div className="popup-spoolie">
+            <img src="/images/spooli_jumping.png" alt="Spoolie" />
+          </div>
         </div>
         
-        <div className="popup-body">
-          <p>{config.popup_text}</p>
-          <p className="popup-subtitle">Start building healthier phone habits with AI-powered voice check-ins.</p>
+        <div className="popup-text">
+          <p>Download on iOS</p>
         </div>
         
         <div className="popup-actions">
-          <button className="popup-download-btn" onClick={handleDownload}>
-            {config.popup_button}
-          </button>
-          <button className="popup-later-btn" onClick={handleClose}>
-            Maybe Later
-          </button>
+          <img src={appStoreBadge} alt="Download on the App Store" className="popup-app-store-badge" onClick={handleDownload} />
         </div>
       </div>
     </div>

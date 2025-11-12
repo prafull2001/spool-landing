@@ -4,17 +4,17 @@ import './Features.css';
 
 const features = [
   { 
-    icon: '🚫',
+    icon: '/images/spooli_block.png',
     title: 'Block distractions',
     description: 'Stop mindless scrolling with smart app blocking when you need focus'
   },
   { 
-    icon: '🧠',
+    icon: '/images/spooli_brain.png',
     title: 'Understand your triggers',
     description: 'Discover what drives your phone usage and build awareness'
   },
   { 
-    icon: '📊',
+    icon: '/images/spooli_point.png',
     title: 'Get daily insights',
     description: 'Track progress with personalized analytics on your digital habits'
   }
@@ -33,7 +33,9 @@ const Features = () => {
               data-aos="zoom-in"
               data-aos-delay={index * 100}
             >
-              <div className="feature-icon">{feature.icon}</div>
+              <div className="feature-icon">
+                <img src={feature.icon} alt={feature.title} />
+              </div>
               <h3 className="feature-card-title">{feature.title}</h3>
               <p className="feature-card-description">{feature.description}</p>
             </div>

@@ -32,18 +32,19 @@
   position: absolute;
   top: 1rem;
   right: 1rem;
-  background: none;
+  background: rgba(0, 0, 0, 0.05);
   border: none;
-  font-size: 2rem;
-  color: #999;
+  font-size: 1.5rem;
+  color: #666;
   cursor: pointer;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
   transition: all 0.3s ease;
+  z-index: 10001;
 }
 
 .popup-close:hover {
@@ -56,10 +57,30 @@
   margin-bottom: 1.5rem;
 }
 
-.popup-emoji {
-  font-size: 3rem;
+.popup-spoolie {
   margin-bottom: 0.5rem;
-  animation: bounce 1.5s ease-in-out infinite;
+  animation: float 2s ease-in-out infinite;
+}
+
+.popup-spoolie img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-15px) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(2deg);
+  }
+  75% {
+    transform: translateY(-10px) rotate(-1deg);
+  }
 }
 
 .popup-header h2 {
@@ -85,48 +106,35 @@
   font-size: 0.9rem !important;
 }
 
+.popup-text {
+  margin-bottom: 1.5rem;
+}
+
+.popup-text p {
+  color: var(--primary-orange);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+}
+
 .popup-actions {
   display: flex;
-  gap: 1rem;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.popup-download-btn {
-  background: linear-gradient(135deg, var(--primary-blue), var(--primary-orange), var(--primary-blue));
-  background-size: 200% 200%;
-  animation: gradient 3s ease infinite;
-  color: white;
-  border: none;
-  padding: 1rem 2rem;
-  border-radius: 15px;
-  font-size: 1.1rem;
-  font-weight: bold;
+.popup-app-store-badge {
+  height: 60px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(86, 181, 227, 0.3);
+  border-radius: 8px;
 }
 
-.popup-download-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(86, 181, 227, 0.4);
+.popup-app-store-badge:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
 }
 
-.popup-later-btn {
-  background: transparent;
-  color: var(--light-text);
-  border: 2px solid rgba(0, 0, 0, 0.1);
-  padding: 0.8rem 2rem;
-  border-radius: 15px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.popup-later-btn:hover {
-  background: rgba(0, 0, 0, 0.05);
-  border-color: rgba(0, 0, 0, 0.2);
-  color: var(--dark-text);
-}
 
 /* Animations */
 @keyframes fadeIn {

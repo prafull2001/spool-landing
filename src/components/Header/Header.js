@@ -5,6 +5,7 @@ import './Header.css';
 import { getCurrentConfig, getCurrentURL } from '../../config/appConfig';
 
 import logo from '../../assets/Spool-Logo.png';
+import spooliLogo from '/images/spooli_logo.jpg';
 
 const Header = () => {
   const config = getCurrentConfig();
@@ -14,7 +15,7 @@ const Header = () => {
     <header className="header">
       <div className="header-container">
         <Link to="/" className="header-logo">
-          <img src={logo} alt="Spool Logo" />
+          <img src="/images/spooli_logo.jpg" alt="Spool Logo" />
         </Link>
         <nav className="header-nav">
           <Link to="/blog">Blog</Link>

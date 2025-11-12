@@ -48,6 +48,16 @@
   font-size: 2.5rem;
   margin-bottom: 1rem;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 120px;
+}
+
+.feature-icon img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
 }
 
 .feature-card-title {

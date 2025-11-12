@@ -17,7 +17,7 @@ const Hero = () => {
       <div className="hero-container">
         <div className="hero-header">
           <Link to="/" className="hero-logo-center">
-            <img src={logo} alt="Spool Logo" />
+            <img src="/images/spooli_logo.jpg" alt="Spool Logo" />
             <span className="hero-brand-name">Spool</span>
           </Link>
           <div className="hero-brand-excuses">
