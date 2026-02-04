@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { db, auth, googleProvider } from '../config/firebase';
 import { collection, query, orderBy, where, getDocs, Timestamp, limit } from 'firebase/firestore';
 import { signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
@@ -103,7 +103,7 @@ function AnalyticsPage() {
   };
 
   // Compute analytics from sessions
-  const computeAnalytics = () => {
+  const computeAnalytics = useCallback(() => {
     const total = sessions.length;
     if (total === 0) return null;
 
@@ -159,7 +159,7 @@ function AnalyticsPage() {
       screenTimes,
       screenTimeCounts,
     };
-  };
+  }, [sessions]);
 
   // Render charts whenever sessions change
   useEffect(() => {
@@ -255,7 +255,7 @@ function AnalyticsPage() {
         },
       });
     }
-  }, [sessions]);
+  }, [sessions, computeAnalytics]);
 
   const analytics = computeAnalytics();
 
