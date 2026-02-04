@@ -6,6 +6,7 @@ import TermsOfServicePage from './pages/TermsOfServicePage';
 import SupportPage from './pages/SupportPage';
 import BlogPage from './pages/BlogPage';
 import BlogPost from './pages/BlogPost';
+import AnalyticsPage from './pages/AnalyticsPage';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -28,6 +29,7 @@ function App() {
         <Route path="/support" element={<SupportPage />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/blog/:id" element={<BlogPost />} />
+        <Route path="/analytics" element={<AnalyticsPage />} />
       </Routes>
     </Router>
   );

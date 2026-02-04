@@ -1,0 +1,159 @@
+.analytics-page {
+  min-height: 100vh;
+  background: #fdf6ee;
+  padding: 20px 30px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #7F6100;
+}
+
+.analytics-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e8dcc8;
+  margin-bottom: 25px;
+}
+
+.analytics-header h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.auth-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.auth-section .user-email {
+  font-size: 14px;
+  color: #999;
+}
+
+.btn-login {
+  padding: 8px 20px;
+  background: #8AC9E1;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-login:hover {
+  background: #6fb8d4;
+}
+
+.btn-logout {
+  padding: 6px 15px;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.btn-logout:hover {
+  background: #c0392b;
+}
+
+/* Login prompt */
+.login-prompt {
+  text-align: center;
+  padding: 80px 20px;
+  font-size: 16px;
+  color: #999;
+}
+
+/* Summary cards */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.summary-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  text-align: center;
+}
+
+.summary-card h3 {
+  font-size: 13px;
+  color: #999;
+  margin: 0 0 8px 0;
+  font-weight: 500;
+}
+
+.summary-card .value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #7F6100;
+}
+
+/* Filters */
+.filters {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.filters label {
+  font-size: 14px;
+  color: #7F6100;
+}
+
+.filters input[type="date"] {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-left: 6px;
+}
+
+.btn-refresh {
+  padding: 8px 20px;
+  background: #8AC9E1;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.btn-refresh:hover {
+  background: #6fb8d4;
+}
+
+/* Chart containers */
+.chart-container {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.chart-container h2 {
+  font-size: 18px;
+  margin: 0 0 15px 0;
+  color: #7F6100;
+}
+
+/* Loading state */
+.loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 16px;
+  color: #999;
+}
