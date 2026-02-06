@@ -1,6 +1,6 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
 import NotificationCards from './NotificationCards';
 import PhoneMockup from './PhoneMockup';
 import BackgroundGlow from './BackgroundGlow';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { MessageSquare, Heart, Play, Music, Users, Camera, Mail, ShoppingBag } from 'lucide-react';
+import { MessageSquare, Heart, Play, Music, Camera } from 'lucide-react';
 import './ScrollHero.css';
 
 const NotificationCards = ({ opacity, y, scale }) => {
