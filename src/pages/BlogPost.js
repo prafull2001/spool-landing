@@ -265,6 +265,252 @@ const blogContent = {
       <p>For most users seeking lasting change, Spool's awareness-based approach is more effective. The voice check-in creates enough pause to break automatic behavior while building genuine self-understanding. Clearspace works better as a strict digital detox tool for specific periods, but may not create lasting habits.</p>
     `
   },
+  'spool-vs-brainrot': {
+    title: 'Spool vs Brainrot: Which App Actually Fixes Your Scrolling Habit?',
+    date: 'February 8, 2026',
+    readTime: '7 min read',
+    category: 'Comparison',
+    content: `
+      <p>Brainrot has taken the App Store by storm with its clever "watch your brain decay" concept. But does guilt-based gamification actually work better than Spool's voice-based awareness? Let's break down these two very different approaches to beating phone addiction.</p>
+
+      <h2>Quick Comparison</h2>
+      <table class="comparison-table">
+        <tr><th>Feature</th><th>Spool</th><th>Brainrot</th></tr>
+        <tr><td>Core Approach</td><td>Voice-based awareness</td><td>Visual guilt (decaying brain)</td></tr>
+        <tr><td>Blocking Style</td><td>Gentle friction + journaling</td><td>Hard blocks + schedules</td></tr>
+        <tr><td>Unique Feature</td><td>Excuse tracking & AI insights</td><td>Brain avatar that decays</td></tr>
+        <tr><td>Data Captured</td><td>Your spoken reasons/patterns</td><td>Usage time only</td></tr>
+        <tr><td>Price</td><td>$7.99/month or $39.99/year</td><td>$3.99/month to $49.99/year</td></tr>
+        <tr><td>Rating</td><td>4.8/5 stars</td><td>4.6/5 stars</td></tr>
+      </table>
+
+      <h2>What Is Brainrot?</h2>
+      <p>Brainrot (by Smolworks Inc.) uses a distinctive visual metaphor: a cute brain avatar that literally decays as you doom scroll. The idea is that watching your brain "rot" creates enough guilt and visual feedback to deter excessive phone use.</p>
+
+      <p>Key features include:</p>
+      <ul>
+        <li><strong>Decaying Brain Avatar:</strong> Visual representation of your scrolling damage</li>
+        <li><strong>Instant App Blocking:</strong> Block selected apps and websites immediately</li>
+        <li><strong>Smart Schedules:</strong> Set blocks for bedtime, mornings, and meetings</li>
+        <li><strong>Focus Timer:</strong> Pomodoro-style deep work sessions</li>
+        <li><strong>Usage Insights:</strong> See which apps consume your time</li>
+      </ul>
+
+      <h2>What Is Spool?</h2>
+      <p>Spool takes a fundamentally different approach. Instead of showing you a decaying avatar, Spool asks you to speak your intention before opening distracting apps. This 5-second voice check-in creates genuine awareness about why you're reaching for your phone.</p>
+
+      <p>Key features include:</p>
+      <ul>
+        <li><strong>Voice Check-ins:</strong> Speak your reason for opening an app</li>
+        <li><strong>Excuse Journaling:</strong> AI tracks patterns in your stated reasons</li>
+        <li><strong>Personalized Insights:</strong> Discover your triggers and peak distraction times</li>
+        <li><strong>Friend Accountability:</strong> Share your journey with trusted contacts</li>
+      </ul>
+
+      <h2>The Psychology: Guilt vs. Awareness</h2>
+      <p>This is where the two apps fundamentally differ:</p>
+
+      <p><strong>Brainrot uses guilt.</strong> Watching your brain avatar decay is meant to make you feel bad about scrolling. This negative reinforcement can work short-term, but psychological research shows guilt-based motivation often leads to shame spirals and eventual app abandonment.</p>
+
+      <p><strong>Spool uses awareness.</strong> By asking you to verbalize "Why am I opening Instagram?" you engage your prefrontal cortex—the decision-making part of your brain. You might say "I'm bored" or "I'm avoiding work." This data becomes genuinely useful for understanding your patterns.</p>
+
+      <h2>Which Creates Lasting Change?</h2>
+      <p>Studies on behavior change consistently show that <strong>awareness-based interventions outperform guilt-based ones</strong> for long-term habit modification. Here's why:</p>
+
+      <ul>
+        <li><strong>Guilt fatigues:</strong> You eventually stop caring that the brain is decaying</li>
+        <li><strong>Awareness compounds:</strong> Understanding your triggers leads to addressing root causes</li>
+        <li><strong>Guilt is external:</strong> You're reacting to an avatar, not internal motivation</li>
+        <li><strong>Awareness is internal:</strong> You're building genuine self-understanding</li>
+      </ul>
+
+      <p>Many Brainrot users report initial success followed by declining effectiveness as the guilt mechanism loses its punch. Spool users report the opposite—the more excuses they log, the more insights they gain, creating a virtuous cycle.</p>
+
+      <h2>Data and Privacy</h2>
+      <p>Both apps use Apple's Screen Time API and keep data on-device, which is good for privacy.</p>
+
+      <p>However, the <em>type</em> of data differs significantly:</p>
+      <ul>
+        <li><strong>Brainrot:</strong> Tracks time spent, apps opened, blocking compliance</li>
+        <li><strong>Spool:</strong> Tracks your spoken excuses, emotional patterns, and triggers</li>
+      </ul>
+
+      <p>Spool's data is more actionable. Knowing you spent 2 hours on TikTok is less useful than knowing you opened TikTok 47 times saying "just checking" or "I'm stressed."</p>
+
+      <h2>User Experience</h2>
+      <p><strong>Brainrot's UX</strong> is playful and visually engaging. The decaying brain is clever, and the blocking features work reliably. However, some users report bugs with automations resetting and widget inaccuracies. The mandatory subscription model has also drawn criticism.</p>
+
+      <p><strong>Spool's UX</strong> is minimal and focused. The voice check-in takes about 5 seconds and doesn't feel punishing—it feels like a moment of mindfulness. The AI insights surface weekly, giving you meaningful data without overwhelming you.</p>
+
+      <h2>Pricing Comparison</h2>
+      <p><strong>Brainrot:</strong> Free to download, but all useful features require subscription. Pricing tiers range from $3.99/month to $49.99/year, with various promotional offers.</p>
+
+      <p><strong>Spool:</strong> $7.99/month or $39.99/year. All features included—voice check-ins, AI insights, excuse journaling, and friend accountability.</p>
+
+      <h2>The Verdict</h2>
+      <p><strong>Choose Spool if:</strong></p>
+      <ul>
+        <li>You want to understand <em>why</em> you scroll, not just stop scrolling</li>
+        <li>You've tried guilt-based apps before and they stopped working</li>
+        <li>You value actionable insights over visual gimmicks</li>
+        <li>You want lasting habit change, not temporary restriction</li>
+      </ul>
+
+      <p><strong>Choose Brainrot if:</strong></p>
+      <ul>
+        <li>Visual gamification motivates you</li>
+        <li>You want hard blocking with schedules</li>
+        <li>You prefer a playful, game-like experience</li>
+        <li>Short-term reduction is your primary goal</li>
+      </ul>
+
+      <h2>Our Take</h2>
+      <p>Brainrot is clever marketing, but Spool is better science. Watching a brain decay might grab attention, but speaking your intentions creates real neural change. If you want to actually understand and fix your scrolling habit—not just feel guilty about it—Spool's awareness-based approach is more effective.</p>
+
+      <p>The best screen time app isn't the one that makes you feel worst about scrolling. It's the one that helps you understand why you do it in the first place.</p>
+    `
+  },
+  'spool-vs-unrot': {
+    title: 'Spool vs Unrot: Earn Screen Time or Understand Why You Scroll?',
+    date: 'February 8, 2026',
+    readTime: '7 min read',
+    category: 'Comparison',
+    content: `
+      <p>Unrot has an interesting premise: earn "brain credits" through healthy habits, then spend those credits to unlock distracting apps. It's a reward-based system that's fundamentally different from Spool's awareness-based approach. But which philosophy actually leads to lasting change?</p>
+
+      <h2>Quick Comparison</h2>
+      <table class="comparison-table">
+        <tr><th>Feature</th><th>Spool</th><th>Unrot</th></tr>
+        <tr><td>Core Approach</td><td>Voice-based awareness</td><td>Earn credits to unlock apps</td></tr>
+        <tr><td>Philosophy</td><td>Understand why you scroll</td><td>Balance pleasure with purpose</td></tr>
+        <tr><td>Unique Feature</td><td>Excuse journaling & AI insights</td><td>Credit system + challenges</td></tr>
+        <tr><td>Unlock Method</td><td>5-second voice check-in</td><td>Spend earned credits</td></tr>
+        <tr><td>Habit Building</td><td>Track patterns over time</td><td>28-day challenge with medals</td></tr>
+        <tr><td>Price</td><td>$7.99/month or $39.99/year</td><td>$8.99 - $69.99 (varies)</td></tr>
+        <tr><td>Rating</td><td>4.8/5 stars</td><td>4.6/5 stars</td></tr>
+      </table>
+
+      <h2>What Is Unrot?</h2>
+      <p>Unrot (by Unrot OÜ) gamifies screen time reduction through a credit economy. You earn "brain credits" by completing healthy activities, then spend those credits to unlock distracting apps. The tagline is "Earn Your Screentime."</p>
+
+      <p>Key features include:</p>
+      <ul>
+        <li><strong>Brain Credit System:</strong> Earn credits through walking, journaling, breathing exercises, gratitude</li>
+        <li><strong>Photo-Based Tracking:</strong> Log activities with photos for instant credit rewards</li>
+        <li><strong>Brain Mascot:</strong> Avatar that reflects your current "mental energy"</li>
+        <li><strong>28-Day Challenge:</strong> Structured program with bronze/silver/gold medals</li>
+        <li><strong>Focus Timers:</strong> Built-in soundscapes for deep work</li>
+        <li><strong>Mood Check-ins:</strong> Track emotional triggers linked to usage</li>
+        <li><strong>Sleep Schedule:</strong> Block apps during night and morning hours</li>
+      </ul>
+
+      <h2>What Is Spool?</h2>
+      <p>Spool doesn't make you earn access to apps. Instead, it creates a moment of awareness before you open them. A 5-second voice check-in asks you to speak your reason for opening an app. Over time, these spoken "excuses" reveal your patterns.</p>
+
+      <p>Key features include:</p>
+      <ul>
+        <li><strong>Voice Check-ins:</strong> Speak your intention before opening distracting apps</li>
+        <li><strong>Excuse Journaling:</strong> AI tracks and categorizes your stated reasons</li>
+        <li><strong>Pattern Analysis:</strong> Discover your triggers, peak times, and emotional states</li>
+        <li><strong>Friend Accountability:</strong> Share progress with trusted contacts</li>
+        <li><strong>AI Insights:</strong> Weekly personalized analysis of your usage patterns</li>
+      </ul>
+
+      <h2>The Philosophy Difference</h2>
+      <p>These apps represent two distinct philosophies about behavior change:</p>
+
+      <p><strong>Unrot's philosophy:</strong> Screen time should be earned. If you want to scroll TikTok, first go for a walk or do some journaling. This creates a transactional relationship with your phone—work hard, earn your reward.</p>
+
+      <p><strong>Spool's philosophy:</strong> Screen time should be intentional. Instead of earning access, understand why you're reaching for your phone in the first place. Awareness naturally reduces mindless usage.</p>
+
+      <h2>The Problem with "Earning" Screen Time</h2>
+      <p>Unrot's credit system sounds logical, but it has a fundamental flaw: <strong>it treats scrolling as a reward you deserve.</strong></p>
+
+      <p>This framing can actually reinforce the idea that social media is valuable—something worth working for. Psychologically, we value things we have to earn more, not less. By making you "earn" Instagram time, Unrot may inadvertently increase its perceived value.</p>
+
+      <p>Additionally, the credit system creates a transactional mindset:</p>
+      <ul>
+        <li>"I walked 20 minutes, so I've earned 30 minutes of TikTok"</li>
+        <li>Exercise becomes a means to an end (scrolling), not intrinsically valuable</li>
+        <li>If you skip exercise, you might feel "owed" scrolling time anyway</li>
+      </ul>
+
+      <h2>Why Awareness Works Better</h2>
+      <p>Spool doesn't try to make scrolling transactional. Instead, it makes scrolling <em>conscious.</em></p>
+
+      <p>When you have to speak "I'm opening Instagram because I'm bored" out loud, several things happen:</p>
+      <ul>
+        <li>You engage your prefrontal cortex (decision-making brain)</li>
+        <li>You create a verbal record of your patterns</li>
+        <li>You often realize you don't actually want to open the app</li>
+        <li>Over time, you address root causes (boredom, stress, avoidance)</li>
+      </ul>
+
+      <p>Studies show that verbalizing intentions increases behavior change success by 42%. Spool leverages this science directly.</p>
+
+      <h2>Gamification: Helpful or Distracting?</h2>
+      <p><strong>Unrot leans heavily into gamification:</strong> credits, challenges, medals, mascots, streaks. This can be motivating initially, but research on gamification shows diminishing returns. Once the novelty wears off, users often disengage entirely.</p>
+
+      <p><strong>Spool uses minimal gamification.</strong> The focus is on insight, not points. Your "reward" is understanding yourself better—which turns out to be more sustainably motivating than any medal system.</p>
+
+      <h2>Data Comparison</h2>
+      <p>Both apps collect data, but the nature differs significantly:</p>
+
+      <p><strong>Unrot tracks:</strong></p>
+      <ul>
+        <li>Credits earned and spent</li>
+        <li>Activities completed</li>
+        <li>Challenge progress</li>
+        <li>Mood check-ins</li>
+      </ul>
+
+      <p><strong>Spool tracks:</strong></p>
+      <ul>
+        <li>Your spoken excuses/reasons for opening apps</li>
+        <li>Patterns in those reasons over time</li>
+        <li>Peak distraction times and triggers</li>
+        <li>Emotional states linked to usage</li>
+      </ul>
+
+      <p>Spool's data is more actionable because it reveals <em>why</em> you scroll, not just <em>when.</em> Knowing you opened Instagram 50 times is less useful than knowing 35 of those times you said "I'm stressed."</p>
+
+      <h2>User Experience</h2>
+      <p><strong>Unrot's UX</strong> is feature-rich but complex. The credit system, challenges, photo logging, and mascot create a lot to track. Some users love this depth; others find it overwhelming. Common complaints include a long onboarding questionnaire and unclear paywall navigation.</p>
+
+      <p><strong>Spool's UX</strong> is streamlined. The core interaction—a 5-second voice check-in—is simple and repeatable. Insights surface weekly without requiring constant engagement. Users report it feels less like "another app to manage."</p>
+
+      <h2>Pricing</h2>
+      <p><strong>Unrot:</strong> Subscription required. Pricing ranges from $8.99 to $69.99 depending on plan. No free trial before paywall.</p>
+
+      <p><strong>Spool:</strong> $7.99/month or $39.99/year. All features included.</p>
+
+      <h2>The Verdict</h2>
+      <p><strong>Choose Spool if:</strong></p>
+      <ul>
+        <li>You want to understand the root causes of your scrolling</li>
+        <li>You prefer simple tools that don't require constant engagement</li>
+        <li>You're skeptical of gamification and credit systems</li>
+        <li>You want voice-based awareness, not transactional access</li>
+        <li>Long-term habit change matters more than short-term metrics</li>
+      </ul>
+
+      <p><strong>Choose Unrot if:</strong></p>
+      <ul>
+        <li>You respond well to gamification (credits, medals, challenges)</li>
+        <li>You want to build healthy habits alongside reducing screen time</li>
+        <li>The "earn your screen time" concept appeals to you</li>
+        <li>You like structured programs (28-day challenge)</li>
+        <li>Photo-based habit tracking sounds engaging</li>
+      </ul>
+
+      <h2>Our Recommendation</h2>
+      <p>Unrot's credit system is creative, but it treats scrolling as a reward rather than a problem. This framing can backfire by making social media feel more valuable, not less.</p>
+
+      <p>Spool takes a more sustainable approach: instead of earning access, understand your patterns. When you know that stress triggers your Instagram habit, you can address the stress directly. No credits required.</p>
+
+      <p>The goal isn't to earn screen time through healthy behavior—it's to not need excessive screen time in the first place. Spool helps you get there.</p>
+    `
+  },
   'how-to-stop-doom-scrolling': {
     title: 'How to Stop Doom Scrolling: 10 Proven Strategies That Work',
     date: 'February 8, 2026',

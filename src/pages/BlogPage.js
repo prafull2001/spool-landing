@@ -33,6 +33,24 @@ const blogPosts = [
     isComparison: true
   },
   {
+    id: 'spool-vs-brainrot',
+    title: 'Spool vs Brainrot: Which App Actually Fixes Your Scrolling Habit?',
+    excerpt: 'Brainrot uses a decaying brain avatar to guilt you into stopping. Spool uses voice awareness. Which approach leads to lasting change?',
+    date: 'February 8, 2026',
+    readTime: '7 min read',
+    category: 'Comparison',
+    isComparison: true
+  },
+  {
+    id: 'spool-vs-unrot',
+    title: 'Spool vs Unrot: Earn Screen Time or Understand Why You Scroll?',
+    excerpt: 'Unrot makes you earn app access through healthy habits. Spool builds self-awareness through voice check-ins. A deep dive into two different philosophies.',
+    date: 'February 8, 2026',
+    readTime: '7 min read',
+    category: 'Comparison',
+    isComparison: true
+  },
+  {
     id: 'how-to-stop-doom-scrolling',
     title: 'How to Stop Doom Scrolling: 10 Proven Strategies That Work',
     excerpt: 'Practical, science-backed techniques to break your doom scrolling habit and reclaim hours of your day. No willpower required.',
