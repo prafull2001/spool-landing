@@ -106,6 +106,68 @@
   font-weight: 600;
 }
 
+/* Comparison Tables */
+.blog-post-content .comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.blog-post-content .comparison-table th,
+.blog-post-content .comparison-table td {
+  padding: 1rem 1.25rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.blog-post-content .comparison-table th {
+  background: linear-gradient(135deg, var(--primary-blue), #4a9cc7);
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.blog-post-content .comparison-table th:first-child {
+  border-top-left-radius: 12px;
+}
+
+.blog-post-content .comparison-table th:last-child {
+  border-top-right-radius: 12px;
+}
+
+.blog-post-content .comparison-table tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.blog-post-content .comparison-table tr:hover {
+  background-color: rgba(86, 181, 227, 0.08);
+}
+
+.blog-post-content .comparison-table td {
+  font-size: 1rem;
+  color: #333;
+}
+
+.blog-post-content .comparison-table td:first-child {
+  font-weight: 600;
+  color: var(--dark-text);
+}
+
+.blog-post-content .comparison-table tr:last-child td {
+  border-bottom: none;
+}
+
+.blog-post-content .comparison-table tr:last-child td:first-child {
+  border-bottom-left-radius: 12px;
+}
+
+.blog-post-content .comparison-table tr:last-child td:last-child {
+  border-bottom-right-radius: 12px;
+}
+
 .blog-post-cta {
   max-width: 800px;
   margin: 3rem auto 0;
@@ -149,21 +211,35 @@
   .blog-post-header h1 {
     font-size: 2rem;
   }
-  
+
   .blog-post-content {
     padding: 2rem 1.5rem;
   }
-  
+
   .blog-post-content h2 {
     font-size: 1.6rem;
   }
-  
+
   .blog-post-content p,
   .blog-post-content li {
     font-size: 1.05rem;
   }
-  
+
   .blog-post-cta {
     padding: 2rem;
+  }
+
+  /* Responsive table */
+  .blog-post-content .comparison-table {
+    font-size: 0.9rem;
+  }
+
+  .blog-post-content .comparison-table th,
+  .blog-post-content .comparison-table td {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .blog-post-content .comparison-table th {
+    font-size: 0.85rem;
   }
 }

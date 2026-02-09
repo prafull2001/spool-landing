@@ -5,9 +5,370 @@ import Footer from '../components/Footer/Footer';
 import './BlogPost.css';
 
 const blogContent = {
+  'spool-vs-opal': {
+    title: 'Spool vs Opal: Which Screen Time App Is Right for You?',
+    date: 'February 8, 2025',
+    readTime: '7 min read',
+    category: 'Comparison',
+    content: `
+      <p>Looking for the best app to reduce your screen time? Spool and Opal are two of the most popular options, but they take fundamentally different approaches. This comprehensive comparison will help you decide which one fits your digital wellness goals.</p>
+
+      <h2>Quick Comparison Overview</h2>
+      <table class="comparison-table">
+        <tr><th>Feature</th><th>Spool</th><th>Opal</th></tr>
+        <tr><td>Core Approach</td><td>Voice-based mindfulness</td><td>Session-based blocking</td></tr>
+        <tr><td>Blocking Style</td><td>Gentle friction + awareness</td><td>Hard blocks with schedules</td></tr>
+        <tr><td>Unique Feature</td><td>Voice journaling & excuses</td><td>Focus sessions & gems</td></tr>
+        <tr><td>Best For</td><td>Building self-awareness</td><td>Strict digital detox</td></tr>
+        <tr><td>Price</td><td>Free with premium</td><td>$9.99/month or $99/year</td></tr>
+      </table>
+
+      <h2>What Is Spool?</h2>
+      <p>Spool takes a unique approach to screen time management through voice-based check-ins. Instead of simply blocking apps, Spool asks you to speak your intention before opening distracting apps. This brief pause creates awareness and helps you make conscious choices about your phone use.</p>
+
+      <p>Key features include:</p>
+      <ul>
+        <li><strong>Voice Check-ins:</strong> Speak your reason for opening an app</li>
+        <li><strong>Excuse Journaling:</strong> Track patterns in why you reach for your phone</li>
+        <li><strong>AI Insights:</strong> Personalized analysis of your usage patterns</li>
+        <li><strong>Friend Accountability:</strong> Share progress with trusted contacts</li>
+      </ul>
+
+      <h2>What Is Opal?</h2>
+      <p>Opal focuses on scheduled blocking sessions and gamification. Users set up "Focus Sessions" during which selected apps are completely blocked. The app uses a gem system to reward consistent use and track streaks.</p>
+
+      <p>Key features include:</p>
+      <ul>
+        <li><strong>Focus Sessions:</strong> Pre-scheduled app blocking periods</li>
+        <li><strong>App Groups:</strong> Organize distracting apps into categories</li>
+        <li><strong>Gem Rewards:</strong> Gamification to encourage consistency</li>
+        <li><strong>Website Blocking:</strong> Browser extension for desktop focus</li>
+      </ul>
+
+      <h2>Philosophy: Awareness vs. Restriction</h2>
+      <p>The fundamental difference between Spool and Opal lies in their philosophy:</p>
+
+      <p><strong>Spool believes</strong> that lasting change comes from self-awareness. By requiring you to verbalize your intentions, Spool helps you understand <em>why</em> you reach for your phone. Over time, this awareness naturally reduces mindless scrolling because you become conscious of your patterns.</p>
+
+      <p><strong>Opal believes</strong> that restriction is necessary to break habits. By making apps completely inaccessible during focus periods, Opal removes the temptation entirely. The gamification elements help maintain motivation.</p>
+
+      <h2>Which Is More Effective?</h2>
+      <p>Studies on habit change suggest that awareness-based approaches like Spool's tend to create more sustainable long-term change. When you understand your triggers and patterns, you can address the root causes of compulsive phone use.</p>
+
+      <p>However, some users prefer Opal's stricter approach, especially during critical work periods when they need guaranteed distraction-free time.</p>
+
+      <h2>User Experience Comparison</h2>
+      <p><strong>Spool's UX</strong> is designed to be gentle and non-judgmental. The voice check-in takes about 5 seconds and doesn't feel punishing. Users report feeling more in control rather than restricted.</p>
+
+      <p><strong>Opal's UX</strong> is more rigid by design. When you hit a blocked app during a Focus Session, you simply can't access it. Some users find this frustrating; others find it liberating.</p>
+
+      <h2>Pricing Breakdown</h2>
+      <p><strong>Spool:</strong> Offers a generous free tier with core features. Premium unlocks advanced AI insights and detailed analytics.</p>
+
+      <p><strong>Opal:</strong> Free trial available, but most useful features require the premium subscription at $9.99/month or $99.99/year.</p>
+
+      <h2>The Verdict: Which Should You Choose?</h2>
+      <p><strong>Choose Spool if:</strong></p>
+      <ul>
+        <li>You want to understand your phone usage patterns</li>
+        <li>You prefer gentle friction over hard blocks</li>
+        <li>You value the voice journaling/excuse tracking feature</li>
+        <li>You want a more affordable option</li>
+      </ul>
+
+      <p><strong>Choose Opal if:</strong></p>
+      <ul>
+        <li>You need absolute app blocking for focus sessions</li>
+        <li>You respond well to gamification and streaks</li>
+        <li>You want website blocking on desktop too</li>
+        <li>You prefer scheduled restriction over ongoing awareness</li>
+      </ul>
+
+      <h2>Our Recommendation</h2>
+      <p>For most users, we recommend starting with Spool's awareness-based approach. The voice check-in method addresses the root cause of compulsive phone use rather than just the symptoms. Many users find that once they understand their patterns, they no longer need strict blocking at all.</p>
+
+      <p>That said, both apps can be valuable tools in your digital wellness journey. Some users even use both - Spool for daily awareness and Opal for critical focus periods.</p>
+    `
+  },
+  'spool-vs-one-sec': {
+    title: 'Spool vs One Sec: Breaking Phone Addiction in 2025',
+    date: 'February 8, 2025',
+    readTime: '6 min read',
+    category: 'Comparison',
+    content: `
+      <p>Both Spool and One Sec use the "pause before opening" approach to help you break phone addiction. But they implement this concept very differently. Here's everything you need to know to choose the right one.</p>
+
+      <h2>Quick Comparison</h2>
+      <table class="comparison-table">
+        <tr><th>Feature</th><th>Spool</th><th>One Sec</th></tr>
+        <tr><td>Pause Method</td><td>Voice check-in</td><td>Breathing exercise</td></tr>
+        <tr><td>Duration</td><td>~5 seconds (speaking)</td><td>~10 seconds (breathing)</td></tr>
+        <tr><td>Data Captured</td><td>Voice reasons/excuses</td><td>Open attempt count</td></tr>
+        <tr><td>Insights</td><td>AI pattern analysis</td><td>Basic statistics</td></tr>
+        <tr><td>Social Features</td><td>Friend accountability</td><td>None</td></tr>
+      </table>
+
+      <h2>The Core Difference</h2>
+      <p>Both apps use "friction" to interrupt automatic phone behaviors, but the type of friction is completely different:</p>
+
+      <p><strong>Spool asks you to speak</strong> - When you try to open a distracting app, Spool asks you to verbalize why. "Why am I opening Instagram?" You answer out loud: "I'm bored." This creates a record of your excuses and patterns.</p>
+
+      <p><strong>One Sec asks you to breathe</strong> - When you open an app, One Sec shows a breathing animation and asks you to take a deep breath before proceeding. The idea is to create a mindful pause.</p>
+
+      <h2>Why Voice Matters</h2>
+      <p>Spool's voice-based approach has several advantages:</p>
+      <ul>
+        <li><strong>Active engagement:</strong> Speaking requires more cognitive engagement than watching a breathing animation</li>
+        <li><strong>Data capture:</strong> Your spoken excuses become valuable data for understanding patterns</li>
+        <li><strong>Accountability:</strong> It's harder to lie to yourself out loud</li>
+        <li><strong>Pattern recognition:</strong> AI can analyze your excuses to reveal triggers</li>
+      </ul>
+
+      <h2>Why Breathing Works</h2>
+      <p>One Sec's breathing approach has its own benefits:</p>
+      <ul>
+        <li><strong>Silent:</strong> Can be used in any environment without speaking</li>
+        <li><strong>Calming:</strong> The breathing exercise itself reduces anxiety</li>
+        <li><strong>Simpler:</strong> No audio recording or processing required</li>
+        <li><strong>Consistent:</strong> Same experience every time</li>
+      </ul>
+
+      <h2>Insights and Analytics</h2>
+      <p><strong>Spool</strong> provides AI-powered analysis of your usage patterns. It identifies your top excuses, peak distraction times, and emotional triggers. This personalized insight helps you address the root causes of compulsive phone use.</p>
+
+      <p><strong>One Sec</strong> offers simpler statistics: how many times you tried to open each app, how often you proceeded vs. closed it, and basic trend data. Useful, but less actionable.</p>
+
+      <h2>Social Features</h2>
+      <p><strong>Spool</strong> includes friend accountability features where you can share your journey with trusted contacts. This social support can be powerful for maintaining motivation.</p>
+
+      <p><strong>One Sec</strong> is a solo experience with no social features. Some users prefer this privacy; others miss the accountability.</p>
+
+      <h2>User Experience</h2>
+      <p>Both apps are well-designed, but they feel different in practice:</p>
+
+      <p><strong>Spool</strong> feels more interactive and personalized. The voice check-in creates a moment of genuine reflection. Over time, you build a record of your digital habits that becomes genuinely insightful.</p>
+
+      <p><strong>One Sec</strong> feels more like a speed bump. The breathing pause is effective at interrupting automatic behavior, but it's more passive. You might zone out during the animation.</p>
+
+      <h2>Effectiveness Research</h2>
+      <p>Studies show that verbalizing intentions increases follow-through by 42%. When you speak your intention ("I'm opening Instagram because I'm avoiding work"), you're more likely to recognize and change the behavior.</p>
+
+      <p>Breathing exercises are proven to reduce anxiety, which can help if your phone use is stress-driven. However, they don't provide the self-awareness data that Spool captures.</p>
+
+      <h2>The Verdict</h2>
+      <p><strong>Choose Spool if:</strong></p>
+      <ul>
+        <li>You want to understand <em>why</em> you reach for your phone</li>
+        <li>You value detailed insights and pattern analysis</li>
+        <li>You want social accountability features</li>
+        <li>You're comfortable with voice input</li>
+      </ul>
+
+      <p><strong>Choose One Sec if:</strong></p>
+      <ul>
+        <li>You need a silent solution for public/work environments</li>
+        <li>You prefer simpler tools without AI analysis</li>
+        <li>The breathing exercise specifically appeals to you</li>
+        <li>You want a purely private experience</li>
+      </ul>
+
+      <h2>Our Take</h2>
+      <p>For lasting behavior change, Spool's voice-based approach provides more actionable data and deeper self-awareness. The excuse journal becomes a mirror that shows you patterns you never noticed. That said, One Sec is a solid choice for users who prefer simplicity or need a silent solution.</p>
+    `
+  },
+  'spool-vs-clearspace': {
+    title: 'Spool vs Clearspace: The Ultimate App Blocker Showdown',
+    date: 'February 8, 2025',
+    readTime: '6 min read',
+    category: 'Comparison',
+    content: `
+      <p>Clearspace and Spool both promise to help you reduce screen time, but they use completely different methods. This comparison breaks down which approach actually leads to lasting habit change.</p>
+
+      <h2>At a Glance</h2>
+      <table class="comparison-table">
+        <tr><th>Feature</th><th>Spool</th><th>Clearspace</th></tr>
+        <tr><td>Approach</td><td>Voice-based awareness</td><td>Exercise-based unlocking</td></tr>
+        <tr><td>Unlock Method</td><td>Speak your intention</td><td>Complete exercises</td></tr>
+        <tr><td>Core Philosophy</td><td>Build self-awareness</td><td>Make apps harder to access</td></tr>
+        <tr><td>Time Investment</td><td>~5 seconds</td><td>30 seconds - 2 minutes</td></tr>
+        <tr><td>Data Tracking</td><td>Excuses & patterns</td><td>Usage time</td></tr>
+      </table>
+
+      <h2>How Clearspace Works</h2>
+      <p>Clearspace requires you to complete "exercises" before accessing blocked apps. These exercises might include:</p>
+      <ul>
+        <li>Typing out a phrase about your intention</li>
+        <li>Waiting through a countdown timer</li>
+        <li>Answering why you want to open the app</li>
+        <li>Setting a time limit for your session</li>
+      </ul>
+      <p>The idea is that making apps annoying to access will reduce impulsive usage.</p>
+
+      <h2>How Spool Works</h2>
+      <p>Spool uses voice check-ins instead of exercises. When you try to open a distracting app, Spool simply asks you to speak your reason. This 5-second pause creates awareness without significant friction.</p>
+
+      <p>Unlike Clearspace, Spool captures your spoken "excuses" and uses AI to analyze patterns over time. You might discover that you always open social media when you're anxious, or that your scrolling peaks after work.</p>
+
+      <h2>The Friction Problem</h2>
+      <p>Clearspace's exercise-based approach has a critical flaw: <strong>high friction creates workarounds.</strong></p>
+
+      <p>When accessing an app requires 30+ seconds of exercises, users often:</p>
+      <ul>
+        <li>Disable the app during "emergencies"</li>
+        <li>Find the exercises so annoying they turn off the app entirely</li>
+        <li>Use mobile web versions of blocked apps</li>
+        <li>Pick up a different device</li>
+      </ul>
+
+      <p>Spool's gentler approach - just a 5-second voice check-in - creates enough friction to interrupt autopilot behavior without triggering the urge to circumvent the system.</p>
+
+      <h2>Which Creates Lasting Change?</h2>
+      <p>Research on habit change suggests that sustainable behavior modification comes from <strong>awareness, not restriction.</strong></p>
+
+      <p>Clearspace treats the symptom (opening apps too often) rather than the cause (not understanding why you do it). Once you stop using Clearspace, the compulsive behaviors tend to return because you never understood your triggers.</p>
+
+      <p>Spool addresses the root cause by making you conscious of your patterns. Users report that even after reducing Spool usage, they've internalized the habit of asking "why am I opening this?" before grabbing their phone.</p>
+
+      <h2>Data and Insights</h2>
+      <p><strong>Spool</strong> tracks your spoken excuses and uses AI to identify patterns:</p>
+      <ul>
+        <li>"You open Instagram most when you say you're 'bored'"</li>
+        <li>"Your screen time spikes between 9-11 PM"</li>
+        <li>"You've used 'just checking' as an excuse 47 times this week"</li>
+      </ul>
+
+      <p><strong>Clearspace</strong> primarily tracks time spent in apps and number of pickups. Useful metrics, but they don't explain the "why" behind your behavior.</p>
+
+      <h2>User Experience</h2>
+      <p><strong>Spool</strong> feels like a supportive companion. The voice check-in is brief and non-punishing. Users describe it as having a "mindful moment" rather than facing a barrier.</p>
+
+      <p><strong>Clearspace</strong> can feel adversarial, especially when you're tired or stressed and just want to open an app. The exercises can feel like punishment, which isn't conducive to positive habit formation.</p>
+
+      <h2>The Verdict</h2>
+      <p><strong>Choose Spool if:</strong></p>
+      <ul>
+        <li>You want to understand your usage patterns</li>
+        <li>You prefer gentle friction over punishing barriers</li>
+        <li>You want sustainable change, not just temporary restriction</li>
+        <li>You value AI-powered insights into your behavior</li>
+      </ul>
+
+      <p><strong>Choose Clearspace if:</strong></p>
+      <ul>
+        <li>You need strong barriers to access apps</li>
+        <li>Brief friction methods haven't worked for you</li>
+        <li>You're okay with exercises as part of your workflow</li>
+        <li>You want to add time limits to app sessions</li>
+      </ul>
+
+      <h2>Bottom Line</h2>
+      <p>For most users seeking lasting change, Spool's awareness-based approach is more effective. The voice check-in creates enough pause to break automatic behavior while building genuine self-understanding. Clearspace works better as a strict digital detox tool for specific periods, but may not create lasting habits.</p>
+    `
+  },
+  'how-to-stop-doom-scrolling': {
+    title: 'How to Stop Doom Scrolling: 10 Proven Strategies That Work',
+    date: 'February 8, 2025',
+    readTime: '8 min read',
+    category: 'Digital Wellness',
+    content: `
+      <p>Doom scrolling - endlessly scrolling through negative news, social media, or content - affects millions of people daily. The average person now spends over 4 hours daily on their phone, much of it in mindless scrolling. Here are 10 science-backed strategies to break free.</p>
+
+      <h2>1. Understand Why You Doom Scroll</h2>
+      <p>Before you can stop doom scrolling, you need to understand what drives it. Common triggers include:</p>
+      <ul>
+        <li><strong>Boredom:</strong> Scrolling fills empty time</li>
+        <li><strong>Anxiety:</strong> Seeking information feels like control</li>
+        <li><strong>FOMO:</strong> Fear of missing important updates</li>
+        <li><strong>Habit:</strong> Automatic behavior without conscious thought</li>
+        <li><strong>Avoidance:</strong> Escaping uncomfortable tasks or feelings</li>
+      </ul>
+      <p>Apps like Spool help identify your specific triggers by tracking the excuses you give for opening apps. Once you know your patterns, you can address them directly.</p>
+
+      <h2>2. Create Friction Before Opening Apps</h2>
+      <p>The easiest way to stop automatic scrolling is to add a pause between the urge and the action. This could be:</p>
+      <ul>
+        <li>Moving social apps off your home screen</li>
+        <li>Logging out after each session</li>
+        <li>Using app-blocking tools that require a moment of intention</li>
+        <li>Keeping your phone in another room</li>
+      </ul>
+      <p>Even a 5-second pause - like Spool's voice check-in - can interrupt the automatic behavior loop and give you back control.</p>
+
+      <h2>3. Set Specific Phone-Free Times</h2>
+      <p>Designate certain periods as completely phone-free:</p>
+      <ul>
+        <li><strong>First hour after waking:</strong> Don't let your phone set your mood</li>
+        <li><strong>During meals:</strong> Practice being present</li>
+        <li><strong>Last hour before bed:</strong> Improve sleep quality</li>
+        <li><strong>During focused work:</strong> Protect your productivity</li>
+      </ul>
+      <p>Start with one phone-free period and gradually expand as it becomes habit.</p>
+
+      <h2>4. Replace Scrolling With Intentional Activities</h2>
+      <p>Doom scrolling often fills a void. Have ready alternatives for different situations:</p>
+      <ul>
+        <li><strong>For boredom:</strong> Keep a book nearby, have a podcast queued</li>
+        <li><strong>For anxiety:</strong> Practice breathing exercises, go for a walk</li>
+        <li><strong>For connection:</strong> Text a friend directly instead of browsing feeds</li>
+        <li><strong>For information:</strong> Set specific times to check news</li>
+      </ul>
+
+      <h2>5. Use Grayscale Mode</h2>
+      <p>Color is a powerful attention grabber. Switching your phone to grayscale makes apps less visually appealing and can reduce the urge to scroll. Most phones have this option in accessibility settings.</p>
+      <p>Try it for a week - many users report significantly reduced screen time just from this simple change.</p>
+
+      <h2>6. Turn Off Non-Essential Notifications</h2>
+      <p>Every notification is an invitation to doom scroll. Be ruthless about which apps can interrupt you:</p>
+      <ul>
+        <li>Keep only truly essential notifications (calls, texts from close contacts)</li>
+        <li>Turn off all social media notifications</li>
+        <li>Disable news app alerts</li>
+        <li>Use scheduled notification summaries instead of real-time alerts</li>
+      </ul>
+
+      <h2>7. Practice the "One More Scroll" Awareness</h2>
+      <p>When you catch yourself scrolling, pause and ask: "What am I looking for?" Usually, you're not looking for anything specific - you're just trapped in the loop.</p>
+      <p>This simple awareness practice, similar to what Spool automates with voice check-ins, can break the spell of endless scrolling.</p>
+
+      <h2>8. Set Time Limits (But Smart Ones)</h2>
+      <p>Blunt time limits often backfire because they feel punishing. Instead:</p>
+      <ul>
+        <li>Set generous limits initially (you're building awareness, not restriction)</li>
+        <li>Review your usage data weekly and adjust gradually</li>
+        <li>Focus on specific apps rather than overall screen time</li>
+        <li>Celebrate reductions rather than punishing overages</li>
+      </ul>
+
+      <h2>9. Find Accountability</h2>
+      <p>Change is easier with support. Options include:</p>
+      <ul>
+        <li>Share your screen time goals with a friend</li>
+        <li>Use apps with social accountability features</li>
+        <li>Join online communities focused on digital wellness</li>
+        <li>Tell someone about your doom scrolling triggers</li>
+      </ul>
+      <p>Spool's friend accountability feature lets you share your journey with trusted contacts, adding social motivation to your personal goals.</p>
+
+      <h2>10. Be Compassionate With Yourself</h2>
+      <p>Breaking doom scrolling isn't about perfection. You'll have setbacks. The key is:</p>
+      <ul>
+        <li>Don't catastrophize one bad day</li>
+        <li>Notice patterns in your relapses without judgment</li>
+        <li>Celebrate small wins (10 minutes less is still progress)</li>
+        <li>Remember: apps are designed by teams of engineers to be addictive - struggling is normal</li>
+      </ul>
+
+      <h2>Taking the First Step</h2>
+      <p>You don't need to implement all 10 strategies at once. Start with one - ideally adding friction before opening apps (#2) since it addresses the automatic behavior directly.</p>
+
+      <p>Tools like Spool can help by automating the pause-and-reflect process. When you have to speak your intention before opening Instagram or TikTok, you naturally become more aware of your patterns. Over time, this awareness translates into lasting change.</p>
+
+      <p>Remember: the goal isn't to never use your phone. It's to use it intentionally, on your terms, for things that actually matter to you. That's the difference between scrolling and living.</p>
+    `
+  },
   'doom-scrolling-habit': {
     title: 'How Spool Breaks Your Doom Scrolling Habit',
-    date: 'October 9, 2025',
+    date: 'October 9, 2024',
     readTime: '5 min read',
     category: 'Digital Wellness',
     content: `
@@ -50,7 +411,7 @@ const blogContent = {
   },
   'intentional-screen-time': {
     title: 'Transform Screen Time Into Intentional Time',
-    date: 'October 9, 2025',
+    date: 'October 9, 2024',
     readTime: '4 min read',
     category: 'Productivity',
     content: `
@@ -107,7 +468,7 @@ const blogContent = {
   },
   'breaking-phone-addiction': {
     title: 'Join Thousands Breaking Free From Phone Addiction',
-    date: 'October 9, 2025',
+    date: 'October 9, 2024',
     readTime: '6 min read',
     category: 'Mental Health',
     content: `
@@ -211,15 +572,15 @@ const BlogPost = () => {
             <span>{post.readTime}</span>
           </div>
         </div>
-        
+
         <div className="blog-post-content" dangerouslySetInnerHTML={{ __html: post.content }} />
-        
+
         <div className="blog-post-cta">
           <h3>Ready to break free from mindless scrolling?</h3>
           <p>Join thousands who've transformed their relationship with their phones.</p>
-          <a href="https://apps.apple.com/us/app/spool-save-your-thread/id6749428484?platform=iphone" 
-             className="blog-cta-button" 
-             target="_blank" 
+          <a href="https://apps.apple.com/us/app/spool-save-your-thread/id6749428484?platform=iphone"
+             className="blog-cta-button"
+             target="_blank"
              rel="noopener noreferrer">
             Download Spool Now
           </a>
