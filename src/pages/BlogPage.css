@@ -37,13 +37,14 @@
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: 1px solid rgba(0, 0, 0, 0.05);
+  will-change: transform;
 }
 
 .blog-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 40px rgba(86, 181, 227, 0.15);
+  box-shadow: 0 8px 25px rgba(86, 181, 227, 0.12);
 }
 
 .blog-card-content {
@@ -108,12 +109,11 @@
   color: var(--primary-blue);
   font-weight: 600;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: color 0.3s ease;
 }
 
 .blog-read-more:hover {
   color: var(--primary-orange);
-  gap: 0.75rem;
 }
 
 /* Featured post styling */

@@ -7,7 +7,7 @@ import './BlogPost.css';
 const blogContent = {
   'spool-vs-opal': {
     title: 'Spool vs Opal: Which Screen Time App Is Right for You?',
-    date: 'February 8, 2025',
+    date: 'February 8, 2026',
     readTime: '7 min read',
     category: 'Comparison',
     content: `
@@ -20,7 +20,7 @@ const blogContent = {
         <tr><td>Blocking Style</td><td>Gentle friction + awareness</td><td>Hard blocks with schedules</td></tr>
         <tr><td>Unique Feature</td><td>Voice journaling & excuses</td><td>Focus sessions & gems</td></tr>
         <tr><td>Best For</td><td>Building self-awareness</td><td>Strict digital detox</td></tr>
-        <tr><td>Price</td><td>Free with premium</td><td>$9.99/month or $99/year</td></tr>
+        <tr><td>Price</td><td>$7.99/month or $39.99/year</td><td>$9.99/month or $99/year</td></tr>
       </table>
 
       <h2>What Is Spool?</h2>
@@ -63,7 +63,7 @@ const blogContent = {
       <p><strong>Opal's UX</strong> is more rigid by design. When you hit a blocked app during a Focus Session, you simply can't access it. Some users find this frustrating; others find it liberating.</p>
 
       <h2>Pricing Breakdown</h2>
-      <p><strong>Spool:</strong> Offers a generous free tier with core features. Premium unlocks advanced AI insights and detailed analytics.</p>
+      <p><strong>Spool:</strong> $7.99/month or $39.99/year. Includes all features: voice check-ins, AI insights, excuse journaling, and friend accountability.</p>
 
       <p><strong>Opal:</strong> Free trial available, but most useful features require the premium subscription at $9.99/month or $99.99/year.</p>
 
@@ -91,8 +91,8 @@ const blogContent = {
     `
   },
   'spool-vs-one-sec': {
-    title: 'Spool vs One Sec: Breaking Phone Addiction in 2025',
-    date: 'February 8, 2025',
+    title: 'Spool vs One Sec: Breaking Phone Addiction in 2026',
+    date: 'February 8, 2026',
     readTime: '6 min read',
     category: 'Comparison',
     content: `
@@ -178,7 +178,7 @@ const blogContent = {
   },
   'spool-vs-clearspace': {
     title: 'Spool vs Clearspace: The Ultimate App Blocker Showdown',
-    date: 'February 8, 2025',
+    date: 'February 8, 2026',
     readTime: '6 min read',
     category: 'Comparison',
     content: `
@@ -267,7 +267,7 @@ const blogContent = {
   },
   'how-to-stop-doom-scrolling': {
     title: 'How to Stop Doom Scrolling: 10 Proven Strategies That Work',
-    date: 'February 8, 2025',
+    date: 'February 8, 2026',
     readTime: '8 min read',
     category: 'Digital Wellness',
     content: `

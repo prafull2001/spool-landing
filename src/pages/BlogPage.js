@@ -9,16 +9,16 @@ const blogPosts = [
     id: 'spool-vs-opal',
     title: 'Spool vs Opal: Which Screen Time App Is Right for You?',
     excerpt: 'A detailed comparison of Spool and Opal - two popular screen time management apps. Discover which approach to digital wellness fits your lifestyle.',
-    date: 'February 8, 2025',
+    date: 'February 8, 2026',
     readTime: '7 min read',
     category: 'Comparison',
     isComparison: true
   },
   {
     id: 'spool-vs-one-sec',
-    title: 'Spool vs One Sec: Breaking Phone Addiction in 2025',
+    title: 'Spool vs One Sec: Breaking Phone Addiction in 2026',
     excerpt: 'Compare Spool and One Sec\'s unique approaches to reducing screen time. Learn which app uses the best method to help you scroll less.',
-    date: 'February 8, 2025',
+    date: 'February 8, 2026',
     readTime: '6 min read',
     category: 'Comparison',
     isComparison: true
@@ -27,7 +27,7 @@ const blogPosts = [
     id: 'spool-vs-clearspace',
     title: 'Spool vs Clearspace: The Ultimate App Blocker Showdown',
     excerpt: 'Clearspace and Spool both promise to reduce phone addiction, but they work very differently. Find out which one actually helps you change habits.',
-    date: 'February 8, 2025',
+    date: 'February 8, 2026',
     readTime: '6 min read',
     category: 'Comparison',
     isComparison: true
@@ -36,7 +36,7 @@ const blogPosts = [
     id: 'how-to-stop-doom-scrolling',
     title: 'How to Stop Doom Scrolling: 10 Proven Strategies That Work',
     excerpt: 'Practical, science-backed techniques to break your doom scrolling habit and reclaim hours of your day. No willpower required.',
-    date: 'February 8, 2025',
+    date: 'February 8, 2026',
     readTime: '8 min read',
     category: 'Digital Wellness'
   },
