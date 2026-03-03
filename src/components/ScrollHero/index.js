@@ -90,7 +90,7 @@ const ScrollHero = () => {
                             <img src="/images/spooli_logo.jpg" alt="Spool Logo" />
                         </Link>
                         <div className="hero-excuses-badge">
-                            <span>3,500+ excuses recorded</span>
+                            <span>5,000+ excuses recorded</span>
                         </div>
                     </div>
 

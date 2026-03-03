@@ -36,6 +36,9 @@ const Footer = () => {
               <a href="https://twitter.com/whoelsebutns" target="_blank" rel="noopener noreferrer">
                 NS (@whoelsebutns)
               </a>
+              <a href="https://x.com/jainammanot" target="_blank" rel="noopener noreferrer">
+                Jainam (@jainammanot)
+              </a>
             </div>
           </div>
         </div>
