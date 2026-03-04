@@ -33,8 +33,8 @@ function ExcuseDataPage() {
   // Collapsible panels
   const [collapsed, setCollapsed] = useState({});
 
-  // Search panel
-  const [showSearch, setShowSearch] = useState(false);
+  // Tabs: 'overview' | 'all-excuses'
+  const [activeTab, setActiveTab] = useState('overview');
   const [filterCategory, setFilterCategory] = useState('');
   const [filterUserId, setFilterUserId] = useState('');
   const [filterSearch, setFilterSearch] = useState('');
@@ -332,7 +332,7 @@ function ExcuseDataPage() {
       ) : error ? (
         <div className="ed-error"><p>{error}</p><button className="ed-btn ed-btn-ghost" onClick={handleRefresh}>Try Again</button></div>
       ) : (
-        <div className="ed-content">
+        <>
           {/* ── Stat Strip ── */}
           {summaryStats && (
             <div className="stat-strip">
@@ -348,167 +348,156 @@ function ExcuseDataPage() {
             </div>
           )}
 
-          {/* ── Activity Trend ── */}
-          <div className="ed-panel">
-            <div className="ed-panel-head" onClick={() => toggleCollapse('trend')}>
-              <h2>Activity Trend</h2>
-              <span className="ed-collapse-icon">{collapsed.trend ? '+' : '−'}</span>
-            </div>
-            {!collapsed.trend && (
-              <div className="ed-panel-body">
-                <div className="ed-chart-wrap" style={{ height: 170 }}><canvas ref={timelineChartRef} /></div>
-              </div>
-            )}
+          {/* ── Tab Bar ── */}
+          <div className="ed-tab-bar">
+            <button className={`ed-tab ${activeTab === 'overview' ? 'ed-tab-active' : ''}`}
+              onClick={() => setActiveTab('overview')}>Overview</button>
+            <button className={`ed-tab ${activeTab === 'all-excuses' ? 'ed-tab-active' : ''}`}
+              onClick={() => setActiveTab('all-excuses')}>All Excuses</button>
           </div>
 
-          {/* ── Insights (side by side) ── */}
-          <div className="ed-panel-row">
-            <div className="ed-panel">
-              <div className="ed-panel-head" onClick={() => toggleCollapse('categories')}>
-                <h2>Categories</h2>
-                <span className="ed-collapse-icon">{collapsed.categories ? '+' : '−'}</span>
-              </div>
-              {!collapsed.categories && (
-                <div className="ed-panel-body">
-                  <div className="ed-chart-wrap" style={{ height: 200 }}><canvas ref={categoryChartRef} /></div>
+          {/* ====== OVERVIEW TAB ====== */}
+          {activeTab === 'overview' && (
+            <>
+              {/* Activity Trend */}
+              <div className="ed-panel">
+                <div className="ed-panel-head" onClick={() => toggleCollapse('trend')}>
+                  <h2>Activity Trend</h2>
+                  <span className="ed-collapse-icon">{collapsed.trend ? '+' : '−'}</span>
                 </div>
-              )}
-            </div>
-            <div className="ed-panel">
-              <div className="ed-panel-head" onClick={() => toggleCollapse('hours')}>
-                <h2>Peak Hours</h2>
-                <span className="ed-collapse-icon">{collapsed.hours ? '+' : '−'}</span>
-              </div>
-              {!collapsed.hours && (
-                <div className="ed-panel-body">
-                  <div className="ed-chart-wrap" style={{ height: 200 }}><canvas ref={hourChartRef} /></div>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* ── Users Panel (leaderboard + inline drilldown) ── */}
-          <div className="ed-panel">
-            <div className="ed-panel-head">
-              <div className="ed-panel-breadcrumb">
-                <button
-                  className={`ed-crumb ${!expandedUserId ? 'ed-crumb-active' : 'ed-crumb-link'}`}
-                  onClick={() => setExpandedUserId(null)}
-                >
-                  Users
-                </button>
-                {expandedUser && (
-                  <>
-                    <span className="ed-crumb-sep">/</span>
-                    <span className="ed-crumb ed-crumb-active">{expandedUser.userName}</span>
-                  </>
+                {!collapsed.trend && (
+                  <div className="ed-panel-body">
+                    <div className="ed-chart-wrap" style={{ height: 170 }}><canvas ref={timelineChartRef} /></div>
+                  </div>
                 )}
               </div>
-              {!expandedUserId && <span className="ed-panel-sub">Click a row to inspect</span>}
-            </div>
 
-            {/* Leaderboard table (shown when no user expanded) */}
-            {!expandedUserId && (
-              <div className="ed-panel-flush">
-                <div className="ed-table-wrap">
-                  <table className="ed-table">
-                    <thead>
-                      <tr>
-                        <th onClick={() => handleSort('userName')} className="ed-sortable">
-                          Name {leaderboardSort.field === 'userName' ? (leaderboardSort.dir === 'asc' ? '↑' : '↓') : ''}
-                        </th>
-                        <th>User ID</th>
-                        <th onClick={() => handleSort('excuseCount')} className="ed-sortable">
-                          Excuses {leaderboardSort.field === 'excuseCount' ? (leaderboardSort.dir === 'asc' ? '↑' : '↓') : ''}
-                        </th>
-                        <th onClick={() => handleSort('totalMinutes')} className="ed-sortable">
-                          Total Min {leaderboardSort.field === 'totalMinutes' ? (leaderboardSort.dir === 'asc' ? '↑' : '↓') : ''}
-                        </th>
-                        <th onClick={() => handleSort('lastActive')} className="ed-sortable">
-                          Last Active {leaderboardSort.field === 'lastActive' ? (leaderboardSort.dir === 'asc' ? '↑' : '↓') : ''}
-                        </th>
-                        <th>Top Category</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {leaderboard.map(u => (
-                        <tr key={u.userId} onClick={() => setExpandedUserId(u.userId)} className="ed-clickable">
-                          <td className="ed-bold">{u.userName}</td>
-                          <td className="ed-uid">{u.userId}</td>
-                          <td>{u.excuseCount}</td>
-                          <td>{u.totalMinutes}</td>
-                          <td>{formatDate(u.lastActive)}</td>
-                          <td><span className="ed-badge">{topCategory(u.categories)}</span></td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+              {/* Insights */}
+              <div className="ed-panel-row">
+                <div className="ed-panel">
+                  <div className="ed-panel-head" onClick={() => toggleCollapse('categories')}>
+                    <h2>Categories</h2>
+                    <span className="ed-collapse-icon">{collapsed.categories ? '+' : '−'}</span>
+                  </div>
+                  {!collapsed.categories && (
+                    <div className="ed-panel-body">
+                      <div className="ed-chart-wrap" style={{ height: 200 }}><canvas ref={categoryChartRef} /></div>
+                    </div>
+                  )}
+                </div>
+                <div className="ed-panel">
+                  <div className="ed-panel-head" onClick={() => toggleCollapse('hours')}>
+                    <h2>Peak Hours</h2>
+                    <span className="ed-collapse-icon">{collapsed.hours ? '+' : '−'}</span>
+                  </div>
+                  {!collapsed.hours && (
+                    <div className="ed-panel-body">
+                      <div className="ed-chart-wrap" style={{ height: 200 }}><canvas ref={hourChartRef} /></div>
+                    </div>
+                  )}
                 </div>
               </div>
-            )}
 
-            {/* Inline user drilldown */}
-            {expandedUserId && expandedUser && (
-              <div className="ed-drilldown">
-                {/* User stats row */}
-                <div className="ed-drill-stats">
-                  <div className="ed-drill-stat"><span className="ed-drill-val">{expandedUser.excuseCount}</span><span className="ed-drill-label">Excuses</span></div>
-                  <div className="ed-drill-stat"><span className="ed-drill-val">{expandedUser.totalMinutes}</span><span className="ed-drill-label">Total Min</span></div>
-                  <div className="ed-drill-stat"><span className="ed-drill-val">{formatDate(expandedUser.lastActive)}</span><span className="ed-drill-label">Last Active</span></div>
-                  <div className="ed-drill-stat"><span className="ed-drill-val">{topCategory(expandedUser.categories)}</span><span className="ed-drill-label">Top Category</span></div>
+              {/* Users Panel */}
+              <div className="ed-panel">
+                <div className="ed-panel-head">
+                  <div className="ed-panel-breadcrumb">
+                    <button className={`ed-crumb ${!expandedUserId ? 'ed-crumb-active' : 'ed-crumb-link'}`}
+                      onClick={() => setExpandedUserId(null)}>Users</button>
+                    {expandedUser && (
+                      <>
+                        <span className="ed-crumb-sep">/</span>
+                        <span className="ed-crumb ed-crumb-active">{expandedUser.userName}</span>
+                      </>
+                    )}
+                  </div>
+                  {!expandedUserId && <span className="ed-panel-sub">Click a row to inspect</span>}
                 </div>
 
-                {/* Charts row */}
-                <div className="ed-drill-charts">
-                  <div className="ed-drill-chart-box">
-                    <h3>Categories</h3>
-                    <div className="ed-chart-wrap" style={{ height: 180 }}><canvas ref={drillCategoryRef} /></div>
-                  </div>
-                  <div className="ed-drill-chart-box">
-                    <h3>Activity</h3>
-                    <div className="ed-chart-wrap" style={{ height: 180 }}><canvas ref={drillTimelineRef} /></div>
-                  </div>
-                </div>
-
-                {/* Excuse list */}
-                <div className="ed-drill-excuses">
-                  <h3>Excuses ({expandedUserExcuses.length})</h3>
-                  <div className="ed-table-wrap ed-table-wrap-scroll">
-                    <table className="ed-table">
-                      <thead>
-                        <tr>
-                          <th>Date</th>
-                          <th>Text</th>
-                          <th>Category</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {expandedUserExcuses.map(e => (
-                          <tr key={e.id}>
-                            <td className="ed-nowrap">{formatDateTime(e.date)}</td>
-                            <td className="ed-text-cell">{e.text || '--'}</td>
-                            <td><span className="ed-badge">{e.category}</span></td>
+                {!expandedUserId && (
+                  <div className="ed-panel-flush">
+                    <div className="ed-table-wrap">
+                      <table className="ed-table">
+                        <thead>
+                          <tr>
+                            <th onClick={() => handleSort('userName')} className="ed-sortable">
+                              Name {leaderboardSort.field === 'userName' ? (leaderboardSort.dir === 'asc' ? '↑' : '↓') : ''}
+                            </th>
+                            <th>User ID</th>
+                            <th onClick={() => handleSort('excuseCount')} className="ed-sortable">
+                              Excuses {leaderboardSort.field === 'excuseCount' ? (leaderboardSort.dir === 'asc' ? '↑' : '↓') : ''}
+                            </th>
+                            <th onClick={() => handleSort('totalMinutes')} className="ed-sortable">
+                              Total Min {leaderboardSort.field === 'totalMinutes' ? (leaderboardSort.dir === 'asc' ? '↑' : '↓') : ''}
+                            </th>
+                            <th onClick={() => handleSort('lastActive')} className="ed-sortable">
+                              Last Active {leaderboardSort.field === 'lastActive' ? (leaderboardSort.dir === 'asc' ? '↑' : '↓') : ''}
+                            </th>
+                            <th>Top Category</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {leaderboard.map(u => (
+                            <tr key={u.userId} onClick={() => setExpandedUserId(u.userId)} className="ed-clickable">
+                              <td className="ed-bold">{u.userName}</td>
+                              <td className="ed-uid">{u.userId}</td>
+                              <td>{u.excuseCount}</td>
+                              <td>{u.totalMinutes}</td>
+                              <td>{formatDate(u.lastActive)}</td>
+                              <td><span className="ed-badge">{topCategory(u.categories)}</span></td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
-                </div>
-              </div>
-            )}
-          </div>
+                )}
 
-          {/* ── All Excuses (search/filter) ── */}
-          <div className="ed-panel">
-            <div className="ed-panel-head ed-panel-head-toggle" onClick={() => setShowSearch(!showSearch)}>
-              <h2>All Excuses</h2>
-              <div className="ed-panel-head-right">
-                <span className="ed-panel-sub">{excuses.length.toLocaleString()} total</span>
-                <span className="ed-collapse-icon">{showSearch ? '−' : '+'}</span>
+                {expandedUserId && expandedUser && (
+                  <div className="ed-drilldown">
+                    <div className="ed-drill-stats">
+                      <div className="ed-drill-stat"><span className="ed-drill-val">{expandedUser.excuseCount}</span><span className="ed-drill-label">Excuses</span></div>
+                      <div className="ed-drill-stat"><span className="ed-drill-val">{expandedUser.totalMinutes}</span><span className="ed-drill-label">Total Min</span></div>
+                      <div className="ed-drill-stat"><span className="ed-drill-val">{formatDate(expandedUser.lastActive)}</span><span className="ed-drill-label">Last Active</span></div>
+                      <div className="ed-drill-stat"><span className="ed-drill-val">{topCategory(expandedUser.categories)}</span><span className="ed-drill-label">Top Category</span></div>
+                    </div>
+                    <div className="ed-drill-charts">
+                      <div className="ed-drill-chart-box">
+                        <h3>Categories</h3>
+                        <div className="ed-chart-wrap" style={{ height: 180 }}><canvas ref={drillCategoryRef} /></div>
+                      </div>
+                      <div className="ed-drill-chart-box">
+                        <h3>Activity</h3>
+                        <div className="ed-chart-wrap" style={{ height: 180 }}><canvas ref={drillTimelineRef} /></div>
+                      </div>
+                    </div>
+                    <div className="ed-drill-excuses">
+                      <h3>Excuses ({expandedUserExcuses.length})</h3>
+                      <div className="ed-table-wrap ed-table-wrap-scroll">
+                        <table className="ed-table">
+                          <thead><tr><th>Date</th><th>Text</th><th>Category</th></tr></thead>
+                          <tbody>
+                            {expandedUserExcuses.map(e => (
+                              <tr key={e.id}>
+                                <td className="ed-nowrap">{formatDateTime(e.date)}</td>
+                                <td className="ed-text-cell">{e.text || '--'}</td>
+                                <td><span className="ed-badge">{e.category}</span></td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
-            {showSearch && (
-              <>
+            </>
+          )}
+
+          {/* ====== ALL EXCUSES TAB ====== */}
+          {activeTab === 'all-excuses' && (
+            <>
+              <div className="ed-panel">
                 <div className="ed-panel-body">
                   <div className="ed-filter-bar">
                     <input type="text" placeholder="Search excuses..." value={filterSearch}
@@ -529,10 +518,13 @@ function ExcuseDataPage() {
                     <button className="ed-btn ed-btn-export" onClick={exportCSV}>Export CSV</button>
                   </div>
                 </div>
+              </div>
+              <div className="ed-panel">
+                <div className="ed-panel-head">
+                  <h2>Results</h2>
+                  <span className="ed-panel-sub">{filteredExcuses.length.toLocaleString()} excuses</span>
+                </div>
                 <div className="ed-panel-flush">
-                  <div className="ed-panel-body" style={{ padding: '0 20px 4px' }}>
-                    <span className="ed-panel-sub">{filteredExcuses.length.toLocaleString()} results</span>
-                  </div>
                   <div className="ed-table-wrap ed-table-wrap-tall">
                     <table className="ed-table">
                       <thead>
@@ -558,10 +550,10 @@ function ExcuseDataPage() {
                     </table>
                   </div>
                 </div>
-              </>
-            )}
-          </div>
-        </div>
+              </div>
+            </>
+          )}
+        </>
       )}
     </div>
   );

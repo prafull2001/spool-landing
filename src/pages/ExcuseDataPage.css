@@ -56,7 +56,33 @@
 .ed-empty, .ed-loading { text-align: center; padding: 60px 20px; font-size: 14px; color: #a09070; }
 .ed-error { text-align: center; padding: 60px 20px; color: #c0392b; }
 
-.ed-content { max-width: 1200px; }
+/* ── Tab Bar ── */
+.ed-tab-bar {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 14px;
+}
+
+.ed-tab {
+  padding: 7px 18px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #8a7a50;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+
+.ed-tab:hover { background: #ede4d2; color: #3d3200; }
+
+.ed-tab-active {
+  background: #3d3200;
+  color: #fff;
+}
+
+.ed-tab-active:hover { background: #3d3200; color: #fff; }
 
 /* ── Stat Strip ── */
 .stat-strip {
