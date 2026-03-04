@@ -25,11 +25,16 @@ function ExcuseDataPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [lastFetched, setLastFetched] = useState(null);
-  const [activeTab, setActiveTab] = useState('overview');
-  const [selectedUserId, setSelectedUserId] = useState(null);
+
+  // Which user is expanded in the leaderboard (null = show table)
+  const [expandedUserId, setExpandedUserId] = useState(null);
   const [leaderboardSort, setLeaderboardSort] = useState({ field: 'excuseCount', dir: 'desc' });
 
-  // Explorer filters
+  // Collapsible panels
+  const [collapsed, setCollapsed] = useState({});
+
+  // Search panel
+  const [showSearch, setShowSearch] = useState(false);
   const [filterCategory, setFilterCategory] = useState('');
   const [filterUserId, setFilterUserId] = useState('');
   const [filterSearch, setFilterSearch] = useState('');
@@ -47,6 +52,8 @@ function ExcuseDataPage() {
   const drillTimelineRef = useRef(null);
   const drillCategoryInstance = useRef(null);
   const drillTimelineInstance = useRef(null);
+
+  const toggleCollapse = (key) => setCollapsed(prev => ({ ...prev, [key]: !prev[key] }));
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -69,16 +76,11 @@ function ExcuseDataPage() {
         const userInfo = userMap[userId] || {};
         const ts = data.timestamp || data.createdAt;
         let date = null;
-        if (ts) {
-          date = ts.toDate ? ts.toDate() : new Date(ts);
-        }
+        if (ts) { date = ts.toDate ? ts.toDate() : new Date(ts); }
         return {
-          id: doc.id,
-          userId,
+          id: doc.id, userId,
           userName: userInfo.displayName || userInfo.name || userInfo.email || userId,
-          text: data.text || '',
-          category: data.category || 'Uncategorized',
-          date,
+          text: data.text || '', category: data.category || 'Uncategorized', date,
         };
       });
 
@@ -93,30 +95,28 @@ function ExcuseDataPage() {
   }, []);
 
   useEffect(() => {
-    if (user && excuses.length === 0 && !loading && !error) {
-      fetchData();
-    }
+    if (user && excuses.length === 0 && !loading && !error) fetchData();
   }, [user, excuses.length, loading, error, fetchData]);
 
-  // --- Computed data ---
+  // --- Computed ---
   const userMinutesMap = useMemo(() => {
     const m = {};
     users.forEach(u => { m[u.id] = u.totalExtraMinutesRequested || 0; });
     return m;
   }, [users]);
 
-  const activeUsers = useMemo(() => {
-    return new Set(excuses.map(e => e.userId)).size;
-  }, [excuses]);
+  const activeUserCount = useMemo(() => new Set(excuses.map(e => e.userId)).size, [excuses]);
 
   const summaryStats = useMemo(() => {
     if (excuses.length === 0) return null;
-    const totalExcuses = excuses.length;
-    const totalMinutes = users.reduce((sum, u) => sum + (u.totalExtraMinutesRequested || 0), 0);
-    const avgPerUser = activeUsers > 0 ? (totalExcuses / activeUsers).toFixed(1) : 0;
-    const avgMinPerExcuse = totalExcuses > 0 ? (totalMinutes / totalExcuses).toFixed(1) : 0;
-    return { totalExcuses, activeUsers, totalMinutes, avgPerUser, avgMinPerExcuse, totalUsers: users.length };
-  }, [excuses, users, activeUsers]);
+    const total = excuses.length;
+    const totalMin = users.reduce((s, u) => s + (u.totalExtraMinutesRequested || 0), 0);
+    return {
+      total, activeUsers: activeUserCount, totalUsers: users.length, totalMin,
+      avgPerUser: activeUserCount > 0 ? (total / activeUserCount).toFixed(1) : 0,
+      avgMinPerExcuse: total > 0 ? (totalMin / total).toFixed(1) : 0,
+    };
+  }, [excuses, users, activeUserCount]);
 
   const categoryCounts = useMemo(() => {
     const counts = {};
@@ -132,20 +132,16 @@ function ExcuseDataPage() {
     const byDay = {};
     excuses.forEach(e => {
       if (!e.date) return;
-      const key = e.date.toISOString().split('T')[0];
-      byDay[key] = (byDay[key] || 0) + 1;
+      byDay[e.date.toISOString().split('T')[0]] = (byDay[e.date.toISOString().split('T')[0]] || 0) + 1;
     });
     const sorted = Object.entries(byDay).sort(([a], [b]) => a.localeCompare(b));
     return { labels: sorted.map(([d]) => d), data: sorted.map(([, c]) => c) };
   }, [excuses]);
 
   const hourCounts = useMemo(() => {
-    const hours = new Array(24).fill(0);
-    excuses.forEach(e => {
-      if (!e.date) return;
-      hours[e.date.getHours()]++;
-    });
-    return hours;
+    const h = new Array(24).fill(0);
+    excuses.forEach(e => { if (e.date) h[e.date.getHours()]++; });
+    return h;
   }, [excuses]);
 
   const leaderboard = useMemo(() => {
@@ -167,36 +163,26 @@ function ExcuseDataPage() {
     const { field, dir } = leaderboardSort;
     list.sort((a, b) => {
       let av = a[field], bv = b[field];
-      if (field === 'userName') {
-        return dir === 'asc' ? (av || '').localeCompare(bv || '') : (bv || '').localeCompare(av || '');
-      }
+      if (field === 'userName') return dir === 'asc' ? (av || '').localeCompare(bv || '') : (bv || '').localeCompare(av || '');
       if (field === 'lastActive') { av = av ? av.getTime() : 0; bv = bv ? bv.getTime() : 0; }
       return dir === 'asc' ? av - bv : bv - av;
     });
     return list;
   }, [excuses, leaderboardSort, userMinutesMap]);
 
-  // --- Overview charts ---
+  // --- Charts: trend, category, hour ---
   useEffect(() => {
-    if (activeTab !== 'overview' || excuses.length === 0) return;
+    if (excuses.length === 0) return;
     if (timelineInstance.current) timelineInstance.current.destroy();
     if (timelineChartRef.current) {
       timelineInstance.current = new Chart(timelineChartRef.current, {
         type: 'line',
-        data: {
-          labels: dailyCounts.labels,
-          datasets: [{ label: 'Excuses per Day', data: dailyCounts.data,
-            borderColor: '#5499C7', backgroundColor: 'rgba(84,153,199,0.08)',
-            fill: true, tension: 0.4, pointRadius: 0, pointHoverRadius: 4, borderWidth: 2 }],
-        },
-        options: {
-          responsive: true, maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            x: { ticks: { maxTicksLimit: 12, font: { size: 11 } }, grid: { display: false } },
-            y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' } },
-          },
-        },
+        data: { labels: dailyCounts.labels, datasets: [{ data: dailyCounts.data,
+          borderColor: '#5499C7', backgroundColor: 'rgba(84,153,199,0.08)',
+          fill: true, tension: 0.4, pointRadius: 0, pointHoverRadius: 4, borderWidth: 2 }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+          scales: { x: { ticks: { maxTicksLimit: 12, font: { size: 10 } }, grid: { display: false } },
+            y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' } } } },
       });
     }
     if (categoryInstance.current) categoryInstance.current.destroy();
@@ -204,16 +190,11 @@ function ExcuseDataPage() {
       const labels = CATEGORIES.filter(c => categoryCounts[c] > 0);
       categoryInstance.current = new Chart(categoryChartRef.current, {
         type: 'doughnut',
-        data: {
-          labels,
-          datasets: [{ data: labels.map(c => categoryCounts[c]),
-            backgroundColor: labels.map(c => CATEGORY_COLORS[CATEGORIES.indexOf(c)]),
-            borderWidth: 2, borderColor: '#fff' }],
-        },
-        options: {
-          responsive: true, maintainAspectRatio: false, cutout: '65%',
-          plugins: { legend: { position: 'right', labels: { font: { size: 11 }, padding: 8, boxWidth: 12 } } },
-        },
+        data: { labels, datasets: [{ data: labels.map(c => categoryCounts[c]),
+          backgroundColor: labels.map(c => CATEGORY_COLORS[CATEGORIES.indexOf(c)]),
+          borderWidth: 2, borderColor: '#fff' }] },
+        options: { responsive: true, maintainAspectRatio: false, cutout: '65%',
+          plugins: { legend: { position: 'right', labels: { font: { size: 10 }, padding: 6, boxWidth: 10 } } } },
       });
     }
     if (hourInstance.current) hourInstance.current.destroy();
@@ -221,19 +202,11 @@ function ExcuseDataPage() {
       const labels = Array.from({ length: 24 }, (_, i) => `${i % 12 || 12}${i < 12 ? 'a' : 'p'}`);
       hourInstance.current = new Chart(hourChartRef.current, {
         type: 'bar',
-        data: {
-          labels,
-          datasets: [{ label: 'Excuses', data: hourCounts,
-            backgroundColor: hourCounts.map(v => {
-              const max = Math.max(...hourCounts);
-              return `rgba(235,152,78,${0.15 + (max > 0 ? v / max : 0) * 0.85})`;
-            }), borderRadius: 3 }],
-        },
-        options: {
-          responsive: true, maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: { y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' } }, x: { grid: { display: false } } },
-        },
+        data: { labels, datasets: [{ data: hourCounts,
+          backgroundColor: hourCounts.map(v => { const mx = Math.max(...hourCounts); return `rgba(235,152,78,${0.15 + (mx > 0 ? v / mx : 0) * 0.85})`; }),
+          borderRadius: 3 }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' } }, x: { grid: { display: false }, ticks: { font: { size: 9 } } } } },
       });
     }
     return () => {
@@ -241,380 +214,280 @@ function ExcuseDataPage() {
       if (categoryInstance.current) categoryInstance.current.destroy();
       if (hourInstance.current) hourInstance.current.destroy();
     };
-  }, [activeTab, excuses, dailyCounts, categoryCounts, hourCounts]);
+  }, [excuses, dailyCounts, categoryCounts, hourCounts]);
 
-  // --- Drilldown data ---
-  const selectedUser = useMemo(() => {
-    if (!selectedUserId) return null;
-    return leaderboard.find(u => u.userId === selectedUserId) || null;
-  }, [selectedUserId, leaderboard]);
+  // --- Drilldown charts (inside leaderboard panel) ---
+  const expandedUser = useMemo(() => {
+    if (!expandedUserId) return null;
+    return leaderboard.find(u => u.userId === expandedUserId) || null;
+  }, [expandedUserId, leaderboard]);
 
-  const selectedUserExcuses = useMemo(() => {
-    if (!selectedUserId) return [];
-    return excuses.filter(e => e.userId === selectedUserId).sort((a, b) => (b.date || 0) - (a.date || 0));
-  }, [selectedUserId, excuses]);
+  const expandedUserExcuses = useMemo(() => {
+    if (!expandedUserId) return [];
+    return excuses.filter(e => e.userId === expandedUserId).sort((a, b) => (b.date || 0) - (a.date || 0));
+  }, [expandedUserId, excuses]);
 
   useEffect(() => {
-    if (activeTab !== 'user' || !selectedUserId) return;
-    if (drillCategoryInstance.current) drillCategoryInstance.current.destroy();
-    if (drillCategoryRef.current && selectedUser) {
-      const labels = CATEGORIES.filter(c => (selectedUser.categories[c] || 0) > 0);
-      drillCategoryInstance.current = new Chart(drillCategoryRef.current, {
-        type: 'doughnut',
-        data: {
-          labels,
-          datasets: [{ data: labels.map(c => selectedUser.categories[c]),
+    if (!expandedUserId || !expandedUser) return;
+    // Small delay to ensure canvas is in DOM after state change
+    const timer = setTimeout(() => {
+      if (drillCategoryInstance.current) drillCategoryInstance.current.destroy();
+      if (drillCategoryRef.current) {
+        const labels = CATEGORIES.filter(c => (expandedUser.categories[c] || 0) > 0);
+        drillCategoryInstance.current = new Chart(drillCategoryRef.current, {
+          type: 'doughnut',
+          data: { labels, datasets: [{ data: labels.map(c => expandedUser.categories[c]),
             backgroundColor: labels.map(c => CATEGORY_COLORS[CATEGORIES.indexOf(c)]),
-            borderWidth: 2, borderColor: '#fff' }],
-        },
-        options: {
-          responsive: true, maintainAspectRatio: false, cutout: '65%',
-          plugins: { legend: { position: 'right', labels: { font: { size: 12 } } } },
-        },
-      });
-    }
-    if (drillTimelineInstance.current) drillTimelineInstance.current.destroy();
-    if (drillTimelineRef.current) {
-      const byDay = {};
-      selectedUserExcuses.forEach(e => {
-        if (!e.date) return;
-        const key = e.date.toISOString().split('T')[0];
-        byDay[key] = (byDay[key] || 0) + 1;
-      });
-      const sorted = Object.entries(byDay).sort(([a], [b]) => a.localeCompare(b));
-      drillTimelineInstance.current = new Chart(drillTimelineRef.current, {
-        type: 'line',
-        data: {
-          labels: sorted.map(([d]) => d),
-          datasets: [{ label: 'Excuses per Day', data: sorted.map(([, c]) => c),
+            borderWidth: 2, borderColor: '#fff' }] },
+          options: { responsive: true, maintainAspectRatio: false, cutout: '65%',
+            plugins: { legend: { position: 'right', labels: { font: { size: 10 }, padding: 6, boxWidth: 10 } } } },
+        });
+      }
+      if (drillTimelineInstance.current) drillTimelineInstance.current.destroy();
+      if (drillTimelineRef.current) {
+        const byDay = {};
+        expandedUserExcuses.forEach(e => {
+          if (!e.date) return;
+          const key = e.date.toISOString().split('T')[0];
+          byDay[key] = (byDay[key] || 0) + 1;
+        });
+        const sorted = Object.entries(byDay).sort(([a], [b]) => a.localeCompare(b));
+        drillTimelineInstance.current = new Chart(drillTimelineRef.current, {
+          type: 'line',
+          data: { labels: sorted.map(([d]) => d), datasets: [{ data: sorted.map(([, c]) => c),
             borderColor: '#58D68D', backgroundColor: 'rgba(88,214,141,0.08)',
-            fill: true, tension: 0.4, pointRadius: 2, borderWidth: 2 }],
-        },
-        options: {
-          responsive: true, maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            x: { ticks: { maxTicksLimit: 12, font: { size: 11 } }, grid: { display: false } },
-            y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' } },
-          },
-        },
-      });
-    }
+            fill: true, tension: 0.4, pointRadius: 2, borderWidth: 2 }] },
+          options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+            scales: { x: { ticks: { maxTicksLimit: 10, font: { size: 10 } }, grid: { display: false } },
+              y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' } } } },
+        });
+      }
+    }, 50);
     return () => {
+      clearTimeout(timer);
       if (drillCategoryInstance.current) drillCategoryInstance.current.destroy();
       if (drillTimelineInstance.current) drillTimelineInstance.current.destroy();
     };
-  }, [activeTab, selectedUserId, selectedUser, selectedUserExcuses]);
+  }, [expandedUserId, expandedUser, expandedUserExcuses]);
 
-  // --- Explorer ---
+  // --- Search (All Excuses) ---
   const filteredExcuses = useMemo(() => {
     return excuses.filter(e => {
       if (filterCategory && e.category !== filterCategory) return false;
       if (filterUserId && e.userId !== filterUserId) return false;
       if (filterSearch && !e.text.toLowerCase().includes(filterSearch.toLowerCase())) return false;
       if (filterDateFrom && e.date && e.date < new Date(filterDateFrom)) return false;
-      if (filterDateTo && e.date) {
-        const end = new Date(filterDateTo); end.setHours(23, 59, 59);
-        if (e.date > end) return false;
-      }
+      if (filterDateTo && e.date) { const end = new Date(filterDateTo); end.setHours(23, 59, 59); if (e.date > end) return false; }
       return true;
     }).sort((a, b) => (b.date || 0) - (a.date || 0));
   }, [excuses, filterCategory, filterUserId, filterSearch, filterDateFrom, filterDateTo]);
 
   const exportCSV = () => {
-    const headers = ['Date', 'User', 'Excuse Text', 'Category'];
-    const rows = filteredExcuses.map(e => [
-      e.date ? e.date.toISOString() : '', e.userName,
-      `"${(e.text || '').replace(/"/g, '""')}"`, e.category,
-    ]);
-    const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-    const blob = new Blob([csv], { type: 'text/csv' });
+    const rows = [['Date', 'User', 'User ID', 'Excuse Text', 'Category'],
+      ...filteredExcuses.map(e => [e.date ? e.date.toISOString() : '', e.userName, e.userId, `"${(e.text || '').replace(/"/g, '""')}"`, e.category])];
+    const blob = new Blob([rows.map(r => r.join(',')).join('\n')], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
+    const a = document.createElement('a'); a.href = url;
     a.download = `spool-excuses-${new Date().toISOString().split('T')[0]}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
+    a.click(); URL.revokeObjectURL(url);
   };
 
   // --- Handlers ---
-  const handleUserClick = (userId) => {
-    setSelectedUserId(userId);
-    setActiveTab('user');
-  };
-
-  const handleSort = (field) => {
-    setLeaderboardSort(prev => ({
-      field, dir: prev.field === field && prev.dir === 'desc' ? 'asc' : 'desc',
-    }));
-  };
-
-  const handleRefresh = () => {
-    setExcuses([]); setUsers([]); setError(null);
-    fetchData();
-  };
-
-  const closeUserTab = () => {
-    setSelectedUserId(null);
-    setActiveTab('overview');
-  };
+  const handleSort = (field) => setLeaderboardSort(prev => ({ field, dir: prev.field === field && prev.dir === 'desc' ? 'asc' : 'desc' }));
+  const handleRefresh = () => { setExcuses([]); setUsers([]); setError(null); fetchData(); };
 
   const formatDate = (d) => d ? d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '--';
   const formatDateTime = (d) => d ? d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' }) : '--';
   const formatTime = (d) => d ? d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) : '';
+  const topCategory = (cats) => { if (!cats) return '--'; const e = Object.entries(cats); if (!e.length) return '--'; e.sort(([,a],[,b]) => b - a); return e[0][0]; };
 
-  const topCategory = (categories) => {
-    if (!categories) return '--';
-    const entries = Object.entries(categories);
-    if (entries.length === 0) return '--';
-    entries.sort(([, a], [, b]) => b - a);
-    return entries[0][0];
-  };
-
-  // --- Breadcrumb ---
-  const breadcrumbs = useMemo(() => {
-    const crumbs = [{ label: 'Excuse Analytics', tab: null }];
-    if (activeTab === 'overview') crumbs.push({ label: 'Overview', tab: 'overview' });
-    else if (activeTab === 'explorer') crumbs.push({ label: 'Excuse Explorer', tab: 'explorer' });
-    else if (activeTab === 'user' && selectedUser) {
-      crumbs.push({ label: 'Overview', tab: 'overview' });
-      crumbs.push({ label: selectedUser.userName, tab: null });
-    }
-    return crumbs;
-  }, [activeTab, selectedUser]);
-
-  if (authLoading) {
-    return <div className="excuse-page"><div className="loading">Loading...</div></div>;
-  }
+  if (authLoading) return <div className="excuse-page"><div className="ed-loading">Loading...</div></div>;
 
   return (
     <div className="excuse-page">
-      {/* Header bar */}
-      <header className="excuse-header">
-        <div className="excuse-header-left">
-          <h1>Spool Excuse Analytics</h1>
-        </div>
-        <div className="auth-section">
+      {/* Header */}
+      <header className="ed-header">
+        <h1>Excuse Analytics</h1>
+        <div className="ed-header-right">
           {user ? (
             <>
-              {lastFetched && <span className="last-updated">Updated {formatTime(lastFetched)}</span>}
-              <button className="btn-refresh" onClick={handleRefresh} disabled={loading}>
-                {loading ? 'Refreshing...' : 'Refresh'}
+              {lastFetched && <span className="ed-updated">Updated {formatTime(lastFetched)}</span>}
+              <button className="ed-btn ed-btn-ghost" onClick={handleRefresh} disabled={loading}>
+                {loading ? 'Loading...' : 'Refresh'}
               </button>
-              <span className="header-divider" />
-              <span className="user-email">{user.email}</span>
-              <button className="btn-logout" onClick={handleSignOut}>Sign Out</button>
+              <span className="ed-divider" />
+              <span className="ed-email">{user.email}</span>
+              <button className="ed-btn ed-btn-danger" onClick={handleSignOut}>Sign Out</button>
             </>
           ) : (
-            <button className="btn-login" onClick={handleSignIn}>Sign In with Google</button>
+            <button className="ed-btn ed-btn-primary" onClick={handleSignIn}>Sign In with Google</button>
           )}
         </div>
       </header>
 
       {!user ? (
-        <div className="login-prompt"><p>Sign in with an authorized Google account to view excuse analytics.</p></div>
+        <div className="ed-empty">Sign in with an authorized Google account to view excuse analytics.</div>
       ) : loading ? (
-        <div className="loading">Loading excuse data...</div>
+        <div className="ed-loading">Loading excuse data...</div>
       ) : error ? (
-        <div className="error-msg"><p>{error}</p><button className="btn-refresh" onClick={handleRefresh}>Try Again</button></div>
+        <div className="ed-error"><p>{error}</p><button className="ed-btn ed-btn-ghost" onClick={handleRefresh}>Try Again</button></div>
       ) : (
-        <>
-          {/* Tab bar + breadcrumbs */}
-          <div className="nav-bar">
-            <nav className="excuse-tabs">
-              <button className={`tab-btn ${activeTab === 'overview' ? 'active' : ''}`}
-                onClick={() => { setActiveTab('overview'); setSelectedUserId(null); }}>
-                Overview
-              </button>
-              <button className={`tab-btn ${activeTab === 'explorer' ? 'active' : ''}`}
-                onClick={() => { setActiveTab('explorer'); setSelectedUserId(null); }}>
-                Explorer
-              </button>
-              {selectedUserId && selectedUser && (
-                <button className={`tab-btn tab-btn-user ${activeTab === 'user' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('user')}>
-                  {selectedUser.userName}
-                  <span className="tab-close" onClick={(ev) => { ev.stopPropagation(); closeUserTab(); }}>×</span>
-                </button>
-              )}
-            </nav>
-            <div className="breadcrumbs">
-              {breadcrumbs.map((crumb, i) => (
-                <span key={i}>
-                  {i > 0 && <span className="breadcrumb-sep">/</span>}
-                  {crumb.tab ? (
-                    <button className="breadcrumb-link" onClick={() => { setActiveTab(crumb.tab); if (crumb.tab !== 'user') setSelectedUserId(null); }}>
-                      {crumb.label}
-                    </button>
-                  ) : (
-                    <span className="breadcrumb-current">{crumb.label}</span>
-                  )}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* ====== OVERVIEW ====== */}
-          {activeTab === 'overview' && (
-            <div className="overview-view">
-              {summaryStats && (
-                <div className="summary-cards">
-                  <div className="summary-card accent-blue">
-                    <span className="card-label">Total Excuses</span>
-                    <span className="card-value">{summaryStats.totalExcuses.toLocaleString()}</span>
-                  </div>
-                  <div className="summary-card accent-green">
-                    <span className="card-label">Active Users</span>
-                    <span className="card-value">{summaryStats.activeUsers}<small> / {summaryStats.totalUsers}</small></span>
-                  </div>
-                  <div className="summary-card accent-orange">
-                    <span className="card-label">Screen Time Requested</span>
-                    <span className="card-value">{summaryStats.totalMinutes.toLocaleString()}<small> min</small></span>
-                  </div>
-                  <div className="summary-card accent-purple">
-                    <span className="card-label">Avg / User</span>
-                    <span className="card-value">{summaryStats.avgPerUser}</span>
-                  </div>
-                  <div className="summary-card accent-red">
-                    <span className="card-label">Avg Min / Excuse</span>
-                    <span className="card-value">{summaryStats.avgMinPerExcuse}</span>
-                  </div>
-                </div>
-              )}
-
-              <div className="panel">
-                <div className="panel-header"><h2>Activity Trend</h2></div>
-                <div className="panel-body">
-                  <div className="chart-canvas-wrapper" style={{ height: 200 }}>
-                    <canvas ref={timelineChartRef}></canvas>
-                  </div>
-                </div>
-              </div>
-
-              <div className="panel-row">
-                <div className="panel">
-                  <div className="panel-header"><h2>Categories</h2></div>
-                  <div className="panel-body">
-                    <div className="chart-canvas-wrapper" style={{ height: 230 }}>
-                      <canvas ref={categoryChartRef}></canvas>
-                    </div>
-                  </div>
-                </div>
-                <div className="panel">
-                  <div className="panel-header"><h2>Peak Hours</h2></div>
-                  <div className="panel-body">
-                    <div className="chart-canvas-wrapper" style={{ height: 230 }}>
-                      <canvas ref={hourChartRef}></canvas>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="panel">
-                <div className="panel-header">
-                  <h2>User Leaderboard</h2>
-                  <span className="panel-subtitle">Click a row to inspect</span>
-                </div>
-                <div className="panel-body panel-body-flush">
-                  <div className="table-wrapper">
-                    <table className="data-table">
-                      <thead>
-                        <tr>
-                          <th onClick={() => handleSort('userName')} className="sortable">
-                            Name {leaderboardSort.field === 'userName' ? (leaderboardSort.dir === 'asc' ? '↑' : '↓') : ''}
-                          </th>
-                          <th onClick={() => handleSort('excuseCount')} className="sortable">
-                            Excuses {leaderboardSort.field === 'excuseCount' ? (leaderboardSort.dir === 'asc' ? '↑' : '↓') : ''}
-                          </th>
-                          <th onClick={() => handleSort('totalMinutes')} className="sortable">
-                            Total Min {leaderboardSort.field === 'totalMinutes' ? (leaderboardSort.dir === 'asc' ? '↑' : '↓') : ''}
-                          </th>
-                          <th onClick={() => handleSort('lastActive')} className="sortable">
-                            Last Active {leaderboardSort.field === 'lastActive' ? (leaderboardSort.dir === 'asc' ? '↑' : '↓') : ''}
-                          </th>
-                          <th>Top Category</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {leaderboard.map(u => (
-                          <tr key={u.userId} onClick={() => handleUserClick(u.userId)} className="clickable-row">
-                            <td className="user-name-cell">{u.userName}</td>
-                            <td>{u.excuseCount}</td>
-                            <td>{u.totalMinutes}</td>
-                            <td>{formatDate(u.lastActive)}</td>
-                            <td><span className="category-badge">{topCategory(u.categories)}</span></td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
+        <div className="ed-content">
+          {/* ── Stat Strip ── */}
+          {summaryStats && (
+            <div className="stat-strip">
+              <div className="stat-item"><span className="stat-value">{summaryStats.total.toLocaleString()}</span><span className="stat-label">Excuses</span></div>
+              <div className="stat-sep" />
+              <div className="stat-item"><span className="stat-value">{summaryStats.activeUsers}<small>/{summaryStats.totalUsers}</small></span><span className="stat-label">Active Users</span></div>
+              <div className="stat-sep" />
+              <div className="stat-item"><span className="stat-value">{summaryStats.totalMin.toLocaleString()}<small> min</small></span><span className="stat-label">Screen Time</span></div>
+              <div className="stat-sep" />
+              <div className="stat-item"><span className="stat-value">{summaryStats.avgPerUser}</span><span className="stat-label">Avg / User</span></div>
+              <div className="stat-sep" />
+              <div className="stat-item"><span className="stat-value">{summaryStats.avgMinPerExcuse}<small> min</small></span><span className="stat-label">Avg / Excuse</span></div>
             </div>
           )}
 
-          {/* ====== USER TAB ====== */}
-          {activeTab === 'user' && selectedUser && (
-            <div className="user-view">
-              <div className="summary-cards summary-cards-compact">
-                <div className="summary-card accent-blue">
-                  <span className="card-label">Excuses</span>
-                  <span className="card-value">{selectedUser.excuseCount}</span>
+          {/* ── Activity Trend ── */}
+          <div className="ed-panel">
+            <div className="ed-panel-head" onClick={() => toggleCollapse('trend')}>
+              <h2>Activity Trend</h2>
+              <span className="ed-collapse-icon">{collapsed.trend ? '+' : '−'}</span>
+            </div>
+            {!collapsed.trend && (
+              <div className="ed-panel-body">
+                <div className="ed-chart-wrap" style={{ height: 170 }}><canvas ref={timelineChartRef} /></div>
+              </div>
+            )}
+          </div>
+
+          {/* ── Insights (side by side) ── */}
+          <div className="ed-panel-row">
+            <div className="ed-panel">
+              <div className="ed-panel-head" onClick={() => toggleCollapse('categories')}>
+                <h2>Categories</h2>
+                <span className="ed-collapse-icon">{collapsed.categories ? '+' : '−'}</span>
+              </div>
+              {!collapsed.categories && (
+                <div className="ed-panel-body">
+                  <div className="ed-chart-wrap" style={{ height: 200 }}><canvas ref={categoryChartRef} /></div>
                 </div>
-                <div className="summary-card accent-orange">
-                  <span className="card-label">Total Minutes</span>
-                  <span className="card-value">{selectedUser.totalMinutes}</span>
+              )}
+            </div>
+            <div className="ed-panel">
+              <div className="ed-panel-head" onClick={() => toggleCollapse('hours')}>
+                <h2>Peak Hours</h2>
+                <span className="ed-collapse-icon">{collapsed.hours ? '+' : '−'}</span>
+              </div>
+              {!collapsed.hours && (
+                <div className="ed-panel-body">
+                  <div className="ed-chart-wrap" style={{ height: 200 }}><canvas ref={hourChartRef} /></div>
                 </div>
-                <div className="summary-card accent-green">
-                  <span className="card-label">Last Active</span>
-                  <span className="card-value card-value-sm">{formatDate(selectedUser.lastActive)}</span>
-                </div>
-                <div className="summary-card accent-purple">
-                  <span className="card-label">Top Category</span>
-                  <span className="card-value card-value-sm">{topCategory(selectedUser.categories)}</span>
+              )}
+            </div>
+          </div>
+
+          {/* ── Users Panel (leaderboard + inline drilldown) ── */}
+          <div className="ed-panel">
+            <div className="ed-panel-head">
+              <div className="ed-panel-breadcrumb">
+                <button
+                  className={`ed-crumb ${!expandedUserId ? 'ed-crumb-active' : 'ed-crumb-link'}`}
+                  onClick={() => setExpandedUserId(null)}
+                >
+                  Users
+                </button>
+                {expandedUser && (
+                  <>
+                    <span className="ed-crumb-sep">/</span>
+                    <span className="ed-crumb ed-crumb-active">{expandedUser.userName}</span>
+                  </>
+                )}
+              </div>
+              {!expandedUserId && <span className="ed-panel-sub">Click a row to inspect</span>}
+            </div>
+
+            {/* Leaderboard table (shown when no user expanded) */}
+            {!expandedUserId && (
+              <div className="ed-panel-flush">
+                <div className="ed-table-wrap">
+                  <table className="ed-table">
+                    <thead>
+                      <tr>
+                        <th onClick={() => handleSort('userName')} className="ed-sortable">
+                          Name {leaderboardSort.field === 'userName' ? (leaderboardSort.dir === 'asc' ? '↑' : '↓') : ''}
+                        </th>
+                        <th>User ID</th>
+                        <th onClick={() => handleSort('excuseCount')} className="ed-sortable">
+                          Excuses {leaderboardSort.field === 'excuseCount' ? (leaderboardSort.dir === 'asc' ? '↑' : '↓') : ''}
+                        </th>
+                        <th onClick={() => handleSort('totalMinutes')} className="ed-sortable">
+                          Total Min {leaderboardSort.field === 'totalMinutes' ? (leaderboardSort.dir === 'asc' ? '↑' : '↓') : ''}
+                        </th>
+                        <th onClick={() => handleSort('lastActive')} className="ed-sortable">
+                          Last Active {leaderboardSort.field === 'lastActive' ? (leaderboardSort.dir === 'asc' ? '↑' : '↓') : ''}
+                        </th>
+                        <th>Top Category</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {leaderboard.map(u => (
+                        <tr key={u.userId} onClick={() => setExpandedUserId(u.userId)} className="ed-clickable">
+                          <td className="ed-bold">{u.userName}</td>
+                          <td className="ed-uid">{u.userId}</td>
+                          <td>{u.excuseCount}</td>
+                          <td>{u.totalMinutes}</td>
+                          <td>{formatDate(u.lastActive)}</td>
+                          <td><span className="ed-badge">{topCategory(u.categories)}</span></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
+            )}
 
-              <div className="panel-row">
-                <div className="panel">
-                  <div className="panel-header"><h2>Categories</h2></div>
-                  <div className="panel-body">
-                    <div className="chart-canvas-wrapper" style={{ height: 210 }}>
-                      <canvas ref={drillCategoryRef}></canvas>
-                    </div>
+            {/* Inline user drilldown */}
+            {expandedUserId && expandedUser && (
+              <div className="ed-drilldown">
+                {/* User stats row */}
+                <div className="ed-drill-stats">
+                  <div className="ed-drill-stat"><span className="ed-drill-val">{expandedUser.excuseCount}</span><span className="ed-drill-label">Excuses</span></div>
+                  <div className="ed-drill-stat"><span className="ed-drill-val">{expandedUser.totalMinutes}</span><span className="ed-drill-label">Total Min</span></div>
+                  <div className="ed-drill-stat"><span className="ed-drill-val">{formatDate(expandedUser.lastActive)}</span><span className="ed-drill-label">Last Active</span></div>
+                  <div className="ed-drill-stat"><span className="ed-drill-val">{topCategory(expandedUser.categories)}</span><span className="ed-drill-label">Top Category</span></div>
+                </div>
+
+                {/* Charts row */}
+                <div className="ed-drill-charts">
+                  <div className="ed-drill-chart-box">
+                    <h3>Categories</h3>
+                    <div className="ed-chart-wrap" style={{ height: 180 }}><canvas ref={drillCategoryRef} /></div>
+                  </div>
+                  <div className="ed-drill-chart-box">
+                    <h3>Activity</h3>
+                    <div className="ed-chart-wrap" style={{ height: 180 }}><canvas ref={drillTimelineRef} /></div>
                   </div>
                 </div>
-                <div className="panel">
-                  <div className="panel-header"><h2>Activity</h2></div>
-                  <div className="panel-body">
-                    <div className="chart-canvas-wrapper" style={{ height: 210 }}>
-                      <canvas ref={drillTimelineRef}></canvas>
-                    </div>
-                  </div>
-                </div>
-              </div>
 
-              <div className="panel">
-                <div className="panel-header">
-                  <h2>Excuses</h2>
-                  <span className="panel-subtitle">{selectedUserExcuses.length} total</span>
-                </div>
-                <div className="panel-body panel-body-flush">
-                  <div className="table-wrapper">
-                    <table className="data-table">
+                {/* Excuse list */}
+                <div className="ed-drill-excuses">
+                  <h3>Excuses ({expandedUserExcuses.length})</h3>
+                  <div className="ed-table-wrap ed-table-wrap-scroll">
+                    <table className="ed-table">
                       <thead>
                         <tr>
                           <th>Date</th>
-                          <th>Excuse Text</th>
+                          <th>Text</th>
                           <th>Category</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {selectedUserExcuses.map(e => (
+                        {expandedUserExcuses.map(e => (
                           <tr key={e.id}>
-                            <td className="nowrap">{formatDateTime(e.date)}</td>
-                            <td className="excuse-text-cell">{e.text || '--'}</td>
-                            <td><span className="category-badge">{e.category}</span></td>
+                            <td className="ed-nowrap">{formatDateTime(e.date)}</td>
+                            <td className="ed-text-cell">{e.text || '--'}</td>
+                            <td><span className="ed-badge">{e.category}</span></td>
                           </tr>
                         ))}
                       </tbody>
@@ -622,49 +495,51 @@ function ExcuseDataPage() {
                   </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
 
-          {/* ====== EXPLORER ====== */}
-          {activeTab === 'explorer' && (
-            <div className="explorer-view">
-              <div className="panel">
-                <div className="panel-body">
-                  <div className="filter-bar">
+          {/* ── All Excuses (search/filter) ── */}
+          <div className="ed-panel">
+            <div className="ed-panel-head ed-panel-head-toggle" onClick={() => setShowSearch(!showSearch)}>
+              <h2>All Excuses</h2>
+              <div className="ed-panel-head-right">
+                <span className="ed-panel-sub">{excuses.length.toLocaleString()} total</span>
+                <span className="ed-collapse-icon">{showSearch ? '−' : '+'}</span>
+              </div>
+            </div>
+            {showSearch && (
+              <>
+                <div className="ed-panel-body">
+                  <div className="ed-filter-bar">
                     <input type="text" placeholder="Search excuses..." value={filterSearch}
-                      onChange={e => setFilterSearch(e.target.value)} className="filter-input" />
-                    <select value={filterCategory} onChange={e => setFilterCategory(e.target.value)} className="filter-select">
+                      onChange={e => setFilterSearch(e.target.value)} className="ed-filter-input" />
+                    <select value={filterCategory} onChange={e => setFilterCategory(e.target.value)} className="ed-filter-select">
                       <option value="">All Categories</option>
                       {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
                     </select>
-                    <select value={filterUserId} onChange={e => setFilterUserId(e.target.value)} className="filter-select">
+                    <select value={filterUserId} onChange={e => setFilterUserId(e.target.value)} className="ed-filter-select">
                       <option value="">All Users</option>
-                      {leaderboard.map(u => (
-                        <option key={u.userId} value={u.userId}>{u.userName} ({u.excuseCount})</option>
-                      ))}
+                      {leaderboard.map(u => <option key={u.userId} value={u.userId}>{u.userName} ({u.excuseCount})</option>)}
                     </select>
-                    <div className="filter-dates">
-                      <input type="date" value={filterDateFrom} onChange={e => setFilterDateFrom(e.target.value)} className="filter-date" />
-                      <span className="filter-date-sep">to</span>
-                      <input type="date" value={filterDateTo} onChange={e => setFilterDateTo(e.target.value)} className="filter-date" />
+                    <div className="ed-filter-dates">
+                      <input type="date" value={filterDateFrom} onChange={e => setFilterDateFrom(e.target.value)} className="ed-filter-date" />
+                      <span className="ed-filter-sep">to</span>
+                      <input type="date" value={filterDateTo} onChange={e => setFilterDateTo(e.target.value)} className="ed-filter-date" />
                     </div>
-                    <button className="btn-export" onClick={exportCSV}>Export CSV</button>
+                    <button className="ed-btn ed-btn-export" onClick={exportCSV}>Export CSV</button>
                   </div>
                 </div>
-              </div>
-
-              <div className="panel">
-                <div className="panel-header">
-                  <h2>Results</h2>
-                  <span className="panel-subtitle">{filteredExcuses.length.toLocaleString()} excuses</span>
-                </div>
-                <div className="panel-body panel-body-flush">
-                  <div className="table-wrapper table-wrapper-tall">
-                    <table className="data-table">
+                <div className="ed-panel-flush">
+                  <div className="ed-panel-body" style={{ padding: '0 20px 4px' }}>
+                    <span className="ed-panel-sub">{filteredExcuses.length.toLocaleString()} results</span>
+                  </div>
+                  <div className="ed-table-wrap ed-table-wrap-tall">
+                    <table className="ed-table">
                       <thead>
                         <tr>
                           <th>Date</th>
                           <th>User</th>
+                          <th>User ID</th>
                           <th>Excuse Text</th>
                           <th>Category</th>
                         </tr>
@@ -672,20 +547,21 @@ function ExcuseDataPage() {
                       <tbody>
                         {filteredExcuses.map(e => (
                           <tr key={e.id}>
-                            <td className="nowrap">{formatDateTime(e.date)}</td>
-                            <td className="nowrap">{e.userName}</td>
-                            <td className="excuse-text-cell">{e.text || '--'}</td>
-                            <td><span className="category-badge">{e.category}</span></td>
+                            <td className="ed-nowrap">{formatDateTime(e.date)}</td>
+                            <td className="ed-nowrap">{e.userName}</td>
+                            <td className="ed-uid">{e.userId}</td>
+                            <td className="ed-text-cell">{e.text || '--'}</td>
+                            <td><span className="ed-badge">{e.category}</span></td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
                   </div>
                 </div>
-              </div>
-            </div>
-          )}
-        </>
+              </>
+            )}
+          </div>
+        </div>
       )}
     </div>
   );
