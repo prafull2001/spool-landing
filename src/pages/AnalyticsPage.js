@@ -24,7 +24,7 @@ const SCREEN_ORDER = [
 ];
 
 function AnalyticsPage() {
-  const { user, authLoading, handleSignIn, handleSignOut: signOutBase } = useFirebaseAuth();
+  const { user, handleSignIn, handleSignOut: signOutBase } = useFirebaseAuth();
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [dateFrom, setDateFrom] = useState('');
