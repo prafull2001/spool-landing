@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { db, auth, googleProvider } from '../config/firebase';
+import { db } from '../config/firebase';
 import { collection, query, orderBy, where, getDocs, Timestamp, limit } from 'firebase/firestore';
-import { signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
 import { Chart, registerables } from 'chart.js';
+import useFirebaseAuth from '../hooks/useFirebaseAuth';
 import './AnalyticsPage.css';
 
 Chart.register(...registerables);
@@ -24,7 +24,7 @@ const SCREEN_ORDER = [
 ];
 
 function AnalyticsPage() {
-  const [user, setUser] = useState(null);
+  const { user, authLoading, handleSignIn, handleSignOut: signOutBase } = useFirebaseAuth();
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [dateFrom, setDateFrom] = useState('');
@@ -38,24 +38,11 @@ function AnalyticsPage() {
   const timeInstance = useRef(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (u) => {
-      setUser(u);
-      if (u) fetchSessions();
-    });
-    return () => unsubscribe();
-  }, []);
-
-  const handleSignIn = async () => {
-    try {
-      await signInWithPopup(auth, googleProvider);
-    } catch (err) {
-      console.error('Sign-in error:', err);
-    }
-  };
+    if (user) fetchSessions();
+  }, [user]);
 
   const handleSignOut = async () => {
-    await signOut(auth);
-    setUser(null);
+    await signOutBase();
     setSessions([]);
   };
 
