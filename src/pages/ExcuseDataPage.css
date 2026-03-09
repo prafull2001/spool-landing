@@ -555,15 +555,18 @@
 .ed-filter-sep { font-size: 11px; color: #b0a080; }
 
 /* ── Heatmap ── */
-.ed-heatmap { border-collapse: collapse; }
+.ed-heatmap { border-collapse: separate; border-spacing: 3px; }
 .ed-heatmap th.ed-heatmap-th {
-  font-size: 9px; padding: 3px 2px; min-width: 28px;
-  text-align: center; white-space: nowrap;
+  font-size: 8px; padding: 2px 0; min-width: 26px;
+  text-align: center; white-space: nowrap; color: #a09070;
+  font-weight: 500; letter-spacing: 0.2px;
 }
 .ed-heatmap-cell {
-  text-align: center; font-size: 10px; font-weight: 600;
-  padding: 4px 2px; min-width: 28px; border-radius: 2px;
+  text-align: center; font-size: 9px; font-weight: 600;
+  padding: 5px 2px; min-width: 26px; border-radius: 4px;
+  transition: transform 0.1s;
 }
+.ed-heatmap-cell:hover { transform: scale(1.15); z-index: 1; }
 
 /* ── Responsive ── */
 @media (max-width: 900px) {

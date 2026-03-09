@@ -978,12 +978,16 @@ function ExcuseDataPage() {
                                   <tr key={dayIdx}>
                                     <td className="ed-bold ed-nowrap" style={{ fontSize: 10 }}>{dayNames[dayIdx]}</td>
                                     {timingData.heatmap[dayIdx].map((count, h) => {
-                                      const intensity = maxVal > 0 ? count / maxVal : 0;
+                                      const pct = maxVal > 0 ? count / maxVal : 0;
+                                      const bg = count === 0 ? '#f0ece4'
+                                        : pct <= 0.25 ? '#c6e48b'
+                                        : pct <= 0.5 ? '#7bc96f'
+                                        : pct <= 0.75 ? '#239a3b'
+                                        : '#196127';
                                       return (
                                         <td key={h} className="ed-heatmap-cell" style={{
-                                          background: count === 0 ? 'transparent'
-                                            : `rgba(61,50,0,${0.08 + intensity * 0.55})`,
-                                          color: intensity > 0.5 ? '#fff' : '#4a3d00',
+                                          background: bg,
+                                          color: pct > 0.5 ? '#fff' : '#2d4a1e',
                                         }}>
                                           {count > 0 ? count : ''}
                                         </td>
