@@ -554,6 +554,17 @@
 
 .ed-filter-sep { font-size: 11px; color: #b0a080; }
 
+/* ── Heatmap ── */
+.ed-heatmap { border-collapse: collapse; }
+.ed-heatmap th.ed-heatmap-th {
+  font-size: 9px; padding: 3px 2px; min-width: 28px;
+  text-align: center; white-space: nowrap;
+}
+.ed-heatmap-cell {
+  text-align: center; font-size: 10px; font-weight: 600;
+  padding: 4px 2px; min-width: 28px; border-radius: 2px;
+}
+
 /* ── Responsive ── */
 @media (max-width: 900px) {
   .ed-panel-row { grid-template-columns: 1fr; }

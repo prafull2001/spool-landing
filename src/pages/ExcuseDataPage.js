@@ -7,7 +7,7 @@ import {
   computeTextDiversity, computeStreaks, filterUsers,
   computeHabitFormation, computeCohortRetention,
   computeCategoryEvolution, computePowerUserRankings,
-  computeICPSegments,
+  computeICPSegments, computeTimingPatterns,
 } from './excuseDataHelpers';
 import './ExcuseDataPage.css';
 
@@ -52,6 +52,8 @@ function ExcuseDataPage() {
   const timelineInstance = useRef(null);
   const habitChartRef = useRef(null);
   const habitInstance = useRef(null);
+  const urgeChartRef = useRef(null);
+  const urgeInstance = useRef(null);
   // Chart refs — ICP Explorer
   const icpTrendChartRef = useRef(null);
   const icpTrendInstance = useRef(null);
@@ -200,6 +202,12 @@ function ExcuseDataPage() {
   // ── Habit Formation ──
   const habitData = useMemo(() =>
     computeHabitFormation(excuses, filteredUserIds, 50),
+    [excuses, filteredUserIds]
+  );
+
+  // ── Timing Patterns ──
+  const timingData = useMemo(() =>
+    computeTimingPatterns(excuses, filteredUserIds),
     [excuses, filteredUserIds]
   );
 
@@ -402,6 +410,40 @@ function ExcuseDataPage() {
     }
     return () => { if (habitInstance.current) habitInstance.current.destroy(); };
   }, [habitData, collapsed, activeTab]);
+
+  // Urge Frequency: bar chart
+  useEffect(() => {
+    if (!timingData || timingData.perUserPerDay.totalUserDays === 0) return;
+    if (urgeInstance.current) urgeInstance.current.destroy();
+    if (urgeChartRef.current) {
+      const { buckets } = timingData.perUserPerDay;
+      urgeInstance.current = new Chart(urgeChartRef.current, {
+        type: 'bar',
+        data: {
+          labels: buckets.map(b => b.label),
+          datasets: [{
+            label: 'User-days',
+            data: buckets.map(b => b.count),
+            backgroundColor: 'rgba(175,122,197,0.6)',
+            borderColor: '#AF7AC5',
+            borderWidth: 1, borderRadius: 3,
+          }],
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { title: { display: true, text: 'Excuses per day', font: { size: 10 }, color: '#b0a080' },
+              grid: { display: false }, ticks: { font: { size: 10 } } },
+            y: { beginAtZero: true,
+              title: { display: true, text: 'User-days', font: { size: 10 }, color: '#b0a080' },
+              grid: { color: 'rgba(0,0,0,0.04)' } },
+          },
+        },
+      });
+    }
+    return () => { if (urgeInstance.current) urgeInstance.current.destroy(); };
+  }, [timingData, collapsed, activeTab]);
 
   // ICP Trend: grouped bar sorted by delta, with delta annotations
   useEffect(() => {
@@ -891,6 +933,92 @@ function ExcuseDataPage() {
                         <div className="ed-empty-inline">Not enough cohort data yet (need 8+ users per cohort)</div>
                       );
                     })()}
+                  </div>
+                )}
+              </div>
+
+              {/* ── 5. Usage Timing ── */}
+              <div className="ed-panel">
+                <div className="ed-panel-head" onClick={() => toggleCollapse('timing')}>
+                  <div>
+                    <h2>Usage Timing</h2>
+                    <span className="ed-panel-sub">When do users reach for their phones? This heatmap shows excuse volume by hour of day (columns) and day of week (rows). Darker cells = more journal entries logged at that time. All times are in the user's local timezone as reported by their device.</span>
+                  </div>
+                  <span className="ed-collapse-icon">{collapsed.timing ? '+' : '−'}</span>
+                </div>
+                {!collapsed.timing && (
+                  <div className="ed-panel-body">
+                    {timingData.hourlyCounts.some(c => c > 0) ? (
+                      <>
+                        <div className="ed-table-wrap">
+                          <table className="ed-table ed-heatmap">
+                            <thead>
+                              <tr>
+                                <th></th>
+                                {Array.from({ length: 24 }, (_, h) => (
+                                  <th key={h} className="ed-heatmap-th">
+                                    {h === 0 ? '12a' : h < 12 ? `${h}a` : h === 12 ? '12p' : `${h - 12}p`}
+                                  </th>
+                                ))}
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {[1, 2, 3, 4, 5, 6, 0].map(dayIdx => {
+                                const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                                const maxVal = Math.max(...timingData.heatmap.flat());
+                                return (
+                                  <tr key={dayIdx}>
+                                    <td className="ed-bold ed-nowrap" style={{ fontSize: 10 }}>{dayNames[dayIdx]}</td>
+                                    {timingData.heatmap[dayIdx].map((count, h) => {
+                                      const intensity = maxVal > 0 ? count / maxVal : 0;
+                                      return (
+                                        <td key={h} className="ed-heatmap-cell" style={{
+                                          background: count === 0 ? 'transparent'
+                                            : `rgba(61,50,0,${0.08 + intensity * 0.55})`,
+                                          color: intensity > 0.5 ? '#fff' : '#4a3d00',
+                                        }}>
+                                          {count > 0 ? count : ''}
+                                        </td>
+                                      );
+                                    })}
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                          </table>
+                        </div>
+                        <div className="ed-chart-footnote">
+                          Peak hour: {timingData.peakHour === 0 ? '12am' : timingData.peakHour < 12 ? `${timingData.peakHour}am` : timingData.peakHour === 12 ? '12pm' : `${timingData.peakHour - 12}pm`} · Peak day: {timingData.peakDay}. This tells you when users are most tempted to reach for distracting apps — useful for timing push notifications and understanding daily behavior cycles.
+                        </div>
+                      </>
+                    ) : (
+                      <div className="ed-empty-inline">Not enough data for timing analysis</div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* ── 6. Urge Frequency ── */}
+              <div className="ed-panel">
+                <div className="ed-panel-head" onClick={() => toggleCollapse('urge')}>
+                  <div>
+                    <h2>Urge Frequency</h2>
+                    <span className="ed-panel-sub">How many times per day does a typical user log an excuse? Each bar shows how many user-days had that many entries. For example, if the &quot;3-5&quot; bar shows 120, that means there were 120 instances of a user logging 3 to 5 excuses in a single day. A &quot;user-day&quot; is one user on one calendar day.</span>
+                  </div>
+                  <span className="ed-collapse-icon">{collapsed.urge ? '+' : '−'}</span>
+                </div>
+                {!collapsed.urge && (
+                  <div className="ed-panel-body">
+                    {timingData.perUserPerDay.totalUserDays > 0 ? (
+                      <>
+                        <div className="ed-chart-wrap" style={{ height: 180 }}><canvas ref={urgeChartRef} /></div>
+                        <div className="ed-chart-footnote">
+                          Average: {timingData.perUserPerDay.avgPerDay.toFixed(1)} excuses/user/day · Median: {timingData.perUserPerDay.medianPerDay} · {timingData.perUserPerDay.totalUserDays.toLocaleString()} total user-days measured. Users logging 10+ times/day may be experiencing friction fatigue — the journaling prompt becomes an obstacle rather than a moment of reflection.
+                        </div>
+                      </>
+                    ) : (
+                      <div className="ed-empty-inline">Not enough data for frequency analysis</div>
+                    )}
                   </div>
                 )}
               </div>
