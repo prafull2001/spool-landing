@@ -101,28 +101,36 @@ export function computeHabitFormation(excuses, filteredUserIds, powerUserThresho
     byUser[e.userId].push(e);
   }
 
-  // For each user, find first excuse date, active weeks set, and total span in weeks
+  // Find global last date across all users (observation window end)
+  let globalLastDate = null;
+  for (const excs of Object.values(byUser)) {
+    for (const e of excs) {
+      if (!globalLastDate || e.date > globalLastDate) globalLastDate = e.date;
+    }
+  }
+  if (!globalLastDate) return { weekLabels: [], pctAll: [], pctPower: [] };
+
+  // For each user, find first excuse date, active weeks, and tenure (weeks since join to observation end)
   const userActiveWeeks = {}; // { userId: Set<weekNum> }
-  const userMaxWeek = {}; // { userId: maxWeekNum }
+  const userTenureWeek = {}; // { userId: max observable week based on tenure }
   const userCounts = {}; // { userId: totalCount }
   for (const [userId, excs] of Object.entries(byUser)) {
     excs.sort((a, b) => a.date - b.date);
     const first = excs[0].date;
     userCounts[userId] = excs.length;
     userActiveWeeks[userId] = new Set();
-    let maxW = 0;
     for (const e of excs) {
       const week = Math.floor((e.date - first) / (7 * 86400000));
       userActiveWeeks[userId].add(week);
-      if (week > maxW) maxW = week;
     }
-    userMaxWeek[userId] = maxW;
+    // Tenure: how many weeks from first entry to global observation end
+    userTenureWeek[userId] = Math.floor((globalLastDate - first) / (7 * 86400000));
   }
 
-  // Find max week across all users
+  // Find max tenure across all users
   let maxWeek = 0;
-  for (const mw of Object.values(userMaxWeek)) {
-    if (mw > maxWeek) maxWeek = mw;
+  for (const tw of Object.values(userTenureWeek)) {
+    if (tw > maxWeek) maxWeek = tw;
   }
 
   const allUserIds = Object.keys(userActiveWeeks);
@@ -133,9 +141,9 @@ export function computeHabitFormation(excuses, filteredUserIds, powerUserThresho
   const pctPower = [];
 
   for (let w = 0; w <= maxWeek; w++) {
-    // Eligible: users whose total span covers this week
-    const allEligible = allUserIds.filter(uid => userMaxWeek[uid] >= w);
-    const powerEligible = powerUserIds.filter(uid => userMaxWeek[uid] >= w);
+    // Eligible: users whose tenure (time since join) covers this week
+    const allEligible = allUserIds.filter(uid => userTenureWeek[uid] >= w);
+    const powerEligible = powerUserIds.filter(uid => userTenureWeek[uid] >= w);
 
     if (allEligible.length < 3) continue;
 
