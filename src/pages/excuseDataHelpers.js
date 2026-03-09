@@ -139,6 +139,7 @@ export function computeHabitFormation(excuses, filteredUserIds, powerUserThresho
   const weekLabels = [];
   const pctAll = [];
   const pctPower = [];
+  const eligibleCounts = [];
 
   for (let w = 0; w <= maxWeek; w++) {
     // Eligible: users whose tenure (time since join) covers this week
@@ -153,9 +154,10 @@ export function computeHabitFormation(excuses, filteredUserIds, powerUserThresho
     weekLabels.push(w);
     pctAll.push(allEligible.length > 0 ? (allActive / allEligible.length) * 100 : 0);
     pctPower.push(powerEligible.length > 0 ? (powerActive / powerEligible.length) * 100 : 0);
+    eligibleCounts.push(allEligible.length);
   }
 
-  return { weekLabels, pctAll, pctPower };
+  return { weekLabels, pctAll, pctPower, eligibleCounts };
 }
 
 /**
@@ -446,4 +448,64 @@ export function computePowerUserRankings(excusesByUser, streakMap, diversityMap,
 
   users.sort((a, b) => b.score - a.score);
   return users;
+}
+
+const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+/**
+ * Compute timing patterns: hourly counts, day-of-week counts, heatmap matrix, and urge frequency.
+ * @param {Array} excuses
+ * @param {Set<string>} filteredUserIds
+ * @returns {{ hourlyCounts, dailyCounts, heatmap, peakHour, peakDay, perUserPerDay }}
+ */
+export function computeTimingPatterns(excuses, filteredUserIds) {
+  const hourlyCounts = new Array(24).fill(0);
+  const dailyCounts = new Array(7).fill(0);
+  const heatmap = Array.from({ length: 7 }, () => new Array(24).fill(0));
+
+  // For urge frequency: count excuses per user per calendar day
+  const userDayCounts = {}; // { `${userId}|${dateStr}`: count }
+
+  for (const e of excuses) {
+    if (!filteredUserIds.has(e.userId) || !e.date) continue;
+    const hour = e.date.getHours();
+    const day = e.date.getDay(); // 0=Sun
+    hourlyCounts[hour]++;
+    dailyCounts[day]++;
+    heatmap[day][hour]++;
+
+    const dateStr = e.date.toISOString().split('T')[0];
+    const key = `${e.userId}|${dateStr}`;
+    userDayCounts[key] = (userDayCounts[key] || 0) + 1;
+  }
+
+  // Peak hour and day
+  const peakHour = hourlyCounts.indexOf(Math.max(...hourlyCounts));
+  const peakDayIdx = dailyCounts.indexOf(Math.max(...dailyCounts));
+  const peakDay = DAY_NAMES[peakDayIdx];
+
+  // Urge frequency: bucket user-day counts
+  const frequencies = Object.values(userDayCounts);
+  const bucketDefs = [
+    { label: '1-2', min: 1, max: 2 },
+    { label: '3-5', min: 3, max: 5 },
+    { label: '6-10', min: 6, max: 10 },
+    { label: '11-20', min: 11, max: 20 },
+    { label: '20+', min: 21, max: Infinity },
+  ];
+  const buckets = bucketDefs.map(b => ({
+    label: b.label,
+    count: frequencies.filter(f => f >= b.min && f <= b.max).length,
+  }));
+
+  const total = frequencies.reduce((s, v) => s + v, 0);
+  const avgPerDay = frequencies.length > 0 ? total / frequencies.length : 0;
+  const sorted = [...frequencies].sort((a, b) => a - b);
+  const medianPerDay = sorted.length > 0 ? sorted[Math.floor(sorted.length / 2)] : 0;
+
+  return {
+    hourlyCounts, dailyCounts, heatmap,
+    peakHour, peakDay,
+    perUserPerDay: { buckets, avgPerDay, medianPerDay, totalUserDays: frequencies.length },
+  };
 }
