@@ -15,12 +15,12 @@ Chart.register(...registerables);
 
 const CATEGORIES = [
   'Entertainment', 'Social', 'Break/Reward', 'Other',
-  'Quick Check', 'Boredom', 'Procrastination', 'FOMO', 'Uncategorized'
+  'Quick Check', 'Boredom', 'Procrastination', 'FOMO'
 ];
 
 const CATEGORY_COLORS = [
   '#5499C7', '#58D68D', '#F4D03F', '#AF7AC5',
-  '#EB984E', '#EC7063', '#45B7D1', '#F1948A', '#BDC3C7'
+  '#EB984E', '#EC7063', '#45B7D1', '#F1948A'
 ];
 
 function ExcuseDataPage() {
@@ -285,8 +285,8 @@ function ExcuseDataPage() {
     const counts = {};
     CATEGORIES.forEach(c => { counts[c] = 0; });
     filteredExcusesForCharts.forEach(e => {
-      const cat = CATEGORIES.includes(e.category) ? e.category : 'Uncategorized';
-      counts[cat] = (counts[cat] || 0) + 1;
+      if (!CATEGORIES.includes(e.category)) return;
+      counts[e.category] = (counts[e.category] || 0) + 1;
     });
     return counts;
   }, [filteredExcusesForCharts]);
@@ -304,8 +304,7 @@ function ExcuseDataPage() {
       const u = map[e.userId];
       u.excuseCount++;
       if (e.date && (!u.lastActive || e.date > u.lastActive)) u.lastActive = e.date;
-      const cat = e.category || 'Uncategorized';
-      u.categories[cat] = (u.categories[cat] || 0) + 1;
+      if (e.category) u.categories[e.category] = (u.categories[e.category] || 0) + 1;
     });
     const list = Object.values(map)
       .filter(u => filteredUserIds.has(u.userId))

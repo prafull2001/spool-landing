@@ -416,8 +416,7 @@ export function computePowerUserRankings(excusesByUser, streakMap, diversityMap,
     const diversity = diversityMap[userId] || { diversityPct: 0 };
     const cats = {};
     excs.forEach(e => {
-      const cat = e.category || 'Uncategorized';
-      cats[cat] = (cats[cat] || 0) + 1;
+      if (e.category) cats[e.category] = (cats[e.category] || 0) + 1;
     });
     users.push({
       userId,
@@ -561,7 +560,6 @@ export function computeWeek2DeepDive(excuses, filteredUserIds, categories) {
     let totalCount = 0, totalDays = 0, totalLen = 0, totalDiversity = 0;
     const catCounts = {};
     categories.forEach(c => { catCounts[c] = 0; });
-    catCounts['Uncategorized'] = 0;
     const hourDist = new Array(24).fill(0);
 
     for (const uid of userIds) {
@@ -571,8 +569,7 @@ export function computeWeek2DeepDive(excuses, filteredUserIds, categories) {
       totalDays += days.size;
       for (const e of userW1) {
         totalLen += (e.text || '').length;
-        const cat = categories.includes(e.category) ? e.category : 'Uncategorized';
-        catCounts[cat]++;
+        if (categories.includes(e.category)) catCounts[e.category]++;
         hourDist[e.date.getHours()]++;
       }
       const texts = userW1.map(e => (e.text || '').trim().toLowerCase());
