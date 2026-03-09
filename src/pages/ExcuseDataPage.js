@@ -767,6 +767,8 @@ function ExcuseDataPage() {
               onClick={() => setActiveTab('overview')}>Overview</button>
             <button className={`ed-tab ${activeTab === 'icp-insights' ? 'ed-tab-active' : ''}`}
               onClick={() => setActiveTab('icp-insights')}>ICP &amp; Insights</button>
+            <button className={`ed-tab ${activeTab === 'timing' ? 'ed-tab-active' : ''}`}
+              onClick={() => setActiveTab('timing')}>Timing &amp; Frequency</button>
             <button className={`ed-tab ${activeTab === 'all-excuses' ? 'ed-tab-active' : ''}`}
               onClick={() => setActiveTab('all-excuses')}>All Excuses</button>
           </div>
@@ -937,7 +939,13 @@ function ExcuseDataPage() {
                 )}
               </div>
 
-              {/* ── 5. Usage Timing ── */}
+            </>
+          )}
+
+          {/* ====== TIMING & FREQUENCY TAB ====== */}
+          {activeTab === 'timing' && (
+            <>
+              {/* ── 1. Usage Timing ── */}
               <div className="ed-panel">
                 <div className="ed-panel-head" onClick={() => toggleCollapse('timing')}>
                   <div>
@@ -998,7 +1006,7 @@ function ExcuseDataPage() {
                 )}
               </div>
 
-              {/* ── 6. Urge Frequency ── */}
+              {/* ── 2. Urge Frequency ── */}
               <div className="ed-panel">
                 <div className="ed-panel-head" onClick={() => toggleCollapse('urge')}>
                   <div>
@@ -1022,7 +1030,6 @@ function ExcuseDataPage() {
                   </div>
                 )}
               </div>
-
             </>
           )}
 
