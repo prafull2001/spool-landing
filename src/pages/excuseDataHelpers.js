@@ -246,7 +246,31 @@ export function computeCategoryEvolution(excuses, filteredUserIds, categories) {
     }
   }
 
-  if (earlyTotal === 0 || lateTotal === 0) return { categories: [], earlySample: 0, lateSample: 0 };
+  // Compute metadata for footnotes
+  let usersIncluded = 0;
+  let usersExcludedShortSpan = 0;
+  let uncategorizedCount = 0;
+  let earliestDate = null, latestDate = null;
+  const includedUserIds = new Set();
+
+  for (const uid of filteredUserIds) {
+    const first = userFirst[uid], last = userLast[uid];
+    if (!first || !last) continue;
+    const span = last - first;
+    if (span < 7 * 86400000) { usersExcludedShortSpan++; continue; }
+    usersIncluded++;
+    includedUserIds.add(uid);
+    if (!earliestDate || first < earliestDate) earliestDate = first;
+    if (!latestDate || last > latestDate) latestDate = last;
+  }
+
+  // Count uncategorized excuses among included users
+  for (const e of excuses) {
+    if (!includedUserIds.has(e.userId)) continue;
+    if (!e.category || !categories.includes(e.category)) uncategorizedCount++;
+  }
+
+  if (earlyTotal === 0 || lateTotal === 0) return { categories: [], earlySample: 0, lateSample: 0, usersIncluded: 0, usersExcludedShortSpan: 0, uncategorizedCount: 0, earliestDate: null, latestDate: null };
 
   // Compute percentages and deltas, filter to categories with meaningful presence
   const result = categories
@@ -258,7 +282,7 @@ export function computeCategoryEvolution(excuses, filteredUserIds, categories) {
     .filter(c => c.earlyPct >= 3 || c.latePct >= 3) // only categories with 3%+ presence
     .sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta)); // biggest movers first
 
-  return { categories: result, earlySample: earlyTotal, lateSample: lateTotal };
+  return { categories: result, earlySample: earlyTotal, lateSample: lateTotal, usersIncluded, usersExcludedShortSpan, uncategorizedCount, earliestDate, latestDate };
 }
 
 /**

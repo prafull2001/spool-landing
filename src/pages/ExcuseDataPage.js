@@ -420,15 +420,15 @@ function ExcuseDataPage() {
             {
               label: 'First Half',
               data: cats.map(c => c.earlyPct),
-              backgroundColor: 'rgba(176,160,128,0.5)',
-              borderColor: '#B0A080',
+              backgroundColor: 'rgba(72,191,145,0.5)',
+              borderColor: '#48BF91',
               borderWidth: 1, borderRadius: 3,
             },
             {
               label: 'Second Half',
               data: cats.map(c => c.latePct),
-              backgroundColor: 'rgba(84,153,199,0.6)',
-              borderColor: '#5499C7',
+              backgroundColor: 'rgba(175,122,197,0.6)',
+              borderColor: '#AF7AC5',
               borderWidth: 1, borderRadius: 3,
             },
           ],
@@ -773,7 +773,7 @@ function ExcuseDataPage() {
                 <div className="ed-panel-head" onClick={() => toggleCollapse('trend')}>
                   <div>
                     <h2>Growth</h2>
-                    <span className="ed-panel-sub">Each bar = total journal entries logged that day. The blue line smooths daily noise into a 7-day rolling average.</span>
+                    <span className="ed-panel-sub">Each bar represents the total number of journal entries logged across all users on that specific day. The blue line is a 7-day rolling average — it takes the average of the current day plus the previous 6 days to smooth out day-to-day noise and reveal the underlying growth trend.</span>
                   </div>
                   <span className="ed-collapse-icon">{collapsed.trend ? '+' : '−'}</span>
                 </div>
@@ -789,14 +789,14 @@ function ExcuseDataPage() {
                 <div className="ed-panel-head" onClick={() => toggleCollapse('habit')}>
                   <div>
                     <h2>Habit Formation</h2>
-                    <span className="ed-panel-sub">For each user, Week 0 is when they first used Spool. This shows what % of users were still logging entries at each week after signup. &quot;Power users&quot; = users with 50+ total entries.</span>
+                    <span className="ed-panel-sub">For each user, Week 0 is the week they first used Spool (not a calendar week — each user's clock starts on their own first entry). The Y-axis shows what percentage of users who had been around long enough to reach that week were still actively logging at least one journal entry during it. The blue line tracks all filtered users; the orange line tracks &quot;power users&quot; only (defined as users with 50+ total entries). A flat line means strong retention; a declining line means users are dropping off.</span>
                   </div>
                   <span className="ed-collapse-icon">{collapsed.habit ? '+' : '−'}</span>
                 </div>
                 {!collapsed.habit && (
                   <div className="ed-panel-body">
                     <div className="ed-chart-wrap" style={{ height: 200 }}><canvas ref={habitChartRef} /></div>
-                    <div className="ed-chart-footnote">Only includes weeks where 3+ users have enough history. Users who joined recently won't appear in later weeks.</div>
+                    <div className="ed-chart-footnote">Only includes weeks where 3+ users have been around long enough to be measured. Users who joined recently won't appear in later weeks because they haven't had enough time yet. This means later weeks reflect only longer-tenured users, not the full population.</div>
                   </div>
                 )}
               </div>
@@ -806,7 +806,7 @@ function ExcuseDataPage() {
                 <div className="ed-panel-head" onClick={() => toggleCollapse('power')}>
                   <div>
                     <h2>Power Users</h2>
-                    <span className="ed-panel-sub">Ranked by composite score: 40% total entries, 30% longest streak, 30% text diversity. Text diversity = % of excuses that are unique (not copy-pasted).</span>
+                    <span className="ed-panel-sub">Users ranked by a composite engagement score. The score is calculated as: 40% weight on total journal entries (more entries = more engaged), 30% weight on longest consecutive-day streak (logging every day in a row), and 30% weight on text diversity (what % of their excuses have unique text vs copy-pasted repeats). Each dimension is normalized 0-1 relative to the highest value in the population, then combined. The #1 user is highlighted in the spotlight card below, followed by the next 4.</span>
                   </div>
                   <span className="ed-collapse-icon">{collapsed.power ? '+' : '−'}</span>
                 </div>
@@ -878,7 +878,7 @@ function ExcuseDataPage() {
                 <div className="ed-panel-head" onClick={() => toggleCollapse('retention')}>
                   <div>
                     <h2>Retention</h2>
-                    <span className="ed-panel-sub">Users grouped by the month they first used Spool. Each cell = % of that group still logging entries at that week. Green = 60%+, yellow = 30-60%, red = &lt;30%.</span>
+                    <span className="ed-panel-sub">Users are grouped into monthly cohorts based on when they first used Spool (e.g., all users whose first journal entry was in January 2026 form one cohort). Each cell shows what percentage of that cohort was still logging at least one journal entry during that week after their first use. Green cells (60%+) = strong retention, yellow (30-60%) = moderate, red (&lt;30%) = most users in that cohort have stopped by that point. Only cohorts with 8+ users are shown to avoid noisy small-sample results.</span>
                   </div>
                   <span className="ed-collapse-icon">{collapsed.retention ? '+' : '−'}</span>
                 </div>
@@ -937,38 +937,14 @@ function ExcuseDataPage() {
           {/* ====== ICP & INSIGHTS TAB ====== */}
           {activeTab === 'icp-insights' && (
             <>
-              {/* ── 1. Self-Awareness ── */}
-              <div className="ed-panel">
-                <div className="ed-panel-head" onClick={() => toggleCollapse('catevo')}>
-                  <div>
-                    <h2>Self-Awareness</h2>
-                    <span className="ed-panel-sub">For each user, we split their excuse history at the midpoint (by date). Gold bars = category % in their first half; blue bars = second half. A rising category means users gravitate toward it over time.</span>
-                  </div>
-                  <span className="ed-collapse-icon">{collapsed.catevo ? '+' : '−'}</span>
-                </div>
-                {!collapsed.catevo && (
-                  <div className="ed-panel-body">
-                    {categoryEvoData.categories.length > 0 ? (
-                      <>
-                        <div className="ed-chart-wrap" style={{ height: 220 }}><canvas ref={categoryEvoChartRef} /></div>
-                        <div className="ed-chart-footnote">
-                          First half: {categoryEvoData.earlySample} entries · Second half: {categoryEvoData.lateSample} entries.
-                          &quot;First half&quot; and &quot;second half&quot; are relative to each user's own timeline, so join dates are normalized. Only users with 1+ week of data and excuses with a category assigned.
-                        </div>
-                      </>
-                    ) : (
-                      <div className="ed-empty-inline">Not enough categorized data yet</div>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              {/* ── 2. ICP Explorer ── */}
+              {/* ── 1. ICP Explorer ── */}
               <div className="ed-panel">
                 <div className="ed-panel-head" onClick={() => toggleCollapse('icp')}>
                   <div>
                     <h2>ICP Explorer</h2>
-                    <span className="ed-panel-sub">Same first-half vs second-half comparison as Self-Awareness, but sorted by growth (biggest increase on the left). Green/red labels = percentage-point shift.</span>
+                    <span className="ed-panel-sub">
+                      Which excuse categories are growing or shrinking over time? For each user, we split their excuse history into two halves at the midpoint of their personal timeline (by date). The gold bars show what % of categorized excuses fell into each category during the user's first half; blue bars show the second half. Categories are sorted left-to-right by growth (biggest increase first). The green/red labels above each pair show the percentage-point shift from first half to second half.
+                    </span>
                   </div>
                   <span className="ed-collapse-icon">{collapsed.icp ? '+' : '−'}</span>
                 </div>
@@ -977,11 +953,14 @@ function ExcuseDataPage() {
                     {icpSegments.length > 0 ? (
                       <>
                         <div className="ed-chart-wrap" style={{ height: 220 }}><canvas ref={icpTrendChartRef} /></div>
-                        <div className="ed-chart-footnote">Sorted by growth trend (biggest increase on left). Delta labels show percentage-point shift from first half to second half.</div>
+                        <div className="ed-chart-footnote">
+                          This chart uses the same first-half/second-half methodology as the Self-Awareness panel below. Only categorized excuses from users with 1+ week of data are included
+                          {categoryEvoData.usersIncluded > 0 && <> ({categoryEvoData.usersIncluded} users, {categoryEvoData.earlySample + categoryEvoData.lateSample} categorized entries)</>}.
+                        </div>
 
                         <h3 className="ed-sub-heading" style={{ marginTop: 18 }}>Segment Performance</h3>
                         <div className="ed-chart-footnote" style={{ marginTop: 0, marginBottom: 10, textAlign: 'left' }}>
-                          A &quot;segment&quot; = users where this category is 25%+ of their categorized excuses. Stats compare each segment against the full user population.
+                          How to read this table: A &quot;segment&quot; is defined as users where a specific category makes up 25% or more of their categorized excuses. For example, if the Social row says &quot;27 users,&quot; that means 27 users have Social as at least 25% of their categorized journal entries. Each stat column shows the segment average first, then the overall population average after the slash, so you can compare how this segment performs vs everyone. Green-tinted rows mean this segment has better 14-day retention than the population. Red-tinted rows mean worse retention. Click any row to see a detailed drilldown.
                         </div>
                         <div className="ed-table-wrap">
                           <table className="ed-table">
@@ -1020,7 +999,7 @@ function ExcuseDataPage() {
                           </table>
                         </div>
                         <div className="ed-chart-footnote" style={{ textAlign: 'left' }}>
-                          &quot;Retained&quot; = user logged at least one excuse in the last 14 days. Green rows = segment outperforms population on retention. Red = underperforms. Click a row to drill down.
+                          &quot;Retained&quot; means the user logged at least one journal entry within the last 14 days from today. &quot;Avg Streak&quot; is the longest consecutive-day streak for each user, averaged across the segment. Green rows = this segment outperforms the full population on 14-day retention. Red rows = this segment underperforms. Click any row to drill down into that segment's retention curve and most common excuse texts.
                         </div>
 
                         {icpDrilldown && (
@@ -1028,30 +1007,35 @@ function ExcuseDataPage() {
                             <div className="ed-drill-stats">
                               <div className="ed-drill-stat">
                                 <span className="ed-drill-val">{icpDrilldown.segment.segmentSize}</span>
-                                <span className="ed-drill-label">Users</span>
+                                <span className="ed-drill-label">Users in Segment</span>
                               </div>
                               <div className="ed-drill-stat">
                                 <span className="ed-drill-val">{icpDrilldown.segment.segmentAvgStreak.toFixed(1)}d</span>
-                                <span className="ed-drill-label">Avg Streak</span>
+                                <span className="ed-drill-label">Avg Longest Streak</span>
                               </div>
                               <div className="ed-drill-stat">
                                 <span className="ed-drill-val">{(icpDrilldown.segment.segmentRetention * 100).toFixed(0)}%</span>
-                                <span className="ed-drill-label">Retained</span>
+                                <span className="ed-drill-label">14d Retained</span>
                               </div>
                               <div className="ed-drill-stat">
                                 <span className="ed-drill-val">{icpDrilldown.segment.segmentAvgEntries.toFixed(1)}</span>
-                                <span className="ed-drill-label">Avg Entries</span>
+                                <span className="ed-drill-label">Avg Entries/User</span>
                               </div>
                             </div>
 
                             <div style={{ marginTop: 16 }}>
                               <h3 className="ed-sub-heading">Retention Curve: {expandedICPCategory} segment vs All Users</h3>
-                              <div className="ed-chart-footnote" style={{ textAlign: 'left', marginBottom: 6 }}>% of users in this segment still active at each week of usage, compared to all filtered users.</div>
+                              <div className="ed-chart-footnote" style={{ textAlign: 'left', marginBottom: 6 }}>
+                                This chart compares two groups week-by-week: the {expandedICPCategory} segment (users where {expandedICPCategory} is 25%+ of their categorized excuses) vs all filtered users. Week 0 = when each user first used Spool. The Y-axis shows what % of users in each group were still logging at least one entry during that week. A higher line means better retention.
+                              </div>
                               <div className="ed-chart-wrap" style={{ height: 160 }}><canvas ref={icpHabitChartRef} /></div>
                             </div>
 
                             <div style={{ marginTop: 16 }}>
-                              <h3 className="ed-sub-heading">Most Common Excuses</h3>
+                              <h3 className="ed-sub-heading">Most Common Excuses in {expandedICPCategory} Segment</h3>
+                              <div className="ed-chart-footnote" style={{ textAlign: 'left', marginBottom: 6 }}>
+                                The most frequently used excuse texts by users in this segment, ranked by how many times each text appears. This helps identify what these users are actually writing about.
+                              </div>
                               <div className="ed-table-wrap ed-table-wrap-scroll">
                                 <table className="ed-table">
                                   <thead><tr><th>#</th><th>Excuse Text</th><th>Count</th></tr></thead>
@@ -1072,6 +1056,37 @@ function ExcuseDataPage() {
                       </>
                     ) : (
                       <div className="ed-empty-inline">Not enough categorized data for segment analysis</div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* ── 2. Self-Awareness ── */}
+              <div className="ed-panel">
+                <div className="ed-panel-head" onClick={() => toggleCollapse('catevo')}>
+                  <div>
+                    <h2>Self-Awareness</h2>
+                    <span className="ed-panel-sub">
+                      Do users' excuse categories change over time? For each user, we find the midpoint between their first and last journal entry (by date). Excuses before that midpoint are labeled &quot;First Half&quot; (green bars); excuses after are &quot;Second Half&quot; (purple bars). Each bar shows what % of categorized excuses in that half fell into each category. If a category's purple bar is taller than its green bar, users are gravitating toward that category over time. Categories are sorted by the biggest absolute shift.
+                    </span>
+                  </div>
+                  <span className="ed-collapse-icon">{collapsed.catevo ? '+' : '−'}</span>
+                </div>
+                {!collapsed.catevo && (
+                  <div className="ed-panel-body">
+                    {categoryEvoData.categories.length > 0 ? (
+                      <>
+                        <div className="ed-chart-wrap" style={{ height: 220 }}><canvas ref={categoryEvoChartRef} /></div>
+                        <div className="ed-chart-footnote">
+                          Sample: {categoryEvoData.earlySample} first-half entries + {categoryEvoData.lateSample} second-half entries = {categoryEvoData.earlySample + categoryEvoData.lateSample} categorized entries
+                          {categoryEvoData.usersIncluded > 0 && <> from {categoryEvoData.usersIncluded} users</>}.
+                          {summaryStats && <> This is less than the total {summaryStats.total.toLocaleString()} journal entries because: (1) {categoryEvoData.uncategorizedCount > 0 ? categoryEvoData.uncategorizedCount.toLocaleString() : 'some'} entries have no category assigned (the category picker was added after launch, so older entries are uncategorized), and (2) {categoryEvoData.usersExcludedShortSpan > 0 ? categoryEvoData.usersExcludedShortSpan : 'some'} users with less than 1 week between their first and last entry are excluded (too little data to meaningfully split into halves).</>}
+                          {' '}&quot;First half&quot; and &quot;second half&quot; are relative to each user's own timeline — a user who joined in October has different midpoint dates than one who joined in January. This normalizes across different join dates so we can see universal behavior shifts.
+                          {categoryEvoData.earliestDate && categoryEvoData.latestDate && <> Data spans from {categoryEvoData.earliestDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} to {categoryEvoData.latestDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}.</>}
+                        </div>
+                      </>
+                    ) : (
+                      <div className="ed-empty-inline">Not enough categorized data yet</div>
                     )}
                   </div>
                 )}
