@@ -176,7 +176,7 @@ function ExcuseDataPage() {
       total, activeUsers, totalUsers, longestStreak, streaksOver7,
       avgPerUser: activeUsers > 0 ? (total / activeUsers).toFixed(1) : 0,
     };
-  }, [filteredExcusesForCharts, filteredUserIds, users, streakMap, diversityMap]);
+  }, [filteredExcusesForCharts, filteredUserIds, users, streakMap]);
 
   // ── Daily Counts (for Activity Trend — uses filtered data) ──
   const dailyCounts = useMemo(() => {
