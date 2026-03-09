@@ -52,9 +52,6 @@ function ExcuseDataPage() {
   const timelineInstance = useRef(null);
   const habitChartRef = useRef(null);
   const habitInstance = useRef(null);
-  const categoryEvoChartRef = useRef(null);
-  const categoryEvoInstance = useRef(null);
-
   // Chart refs — ICP Explorer
   const icpTrendChartRef = useRef(null);
   const icpTrendInstance = useRef(null);
@@ -405,51 +402,6 @@ function ExcuseDataPage() {
     }
     return () => { if (habitInstance.current) habitInstance.current.destroy(); };
   }, [habitData, collapsed, activeTab]);
-
-  // Category Evolution: grouped bar (early vs late)
-  useEffect(() => {
-    if (categoryEvoData.categories.length === 0) return;
-    if (categoryEvoInstance.current) categoryEvoInstance.current.destroy();
-    if (categoryEvoChartRef.current) {
-      const cats = categoryEvoData.categories;
-      categoryEvoInstance.current = new Chart(categoryEvoChartRef.current, {
-        type: 'bar',
-        data: {
-          labels: cats.map(c => c.name),
-          datasets: [
-            {
-              label: 'First Half',
-              data: cats.map(c => c.earlyPct),
-              backgroundColor: 'rgba(72,191,145,0.5)',
-              borderColor: '#48BF91',
-              borderWidth: 1, borderRadius: 3,
-            },
-            {
-              label: 'Second Half',
-              data: cats.map(c => c.latePct),
-              backgroundColor: 'rgba(175,122,197,0.6)',
-              borderColor: '#AF7AC5',
-              borderWidth: 1, borderRadius: 3,
-            },
-          ],
-        },
-        options: {
-          responsive: true, maintainAspectRatio: false,
-          plugins: {
-            legend: { display: true, position: 'top', align: 'end',
-              labels: { font: { size: 10 }, boxWidth: 12, padding: 8 } },
-          },
-          scales: {
-            x: { grid: { display: false }, ticks: { font: { size: 10 } } },
-            y: { beginAtZero: true,
-              title: { display: true, text: '% of Entries', font: { size: 10 }, color: '#b0a080' },
-              grid: { color: 'rgba(0,0,0,0.04)' } },
-          },
-        },
-      });
-    }
-    return () => { if (categoryEvoInstance.current) categoryEvoInstance.current.destroy(); };
-  }, [categoryEvoData, collapsed, activeTab]);
 
   // ICP Trend: grouped bar sorted by delta, with delta annotations
   useEffect(() => {
@@ -1061,38 +1013,7 @@ function ExcuseDataPage() {
                 )}
               </div>
 
-              {/* ── 2. Self-Awareness ── */}
-              <div className="ed-panel">
-                <div className="ed-panel-head" onClick={() => toggleCollapse('catevo')}>
-                  <div>
-                    <h2>Self-Awareness</h2>
-                    <span className="ed-panel-sub">
-                      Do users' excuse categories change over time? For each user, we find the midpoint between their first and last journal entry (by date). Excuses before that midpoint are labeled &quot;First Half&quot; (green bars); excuses after are &quot;Second Half&quot; (purple bars). Each bar shows what % of categorized excuses in that half fell into each category. If a category's purple bar is taller than its green bar, users are gravitating toward that category over time. Categories are sorted by the biggest absolute shift.
-                    </span>
-                  </div>
-                  <span className="ed-collapse-icon">{collapsed.catevo ? '+' : '−'}</span>
-                </div>
-                {!collapsed.catevo && (
-                  <div className="ed-panel-body">
-                    {categoryEvoData.categories.length > 0 ? (
-                      <>
-                        <div className="ed-chart-wrap" style={{ height: 220 }}><canvas ref={categoryEvoChartRef} /></div>
-                        <div className="ed-chart-footnote">
-                          Sample: {categoryEvoData.earlySample} first-half entries + {categoryEvoData.lateSample} second-half entries = {categoryEvoData.earlySample + categoryEvoData.lateSample} categorized entries
-                          {categoryEvoData.usersIncluded > 0 && <> from {categoryEvoData.usersIncluded} users</>}.
-                          {summaryStats && <> This is less than the total {summaryStats.total.toLocaleString()} journal entries because: (1) {categoryEvoData.uncategorizedCount > 0 ? categoryEvoData.uncategorizedCount.toLocaleString() : 'some'} entries have no category assigned (the category picker was added after launch, so older entries are uncategorized), and (2) {categoryEvoData.usersExcludedShortSpan > 0 ? categoryEvoData.usersExcludedShortSpan : 'some'} users with less than 1 week between their first and last entry are excluded (too little data to meaningfully split into halves).</>}
-                          {' '}&quot;First half&quot; and &quot;second half&quot; are relative to each user's own timeline — a user who joined in October has different midpoint dates than one who joined in January. This normalizes across different join dates so we can see universal behavior shifts.
-                          {categoryEvoData.earliestDate && categoryEvoData.latestDate && <> Data spans from {categoryEvoData.earliestDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} to {categoryEvoData.latestDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}.</>}
-                        </div>
-                      </>
-                    ) : (
-                      <div className="ed-empty-inline">Not enough categorized data yet</div>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              {/* ── 3. Explore ── */}
+              {/* ── 2. Explore ── */}
               <div className="ed-panel">
                 <div className="ed-panel-head" onClick={() => toggleCollapse('explore')}>
                   <div>
