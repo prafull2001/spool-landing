@@ -139,6 +139,7 @@ export function computeHabitFormation(excuses, filteredUserIds, powerUserThresho
   const weekLabels = [];
   const pctAll = [];
   const pctPower = [];
+  const eligibleCounts = [];
 
   for (let w = 0; w <= maxWeek; w++) {
     // Eligible: users whose tenure (time since join) covers this week
@@ -153,9 +154,10 @@ export function computeHabitFormation(excuses, filteredUserIds, powerUserThresho
     weekLabels.push(w);
     pctAll.push(allEligible.length > 0 ? (allActive / allEligible.length) * 100 : 0);
     pctPower.push(powerEligible.length > 0 ? (powerActive / powerEligible.length) * 100 : 0);
+    eligibleCounts.push(allEligible.length);
   }
 
-  return { weekLabels, pctAll, pctPower };
+  return { weekLabels, pctAll, pctPower, eligibleCounts };
 }
 
 /**

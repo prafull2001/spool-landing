@@ -484,7 +484,11 @@ function ExcuseDataPage() {
         const allMap = {};
         icpDrilldown.allHabit.weekLabels.forEach((w, i) => { allMap[w] = icpDrilldown.allHabit.pctAll[i]; });
         const segMap = {};
-        icpDrilldown.segHabit.weekLabels.forEach((w, i) => { segMap[w] = icpDrilldown.segHabit.pctAll[i]; });
+        const segEligMap = {};
+        icpDrilldown.segHabit.weekLabels.forEach((w, i) => {
+          segMap[w] = icpDrilldown.segHabit.pctAll[i];
+          segEligMap[w] = icpDrilldown.segHabit.eligibleCounts[i];
+        });
 
         icpHabitInstance.current = new Chart(icpHabitChartRef.current, {
           type: 'line',
@@ -500,10 +504,10 @@ function ExcuseDataPage() {
               },
               {
                 label: `${expandedICPCategory} segment`,
-                data: weekLabels.map(w => segMap[w] ?? null),
+                data: weekLabels.map(w => (segEligMap[w] || 0) >= 2 ? (segMap[w] ?? null) : null),
                 borderColor: '#5499C7', backgroundColor: 'rgba(84,153,199,0.08)',
-                fill: true, tension: 0.4, pointRadius: 2, borderWidth: 2.5,
-                spanGaps: true,
+                fill: true, tension: 0.4, pointRadius: 3, borderWidth: 2.5,
+                spanGaps: false,
               },
             ],
           },
