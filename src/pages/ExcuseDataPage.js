@@ -622,8 +622,16 @@ function ExcuseDataPage() {
   }, [excuses, filterCategory, filterUserId, filterSearch, filterDateFrom, filterDateTo]);
 
   const exportCSV = () => {
+    const csvCell = (val) => {
+      let s = val == null ? '' : String(val);
+      if (/^[=+\-@]/.test(s)) s = "'" + s; // neutralize spreadsheet formulas
+      return '"' + s.replace(/"/g, '""') + '"';
+    };
     const rows = [['Date', 'User', 'User ID', 'Excuse Text', 'Category'],
-      ...allExcusesFiltered.map(e => [e.date ? e.date.toISOString() : '', e.userName, e.userId, `"${(e.text || '').replace(/"/g, '""')}"`, e.category])];
+      ...allExcusesFiltered.map(e => [
+        csvCell(e.date ? e.date.toISOString() : ''), csvCell(e.userName),
+        csvCell(e.userId), csvCell(e.text), csvCell(e.category),
+      ])];
     const blob = new Blob([rows.map(r => r.join(',')).join('\n')], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a'); a.href = url;
