@@ -7,7 +7,7 @@ import {
   computeTextDiversity, computeStreaks, filterUsers,
   computeHabitFormation, computeCohortRetention,
   computeCategoryEvolution, computePowerUserRankings,
-  computeICPSegments, computeTimingPatterns,
+  computeICPSegments, computeTimingPatterns, computeWeek2DeepDive,
 } from './excuseDataHelpers';
 import './ExcuseDataPage.css';
 
@@ -15,12 +15,12 @@ Chart.register(...registerables);
 
 const CATEGORIES = [
   'Entertainment', 'Social', 'Break/Reward', 'Other',
-  'Quick Check', 'Boredom', 'Procrastination', 'FOMO', 'Uncategorized'
+  'Quick Check', 'Boredom', 'Procrastination', 'FOMO'
 ];
 
 const CATEGORY_COLORS = [
   '#5499C7', '#58D68D', '#F4D03F', '#AF7AC5',
-  '#EB984E', '#EC7063', '#45B7D1', '#F1948A', '#BDC3C7'
+  '#EB984E', '#EC7063', '#45B7D1', '#F1948A'
 ];
 
 function ExcuseDataPage() {
@@ -54,6 +54,10 @@ function ExcuseDataPage() {
   const habitInstance = useRef(null);
   const urgeChartRef = useRef(null);
   const urgeInstance = useRef(null);
+  const w2CategoryChartRef = useRef(null);
+  const w2CategoryInstance = useRef(null);
+  const w2TimingChartRef = useRef(null);
+  const w2TimingInstance = useRef(null);
   // Chart refs — ICP Explorer
   const icpTrendChartRef = useRef(null);
   const icpTrendInstance = useRef(null);
@@ -211,6 +215,12 @@ function ExcuseDataPage() {
     [excuses, filteredUserIds]
   );
 
+  // ── Week 2 Deep-Dive ──
+  const week2Data = useMemo(() =>
+    computeWeek2DeepDive(excuses, filteredUserIds, CATEGORIES),
+    [excuses, filteredUserIds]
+  );
+
   // ── Power Users ──
   const topCategory = (cats) => {
     if (!cats) return '--';
@@ -275,8 +285,8 @@ function ExcuseDataPage() {
     const counts = {};
     CATEGORIES.forEach(c => { counts[c] = 0; });
     filteredExcusesForCharts.forEach(e => {
-      const cat = CATEGORIES.includes(e.category) ? e.category : 'Uncategorized';
-      counts[cat] = (counts[cat] || 0) + 1;
+      if (!CATEGORIES.includes(e.category)) return;
+      counts[e.category] = (counts[e.category] || 0) + 1;
     });
     return counts;
   }, [filteredExcusesForCharts]);
@@ -294,8 +304,7 @@ function ExcuseDataPage() {
       const u = map[e.userId];
       u.excuseCount++;
       if (e.date && (!u.lastActive || e.date > u.lastActive)) u.lastActive = e.date;
-      const cat = e.category || 'Uncategorized';
-      u.categories[cat] = (u.categories[cat] || 0) + 1;
+      if (e.category) u.categories[e.category] = (u.categories[e.category] || 0) + 1;
     });
     const list = Object.values(map)
       .filter(u => filteredUserIds.has(u.userId))
@@ -444,6 +453,79 @@ function ExcuseDataPage() {
     }
     return () => { if (urgeInstance.current) urgeInstance.current.destroy(); };
   }, [timingData, collapsed, activeTab]);
+
+  // Week 2: Category comparison grouped bar
+  useEffect(() => {
+    if (!week2Data || week2Data.totalEligible === 0) return;
+    if (w2CategoryInstance.current) w2CategoryInstance.current.destroy();
+    if (w2CategoryChartRef.current) {
+      const cats = CATEGORIES.filter(c =>
+        (week2Data.survivors.categoryDist[c] || 0) >= 2 || (week2Data.churners.categoryDist[c] || 0) >= 2
+      );
+      w2CategoryInstance.current = new Chart(w2CategoryChartRef.current, {
+        type: 'bar',
+        data: {
+          labels: cats,
+          datasets: [
+            { label: 'Survivors', data: cats.map(c => week2Data.survivors.categoryDist[c] || 0),
+              backgroundColor: 'rgba(88,214,141,0.6)', borderColor: '#58D68D', borderWidth: 1, borderRadius: 3 },
+            { label: 'Churners', data: cats.map(c => week2Data.churners.categoryDist[c] || 0),
+              backgroundColor: 'rgba(236,112,99,0.6)', borderColor: '#EC7063', borderWidth: 1, borderRadius: 3 },
+          ],
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: true, position: 'top', align: 'end',
+            labels: { font: { size: 10 }, boxWidth: 12, padding: 8 } } },
+          scales: {
+            x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+            y: { beginAtZero: true,
+              title: { display: true, text: '% of W1 Entries', font: { size: 10 }, color: '#b0a080' },
+              grid: { color: 'rgba(0,0,0,0.04)' } },
+          },
+        },
+      });
+    }
+    return () => { if (w2CategoryInstance.current) w2CategoryInstance.current.destroy(); };
+  }, [week2Data, collapsed, activeTab]);
+
+  // Week 2: Timing comparison overlaid bar
+  useEffect(() => {
+    if (!week2Data || week2Data.totalEligible === 0) return;
+    if (w2TimingInstance.current) w2TimingInstance.current.destroy();
+    if (w2TimingChartRef.current) {
+      const hours = Array.from({ length: 24 }, (_, h) =>
+        h === 0 ? '12a' : h < 12 ? `${h}a` : h === 12 ? '12p' : `${h - 12}p`
+      );
+      // Normalize to % of total for each group
+      const sTotal = week2Data.survivors.hourDist.reduce((s, v) => s + v, 0) || 1;
+      const cTotal = week2Data.churners.hourDist.reduce((s, v) => s + v, 0) || 1;
+      w2TimingInstance.current = new Chart(w2TimingChartRef.current, {
+        type: 'bar',
+        data: {
+          labels: hours,
+          datasets: [
+            { label: 'Survivors', data: week2Data.survivors.hourDist.map(v => (v / sTotal) * 100),
+              backgroundColor: 'rgba(88,214,141,0.5)', borderColor: '#58D68D', borderWidth: 1, borderRadius: 2 },
+            { label: 'Churners', data: week2Data.churners.hourDist.map(v => (v / cTotal) * 100),
+              backgroundColor: 'rgba(236,112,99,0.5)', borderColor: '#EC7063', borderWidth: 1, borderRadius: 2 },
+          ],
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: true, position: 'top', align: 'end',
+            labels: { font: { size: 10 }, boxWidth: 12, padding: 8 } } },
+          scales: {
+            x: { grid: { display: false }, ticks: { font: { size: 9 }, maxRotation: 0 } },
+            y: { beginAtZero: true,
+              title: { display: true, text: '% of W1 Entries', font: { size: 10 }, color: '#b0a080' },
+              grid: { color: 'rgba(0,0,0,0.04)' } },
+          },
+        },
+      });
+    }
+    return () => { if (w2TimingInstance.current) w2TimingInstance.current.destroy(); };
+  }, [week2Data, collapsed, activeTab]);
 
   // ICP Trend: grouped bar sorted by delta, with delta annotations
   useEffect(() => {
@@ -769,6 +851,8 @@ function ExcuseDataPage() {
               onClick={() => setActiveTab('icp-insights')}>ICP &amp; Insights</button>
             <button className={`ed-tab ${activeTab === 'timing' ? 'ed-tab-active' : ''}`}
               onClick={() => setActiveTab('timing')}>Timing &amp; Frequency</button>
+            <button className={`ed-tab ${activeTab === 'week2' ? 'ed-tab-active' : ''}`}
+              onClick={() => setActiveTab('week2')}>Week 2 Deep-Dive</button>
             <button className={`ed-tab ${activeTab === 'all-excuses' ? 'ed-tab-active' : ''}`}
               onClick={() => setActiveTab('all-excuses')}>All Excuses</button>
           </div>
@@ -1034,6 +1118,131 @@ function ExcuseDataPage() {
                   </div>
                 )}
               </div>
+            </>
+          )}
+
+          {/* ====== WEEK 2 DEEP-DIVE TAB ====== */}
+          {activeTab === 'week2' && (
+            <>
+              {week2Data.totalEligible > 0 ? (
+                <>
+                  {/* ── 1. Funnel Summary ── */}
+                  <div className="stat-strip">
+                    <div className="stat-item">
+                      <span className="stat-value">{week2Data.totalEligible}</span>
+                      <span className="stat-label">Eligible Users</span>
+                    </div>
+                    <div className="stat-sep" />
+                    <div className="stat-item">
+                      <span className="stat-value" style={{ color: '#27ae60' }}>{week2Data.survivorCount}<small> ({(week2Data.survivalRate * 100).toFixed(0)}%)</small></span>
+                      <span className="stat-label">W2 Survivors</span>
+                    </div>
+                    <div className="stat-sep" />
+                    <div className="stat-item">
+                      <span className="stat-value" style={{ color: '#c0392b' }}>{week2Data.churnerCount}<small> ({((1 - week2Data.survivalRate) * 100).toFixed(0)}%)</small></span>
+                      <span className="stat-label">W2 Churners</span>
+                    </div>
+                  </div>
+                  <div className="ed-chart-footnote" style={{ marginBottom: 14 }}>
+                    Users are split into two groups based on their first 14 days. &quot;Survivors&quot; logged at least one excuse in both Week 1 (days 1-7) and Week 2 (days 8-14). &quot;Churners&quot; were active in Week 1 but logged nothing in Week 2. Only users who joined 14+ days ago are included so we can observe both weeks.
+                  </div>
+
+                  {/* ── 2. Side-by-Side Comparison ── */}
+                  <div className="ed-panel">
+                    <div className="ed-panel-head" onClick={() => toggleCollapse('w2compare')}>
+                      <div>
+                        <h2>Week 1 Behavior Comparison</h2>
+                        <span className="ed-panel-sub">This compares what survivors and churners did during Week 1 — before anyone churned. Differences here reveal early warning signals. For example, if survivors logged more entries in W1, that suggests frequency is a leading indicator of retention.</span>
+                      </div>
+                      <span className="ed-collapse-icon">{collapsed.w2compare ? '+' : '−'}</span>
+                    </div>
+                    {!collapsed.w2compare && (
+                      <div className="ed-panel-body">
+                        <div className="ed-table-wrap">
+                          <table className="ed-table">
+                            <thead>
+                              <tr>
+                                <th>Metric</th>
+                                <th style={{ color: '#27ae60' }}>Survivors ({week2Data.survivorCount})</th>
+                                <th style={{ color: '#c0392b' }}>Churners ({week2Data.churnerCount})</th>
+                                <th>Delta</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {[
+                                { label: 'W1 Entries (avg)', s: week2Data.survivors.avgCount, c: week2Data.churners.avgCount, fmt: v => v.toFixed(1), unit: '' },
+                                { label: 'W1 Active Days (avg)', s: week2Data.survivors.avgActiveDays, c: week2Data.churners.avgActiveDays, fmt: v => v.toFixed(1), unit: '' },
+                                { label: 'Avg Excuse Length', s: week2Data.survivors.avgLength, c: week2Data.churners.avgLength, fmt: v => v.toFixed(0), unit: ' chars' },
+                                { label: 'Text Diversity', s: week2Data.survivors.avgDiversity * 100, c: week2Data.churners.avgDiversity * 100, fmt: v => v.toFixed(0), unit: '%' },
+                              ].map(row => {
+                                const delta = row.s - row.c;
+                                const sWins = row.s > row.c;
+                                return (
+                                  <tr key={row.label}>
+                                    <td className="ed-bold">{row.label}</td>
+                                    <td style={{ background: sWins ? 'rgba(88,214,141,0.12)' : 'transparent', fontWeight: 600 }}>
+                                      {row.fmt(row.s)}{row.unit}
+                                    </td>
+                                    <td style={{ background: !sWins ? 'rgba(236,112,99,0.12)' : 'transparent', fontWeight: 600 }}>
+                                      {row.fmt(row.c)}{row.unit}
+                                    </td>
+                                    <td style={{ color: delta >= 0 ? '#27ae60' : '#c0392b', fontWeight: 600 }}>
+                                      {delta >= 0 ? '+' : ''}{row.fmt(delta)}{row.unit}
+                                    </td>
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                          </table>
+                        </div>
+                        <div className="ed-chart-footnote">
+                          Green-highlighted cells show which group had the higher value for each metric. A large delta in &quot;W1 Entries&quot; or &quot;Active Days&quot; suggests that early frequency predicts retention. Higher text diversity in survivors would suggest thoughtful reflection (vs copy-paste) matters.
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* ── 3. Category Comparison ── */}
+                  <div className="ed-panel">
+                    <div className="ed-panel-head" onClick={() => toggleCollapse('w2category')}>
+                      <div>
+                        <h2>Category Comparison</h2>
+                        <span className="ed-panel-sub">What were survivors journaling about vs churners during Week 1? Each pair of bars shows what % of that group's W1 excuses fell into each category. Categories with a big gap between green (survivors) and red (churners) suggest that excuse topic correlates with retention.</span>
+                      </div>
+                      <span className="ed-collapse-icon">{collapsed.w2category ? '+' : '−'}</span>
+                    </div>
+                    {!collapsed.w2category && (
+                      <div className="ed-panel-body">
+                        <div className="ed-chart-wrap" style={{ height: 220 }}><canvas ref={w2CategoryChartRef} /></div>
+                        <div className="ed-chart-footnote">
+                          Only categories with at least 2% representation in either group are shown. If a category is much higher for survivors (green), users who journal about that topic may be more likely to stick around.
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* ── 4. Timing Comparison ── */}
+                  <div className="ed-panel">
+                    <div className="ed-panel-head" onClick={() => toggleCollapse('w2timing')}>
+                      <div>
+                        <h2>Timing Comparison</h2>
+                        <span className="ed-panel-sub">When during the day were survivors vs churners logging excuses in Week 1? Each bar shows what % of that group's W1 entries were logged at that hour. Differences could indicate different use contexts — e.g., churners might only log late at night while survivors spread entries throughout the day.</span>
+                      </div>
+                      <span className="ed-collapse-icon">{collapsed.w2timing ? '+' : '−'}</span>
+                    </div>
+                    {!collapsed.w2timing && (
+                      <div className="ed-panel-body">
+                        <div className="ed-chart-wrap" style={{ height: 200 }}><canvas ref={w2TimingChartRef} /></div>
+                        <div className="ed-chart-footnote">
+                          Normalized to % of each group's total W1 entries so the two groups are comparable regardless of sample size. Hours are in the user's local timezone.
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </>
+              ) : (
+                <div className="ed-empty">Not enough users with 14+ days of data for Week 2 analysis.</div>
+              )}
             </>
           )}
 

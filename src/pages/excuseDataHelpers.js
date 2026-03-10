@@ -416,8 +416,7 @@ export function computePowerUserRankings(excusesByUser, streakMap, diversityMap,
     const diversity = diversityMap[userId] || { diversityPct: 0 };
     const cats = {};
     excs.forEach(e => {
-      const cat = e.category || 'Uncategorized';
-      cats[cat] = (cats[cat] || 0) + 1;
+      if (e.category) cats[e.category] = (cats[e.category] || 0) + 1;
     });
     users.push({
       userId,
@@ -507,5 +506,102 @@ export function computeTimingPatterns(excuses, filteredUserIds) {
     hourlyCounts, dailyCounts, heatmap,
     peakHour, peakDay,
     perUserPerDay: { buckets, avgPerDay, medianPerDay, totalUserDays: frequencies.length },
+  };
+}
+
+/**
+ * Week 2 deep-dive: compare W1 behavior of users who survived to W2 vs those who churned.
+ * @param {Array} excuses
+ * @param {Set<string>} filteredUserIds
+ * @param {string[]} categories
+ * @returns {{ survivorCount, churnerCount, survivalRate, survivors, churners, totalEligible }}
+ */
+export function computeWeek2DeepDive(excuses, filteredUserIds, categories) {
+  const now = new Date();
+  const FOURTEEN_DAYS = 14 * 86400000;
+  const SEVEN_DAYS = 7 * 86400000;
+
+  // Group excuses by user
+  const byUser = {};
+  for (const e of excuses) {
+    if (!filteredUserIds.has(e.userId) || !e.date) continue;
+    if (!byUser[e.userId]) byUser[e.userId] = [];
+    byUser[e.userId].push(e);
+  }
+
+  // For each user: find first date, split into W1/W2 excuses, determine eligibility
+  const survivors = { users: [], w1Excuses: [] };
+  const churners = { users: [], w1Excuses: [] };
+
+  for (const [userId, excs] of Object.entries(byUser)) {
+    excs.sort((a, b) => a.date - b.date);
+    const first = excs[0].date;
+    // Must have 14+ days of tenure to be eligible
+    if ((now - first) < FOURTEEN_DAYS) continue;
+
+    const w1 = excs.filter(e => (e.date - first) < SEVEN_DAYS);
+    const w2 = excs.filter(e => (e.date - first) >= SEVEN_DAYS && (e.date - first) < FOURTEEN_DAYS);
+
+    if (w1.length === 0) continue; // no W1 activity, skip
+
+    if (w2.length > 0) {
+      survivors.users.push(userId);
+      survivors.w1Excuses.push(...w1);
+    } else {
+      churners.users.push(userId);
+      churners.w1Excuses.push(...w1);
+    }
+  }
+
+  const computeGroupMetrics = (userIds, w1Excs) => {
+    if (userIds.length === 0) return { avgCount: 0, avgActiveDays: 0, avgLength: 0, avgDiversity: 0, categoryDist: {}, hourDist: new Array(24).fill(0) };
+
+    // Per-user metrics
+    let totalCount = 0, totalDays = 0, totalLen = 0, totalDiversity = 0;
+    const catCounts = {};
+    categories.forEach(c => { catCounts[c] = 0; });
+    const hourDist = new Array(24).fill(0);
+
+    for (const uid of userIds) {
+      const userW1 = w1Excs.filter(e => e.userId === uid);
+      totalCount += userW1.length;
+      const days = new Set(userW1.map(e => e.date.toISOString().split('T')[0]));
+      totalDays += days.size;
+      for (const e of userW1) {
+        totalLen += (e.text || '').length;
+        if (categories.includes(e.category)) catCounts[e.category]++;
+        hourDist[e.date.getHours()]++;
+      }
+      const texts = userW1.map(e => (e.text || '').trim().toLowerCase());
+      const unique = new Set(texts).size;
+      totalDiversity += texts.length > 0 ? unique / texts.length : 0;
+    }
+
+    const n = userIds.length;
+    // Convert category counts to percentages
+    const totalCat = Object.values(catCounts).reduce((s, v) => s + v, 0);
+    const categoryDist = {};
+    for (const [cat, count] of Object.entries(catCounts)) {
+      categoryDist[cat] = totalCat > 0 ? (count / totalCat) * 100 : 0;
+    }
+
+    return {
+      avgCount: totalCount / n,
+      avgActiveDays: totalDays / n,
+      avgLength: totalCount > 0 ? totalLen / totalCount : 0,
+      avgDiversity: totalDiversity / n,
+      categoryDist,
+      hourDist,
+    };
+  };
+
+  const totalEligible = survivors.users.length + churners.users.length;
+  return {
+    survivorCount: survivors.users.length,
+    churnerCount: churners.users.length,
+    survivalRate: totalEligible > 0 ? survivors.users.length / totalEligible : 0,
+    survivors: computeGroupMetrics(survivors.users, survivors.w1Excuses),
+    churners: computeGroupMetrics(churners.users, churners.w1Excuses),
+    totalEligible,
   };
 }
