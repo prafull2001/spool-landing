@@ -11,7 +11,9 @@
       "Bash(npm run build:*)",
       "WebSearch",
       "WebFetch(domain:apps.apple.com)",
-      "Bash(npm i:*)"
+      "Bash(npm i:*)",
+      "Bash(npm start:*)",
+      "Bash(PORT=3001 npm start:*)"
     ],
     "deny": [],
     "ask": []

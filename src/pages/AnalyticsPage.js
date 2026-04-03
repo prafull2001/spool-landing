@@ -203,6 +203,7 @@ function AnalyticsPage() {
 
     let paywallReached = 0;
     let droppedOff = 0;
+    let prePaywallDropoff = 0;
     let totalTimeSum = 0;
     let totalTimeCount = 0;
 
@@ -230,7 +231,12 @@ function AnalyticsPage() {
           screenCounts[pw]++;
         }
       }
-      if (session.dropped_off) droppedOff++;
+      if (session.dropped_off) {
+        droppedOff++;
+        if (!session.reached_paywall) {
+          prePaywallDropoff++;
+        }
+      }
       if (session.total_time_seconds > 0) {
         totalTimeSum += session.total_time_seconds;
         totalTimeCount++;
@@ -243,6 +249,8 @@ function AnalyticsPage() {
       paywallRate: ((paywallReached / total) * 100).toFixed(1),
       droppedOff,
       dropoffRate: ((droppedOff / total) * 100).toFixed(1),
+      prePaywallDropoff,
+      prePaywallDropoffRate: ((prePaywallDropoff / total) * 100).toFixed(1),
       completionRate: (((total - droppedOff) / total) * 100).toFixed(1),
       avgTotalTime: totalTimeCount > 0 ? (totalTimeSum / totalTimeCount).toFixed(0) : 0,
       screenCounts,
@@ -552,6 +560,71 @@ function AnalyticsPage() {
     return rows;
   }, [sessions, surveys, abGroups]);
 
+  // Survey overview stats
+  const surveyOverview = useMemo(() => {
+    const total = sessions.length;
+    if (total === 0) return null;
+
+    // Referral source counts
+    const referralCounts = {};
+    // Age counts
+    const ageCounts = {};
+    // Reason (main issue) counts
+    const reasonCounts = {};
+    // Paywall pass-through (reached paywall and didn't drop off there)
+    let paywallPassed = 0;
+    // Converted (has uid linked = created account, or dropped_off === false)
+    let converted = 0;
+
+    sessions.forEach(s => {
+      const survey = s.device_id ? surveys.get(s.device_id) : null;
+
+      // Referral
+      const source = survey?.referralSource || survey?.referral_source || survey?.how_did_you_hear || 'Unknown';
+      referralCounts[source] = (referralCounts[source] || 0) + 1;
+
+      // Age
+      const age = survey?.age || s.age;
+      if (age != null) {
+        const ageNum = typeof age === 'string' ? parseInt(age, 10) : age;
+        if (!isNaN(ageNum)) {
+          let bracket;
+          if (ageNum <= 17) bracket = '13-17';
+          else if (ageNum <= 24) bracket = '18-24';
+          else if (ageNum <= 34) bracket = '25-34';
+          else bracket = '35+';
+          ageCounts[bracket] = (ageCounts[bracket] || 0) + 1;
+        }
+      }
+
+      // Reason
+      const reason = survey?.mainIssue || survey?.main_issue || null;
+      if (reason) {
+        reasonCounts[reason] = (reasonCounts[reason] || 0) + 1;
+      }
+
+      // Paywall pass-through: reached paywall AND didn't drop off
+      if (s.reached_paywall && s.dropped_off === false) {
+        paywallPassed++;
+      }
+
+      // Converted: completed onboarding (didn't drop off)
+      if (s.dropped_off === false) {
+        converted++;
+      }
+    });
+
+    return {
+      referralCounts,
+      ageCounts,
+      reasonCounts,
+      paywallPassed,
+      paywallPassRate: ((paywallPassed / total) * 100).toFixed(1),
+      converted,
+      conversionRate: ((converted / total) * 100).toFixed(1),
+    };
+  }, [sessions, surveys]);
+
   // Session explorer data
   const sessionExplorerData = useMemo(() => {
     let filtered = sessions.map((s, idx) => {
@@ -678,20 +751,114 @@ function AnalyticsPage() {
             <div className="summary-card">
               <h3>Total Sessions</h3>
               <span className="value">{analytics ? analytics.total : '--'}</span>
+              <span className="card-desc">Unique devices that started onboarding</span>
+            </div>
+            <div className="summary-card">
+              <h3>Pre-Paywall Dropoff</h3>
+              <span className="value">{analytics ? `${analytics.prePaywallDropoffRate}%` : '--'}</span>
+              <span className="card-desc">Left before ever seeing the paywall</span>
             </div>
             <div className="summary-card">
               <h3>Paywall Reach Rate</h3>
               <span className="value">{analytics ? `${analytics.paywallRate}%` : '--'}</span>
+              <span className="card-desc">Made it to the paywall screen</span>
+            </div>
+            <div className="summary-card">
+              <h3>Completion Rate</h3>
+              <span className="value">{analytics ? `${analytics.completionRate}%` : '--'}</span>
+              <span className="card-desc">Finished entire onboarding (account created + setup done)</span>
             </div>
             <div className="summary-card">
               <h3>Avg Total Time</h3>
               <span className="value">{analytics ? `${analytics.avgTotalTime}s` : '--'}</span>
-            </div>
-            <div className="summary-card">
-              <h3>Dropoff Rate</h3>
-              <span className="value">{analytics ? `${analytics.dropoffRate}%` : '--'}</span>
+              <span className="card-desc">Average time from first screen to last screen seen</span>
             </div>
           </div>
+
+          {/* Survey Overview */}
+          {surveyOverview && (
+            <div className="survey-overview">
+              <h2>Survey Overview</h2>
+              <div className="survey-grid">
+                <div className="survey-section">
+                  <h3>Referral Source</h3>
+                  <div className="survey-bars">
+                    {Object.entries(surveyOverview.referralCounts)
+                      .sort((a, b) => b[1] - a[1])
+                      .map(([source, count]) => (
+                        <div key={source} className="survey-bar-row">
+                          <span className="survey-bar-label">{source}</span>
+                          <div className="survey-bar-track">
+                            <div
+                              className="survey-bar-fill"
+                              style={{ width: `${(count / sessions.length) * 100}%` }}
+                            />
+                          </div>
+                          <span className="survey-bar-value">{count} ({((count / sessions.length) * 100).toFixed(0)}%)</span>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+
+                <div className="survey-section">
+                  <h3>Main Reason</h3>
+                  <div className="survey-bars">
+                    {Object.entries(surveyOverview.reasonCounts)
+                      .sort((a, b) => b[1] - a[1])
+                      .map(([reason, count]) => (
+                        <div key={reason} className="survey-bar-row">
+                          <span className="survey-bar-label">{reason}</span>
+                          <div className="survey-bar-track">
+                            <div
+                              className="survey-bar-fill reason"
+                              style={{ width: `${(count / sessions.length) * 100}%` }}
+                            />
+                          </div>
+                          <span className="survey-bar-value">{count} ({((count / sessions.length) * 100).toFixed(0)}%)</span>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+
+                <div className="survey-section">
+                  <h3>Age Breakdown</h3>
+                  <div className="survey-bars">
+                    {['13-17', '18-24', '25-34', '35+'].map(bracket => {
+                      const count = surveyOverview.ageCounts[bracket] || 0;
+                      return (
+                        <div key={bracket} className="survey-bar-row">
+                          <span className="survey-bar-label">{bracket}</span>
+                          <div className="survey-bar-track">
+                            <div
+                              className="survey-bar-fill age"
+                              style={{ width: `${sessions.length > 0 ? (count / sessions.length) * 100 : 0}%` }}
+                            />
+                          </div>
+                          <span className="survey-bar-value">{count} ({sessions.length > 0 ? ((count / sessions.length) * 100).toFixed(0) : 0}%)</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="survey-section">
+                  <h3>Funnel Outcomes</h3>
+                  <div className="outcome-stats">
+                    <div className="outcome-row">
+                      <span className="outcome-label">Got past paywall</span>
+                      <span className="outcome-value">{surveyOverview.paywallPassed} ({surveyOverview.paywallPassRate}%)</span>
+                      <span className="outcome-desc">Saw paywall and continued onboarding</span>
+                    </div>
+                    <div className="outcome-row">
+                      <span className="outcome-label">Completed onboarding</span>
+                      <span className="outcome-value">{surveyOverview.converted} ({surveyOverview.conversionRate}%)</span>
+                      <span className="outcome-desc">Finished all screens and created account</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="filters">
             <label>
