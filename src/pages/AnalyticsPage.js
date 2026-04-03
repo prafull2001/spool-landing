@@ -149,6 +149,8 @@ function AnalyticsPage() {
       const map = new Map();
       snapshot.docs.forEach(doc => {
         const data = doc.data();
+        // Key by document ID (which IS the device ID) and also by data.device_id if present
+        map.set(doc.id, data);
         if (data.device_id) {
           map.set(data.device_id, data);
         }
@@ -207,27 +209,37 @@ function AnalyticsPage() {
     let totalTimeSum = 0;
     let totalTimeCount = 0;
 
+    const firstScreen = order[0].name;
+    const pw = version === 'v1' ? PAYWALL_SCREEN_V1 : PAYWALL_SCREEN_V2;
+
     sessionList.forEach(session => {
       // Every session starts at the first screen
-      screenCounts[order[0].name]++;
+      screenCounts[firstScreen]++;
 
       const completed = session.screens_completed || [];
+      const seenScreens = new Set();
       completed.forEach(sc => {
-        if (screenCounts[sc.screen_name] !== undefined) {
-          screenCounts[sc.screen_name]++;
-        }
+        // Track time for all occurrences
         if (sc.time_spent_seconds !== undefined && sc.time_spent_seconds !== null) {
           if (screenTimes[sc.screen_name] !== undefined) {
             screenTimes[sc.screen_name] += sc.time_spent_seconds;
             screenTimeCounts[sc.screen_name]++;
           }
         }
+        // But only count each screen once per session for the funnel
+        if (screenCounts[sc.screen_name] !== undefined && !seenScreens.has(sc.screen_name)) {
+          seenScreens.add(sc.screen_name);
+          // Don't double-count the first screen (already counted above)
+          if (sc.screen_name !== firstScreen) {
+            screenCounts[sc.screen_name]++;
+          }
+        }
       });
 
       if (session.reached_paywall) {
         paywallReached++;
-        const pw = version === 'v1' ? PAYWALL_SCREEN_V1 : PAYWALL_SCREEN_V2;
-        if (screenCounts[pw] !== undefined) {
+        // Only count paywall if not already counted from screens_completed
+        if (screenCounts[pw] !== undefined && !seenScreens.has(pw)) {
           screenCounts[pw]++;
         }
       }
@@ -527,7 +539,7 @@ function AnalyticsPage() {
     const referralBuckets = { Instagram: [], TikTok: [], Reddit: [], Friend: [], Other: [] };
     sessions.forEach(s => {
       const survey = s.device_id ? surveys.get(s.device_id) : null;
-      const source = survey?.referral_source || survey?.how_did_you_hear || '';
+      const source = survey?.referralSource || survey?.referral_source || survey?.how_did_you_hear || '';
       const srcLower = source.toLowerCase();
       if (srcLower.includes('instagram')) referralBuckets.Instagram.push(s);
       else if (srcLower.includes('tiktok')) referralBuckets.TikTok.push(s);
@@ -1034,14 +1046,11 @@ function AnalyticsPage() {
                                   <div className="detail-section">
                                     <h4>Survey Answers</h4>
                                     <div className="detail-kv">
-                                      {row.survey.referral_source && (
-                                        <div><strong>Referral:</strong> {row.survey.referral_source}</div>
+                                      {(row.survey.referralSource || row.survey.referral_source) && (
+                                        <div><strong>Referral:</strong> {row.survey.referralSource || row.survey.referral_source}</div>
                                       )}
-                                      {row.survey.how_did_you_hear && (
-                                        <div><strong>How heard:</strong> {row.survey.how_did_you_hear}</div>
-                                      )}
-                                      {row.survey.main_issue && (
-                                        <div><strong>Main issue:</strong> {row.survey.main_issue}</div>
+                                      {(row.survey.mainIssue || row.survey.main_issue) && (
+                                        <div><strong>Main issue:</strong> {row.survey.mainIssue || row.survey.main_issue}</div>
                                       )}
                                       {row.survey.age && (
                                         <div><strong>Age:</strong> {row.survey.age}</div>
