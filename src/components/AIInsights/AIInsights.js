@@ -1,7 +1,8 @@
+"use client";
 
 import React from 'react';
 import './AIInsights.css';
-import croppedinsights1 from '../../assets/croppedinsights1.PNG';
+import croppedinsights1 from '../../assets/croppedinsights1.webp';
 import croppedinsights2 from '../../assets/croppedinsights2.PNG';
 
 const insights = [
@@ -43,8 +44,8 @@ const AIInsights = () => {
           ))}
         </div>
         <div className="insight-images">
-          <img src={croppedinsights1} alt="Excuse Insights 1" data-aos="zoom-in" data-aos-delay="300" />
-          <img src={croppedinsights2} alt="Excuse Insights 2" data-aos="zoom-in" data-aos-delay="400" />
+          <img src={croppedinsights1.src} alt="Excuse Insights 1" data-aos="zoom-in" data-aos-delay="300" />
+          <img src={croppedinsights2.src} alt="Excuse Insights 2" data-aos="zoom-in" data-aos-delay="400" />
         </div>
       </div>
     </section>

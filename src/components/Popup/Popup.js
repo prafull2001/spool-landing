@@ -1,7 +1,8 @@
+"use client";
 import React, { useState, useEffect } from 'react';
 import './Popup.css';
 import { getCurrentURL } from '../../config/appConfig';
-import appStoreBadge from '../../assets/app-store-badge.svg';
+
 
 const Popup = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -51,7 +52,7 @@ const Popup = () => {
         </div>
         
         <div className="popup-actions">
-          <img src={appStoreBadge} alt="Download on the App Store" className="popup-app-store-badge" onClick={handleDownload} />
+          <img src="/app-store-badge.svg" alt="Download on the App Store" className="popup-app-store-badge" onClick={handleDownload} />
         </div>
       </div>
     </div>

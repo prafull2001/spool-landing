@@ -1,7 +1,8 @@
+"use client";
 
 import React from 'react';
 import './Stats.css';
-import croppedstats from '../../assets/croppedstats.PNG';
+import croppedstats from '../../assets/croppedstats.webp';
 
 const Stats = () => {
   return (
@@ -10,7 +11,7 @@ const Stats = () => {
         <h2 className="stats-title">Your Progress, Visualized</h2>
         <p className="stats-subtitle">Spool provides detailed statistics and analytics to help you understand and improve your phone habits.</p>
         <div className="stats-image">
-          <img src={croppedstats} alt="Spool Statistics" />
+          <img src={croppedstats.src} alt="Spool Statistics" />
         </div>
       </div>
     </section>

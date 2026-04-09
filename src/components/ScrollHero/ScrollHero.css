@@ -1,6 +1,6 @@
 .scroll-hero-container {
     position: relative;
-    height: 140vh;
+    height: 125vh;
     background-color: var(--background-color);
     color: var(--dark-text);
     overflow: visible !important;

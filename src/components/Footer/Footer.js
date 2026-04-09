@@ -1,6 +1,7 @@
+"use client";
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import './Footer.css';
 
 const Footer = () => {
@@ -11,10 +12,10 @@ const Footer = () => {
           <div className="footer-section">
             <h3>Resources</h3>
             <div className="footer-links">
-              <Link to="/blog">Blog</Link>
-              <Link to="/privacy">Privacy Policy</Link>
-              <Link to="/terms">Terms of Service</Link>
-              <Link to="/support">Contact Us</Link>
+              <Link href="/blog">Blog</Link>
+              <Link href="/privacy">Privacy Policy</Link>
+              <Link href="/terms">Terms of Service</Link>
+              <Link href="/support">Contact Us</Link>
             </div>
           </div>
           

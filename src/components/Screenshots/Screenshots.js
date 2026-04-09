@@ -1,11 +1,12 @@
+"use client";
 import React from 'react';
 import './Screenshots.css';
-import homescreen from '../../assets/homescreen.PNG';
-import voicenote from '../../assets/voicenote.PNG';
-import statsscreen from '../../assets/statsscreen.PNG';
-import howspoolworks from '../../assets/howspoolworks.PNG';
-import excuseinsights from '../../assets/excuseinsights.PNG';
-import friendexcuses from '../../assets/friendsexcuse.PNG';
+import homescreen from '../../assets/homescreen.webp';
+import voicenote from '../../assets/voicenote.webp';
+import statsscreen from '../../assets/statsscreen.webp';
+import howspoolworks from '../../assets/howspoolworks.webp';
+import excuseinsights from '../../assets/excuseinsights.webp';
+import friendexcuses from '../../assets/friendsexcuse.webp';
 
 const screenshots = [
   { src: homescreen, alt: 'Spool Homescreen' },

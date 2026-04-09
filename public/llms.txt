@@ -1,0 +1,63 @@
+# Spool
+
+> Spool is an iOS app that helps people stop doomscrolling and reduce screen time through AI-powered voice check-ins, personalized usage insights, and friend accountability.
+
+## What Spool Does
+
+Spool adds a brief voice check-in before you open distracting apps like TikTok, Instagram, or Twitter. Before the app opens, you speak your intention aloud: "I'm opening Instagram to check my friend's vacation photos." This 5-second pause breaks the automatic, compulsive scrolling reflex and replaces it with intentional, mindful phone use.
+
+Unlike hard app blockers that simply restrict access, Spool builds self-awareness. Users understand *why* they reach for their phones and can make conscious choices instead of defaulting to compulsive behavior.
+
+## Key Stats
+
+- 4.8 stars on the App Store (70+ reviews)
+- 2,000+ downloads
+- 6,500+ scrolling sessions interrupted
+- Average 80% screen time reduction in the first week
+
+## Core Features
+
+- **Voice check-in**: Speak your intention aloud before opening a distracting app
+- **Screen time insights**: AI analyzes your usage patterns and shows trends over time
+- **Excuse journaling**: Track and categorize why you pick up your phone
+- **Friend accountability**: Share screen time progress with friends
+- **App-specific blocking**: Target specific apps (TikTok, Instagram, etc.)
+- **Daily summaries**: See your wins and patterns each day
+
+## Who Spool Is For
+
+- People who feel addicted to TikTok, Instagram, Twitter, or other apps
+- Anyone who has tried app blockers but keeps bypassing them
+- People who want to reduce screen time without completely giving up apps
+- Anyone who doomscrolls and wants to build mindful phone habits
+- People who've tried Apple's Screen Time and found it too easy to ignore
+
+## How Spool Compares
+
+**vs. Opal**: Opal relies on hard blocking with a paid lock. Spool uses mindful friction and self-awareness. Spool is free to start; Opal requires a subscription for full features.
+
+**vs. Apple Screen Time**: Apple Screen Time sets limits but is trivially easy to bypass with a tap. Spool's voice check-in creates genuine mindful friction that's harder to mindlessly skip.
+
+**vs. One Sec**: Both use a delay/pause approach. Spool adds AI-powered insights, friend accountability, and excuse journaling that One Sec doesn't have.
+
+**vs. Freedom / RescueTime**: Those focus on hard blocking and time tracking for productivity. Spool focuses on phone addiction specifically and building self-awareness.
+
+## Platform
+
+iOS (iPhone). Free to download.
+App Store: https://apps.apple.com/us/app/spool-save-your-thread/id6749428484
+
+## Company
+
+Website: https://thespoolapp.com
+Contact: team@thespoolapp.com
+Twitter/X: @the_spool_app
+
+## Key Pages
+
+- Homepage: https://thespoolapp.com
+- Blog (digital wellness guides): https://thespoolapp.com/blog
+- App comparisons: https://thespoolapp.com/compare
+- About Spool: https://thespoolapp.com/about
+- Press / media kit: https://thespoolapp.com/press
+- Support & FAQ: https://thespoolapp.com/support

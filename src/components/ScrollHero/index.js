@@ -1,5 +1,6 @@
+"use client";
 import React, { useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import NotificationCards from './NotificationCards';
 import PhoneMockup from './PhoneMockup';
@@ -7,7 +8,7 @@ import BackgroundGlow from './BackgroundGlow';
 import { getCurrentURL } from '../../config/appConfig';
 import './ScrollHero.css';
 
-import appStoreBadge from '../../assets/app-store-badge.svg';
+
 
 const ScrollHero = () => {
     const containerRef = useRef(null);
@@ -86,7 +87,7 @@ const ScrollHero = () => {
                 >
                     {/* Header with Logo */}
                     <div className="hero-header">
-                        <Link to="/" className="hero-logo-center">
+                        <Link href="/" className="hero-logo-center">
                             <img src="/images/spooli_logo.jpg" alt="Spool Logo" />
                         </Link>
                         <div className="hero-excuses-badge">
@@ -101,7 +102,7 @@ const ScrollHero = () => {
                         </h1>
                         <p className="hero-tagline">Unwind wisely 🧵🪡</p>
                         <a href={downloadUrl} className="app-store-button" target="_blank" rel="noopener noreferrer">
-                            <img src={appStoreBadge} alt="Download on the App Store" />
+                            <img src="/app-store-badge.svg" alt="Download on the App Store" />
                         </a>
                     </div>
                 </motion.div>

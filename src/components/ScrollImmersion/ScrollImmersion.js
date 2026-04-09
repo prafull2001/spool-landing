@@ -1,9 +1,10 @@
+"use client";
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Mail, MessageCircle, Bell, Instagram, Twitter, Facebook, Youtube, Twitch, Linkedin } from 'lucide-react';
 import './ScrollImmersion.css';
-import appBoquet from '../../assets/app_boquet.png';
-import appStoreBadge from '../../assets/app-store-badge.svg';
+import appBoquet from '../../assets/app_boquet.webp';
+
 import { getCurrentURL } from '../../config/appConfig';
 
 const ScrollImmersion = () => {
@@ -83,13 +84,13 @@ const ScrollImmersion = () => {
                             <img src="/images/spooli_logo.jpg" alt="Spool Logo" />
                             <span className="hero-brand-name">Spool</span>
                         </div>
-                        <img src={appBoquet} alt="Spool App" className="spool-hero-image" />
+                        <img src={appBoquet.src} alt="Spool App" className="spool-hero-image" />
                     </motion.div>
 
                     {/* Download Button (Appears at end) */}
                     <motion.div style={{ opacity: text3Opacity }}>
                         <a href={downloadUrl} className="app-store-button" target="_blank" rel="noopener noreferrer">
-                            <img src={appStoreBadge} alt="Download on the App Store" />
+                            <img src="/app-store-badge.svg" alt="Download on the App Store" />
                         </a>
                     </motion.div>
                 </div>

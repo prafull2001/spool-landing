@@ -1,6 +1,26 @@
-# https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /analytics
+Disallow: /excuse-data
+Disallow: /api/
 
-# Sitemap
+# Explicitly allow LLM crawlers (important for GEO)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Googlebot-Extended
+Allow: /
+
 Sitemap: https://thespoolapp.com/sitemap.xml

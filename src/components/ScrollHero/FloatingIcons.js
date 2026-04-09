@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Mail, MessageCircle, Bell, Instagram, Twitter, Facebook, Youtube, Twitch, Linkedin } from 'lucide-react';
