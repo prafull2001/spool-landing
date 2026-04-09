@@ -18,6 +18,10 @@ export const metadata = {
   },
   twitter: { card: 'summary_large_image', site: '@the_spool_app', creator: '@prafull_truffle' },
   alternates: { canonical: 'https://thespoolapp.com' },
+  icons: {
+    icon: '/spooli-app-icon.png',
+    apple: '/spooli-app-icon.png'
+  },
 };
 
 export default function RootLayout({ children }) {
