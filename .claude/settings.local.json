@@ -15,7 +15,8 @@
       "Bash(npm start:*)",
       "Bash(PORT=3001 npm start:*)",
       "WebFetch(domain:pagespeed.web.dev)",
-      "WebFetch(domain:thespoolapp.com)"
+      "WebFetch(domain:thespoolapp.com)",
+      "Bash(npx next:*)"
     ],
     "deny": [],
     "ask": []
