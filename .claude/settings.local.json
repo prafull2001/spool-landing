@@ -13,7 +13,9 @@
       "WebFetch(domain:apps.apple.com)",
       "Bash(npm i:*)",
       "Bash(npm start:*)",
-      "Bash(PORT=3001 npm start:*)"
+      "Bash(PORT=3001 npm start:*)",
+      "WebFetch(domain:pagespeed.web.dev)",
+      "WebFetch(domain:thespoolapp.com)"
     ],
     "deny": [],
     "ask": []

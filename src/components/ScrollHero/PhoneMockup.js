@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import { motion } from 'framer-motion';
 import './ScrollHero.css';
@@ -10,7 +11,7 @@ const PhoneMockup = ({ y, scale }) => {
             style={{ y, scale }}
         >
             <div className="phone-frame">
-                <img src={spoolWelcome} alt="Spool App" className="phone-screen" />
+                <img src={spoolWelcome.src} alt="Spool App" className="phone-screen" />
             </div>
         </motion.div>
     );

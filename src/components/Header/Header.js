@@ -1,10 +1,11 @@
+"use client";
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import './Header.css';
 import { getCurrentConfig, getCurrentURL } from '../../config/appConfig';
 
-import logo from '../../assets/Spool-Logo.png';
+import logo from '../../assets/Spool-Logo.webp';
 
 const Header = () => {
   const config = getCurrentConfig();
@@ -13,13 +14,13 @@ const Header = () => {
   return (
     <header className="header">
       <div className="header-container">
-        <Link to="/" className="header-logo">
+        <Link href="/" className="header-logo">
           <img src="/images/spooli_logo.jpg" alt="Spool Logo" />
         </Link>
         <nav className="header-nav">
-          <Link to="/blog">Blog</Link>
-          <Link to="/privacy">Privacy</Link>
-          <Link to="/support">Support</Link>
+          <Link href="/blog">Blog</Link>
+          <Link href="/privacy">Privacy</Link>
+          <Link href="/support">Support</Link>
           <a href={url} className="download-button" target="_blank" rel="noopener noreferrer">{config.header_button}</a>
         </nav>
       </div>

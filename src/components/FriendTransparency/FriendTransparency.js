@@ -1,8 +1,9 @@
+"use client";
 
 import React from 'react';
 import './FriendTransparency.css';
 
-import friendsexcuse from '../../assets/realexcuse.jpeg';
+import friendsexcuse from '../../assets/realexcuse.webp';
 
 const FriendTransparency = () => {
   return (
@@ -11,7 +12,7 @@ const FriendTransparency = () => {
         <h2 className="friend-transparency-title">Radical Transparency with Friends</h2>
         <p className="friend-transparency-subtitle">Share your journey with friends and hold each other accountable.</p>
         <div className="transparency-image">
-          <img src={friendsexcuse} alt="Friend Excuses Feed" />
+          <img src={friendsexcuse.src} alt="Friend Excuses Feed" />
         </div>
         <div className="features-list">
           <div className="feature-item">
