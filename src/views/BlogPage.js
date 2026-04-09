@@ -103,14 +103,14 @@ const BlogPage = () => {
                   {post.category}
                 </span>
                 <h2>
-                  <Link href={`/blog/${post.id}`}>{post.title}</Link>
+                  <Link href={post.isComparison ? `/compare/${post.id}` : `/blog/${post.id}`}>{post.title}</Link>
                 </h2>
                 <p className="blog-excerpt">{post.excerpt}</p>
                 <div className="blog-meta">
                   <span className="blog-date">{post.date}</span>
                   <span className="blog-read-time">{post.readTime}</span>
                 </div>
-                <Link href={`/blog/${post.id}`} className="blog-read-more">
+                <Link href={post.isComparison ? `/compare/${post.id}` : `/blog/${post.id}`} className="blog-read-more">
                   Read More →
                 </Link>
               </div>
