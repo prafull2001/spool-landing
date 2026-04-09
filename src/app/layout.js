@@ -1,9 +1,9 @@
-import { Inter } from 'next/font/google';
+import { Quicksand } from 'next/font/google';
 import '../index.css';
 import { Analytics } from '@vercel/analytics/react';
 import MotionProvider from '../components/MotionProvider';
 
-const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' });
+const quicksand = Quicksand({ subsets: ['latin'], display: 'swap', variable: '--font-quicksand' });
 
 export const metadata = {
   title: 'Spool — Stop Doomscrolling | Screen Time App for iPhone',
@@ -26,7 +26,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${inter.variable}`}>
+    <html lang="en" className={`${quicksand.variable}`}>
       <head>
         <script
           type="application/ld+json"
@@ -66,7 +66,7 @@ export default function RootLayout({ children }) {
           }}
         />
       </head>
-      <body>
+      <body className={quicksand.className}>
         <MotionProvider>
           {children}
         </MotionProvider>

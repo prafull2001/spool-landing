@@ -98,7 +98,7 @@ const ScrollHero = () => {
                     {/* Main Title - Simple and Premium */}
                     <div className="hero-content-layer">
                         <h1 className="hero-title-simple">
-                            spool
+                            Spool
                         </h1>
                         <p className="hero-tagline">Unwind wisely 🧵🪡</p>
                         <a href={downloadUrl} className="app-store-button" target="_blank" rel="noopener noreferrer">
