@@ -181,6 +181,10 @@
   background: #7ac9a0;
 }
 
+.survey-bar-fill.screentime {
+  background: #e8a87c;
+}
+
 .survey-bar-value {
   font-size: 12px;
   color: #999;

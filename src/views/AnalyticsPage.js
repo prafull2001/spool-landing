@@ -619,6 +619,10 @@ function AnalyticsPage() {
     const ageCounts = {};
     // Reason (main issue) counts
     const reasonCounts = {};
+    // Screen time distribution
+    const screenTimeBuckets = { '0-2h': 0, '2-4h': 0, '4-6h': 0, '6-8h': 0, '8-10h': 0, '10h+': 0 };
+    let screenTimeTotal = 0;
+    let screenTimeCount = 0;
     // Paywall pass-through (reached paywall and didn't drop off there)
     let paywallPassed = 0;
     // Converted (has uid linked = created account, or dropped_off === false)
@@ -651,6 +655,19 @@ function AnalyticsPage() {
         reasonCounts[reason] = (reasonCounts[reason] || 0) + 1;
       }
 
+      // Screen time
+      const stHours = survey?.screenTimeHours;
+      if (stHours != null && !isNaN(stHours)) {
+        screenTimeTotal += stHours;
+        screenTimeCount++;
+        if (stHours < 2) screenTimeBuckets['0-2h']++;
+        else if (stHours < 4) screenTimeBuckets['2-4h']++;
+        else if (stHours < 6) screenTimeBuckets['4-6h']++;
+        else if (stHours < 8) screenTimeBuckets['6-8h']++;
+        else if (stHours < 10) screenTimeBuckets['8-10h']++;
+        else screenTimeBuckets['10h+']++;
+      }
+
       // Paywall pass-through: reached paywall AND didn't drop off
       if (s.reached_paywall && s.dropped_off === false) {
         paywallPassed++;
@@ -666,6 +683,9 @@ function AnalyticsPage() {
       referralCounts,
       ageCounts,
       reasonCounts,
+      screenTimeBuckets,
+      avgScreenTime: screenTimeCount > 0 ? (screenTimeTotal / screenTimeCount).toFixed(1) : null,
+      screenTimeCount,
       paywallPassed,
       paywallPassRate: ((paywallPassed / total) * 100).toFixed(1),
       converted,
@@ -886,6 +906,24 @@ function AnalyticsPage() {
                         </div>
                       );
                     })}
+                  </div>
+                </div>
+
+                <div className="survey-section">
+                  <h3>Screen Time (Self-Reported){surveyOverview.avgScreenTime ? ` — Avg: ${surveyOverview.avgScreenTime}h` : ''}</h3>
+                  <div className="survey-bars">
+                    {Object.entries(surveyOverview.screenTimeBuckets).map(([bucket, count]) => (
+                      <div key={bucket} className="survey-bar-row">
+                        <span className="survey-bar-label">{bucket}</span>
+                        <div className="survey-bar-track">
+                          <div
+                            className="survey-bar-fill screentime"
+                            style={{ width: `${surveyOverview.screenTimeCount > 0 ? (count / surveyOverview.screenTimeCount) * 100 : 0}%` }}
+                          />
+                        </div>
+                        <span className="survey-bar-value">{count} ({surveyOverview.screenTimeCount > 0 ? ((count / surveyOverview.screenTimeCount) * 100).toFixed(0) : 0}%)</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
