@@ -1,7 +1,7 @@
 :root {
   --primary-blue: #56B5E3;  /* rgba(86,181,227,255) in hex */
   --primary-orange: #FF6B35;  /* Now secondary color */
-  --background-color: #F0F8FC;  /* Lighter blue-tinted background */
+  --background-color: transparent;  /* Using gradient instead */
   --white: #FFFFFF;
   --dark-text: #1A1A1A;
   --light-text: #666666;
@@ -15,7 +15,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--background-color);
+  background: linear-gradient(to top right, #FFB3D9, #FFD1DC, #FFF0F5, #E6F3FF, #D1E7FF, #C7E9F1);
+  min-height: 100vh;
   color: var(--text-color);
   font-weight: 500;
   overflow-x: hidden;

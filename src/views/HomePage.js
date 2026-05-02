@@ -3,6 +3,7 @@ import React from 'react';
 import ScrollHero from '../components/ScrollHero';
 import Features from '../components/Features/Features.js';
 import CTA from '../components/CTA/CTA.js';
+import FAQ from '../components/FAQ/FAQ.js';
 import Footer from '../components/Footer/Footer.js';
 import Popup from '../components/Popup/Popup.js';
 
@@ -12,6 +13,7 @@ const HomePage = () => {
       <ScrollHero />
       <Features />
       <CTA />
+      <FAQ />
       <Footer />
       <Popup />
     </>

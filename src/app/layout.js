@@ -6,7 +6,11 @@ import MotionProvider from '../components/MotionProvider';
 const quicksand = Quicksand({ subsets: ['latin'], display: 'swap', variable: '--font-quicksand' });
 
 export const metadata = {
-  title: 'Spool — Stop Doomscrolling | Screen Time App for iPhone',
+  metadataBase: new URL('https://thespoolapp.com'),
+  title: {
+    default: 'Spool — Stop Doomscrolling | Screen Time App for iPhone',
+    template: '%s | Spool',
+  },
   description: 'Spool uses AI voice check-ins to help you stop doomscrolling. 4.8★, 2,000+ users, 25% average screen time reduction. Free on iPhone.',
   openGraph: {
     title: 'Spool — Stop Doomscrolling',

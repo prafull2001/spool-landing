@@ -90,9 +90,6 @@ const ScrollHero = () => {
                         <Link href="/" className="hero-logo-center">
                             <img src="/images/spooli_logo.jpg" alt="Spool Logo" />
                         </Link>
-                        <div className="hero-excuses-badge">
-                            <span>5,000+ excuses recorded</span>
-                        </div>
                     </div>
 
                     {/* Main Title - Simple and Premium */}
@@ -104,6 +101,9 @@ const ScrollHero = () => {
                         <a href={downloadUrl} className="app-store-button" target="_blank" rel="noopener noreferrer">
                             <img src="/app-store-badge.svg" alt="Download on the App Store" />
                         </a>
+                        <div className="hero-excuses-badge">
+                            <span>8k+ excuses recorded</span>
+                        </div>
                     </div>
                 </motion.div>
 
@@ -120,17 +120,6 @@ const ScrollHero = () => {
                     scale={phoneScale}
                 />
 
-                {/* Final Content - appears after phone rises */}
-                <motion.div
-                    className="final-content-layer"
-                    style={{ opacity: finalContentOpacity }}
-                >
-                    <h2 className="final-title">Reclaim your focus.</h2>
-                    <p className="final-subtitle">Unwind wisely. Download the app.</p>
-                    <a href={downloadUrl} className="final-cta" target="_blank" rel="noopener noreferrer">
-                        Get Started
-                    </a>
-                </motion.div>
 
             </div>
         </div>

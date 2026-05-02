@@ -1,6 +1,6 @@
 .how-spool-works {
   padding: 6rem 2rem;
-  background-color: var(--white);
+  background-color: transparent;
 }
 
 .how-spool-works-container {
@@ -26,13 +26,20 @@
 }
 
 .spool-philosophy {
-  background: linear-gradient(135deg, #f0f4f8, #e8ecf0);
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-left: 4px solid var(--primary-orange);
   padding: 2rem;
   margin: 2rem 0 3rem;
-  border-radius: 10px;
+  border-radius: 16px;
   position: relative;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  border-right: 1px solid rgba(255, 255, 255, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .philosophy-text {
@@ -50,7 +57,7 @@
   position: absolute;
   top: -10px;
   left: 20px;
-  background: white;
+  background: rgba(255, 255, 255, 0.5);
   padding: 0.5rem;
   border-radius: 50%;
   font-size: 1.2rem;

@@ -1,0 +1,145 @@
+.faq {
+  padding: 6rem 2rem;
+  background-color: transparent;
+}
+
+.faq-container {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.faq-title {
+  font-size: 2.5rem;
+  text-align: center;
+  color: var(--primary-orange);
+  margin-bottom: 0.5rem;
+}
+
+.faq-subtitle {
+  text-align: center;
+  color: var(--light-text);
+  font-size: 1.15rem;
+  margin-bottom: 3rem;
+}
+
+.faq-category {
+  margin-bottom: 2.5rem;
+}
+
+.faq-category:last-child {
+  margin-bottom: 0;
+}
+
+.faq-category-label {
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--primary-blue);
+  margin-bottom: 1rem;
+  padding-left: 0.25rem;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.faq-item {
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.faq-item:hover {
+  background: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+}
+
+.faq-item.open {
+  background: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+}
+
+.faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.faq-question span:first-child {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--dark-text);
+  line-height: 1.4;
+}
+
+.faq-chevron {
+  font-size: 1.3rem;
+  font-weight: 300;
+  color: var(--primary-blue);
+  flex-shrink: 0;
+  width: 20px;
+  text-align: center;
+  transition: transform 0.25s ease;
+}
+
+.faq-item.open .faq-chevron {
+  transform: rotate(90deg);
+}
+
+.faq-answer {
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  margin-top: 0.75rem;
+  animation: faqFadeIn 0.25s ease;
+}
+
+.faq-answer p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--dark-text);
+  opacity: 0.8;
+  margin: 0;
+}
+
+@keyframes faqFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .faq-title {
+    font-size: 2rem;
+  }
+
+  .faq-subtitle {
+    font-size: 1rem;
+  }
+
+  .faq-question span:first-child {
+    font-size: 0.95rem;
+  }
+
+  .faq-answer p {
+    font-size: 0.9rem;
+  }
+
+  .faq-category-label {
+    font-size: 0.85rem;
+  }
+}

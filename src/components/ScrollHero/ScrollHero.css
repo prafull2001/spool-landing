@@ -1,7 +1,7 @@
 .scroll-hero-container {
     position: relative;
     height: 125vh;
-    background-color: var(--background-color);
+    background-color: transparent;
     color: var(--dark-text);
     overflow: visible !important;
     timeline-scope: --hero-scroll;
@@ -218,9 +218,12 @@
     justify-content: center;
     width: 50px;
     height: 50px;
-    background: white;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border-radius: 14px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
 .icon-badge {

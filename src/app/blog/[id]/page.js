@@ -30,8 +30,9 @@ export async function generateMetadata({ params }) {
     return { title: 'Blog | Spool' };
   }
   return {
-    title: `${meta.title} | Spool`,
+    title: meta.title,
     description: meta.description,
+    alternates: { canonical: `https://thespoolapp.com/blog/${id}` },
   };
 }
 

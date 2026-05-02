@@ -1,6 +1,6 @@
 .friend-transparency {
   padding: 6rem 2rem;
-  background-color: var(--background-color);
+  background-color: transparent;
 }
 
 .friend-transparency-container {
@@ -29,7 +29,10 @@
   width: 100%;
   max-width: 400px;
   border-radius: 15px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .features-list {

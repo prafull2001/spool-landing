@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Mail, MessageCircle, Bell, Instagram, Twitter, Facebook, Youtube, Twitch, Linkedin } from 'lucide-react';
 import './ScrollImmersion.css';
 import appBoquet from '../../assets/app_boquet.webp';
+import spooliLogo from '../../assets/spooli_logo.png';
 
 import { getCurrentURL } from '../../config/appConfig';
 
@@ -81,7 +82,7 @@ const ScrollImmersion = () => {
                 <div className="focus-layer">
                     <motion.div style={{ scale: appScale, opacity: appOpacity }}>
                         <div className="hero-logo-center">
-                            <img src="/images/spooli_logo.jpg" alt="Spool Logo" />
+                            <img src={spooliLogo.src} alt="Spool Logo" />
                             <span className="hero-brand-name">Spool</span>
                         </div>
                         <img src={appBoquet.src} alt="Spool App" className="spool-hero-image" />

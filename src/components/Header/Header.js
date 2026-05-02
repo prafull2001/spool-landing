@@ -5,7 +5,7 @@ import Link from 'next/link';
 import './Header.css';
 import { getCurrentConfig, getCurrentURL } from '../../config/appConfig';
 
-import logo from '../../assets/Spool-Logo.webp';
+import logo from '../../assets/spooli_logo.png';
 
 const Header = () => {
   const config = getCurrentConfig();
