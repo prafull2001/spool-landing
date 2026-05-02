@@ -1,6 +1,10 @@
 import BlogPost from '@/views/BlogPost';
 
 const blogMeta = {
+  'best-apps-stop-doomscrolling-2026': {
+    title: 'Best Apps to Stop Doomscrolling in 2026 (Honest Comparison)',
+    description: 'We tested 10 apps to stop doomscrolling — Spool, Opal, One Sec, ScreenZen, Freedom, Brainrot, Unrot, Monk, Forest, and RepsForReels. Here is what actually works long-term.',
+  },
   'how-to-stop-doom-scrolling': {
     title: 'How to Stop Doom Scrolling: 10 Proven Strategies That Work',
     description: 'Practical, science-backed techniques to break your doom scrolling habit and reclaim hours of your day. No willpower required.',

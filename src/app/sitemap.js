@@ -2,6 +2,7 @@ export default function sitemap() {
   const baseUrl = 'https://thespoolapp.com';
 
   const blogPosts = [
+    'best-apps-stop-doomscrolling-2026',
     'how-to-stop-doom-scrolling',
     'doom-scrolling-habit',
     'intentional-screen-time',

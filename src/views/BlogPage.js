@@ -52,6 +52,14 @@ const blogPosts = [
     isComparison: true
   },
   {
+    id: 'best-apps-stop-doomscrolling-2026',
+    title: 'Best Apps to Stop Doomscrolling in 2026 (Honest Comparison)',
+    excerpt: 'We tested 10 doomscrolling apps — blockers, friction tools, gamified quitters, and one that makes you explain yourself out loud. Here\'s what actually works.',
+    date: 'May 1, 2026',
+    readTime: '12 min read',
+    category: 'Digital Wellness'
+  },
+  {
     id: 'how-to-stop-doom-scrolling',
     title: 'How to Stop Doom Scrolling: 10 Proven Strategies That Work',
     excerpt: 'Practical, science-backed techniques to break your doom scrolling habit and reclaim hours of your day. No willpower required.',
