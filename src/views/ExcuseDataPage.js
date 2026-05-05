@@ -10,6 +10,7 @@ import {
   computeCategoryEvolution, computePowerUserRankings,
   computeICPSegments, computeTimingPatterns, computeWeek2DeepDive,
 } from './excuseDataHelpers';
+import { generateResearchPackage } from './researchExport';
 import './ExcuseDataPage.css';
 
 Chart.register(...registerables);
@@ -39,6 +40,12 @@ function ExcuseDataPage() {
 
   // Investor filter: exclude team + low-diversity users
   const [realJournalersOnly, setRealJournalersOnly] = useState(true);
+
+  // Research export state
+  const [onboardingSurveys, setOnboardingSurveys] = useState({});
+  const [walkAwaysByUser, setWalkAwaysByUser] = useState({});
+  const [cancellationsByUser, setCancellationsByUser] = useState({});
+  const [exportProgress, setExportProgress] = useState(null);
 
   // Tabs
   const [activeTab, setActiveTab] = useState('overview');
@@ -105,12 +112,58 @@ function ExcuseDataPage() {
           id: doc.id, userId,
           userName: userInfo.displayName || userInfo.name || userInfo.email || userId,
           text: data.text || '', category: data.category || '', date,
+          app: data.app || data.appName || '',
         };
       });
 
       setUsers(userList);
       setExcuses(excuseList);
       setLastFetched(new Date());
+
+      // Fetch research-specific data in background (non-blocking)
+      (async () => {
+        try {
+          const surveysSnap = await getDocs(collection(db, 'onboarding_surveys'));
+          const surveyMap = {};
+          surveysSnap.docs.forEach(doc => {
+            const data = doc.data();
+            if (data.uid) surveyMap[data.uid] = data;
+          });
+          setOnboardingSurveys(surveyMap);
+        } catch (_) { /* non-critical */ }
+
+        // Try collection group query first (if rules deployed), fall back to per-user
+        const waMap = {};
+        try {
+          const waSnap = await getDocs(collectionGroup(db, 'walkAways'));
+          waSnap.docs.forEach(doc => {
+            const uid = doc.ref.parent.parent?.id;
+            if (uid) {
+              if (!waMap[uid]) waMap[uid] = [];
+              waMap[uid].push(doc.data());
+            }
+          });
+        } catch (_) {
+          // Fall back to per-user iteration
+          for (const uid of Object.keys(userMap)) {
+            try {
+              const snap = await getDocs(collection(db, 'users', uid, 'walkAways'));
+              if (snap.size > 0) waMap[uid] = snap.docs.map(d => d.data());
+            } catch (__) { /* skip */ }
+          }
+        }
+        setWalkAwaysByUser(waMap);
+
+        // Cancellation events
+        const cancelMap = {};
+        for (const uid of Object.keys(userMap)) {
+          try {
+            const snap = await getDocs(collection(db, 'cancellation_events', uid, 'events'));
+            if (snap.size > 0) cancelMap[uid] = snap.docs.map(d => d.data());
+          } catch (_) { /* skip */ }
+        }
+        setCancellationsByUser(cancelMap);
+      })();
     } catch (err) {
       console.error('Fetch error:', err);
       setError('Failed to fetch data. Check console for details.');
@@ -768,6 +821,26 @@ function ExcuseDataPage() {
     a.click(); URL.revokeObjectURL(url);
   };
 
+  // ── Research Export ──
+  const handleResearchExport = async () => {
+    setExportProgress('Starting export...');
+    try {
+      await generateResearchPackage({
+        users,
+        excuses,
+        excusesByUser,
+        onboardingSurveys,
+        onProgress: setExportProgress,
+      });
+    } catch (err) {
+      console.error('Research export error:', err);
+      setExportProgress(`Error: ${err.message}`);
+      setTimeout(() => setExportProgress(null), 5000);
+      return;
+    }
+    setTimeout(() => setExportProgress(null), 3000);
+  };
+
   // ── Handlers ──
   const handleSort = (field) => setLeaderboardSort(prev => ({ field, dir: prev.field === field && prev.dir === 'desc' ? 'asc' : 'desc' }));
   const handleRefresh = () => { setExcuses([]); setUsers([]); setError(null); fetchData(); };
@@ -797,6 +870,9 @@ function ExcuseDataPage() {
           {user ? (
             <>
               {lastFetched && <span className="ed-updated">Updated {formatTime(lastFetched)}</span>}
+              <button className="ed-btn ed-btn-research" onClick={handleResearchExport} disabled={!!exportProgress || loading}>
+                {exportProgress || 'Research Package'}
+              </button>
               <button className="ed-btn ed-btn-ghost" onClick={handleRefresh} disabled={loading}>
                 {loading ? 'Loading...' : 'Refresh'}
               </button>

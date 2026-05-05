@@ -12,6 +12,7 @@
     "eslint-config-next": "^16.2.3",
     "firebase": "^12.8.0",
     "framer-motion": "^12.38.0",
+    "jszip": "^3.10.1",
     "lucide-react": "^0.563.0",
     "next": "^16.2.3",
     "next-sitemap": "^4.2.3",

@@ -52,6 +52,8 @@
 .ed-btn-danger:hover { background: #fdf0ee; }
 .ed-btn-export { background: #58D68D; color: white; white-space: nowrap; }
 .ed-btn-export:hover { background: #45b777; }
+.ed-btn-research { background: #AF7AC5; color: white; white-space: nowrap; font-size: 11px; }
+.ed-btn-research:hover { background: #9b59b6; }
 
 .ed-empty, .ed-loading { text-align: center; padding: 60px 20px; font-size: 14px; color: #a09070; }
 .ed-error { text-align: center; padding: 60px 20px; color: #c0392b; }
