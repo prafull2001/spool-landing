@@ -90,7 +90,14 @@ const SCREEN_ORDER_V3 = [
 const PAYWALL_SCREEN_V1 = 'paywall';
 const PAYWALL_SCREEN_V2 = 'sky_paywall';
 
-function AnalyticsPage() {
+function dateToIsoOrNull(d) {
+  if (!d) return null;
+  const dt = d instanceof Date ? d : new Date(d);
+  if (isNaN(dt.getTime())) return null;
+  return dt.toISOString().slice(0, 10);
+}
+
+function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: propsDateTo } = {}) {
   const { user, handleSignIn, handleSignOut: signOutBase } = useFirebaseAuth();
   const [allSessions, setAllSessions] = useState([]);
   const [surveys, setSurveys] = useState(new Map());
@@ -126,12 +133,16 @@ function AnalyticsPage() {
   }, [allSessions, version]);
 
   useEffect(() => {
-    if (user) {
+    if (!user) return;
+    if (panelMode) {
+      fetchSessions(dateToIsoOrNull(propsDateFrom), dateToIsoOrNull(propsDateTo));
+    } else {
       fetchSessions();
-      fetchSurveys();
-      fetchUsers();
     }
-  }, [user]);
+    fetchSurveys();
+    fetchUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, panelMode, propsDateFrom, propsDateTo]);
 
   const handleSignOut = async () => {
     await signOutBase();
@@ -792,25 +803,29 @@ function AnalyticsPage() {
   const analytics = computeAnalytics();
 
   return (
-    <div className="analytics-page">
-      <header className="analytics-header">
-        <h1>Spool Onboarding Analytics</h1>
-        <div className="auth-section">
-          {user ? (
-            <>
-              <span className="user-email">{user.email}</span>
-              <button className="btn-logout" onClick={handleSignOut}>Sign Out</button>
-            </>
-          ) : (
-            <button className="btn-login" onClick={handleSignIn}>Sign In</button>
-          )}
-        </div>
-      </header>
+    <div className={panelMode ? 'analytics-panel' : 'analytics-page'}>
+      {!panelMode && (
+        <header className="analytics-header">
+          <h1>Spool Onboarding Analytics</h1>
+          <div className="auth-section">
+            {user ? (
+              <>
+                <span className="user-email">{user.email}</span>
+                <button className="btn-logout" onClick={handleSignOut}>Sign Out</button>
+              </>
+            ) : (
+              <button className="btn-login" onClick={handleSignIn}>Sign In</button>
+            )}
+          </div>
+        </header>
+      )}
 
       {!user ? (
-        <div className="login-prompt">
-          <p>Sign in with an authorized Google account to view analytics.</p>
-        </div>
+        !panelMode && (
+          <div className="login-prompt">
+            <p>Sign in with an authorized Google account to view analytics.</p>
+          </div>
+        )
       ) : loading ? (
         <div className="loading">Loading sessions...</div>
       ) : (
@@ -947,15 +962,19 @@ function AnalyticsPage() {
           )}
 
           <div className="filters">
-            <label>
-              From:
-              <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} />
-            </label>
-            <label>
-              To:
-              <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} />
-            </label>
-            <button className="btn-refresh" onClick={handleRefresh}>Refresh</button>
+            {!panelMode && (
+              <>
+                <label>
+                  From:
+                  <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} />
+                </label>
+                <label>
+                  To:
+                  <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} />
+                </label>
+                <button className="btn-refresh" onClick={handleRefresh}>Refresh</button>
+              </>
+            )}
 
             <div className="version-toggle">
               <button

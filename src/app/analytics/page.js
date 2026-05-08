@@ -1,7 +1,7 @@
 import ClientAnalytics from './ClientPage';
 
 export const metadata = {
-  title: 'Analytics | Spool',
+  title: 'Admin Dashboard',
   robots: {
     index: false,
     follow: false,

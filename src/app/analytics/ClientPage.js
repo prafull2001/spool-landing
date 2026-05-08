@@ -1,8 +1,8 @@
 "use client";
 import dynamic from 'next/dynamic';
 
-const AnalyticsPage = dynamic(() => import('@/views/AnalyticsPage'), { ssr: false });
+const UnifiedAnalyticsPage = dynamic(() => import('@/views/UnifiedAnalyticsPage'), { ssr: false });
 
 export default function ClientAnalytics() {
-  return <AnalyticsPage />;
+  return <UnifiedAnalyticsPage />;
 }

@@ -1,0 +1,58 @@
+/* Unified dashboard shell additions on top of AnalyticsPage.css */
+
+.unified-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 18px;
+  border-bottom: 2px solid #e8dcc8;
+  flex-wrap: wrap;
+}
+
+.unified-tab {
+  padding: 10px 22px;
+  border: none;
+  background: transparent;
+  color: #b3a07a;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.unified-tab:hover {
+  color: #7F6100;
+}
+
+.unified-tab.active {
+  color: #7F6100;
+  border-bottom-color: #FE723F;
+}
+
+/* Each panel renders inside .unified-panel; inner panels drop their own
+   `.analytics-page` / `.excuse-page` outer wrappers (see panelMode branches)
+   so we don't double-wrap padding/background. */
+.unified-panel {
+  padding-top: 4px;
+}
+
+/* When the AgeCohortPage renders as a panel, its top spacing should match
+   the unified shell's filter row spacing. */
+.cohort-panel > :first-child,
+.analytics-panel > :first-child,
+.excuse-panel > :first-child {
+  margin-top: 0;
+}
+
+/* Panel-mode toolbar inside the Excuse Data tab — surfaces actions
+   (Research Package / Refresh) that live in the standalone header but
+   would otherwise be hidden in panel mode. */
+.ed-panel-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+

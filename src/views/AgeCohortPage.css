@@ -1,0 +1,47 @@
+/* Cohort-specific additions on top of AnalyticsPage.css. */
+
+.cohort-table .rate-text {
+  color: #b3a07a;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.cohort-table .no-age-row td {
+  color: #b3a07a;
+  background: #faf3e6;
+}
+
+.cohort-table .no-age-row td:first-child {
+  font-style: italic;
+}
+
+.cohort-table .totals-row td {
+  border-top: 2px solid #e8dcc8;
+  border-bottom: none;
+  padding-top: 14px;
+  background: #fdf6ee;
+}
+
+.cohort-footnote {
+  margin: 18px 0 0 0;
+  padding: 14px 16px;
+  background: #fdf6ee;
+  border-left: 3px solid #e8a87c;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #7F6100;
+  line-height: 1.55;
+}
+
+.cohort-footnote strong {
+  color: #7F6100;
+}
+
+.cohort-footnote code {
+  background: white;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #7F6100;
+  border: 1px solid #f0e8d8;
+}

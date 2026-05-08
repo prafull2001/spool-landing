@@ -19,13 +19,9 @@ const nextConfig = {
   },
   async redirects() {
     return [
-      {
-        source: '/',
-        has: [{ type: 'query', key: '_escaped_fragment_', value: '(?<fragment>.*)' }],
-        destination: '/:fragment',
-        permanent: true,
-      },
-    ]
+      { source: '/age-cohort',  destination: '/analytics?tab=age-cohort',  permanent: false },
+      { source: '/excuse-data', destination: '/analytics?tab=excuse-data', permanent: false },
+    ];
   },
 }
 

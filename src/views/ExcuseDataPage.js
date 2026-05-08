@@ -25,7 +25,7 @@ const CATEGORY_COLORS = [
   '#EB984E', '#EC7063', '#45B7D1', '#F1948A'
 ];
 
-function ExcuseDataPage() {
+function ExcuseDataPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: propsDateTo } = {}) {
   const { user, authLoading, handleSignIn, handleSignOut } = useFirebaseAuth();
 
   const [users, setUsers] = useState([]);
@@ -177,14 +177,28 @@ function ExcuseDataPage() {
 
   // ── Core Computed Data ──
 
+  // In panel mode, restrict to excuses whose timestamp falls in the parent window.
+  // All downstream computations (streaks, retention, ICP, etc.) use this filtered set,
+  // so metrics are window-bounded views — "longest streak among excuses logged in window".
+  const windowFilteredExcuses = useMemo(() => {
+    if (!panelMode) return excuses;
+    const fromMs = propsDateFrom instanceof Date ? propsDateFrom.getTime() : -Infinity;
+    const toMs = propsDateTo instanceof Date ? propsDateTo.getTime() : Infinity;
+    return excuses.filter(e => {
+      if (!e.date) return false;
+      const t = e.date.getTime();
+      return t >= fromMs && t <= toMs;
+    });
+  }, [excuses, panelMode, propsDateFrom, propsDateTo]);
+
   const excusesByUser = useMemo(() => {
     const m = {};
-    excuses.forEach(e => {
+    windowFilteredExcuses.forEach(e => {
       if (!m[e.userId]) m[e.userId] = [];
       m[e.userId].push(e);
     });
     return m;
-  }, [excuses]);
+  }, [windowFilteredExcuses]);
 
   const diversityMap = useMemo(() => computeTextDiversity(excusesByUser), [excusesByUser]);
   const streakMap = useMemo(() => computeStreaks(excusesByUser), [excusesByUser]);
@@ -197,8 +211,8 @@ function ExcuseDataPage() {
 
   // Filtered excuses for overview charts
   const filteredExcusesForCharts = useMemo(() =>
-    excuses.filter(e => filteredUserIds.has(e.userId)),
-    [excuses, filteredUserIds]
+    windowFilteredExcuses.filter(e => filteredUserIds.has(e.userId)),
+    [windowFilteredExcuses, filteredUserIds]
   );
 
   const userMinutesMap = useMemo(() => {
@@ -862,38 +876,51 @@ function ExcuseDataPage() {
   const spotlight = powerUsers[0] || null;
 
   return (
-    <div className="excuse-page">
-      {/* Header */}
-      <header className="ed-header">
-        <h1>Spool Journal Analytics</h1>
-        <div className="ed-header-right">
-          {user ? (
-            <>
-              {lastFetched && <span className="ed-updated">Updated {formatTime(lastFetched)}</span>}
-              <button className="ed-btn ed-btn-research" onClick={handleResearchExport} disabled={!!exportProgress || loading}>
-                {exportProgress || 'Research Package'}
-              </button>
-              <button className="ed-btn ed-btn-ghost" onClick={handleRefresh} disabled={loading}>
-                {loading ? 'Loading...' : 'Refresh'}
-              </button>
-              <span className="ed-divider" />
-              <span className="ed-email">{user.email}</span>
-              <button className="ed-btn ed-btn-danger" onClick={handleSignOut}>Sign Out</button>
-            </>
-          ) : (
-            <button className="ed-btn ed-btn-primary" onClick={handleSignIn}>Sign In with Google</button>
-          )}
-        </div>
-      </header>
+    <div className={panelMode ? 'excuse-panel' : 'excuse-page'}>
+      {!panelMode && (
+        <header className="ed-header">
+          <h1>Spool Journal Analytics</h1>
+          <div className="ed-header-right">
+            {user ? (
+              <>
+                {lastFetched && <span className="ed-updated">Updated {formatTime(lastFetched)}</span>}
+                <button className="ed-btn ed-btn-research" onClick={handleResearchExport} disabled={!!exportProgress || loading}>
+                  {exportProgress || 'Research Package'}
+                </button>
+                <button className="ed-btn ed-btn-ghost" onClick={handleRefresh} disabled={loading}>
+                  {loading ? 'Loading...' : 'Refresh'}
+                </button>
+                <span className="ed-divider" />
+                <span className="ed-email">{user.email}</span>
+                <button className="ed-btn ed-btn-danger" onClick={handleSignOut}>Sign Out</button>
+              </>
+            ) : (
+              <button className="ed-btn ed-btn-primary" onClick={handleSignIn}>Sign In with Google</button>
+            )}
+          </div>
+        </header>
+      )}
 
       {!user ? (
-        <div className="ed-empty">Sign in with an authorized Google account to view analytics.</div>
+        !panelMode && <div className="ed-empty">Sign in with an authorized Google account to view analytics.</div>
       ) : loading ? (
         <div className="ed-loading">Loading data...</div>
       ) : error ? (
         <div className="ed-error"><p>{error}</p><button className="ed-btn ed-btn-ghost" onClick={handleRefresh}>Try Again</button></div>
       ) : (
         <>
+          {panelMode && (
+            <div className="ed-panel-toolbar">
+              <button className="ed-btn ed-btn-research" onClick={handleResearchExport} disabled={!!exportProgress || loading}>
+                {exportProgress || 'Research Package'}
+              </button>
+              <button className="ed-btn ed-btn-ghost" onClick={handleRefresh} disabled={loading}>
+                {loading ? 'Loading...' : 'Refresh'}
+              </button>
+              {lastFetched && <span className="ed-updated">Updated {formatTime(lastFetched)}</span>}
+            </div>
+          )}
+
           {/* ── Stat Strip ── */}
           {summaryStats && (
             <div className="stat-strip">
