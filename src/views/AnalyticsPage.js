@@ -86,6 +86,42 @@ const SCREEN_ORDER_V3 = [
   { number: 22, name: 'blocking_confirmation', label: 'Confirm' },
 ];
 
+// v4 = v3 + ChatOnboardingView (0.75) inserted after How-Did-You-Hear.
+// Paywall slot 10.5 keeps the legacy screen_name "sky_paywall" even though
+// the view is now JourneyPaywallView — disambiguate via PostHog paywall_type.
+const SCREEN_ORDER_V4 = [
+  { number: 0, name: 'video_intro', label: 'Video Intro' },
+  { number: 0.5, name: 'how_did_you_hear', label: 'How Heard' },
+  { number: 0.75, name: 'chat_onboarding', label: 'Chat (Spooli)' },
+  { number: 1, name: 'checkbox_selection', label: 'Checkbox' },
+  { number: 3, name: 'age_selection', label: 'Age' },
+  { number: 4, name: 'screen_time_slider', label: 'Screen Time' },
+  { number: 4.5, name: 'screen_time_connect', label: 'ST Connect' },
+  { number: 4.75, name: 'screen_time_dialog', label: 'ST Dialog' },
+  { number: 5, name: 'progress_bar', label: 'Progress Bar' },
+  { number: 5.5, name: 'top_app_demon', label: 'App Demon' },
+  { number: 6, name: 'phone_usage_stats', label: 'Usage Stats' },
+  { number: 7, name: 'lifetime_stats', label: 'Lifetime Stats' },
+  { number: 8, name: 'average_lifespan', label: 'Avg Lifespan' },
+  { number: 8.5, name: 'review_request', label: 'Review' },
+  { number: 8.75, name: 'academic_studies', label: 'Studies' },
+  { number: 9, name: 'weekly_benefits', label: 'Benefits' },
+  { number: 9.5, name: 'commitment_ritual', label: 'Commitment' },
+  { number: 9.75, name: 'before_after', label: 'Before/After' },
+  { number: 10.5, name: 'sky_paywall', label: 'Paywall (Journey)' },
+  { number: 11, name: 'welcome_to_spool', label: 'Welcome' },
+  { number: 12, name: 'name_collection', label: 'Name' },
+  { number: 13, name: 'create_account', label: 'Account' },
+  { number: 14, name: 'notification_permission', label: 'Notifications' },
+  { number: 16, name: 'schedule_selection', label: 'Schedule' },
+  { number: 17, name: 'choose_apps', label: 'Choose Apps' },
+  { number: 18, name: 'daily_limit_explanation', label: 'Limit Explain' },
+  { number: 19, name: 'daily_request_pool', label: 'Daily Pool' },
+  { number: 20, name: 'excuse_explanation', label: 'Excuse' },
+  { number: 21, name: 'pattern_explanation', label: 'Pattern' },
+  { number: 22, name: 'blocking_confirmation', label: 'Confirm' },
+];
+
 // Paywall screen names per version
 const PAYWALL_SCREEN_V1 = 'paywall';
 const PAYWALL_SCREEN_V2 = 'sky_paywall';
@@ -105,7 +141,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
   const [loading, setLoading] = useState(false);
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
-  const [version, setVersion] = useState('v2');
+  const [version, setVersion] = useState('v4');
   const [splitByAB, setSplitByAB] = useState(false);
   const [expandedSessionIdx, setExpandedSessionIdx] = useState(null);
   const [sessionSearch, setSessionSearch] = useState('');
@@ -119,12 +155,19 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
   const dropoffInstance = useRef(null);
   const timeInstance = useRef(null);
 
-  const screenOrder = version === 'v1' ? SCREEN_ORDER_V1 : version === 'v3' ? SCREEN_ORDER_V3 : SCREEN_ORDER_V2;
+  const screenOrder =
+    version === 'v1' ? SCREEN_ORDER_V1 :
+    version === 'v4' ? SCREEN_ORDER_V4 :
+    version === 'v3' ? SCREEN_ORDER_V3 :
+    SCREEN_ORDER_V2;
 
   // Filter sessions by version
   const sessions = useMemo(() => {
     if (version === 'v1') {
       return allSessions.filter(s => !s.flow_version);
+    }
+    if (version === 'v4') {
+      return allSessions.filter(s => s.flow_version === 4);
     }
     if (version === 'v3') {
       return allSessions.filter(s => s.flow_version === 3);
@@ -994,6 +1037,12 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
                 onClick={() => setVersion('v3')}
               >
                 Commitment (v3)
+              </button>
+              <button
+                className={`version-btn ${version === 'v4' ? 'active' : ''}`}
+                onClick={() => setVersion('v4')}
+              >
+                Chat + Journey (v4) — Current
               </button>
             </div>
 
