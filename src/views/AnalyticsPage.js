@@ -86,11 +86,18 @@ const SCREEN_ORDER_V3 = [
   { number: 22, name: 'blocking_confirmation', label: 'Confirm' },
 ];
 
-// v4 = v3 + ChatOnboardingView (0.75) inserted after How-Did-You-Hear.
-// Paywall slot 10.5 keeps the legacy screen_name "sky_paywall" even though
-// the view is now JourneyPaywallView — disambiguate via PostHog paywall_type.
+// v4 source of truth: analyticsScreenName in SpoolOnboardingFlowView.swift:971-1006.
+// SPO-192 changes vs v3:
+//  - screen 0: VideoIntroView → WelcomeView (screen_name "video_intro" → "welcome")
+//  - screen 0.25: new NameInputView ("name_input") — distinct from name_collection at 12
+//  - screen 0.75: new ChatOnboardingView ("chat_onboarding")
+//  - screen 10.5: SkyPaywallView → JourneyPaywallView, but iOS kept screen_name "sky_paywall"
+//    for time-series continuity. Disambiguate via PostHog paywall_type field.
+//  - screen 10 (GlassPaywallView, soft skippable) has no case → written as "unknown_10.0".
+//    Intentionally omitted from the funnel.
 const SCREEN_ORDER_V4 = [
-  { number: 0, name: 'video_intro', label: 'Video Intro' },
+  { number: 0, name: 'welcome', label: 'Welcome' },
+  { number: 0.25, name: 'name_input', label: 'Name Input' },
   { number: 0.5, name: 'how_did_you_hear', label: 'How Heard' },
   { number: 0.75, name: 'chat_onboarding', label: 'Chat (Spooli)' },
   { number: 1, name: 'checkbox_selection', label: 'Checkbox' },
