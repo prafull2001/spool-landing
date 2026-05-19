@@ -95,9 +95,9 @@ const ScrollHero = () => {
                     {/* Main Title - Simple and Premium */}
                     <div className="hero-content-layer">
                         <h1 className="hero-title-simple">
-                            Spool
+                            Stop doomscrolling with voice check-ins
                         </h1>
-                        <p className="hero-tagline">Unwind wisely 🧵🪡</p>
+                        <p className="hero-tagline">Spool · Unwind wisely 🧵🪡</p>
                         <a href={downloadUrl} className="app-store-button" target="_blank" rel="noopener noreferrer">
                             <img src="/app-store-badge.svg" alt="Download on the App Store" />
                         </a>

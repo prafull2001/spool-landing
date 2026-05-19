@@ -954,7 +954,21 @@ const BlogPost = () => {
           <span className="blog-post-category">{post.category}</span>
           <h1>{post.title}</h1>
           <div className="blog-post-meta">
-            <span>{post.date}</span>
+            <span className="blog-post-byline">
+              By{' '}
+              <a
+                href="https://www.linkedin.com/in/prafull-sharma-363187168/"
+                rel="author"
+                target="_blank"
+                className="blog-post-author"
+              >
+                Prafull Sharma
+              </a>
+            </span>
+            <span>•</span>
+            <time dateTime={new Date(post.date).toISOString().split('T')[0]}>
+              {post.date}
+            </time>
             <span>•</span>
             <span>{post.readTime}</span>
           </div>
