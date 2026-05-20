@@ -122,6 +122,110 @@
   line-height: 1.65;
 }
 
+.blog-research {
+  max-width: 800px;
+  margin: 4rem auto 0;
+  padding: 0 1rem;
+}
+
+.blog-research h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--dark-text);
+  margin: 0 0 1rem;
+}
+
+.blog-research p {
+  color: var(--dark-text);
+  line-height: 1.65;
+  margin: 0 0 1.25rem;
+}
+
+.blog-research-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem;
+}
+
+.blog-research-list li {
+  background: white;
+  border-left: 3px solid var(--primary-blue);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0 8px 8px 0;
+  line-height: 1.6;
+  color: var(--dark-text);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.blog-research-list cite {
+  font-style: italic;
+}
+
+.blog-research a {
+  color: var(--primary-blue);
+  text-decoration: none;
+}
+
+.blog-research a:hover {
+  color: var(--primary-orange);
+}
+
+.blog-author {
+  max-width: 800px;
+  margin: 4rem auto 0;
+  padding: 0 1rem;
+}
+
+.blog-author h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--dark-text);
+  margin: 0 0 1.25rem;
+}
+
+.blog-author-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.75rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.blog-author-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+}
+
+.blog-author-name a {
+  color: var(--primary-blue);
+  text-decoration: none;
+}
+
+.blog-author-credentials {
+  font-size: 0.95rem;
+  color: var(--primary-orange);
+  font-weight: 600;
+  margin: 0 0 1rem;
+}
+
+.blog-author-bio {
+  color: var(--dark-text);
+  line-height: 1.65;
+  margin: 0 0 1rem;
+}
+
+.blog-author-links {
+  font-size: 0.95rem;
+  color: var(--light-text);
+  margin: 0;
+}
+
+.blog-author-links a {
+  color: var(--primary-blue);
+  text-decoration: none;
+}
+
 .blog-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
