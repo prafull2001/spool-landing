@@ -26,22 +26,46 @@ function shouldSkip(pathname) {
   return false
 }
 
-export function proxy(request) {
+function trackArrivl(request) {
+  const websiteKey = process.env.ARRIVL_WEBSITE_KEY
+  if (!websiteKey) return
+  const xff = request.headers.get('x-forwarded-for') || ''
+  const ip = xff.split(',')[0].trim()
+  const params = new URLSearchParams({
+    url: request.url,
+    userAgent: request.headers.get('user-agent') || '',
+    ref: request.headers.get('referer') || '',
+    ip,
+    websiteKey,
+  })
+  fetch(`https://arrivl.ai/api/v1/intake/pageview?${params.toString()}`).catch(() => {})
+}
+
+export async function proxy(request) {
   const { pathname } = request.nextUrl
 
   if (!shouldSkip(pathname)) {
-    const websiteKey = process.env.ARRIVL_WEBSITE_KEY
-    if (websiteKey) {
-      const xff = request.headers.get('x-forwarded-for') || ''
-      const ip = xff.split(',')[0].trim()
-      const params = new URLSearchParams({
-        url: request.url,
-        userAgent: request.headers.get('user-agent') || '',
-        ref: request.headers.get('referer') || '',
-        ip,
-        websiteKey,
-      })
-      fetch(`https://arrivl.ai/api/v1/intake/pageview?${params.toString()}`).catch(() => {})
+    trackArrivl(request)
+
+    const accept = request.headers.get('accept') || ''
+    if (accept.includes('text/markdown') && pathname !== '/llms-full.txt' && pathname !== '/llms.txt') {
+      try {
+        const r = await fetch(`${request.nextUrl.origin}/llms-full.txt`, {
+          headers: { 'user-agent': 'spool-proxy/1.0' },
+        })
+        if (r.ok) {
+          const body = await r.text()
+          return new NextResponse(body, {
+            status: 200,
+            headers: {
+              'content-type': 'text/markdown; charset=utf-8',
+              'x-spool-markdown-source': '/llms-full.txt',
+            },
+          })
+        }
+      } catch {
+        // fall through to normal HTML response
+      }
     }
   }
 

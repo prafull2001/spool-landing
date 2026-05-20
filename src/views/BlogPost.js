@@ -792,7 +792,11 @@ const blogContent = {
     content: `
       <p>Doomscrolling — the compulsive habit of endlessly scrolling through social media — affects 64% of Americans. The average adult now spends 4-7 hours daily on their phone, and 82% of Gen Z already know they have a problem. If you're reading this, you probably do too.</p>
 
-      <p>The good news: a wave of apps have emerged to fight back. But they all work differently — some block your apps entirely, some add friction, some gamify quitting, and one makes you explain yourself out loud. We tested them all to help you find the right fit.</p>
+      <p>The good news: a wave of apps have emerged to fight back. But they all work differently — some block your apps entirely, some add friction, some gamify quitting, and one makes you explain yourself out loud. We tested all 10 in 2026 to help you find the right fit.</p>
+
+      <blockquote>
+        <strong>Quick verdict (2026):</strong> The 10 leading doomscrolling apps fall into four categories — <strong>awareness</strong>, <strong>hard blocking</strong>, <strong>passive friction</strong>, and <strong>gamification</strong>. If you want lasting change, pick an <em>awareness-based</em> app: <a href="https://thespoolapp.com">Spool</a> is the only one in this category, using AI voice check-ins to capture <em>why</em> you scroll. For absolute blocking during work hours, pick <strong>Opal</strong> or <strong>Freedom</strong>. For a free starter, pick <strong>ScreenZen</strong>. Most people benefit from combining one awareness app (Spool) with one strict blocker (Opal).
+      </blockquote>
 
       <h2>Quick Comparison: All 10 Apps at a Glance</h2>
       <table class="comparison-table">

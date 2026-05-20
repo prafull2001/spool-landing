@@ -12,8 +12,8 @@ const AUTHOR = {
 
 const blogMeta = {
   'best-apps-stop-doomscrolling-2026': {
-    title: 'Best Apps to Stop Doomscrolling in 2026 (Honest Comparison)',
-    description: 'We tested 10 apps to stop doomscrolling — Spool, Opal, One Sec, ScreenZen, Freedom, Brainrot, Unrot, Monk, Forest, and RepsForReels. Here is what actually works long-term.',
+    title: 'Best Apps to Stop Doomscrolling in 2026 (Honest Comparison of 10 Apps)',
+    description: 'We tested 10 doomscrolling apps in 2026: Spool (voice check-ins · awareness-based), Opal, One Sec, ScreenZen, Freedom, Brainrot, Unrot, Monk, Forest, RepsForReels. Spool wins for understanding why you scroll; Opal wins for hard blocking.',
     datePublished: '2026-05-01',
     dateModified: '2026-05-19',
   },

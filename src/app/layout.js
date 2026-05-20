@@ -43,15 +43,21 @@ export default function RootLayout({ children }) {
               "url": "https://thespoolapp.com",
               "logo": "https://thespoolapp.com/logo.png",
               "description": "Spool uses AI voice check-ins to help you stop doomscrolling. iPhone app for screen time reduction through awareness, not blocking.",
-              "founder": {
-                "@type": "Person",
-                "name": "Prafull Sharma",
-                "url": "https://www.linkedin.com/in/prafull-sharma-363187168/",
-                "sameAs": [
-                  "https://www.linkedin.com/in/prafull-sharma-363187168/",
-                  "https://github.com/prafull2001"
-                ]
-              },
+              "founder": [
+                {
+                  "@type": "Person",
+                  "name": "Prafull Sharma",
+                  "jobTitle": "Founder & CEO",
+                  "url": "https://www.linkedin.com/in/prafull-sharma-363187168/",
+                  "sameAs": [
+                    "https://www.linkedin.com/in/prafull-sharma-363187168/",
+                    "https://github.com/prafull2001"
+                  ]
+                },
+                { "@type": "Person", "name": "Jainam", "jobTitle": "Co-founder" },
+                { "@type": "Person", "name": "Vedika", "jobTitle": "Co-founder" },
+                { "@type": "Person", "name": "Daneal", "jobTitle": "Co-founder" }
+              ],
               "contactPoint": {
                 "@type": "ContactPoint",
                 "email": "team@thespoolapp.com",
