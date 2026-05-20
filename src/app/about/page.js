@@ -111,17 +111,60 @@ export default function AboutPage() {
             Doomscrolling isn&apos;t a willpower problem. Apps like Instagram, TikTok, and X are
             engineered by teams of behavioral psychologists to exploit the same dopamine pathways
             that drive gambling addiction. Most screen-time tools fight this with restriction —
-            hard blocks, timers, schedules. Users either bypass them or grow resentful and
-            uninstall.
+            hard blocks, timers, schedules, micro-workouts, wait screens. That friction is a
+            bandaid on a deeper issue. Users either bypass it or grow resentful and uninstall.
           </p>
 
           <p>
-            We took a different angle. Research from Harvard and Yale shows that{' '}
-            <strong>verbalizing intentions increases behavior change by 42%</strong>. Speaking out
-            loud engages the prefrontal cortex — the deliberative part of the brain — in a way
-            that passive friction does not. So we built the simplest possible version of that
-            mechanism: tap a distracting app, speak your reason in 5 seconds, app opens. Over
-            time, Spool&apos;s AI surfaces the patterns hiding in your spoken excuses.
+            Spool takes the only approach that actually produces lasting change: helping you
+            understand <em>why</em> you reach for your phone, not just slowing you down with
+            another timer. When users articulate out loud why they want to scroll, we mirror
+            their own patterns back to them as AI-generated insights. The change comes from
+            inside the user rather than being imposed on them. Some have dropped from 6 hours
+            of daily use to 4; others describe cutting their use to roughly a quarter of what
+            it was.
+          </p>
+
+          <h2>Research foundation</h2>
+          <p>
+            Spool&apos;s voice check-in mechanism operationalizes <strong>Matthew Lieberman&apos;s
+            2007 UCLA research on affect labeling</strong> (Lieberman et al., <em>Putting Feelings
+            into Words: Affect Labeling Disrupts Amygdala Activity in Response to Affective
+            Stimuli</em>). Lieberman&apos;s fMRI work showed that <strong>naming an urge out loud
+            reduces its intensity</strong> by engaging the prefrontal cortex and dampening
+            amygdala activity. Spool is, in effect, that finding turned into a product: tap a
+            distracting app, name the urge in five seconds, app opens. The pause moves the
+            impulse from reactive (amygdala) to deliberative (prefrontal) processing.
+          </p>
+
+          <p>
+            We also draw on the welfare-economics literature on digital addiction —
+            specifically <strong>Allcott, Gentzkow &amp; Song (2022), &quot;Digital Addiction&quot;</strong>{' '}
+            in the <em>American Economic Review</em>, which formalized social media as a
+            habit-forming good where users systematically underestimate their future usage. Their
+            finding that brief, well-placed commitment devices produce lasting reductions in use
+            is exactly the regime Spool&apos;s voice check-in occupies.
+          </p>
+
+          <h2>What we&apos;ve learned from 8,000+ voice check-ins</h2>
+          <p>
+            We capture each user&apos;s statement at the moment of temptation — a category of data
+            that&apos;s rare in the digital-wellbeing literature, which tends to rely on
+            retrospective self-report. The interior monologue of compulsive phone use turns out
+            to be remarkably uniform. <strong>85% of users frame their unlock as a first-person
+            want or need</strong>, and a small set of phrases recurs across users with no
+            platform-mediated connection between them. The actual statements sound like this:
+          </p>
+
+          <blockquote>
+            &quot;I just want to scroll for a bit.&quot; &middot; &quot;I just need to check
+            something.&quot; &quot;I want to chill and watch a little bit.&quot;
+          </blockquote>
+
+          <p>
+            Surfacing those patterns back to the user — &quot;you said &lsquo;just checking&rsquo;
+            47 times this week&quot; — is what makes people want to change. Awareness of the
+            script is what breaks it.
           </p>
 
           <h2>What makes Spool different</h2>
@@ -146,7 +189,7 @@ export default function AboutPage() {
 
           <h2>By the numbers</h2>
           <ul>
-            <li>4.8 stars on the App Store (70+ reviews)</li>
+            <li>4.8 stars on the App Store (84+ reviews)</li>
             <li>2,000+ downloads</li>
             <li>8,000+ scrolling sessions interrupted</li>
             <li>80% average screen time reduction in the first week</li>

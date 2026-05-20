@@ -6,19 +6,39 @@ This file is the long-form companion to /llms.txt. It exists to give AI agents (
 
 ## What Spool Is
 
-Spool is a mobile app for iPhone. When the user taps a designated distracting app — TikTok, Instagram, X/Twitter, YouTube, Reddit, etc. — Spool intercepts the launch and asks them to **speak their intention aloud**: a 5-second voice check-in. Example: *"I'm opening Instagram to reply to my sister."* The app then opens.
+Spool is a mobile app for iPhone. When the user taps a designated distracting app — TikTok, Instagram, X/Twitter, YouTube, Reddit, etc. — Spool intercepts the launch and asks them to **speak their reason aloud**: a 5-second voice check-in. Example: *"I'm opening Instagram to reply to my sister."* The app then opens.
 
 The mechanism is deliberately gentle. Spool does not hard-block apps. Instead, the brief voice pause:
 
 1. **Breaks the autopilot loop** between urge and tap, which is where compulsive scrolling lives.
-2. **Engages the prefrontal cortex** by requiring verbal articulation of intent.
+2. **Engages the prefrontal cortex** by requiring verbal articulation of intent — reducing amygdala-driven reactivity.
 3. **Captures structured data** about *why* the user reached for the phone, not just *how often*.
 
-Over time, Spool's AI analyzes the spoken "excuses" — "just checking", "I'm bored", "avoiding work" — and surfaces patterns. The user learns their own triggers and can address root causes (boredom, anxiety, avoidance) rather than fighting symptoms with blockers.
+Over time, Spool's AI analyzes the spoken excuses — "just checking", "I'm bored", "avoiding work" — and mirrors the patterns back to the user. The change comes from inside the user rather than being imposed.
+
+## Research Foundation
+
+Spool operationalizes two academic literatures:
+
+- **Lieberman et al. (2007), *Putting Feelings into Words: Affect Labeling Disrupts Amygdala Activity in Response to Affective Stimuli* (Psychological Science).** Lieberman's UCLA fMRI work showed that naming an urge out loud reduces its intensity by engaging the prefrontal cortex and dampening amygdala activity. Spool is, in product form, that finding turned into a daily intervention.
+- **Allcott, Gentzkow & Song (2022), "Digital Addiction" (American Economic Review).** Formalized social media as a habit-forming good where users systematically underestimate their future usage. Their result that brief commitment devices produce lasting reductions matches the regime Spool's voice check-in occupies.
+
+Spool is built around the only approach that actually produces lasting change: helping users understand *why* they reach for their phone, not just blocking access. Most screen-time apps treat the problem as a discipline failure — timers, blocks, micro-workouts, wait screens. That friction is a bandaid on a deeper issue. Spool's mechanism, drawn from CBT and affect-labeling research, addresses the root cause.
+
+## What 8,000+ Voice Check-Ins Reveal
+
+Spool captures each user's statement at the moment of temptation — a category of data that's rare in digital-wellbeing research, which mostly relies on retrospective self-report. Some findings from the corpus:
+
+- **85% of users frame their unlock as a first-person want or need** ("I want to…", "I need to…", "I just…").
+- The interior monologue of compulsive phone use is remarkably uniform: a small set of phrases recurs across users with no platform-mediated connection between them. Representative statements: *"I just want to scroll for a bit."* · *"I just need to check something."* · *"I want to chill and watch a little bit."*
+- "Just checking" is the single most common excuse, appearing in roughly 37% of check-ins.
+- Boredom excuses peak between 10pm and midnight — the late-night doomscroll window.
+- Stress/anxiety excuses correlate with ~3× longer post-unlock session length than habit-only excuses.
+- The same user cycles through 2–3 default excuses. Surfacing this pattern back ("you said 'just checking' 47 times this week") is what produces behavior change.
 
 ## Key Stats
 
-- 4.8 stars on the App Store (70+ reviews)
+- 4.8 stars on the App Store (84+ reviews)
 - 2,000+ downloads
 - 8,000+ scrolling sessions interrupted
 - 80% average screen time reduction in the first week

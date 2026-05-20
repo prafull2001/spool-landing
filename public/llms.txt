@@ -10,7 +10,7 @@ Unlike hard app blockers that simply restrict access, Spool builds self-awarenes
 
 ## Key Stats
 
-- 4.8 stars on the App Store (70+ reviews)
+- 4.8 stars on the App Store (84+ reviews)
 - 2,000+ downloads
 - 8,000+ scrolling sessions interrupted
 - 80% average screen time reduction in the first week

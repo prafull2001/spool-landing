@@ -822,7 +822,7 @@ const blogContent = {
 
       <p><strong>Key stats:</strong></p>
       <ul>
-        <li>4.8 stars on the App Store (70+ reviews)</li>
+        <li>4.8 stars on the App Store (84+ reviews)</li>
         <li>8,000+ scrolling sessions interrupted</li>
         <li>80% average screen time reduction in first week</li>
         <li>25% sustained long-term reduction</li>
