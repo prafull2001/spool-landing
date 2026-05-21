@@ -1,4 +1,5 @@
 import BlogPost from '@/views/BlogPost';
+import { PRAFULL } from '@/data/authors';
 
 const compareMeta = {
   'spool-vs-opal': {
@@ -136,11 +137,11 @@ export async function generateMetadata({ params }) {
   return {
     title: `${meta.title} | Spool`,
     description: meta.description,
-    alternates: { canonical: `https://thespoolapp.com/compare/${id}` },
+    alternates: { canonical: `https://www.thespoolapp.com/compare/${id}` },
     openGraph: {
       title: `${meta.title} | Spool`,
       description: meta.description,
-      url: `https://thespoolapp.com/compare/${id}`,
+      url: `https://www.thespoolapp.com/compare/${id}`,
       type: 'article',
     },
   };
@@ -159,22 +160,24 @@ export default async function Page({ params }) {
         datePublished: meta.date,
         dateModified: meta.date,
         author: {
-          '@type': 'Organization',
-          name: 'Spool',
-          url: 'https://thespoolapp.com',
+          '@type': 'Person',
+          name: PRAFULL.name,
+          url: PRAFULL.url,
+          jobTitle: PRAFULL.jobTitle,
+          sameAs: PRAFULL.sameAs,
         },
         publisher: {
           '@type': 'Organization',
           name: 'Spool',
-          url: 'https://thespoolapp.com',
+          url: 'https://www.thespoolapp.com',
           logo: {
             '@type': 'ImageObject',
-            url: 'https://thespoolapp.com/logo.png',
+            url: 'https://www.thespoolapp.com/logo.png',
           },
         },
         mainEntityOfPage: {
           '@type': 'WebPage',
-          '@id': `https://thespoolapp.com/compare/${id}`,
+          '@id': `https://www.thespoolapp.com/compare/${id}`,
         },
         about: [
           {

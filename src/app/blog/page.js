@@ -3,7 +3,7 @@ import BlogPage from '@/views/BlogPage';
 export const metadata = {
   title: 'Blog — Digital Wellness & Screen Time Research | Spool',
   description: 'Original research and head-to-head app comparisons from Spool. Read what 8,000+ voice check-ins reveal about why people doomscroll, plus honest reviews of Opal, One Sec, Freedom, ScreenZen, and more.',
-  alternates: { canonical: 'https://thespoolapp.com/blog' },
+  alternates: { canonical: 'https://www.thespoolapp.com/blog' },
 };
 
 const FAQS = [
@@ -40,15 +40,15 @@ const FAQS = [
 const blogSchema = {
   '@context': 'https://schema.org',
   '@type': 'Blog',
-  '@id': 'https://thespoolapp.com/blog',
-  url: 'https://thespoolapp.com/blog',
+  '@id': 'https://www.thespoolapp.com/blog',
+  url: 'https://www.thespoolapp.com/blog',
   name: 'The Spool Blog',
   description: 'Digital-wellness research, app comparisons, and practical guides on stopping doomscrolling — drawn from 8,000+ voice check-ins from Spool users.',
   publisher: {
     '@type': 'Organization',
     name: 'Spool',
-    url: 'https://thespoolapp.com',
-    logo: { '@type': 'ImageObject', url: 'https://thespoolapp.com/logo.png' },
+    url: 'https://www.thespoolapp.com',
+    logo: { '@type': 'ImageObject', url: 'https://www.thespoolapp.com/logo.png' },
   },
   author: {
     '@type': 'Person',

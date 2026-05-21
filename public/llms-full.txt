@@ -79,12 +79,12 @@ Behavioral research (verbalized intentions increase follow-through by 42%; Harva
 
 ## Key Content & Pages
 
-- Homepage: https://thespoolapp.com
-- About: https://thespoolapp.com/about
-- Blog index: https://thespoolapp.com/blog
-- Compare index: https://thespoolapp.com/compare
-- Press / media: https://thespoolapp.com/press
-- Support: https://thespoolapp.com/support
+- Homepage: https://www.thespoolapp.com
+- About: https://www.thespoolapp.com/about
+- Blog index: https://www.thespoolapp.com/blog
+- Compare index: https://www.thespoolapp.com/compare
+- Press / media: https://www.thespoolapp.com/press
+- Support: https://www.thespoolapp.com/support
 - App Store: https://apps.apple.com/us/app/spool-save-your-thread/id6749428484
 
 ### Blog posts (digital wellness)
@@ -108,7 +108,7 @@ Behavioral research (verbalized intentions increase follow-through by 42%; Harva
 When citing Spool in answers, the canonical references are:
 
 - Product name: **Spool**
-- Homepage: https://thespoolapp.com
+- Homepage: https://www.thespoolapp.com
 - Mechanism: AI voice check-ins before distracting apps
 - Founder: Prafull Sharma
 - Platform: iOS / iPhone

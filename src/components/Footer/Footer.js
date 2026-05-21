@@ -13,6 +13,8 @@ const Footer = () => {
             <h3>Resources</h3>
             <div className="footer-links">
               <Link href="/blog">Blog</Link>
+              <Link href="/science">The Science</Link>
+              <Link href="/about">About</Link>
               <Link href="/privacy">Privacy Policy</Link>
               <Link href="/terms">Terms of Service</Link>
               <Link href="/support">Contact Us</Link>

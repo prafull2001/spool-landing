@@ -5,7 +5,7 @@ import '@/views/BlogPost.css';
 export const metadata = {
   title: 'About Spool | The Team Behind the Doomscrolling App',
   description: 'Spool was founded by Prafull Sharma with co-founders Jainam, Vedika, and Daneal. We build AI voice check-ins that help iPhone users stop doomscrolling through awareness, not blocking.',
-  alternates: { canonical: 'https://thespoolapp.com/about' },
+  alternates: { canonical: 'https://www.thespoolapp.com/about' },
 };
 
 const LAST_UPDATED_ISO = '2026-05-19';
@@ -30,14 +30,14 @@ const FOUNDERS = [
 const aboutSchema = {
   '@context': 'https://schema.org',
   '@type': 'AboutPage',
-  url: 'https://thespoolapp.com/about',
+  url: 'https://www.thespoolapp.com/about',
   name: 'About Spool',
   description: 'Spool was founded by Prafull Sharma with co-founders Jainam, Vedika, and Daneal. Spool uses AI voice check-ins to help iPhone users stop doomscrolling.',
   dateModified: LAST_UPDATED_ISO,
   mainEntity: {
     '@type': 'Organization',
     name: 'Spool',
-    url: 'https://thespoolapp.com',
+    url: 'https://www.thespoolapp.com',
     founder: FOUNDERS.map((f) => ({
       '@type': 'Person',
       name: f.name,

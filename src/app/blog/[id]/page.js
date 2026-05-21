@@ -1,13 +1,11 @@
 import BlogPost from '@/views/BlogPost';
+import { PRAFULL } from '@/data/authors';
 
 const AUTHOR = {
-  name: 'Prafull Sharma',
-  url: 'https://www.linkedin.com/in/prafull-sharma-363187168/',
-  jobTitle: 'Founder, Spool',
-  sameAs: [
-    'https://www.linkedin.com/in/prafull-sharma-363187168/',
-    'https://github.com/prafull2001',
-  ],
+  name: PRAFULL.name,
+  url: PRAFULL.url,
+  jobTitle: PRAFULL.jobTitle,
+  sameAs: PRAFULL.sameAs,
 };
 
 const blogMeta = {
@@ -76,7 +74,7 @@ export async function generateMetadata({ params }) {
   return {
     title: meta.title,
     description: meta.description,
-    alternates: { canonical: `https://thespoolapp.com/blog/${id}` },
+    alternates: { canonical: `https://www.thespoolapp.com/blog/${id}` },
   };
 }
 
@@ -101,9 +99,9 @@ export default async function Page({ params }) {
     publisher: {
       '@type': 'Organization',
       name: 'Spool',
-      logo: { '@type': 'ImageObject', url: 'https://thespoolapp.com/logo.png' },
+      logo: { '@type': 'ImageObject', url: 'https://www.thespoolapp.com/logo.png' },
     },
-    mainEntityOfPage: { '@type': 'WebPage', '@id': `https://thespoolapp.com/blog/${id}` },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `https://www.thespoolapp.com/blog/${id}` },
   };
 
   const includeHowTo = id === 'how-to-stop-doom-scrolling';

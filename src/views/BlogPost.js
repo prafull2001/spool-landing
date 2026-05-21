@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import Logo from '../components/Logo/Logo';
 import Footer from '../components/Footer/Footer';
+import { PRAFULL } from '../data/authors';
 import './BlogPost.css';
 
 const blogContent = {
@@ -795,7 +796,7 @@ const blogContent = {
       <p>The good news: a wave of apps have emerged to fight back. But they all work differently — some block your apps entirely, some add friction, some gamify quitting, and one makes you explain yourself out loud. We tested all 10 in 2026 to help you find the right fit.</p>
 
       <blockquote>
-        <strong>Quick verdict (2026):</strong> The 10 leading doomscrolling apps fall into four categories — <strong>awareness</strong>, <strong>hard blocking</strong>, <strong>passive friction</strong>, and <strong>gamification</strong>. If you want lasting change, pick an <em>awareness-based</em> app: <a href="https://thespoolapp.com">Spool</a> is the only one in this category, using AI voice check-ins to capture <em>why</em> you scroll. For absolute blocking during work hours, pick <strong>Opal</strong> or <strong>Freedom</strong>. For a free starter, pick <strong>ScreenZen</strong>. Most people benefit from combining one awareness app (Spool) with one strict blocker (Opal).
+        <strong>Quick verdict (2026):</strong> The 10 leading doomscrolling apps fall into four categories — <strong>awareness</strong>, <strong>hard blocking</strong>, <strong>passive friction</strong>, and <strong>gamification</strong>. If you want lasting change, pick an <em>awareness-based</em> app: <a href="https://www.thespoolapp.com">Spool</a> is the only one in this category, using AI voice check-ins to capture <em>why</em> you scroll. For absolute blocking during work hours, pick <strong>Opal</strong> or <strong>Freedom</strong>. For a free starter, pick <strong>ScreenZen</strong>. Most people benefit from combining one awareness app (Spool) with one strict blocker (Opal).
       </blockquote>
 
       <h2>Quick Comparison: All 10 Apps at a Glance</h2>
@@ -960,14 +961,13 @@ const BlogPost = () => {
           <div className="blog-post-meta">
             <span className="blog-post-byline">
               By{' '}
-              <a
-                href="https://www.linkedin.com/in/prafull-sharma-363187168/"
+              <Link
+                href="/authors/prafull"
                 rel="author"
-                target="_blank"
                 className="blog-post-author"
               >
-                Prafull Sharma
-              </a>
+                {PRAFULL.name}
+              </Link>
             </span>
             <span>•</span>
             <time dateTime={new Date(post.date).toISOString().split('T')[0]}>
@@ -979,6 +979,22 @@ const BlogPost = () => {
         </div>
 
         <div className="blog-post-content" dangerouslySetInnerHTML={{ __html: post.content }} />
+
+        <aside className="blog-post-author-card">
+          <h3>About the author</h3>
+          <p>
+            <Link href="/authors/prafull" rel="author">
+              <strong>{PRAFULL.name}</strong>
+            </Link>{' '}
+            &mdash; {PRAFULL.jobTitle}.
+          </p>
+          <p>{PRAFULL.shortBio}</p>
+          <p>
+            Spool&apos;s mechanism is grounded in peer-reviewed research from UCLA,
+            Stanford, NYU, Yale, Harvard, and UC Irvine.{' '}
+            <Link href="/science">Read the science behind Spool</Link>.
+          </p>
+        </aside>
 
         <div className="blog-post-cta">
           <h3>Ready to break free from mindless scrolling?</h3>

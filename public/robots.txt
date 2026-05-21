@@ -23,4 +23,4 @@ Allow: /
 User-agent: Googlebot-Extended
 Allow: /
 
-Sitemap: https://thespoolapp.com/sitemap.xml
+Sitemap: https://www.thespoolapp.com/sitemap.xml

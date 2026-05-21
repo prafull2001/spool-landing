@@ -1,5 +1,5 @@
 export default function sitemap() {
-  const baseUrl = 'https://thespoolapp.com';
+  const baseUrl = 'https://www.thespoolapp.com';
 
   const blogPosts = [
     'best-apps-stop-doomscrolling-2026',
@@ -34,6 +34,8 @@ export default function sitemap() {
       priority: 0.8,
     })),
     { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${baseUrl}/science`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${baseUrl}/authors/prafull`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
     { url: `${baseUrl}/press`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
     { url: `${baseUrl}/support`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
     { url: `${baseUrl}/privacy`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },

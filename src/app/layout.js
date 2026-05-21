@@ -6,7 +6,7 @@ import MotionProvider from '../components/MotionProvider';
 const quicksand = Quicksand({ subsets: ['latin'], display: 'swap', variable: '--font-quicksand' });
 
 export const metadata = {
-  metadataBase: new URL('https://thespoolapp.com'),
+  metadataBase: new URL('https://www.thespoolapp.com'),
   title: {
     default: 'Spool — Stop Doomscrolling | Screen Time App for iPhone',
     template: '%s | Spool',
@@ -15,13 +15,13 @@ export const metadata = {
   openGraph: {
     title: 'Spool — Stop Doomscrolling',
     description: 'Spool uses AI voice check-ins to help you stop doomscrolling. 4.8★, 2,000+ users, 25% average screen time reduction. Free on iPhone.',
-    url: 'https://thespoolapp.com',
+    url: 'https://www.thespoolapp.com',
     siteName: 'Spool',
-    images: [{ url: 'https://thespoolapp.com/og-homepage.jpg', width: 1200, height: 630 }],
+    images: [{ url: 'https://www.thespoolapp.com/og-homepage.jpg', width: 1200, height: 630 }],
     type: 'website',
   },
   twitter: { card: 'summary_large_image', site: '@the_spool_app', creator: '@prafull_truffle' },
-  alternates: { canonical: 'https://thespoolapp.com' },
+  alternates: { canonical: 'https://www.thespoolapp.com' },
   icons: {
     icon: '/spooli-app-icon.png',
     apple: '/spooli-app-icon.png'
@@ -40,8 +40,8 @@ export default function RootLayout({ children }) {
               "@type": "Organization",
               "name": "Spool",
               "alternateName": "Spool App",
-              "url": "https://thespoolapp.com",
-              "logo": "https://thespoolapp.com/logo.png",
+              "url": "https://www.thespoolapp.com",
+              "logo": "https://www.thespoolapp.com/logo.png",
               "description": "Spool uses AI voice check-ins to help you stop doomscrolling. iPhone app for screen time reduction through awareness, not blocking.",
               "founder": [
                 {
@@ -78,11 +78,11 @@ export default function RootLayout({ children }) {
              __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebSite",
-              "url": "https://thespoolapp.com",
+              "url": "https://www.thespoolapp.com",
               "name": "Spool",
               "potentialAction": {
                 "@type": "SearchAction",
-                "target": "https://thespoolapp.com/blog?q={search_term_string}",
+                "target": "https://www.thespoolapp.com/blog?q={search_term_string}",
                 "query-input": "required name=search_term_string"
               }
             })
