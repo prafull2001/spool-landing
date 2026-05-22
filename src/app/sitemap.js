@@ -7,6 +7,16 @@ export default function sitemap() {
     'doom-scrolling-habit',
     'intentional-screen-time',
     'breaking-phone-addiction',
+    'how-to-stop-doomscrolling-on-tiktok',
+    'how-to-stop-doomscrolling-on-instagram-reels',
+    'how-to-stop-doomscrolling-on-youtube-shorts',
+    'how-to-stop-doomscrolling-on-twitter-x',
+    'how-to-stop-doomscrolling-on-reddit',
+    'why-cant-i-put-my-phone-down',
+    'is-doomscrolling-an-addiction',
+    'how-much-screen-time-is-too-much-2026',
+    'does-grayscale-mode-work',
+    'why-do-i-scroll-when-anxious',
   ];
 
   const comparePages = [
@@ -15,6 +25,11 @@ export default function sitemap() {
     'spool-vs-clearspace',
     'spool-vs-brainrot',
     'spool-vs-unrot',
+    'spool-vs-apple-screen-time',
+    'spool-vs-freedom',
+    'spool-vs-forest',
+    'spool-vs-screenzen',
+    'spool-vs-jomo',
   ];
 
   return [
