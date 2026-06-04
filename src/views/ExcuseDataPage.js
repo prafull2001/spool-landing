@@ -9,6 +9,8 @@ import {
   computeHabitFormation, computeCohortRetention,
   computeCategoryEvolution, computePowerUserRankings,
   computeICPSegments, computeTimingPatterns, computeWeek2DeepDive,
+  computeMinutesStats, computeMinutesDistribution,
+  computeMinutesBySubscription, computeMinutesVsExcuses,
 } from './excuseDataHelpers';
 import { generateResearchPackage } from './researchExport';
 import './ExcuseDataPage.css';
@@ -82,6 +84,14 @@ function ExcuseDataPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pr
   const drillTimelineRef = useRef(null);
   const drillCategoryInstance = useRef(null);
   const drillTimelineInstance = useRef(null);
+
+  // Chart refs — unlock minutes
+  const minutesHistRef = useRef(null);
+  const minutesHistInstance = useRef(null);
+  const minutesSubRef = useRef(null);
+  const minutesSubInstance = useRef(null);
+  const minutesScatterRef = useRef(null);
+  const minutesScatterInstance = useRef(null);
 
   const toggleCollapse = (key) => setCollapsed(prev => ({ ...prev, [key]: !prev[key] }));
 
@@ -220,6 +230,13 @@ function ExcuseDataPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pr
     users.forEach(u => { m[u.id] = u.totalExtraMinutesRequested || 0; });
     return m;
   }, [users]);
+
+  // Unlock-minutes analytics (lifetime snapshot; team excluded, zeros excluded,
+  // diversity-filter-independent — minutes exist regardless of journaling).
+  const minutesStats = useMemo(() => computeMinutesStats(users), [users]);
+  const minutesDistribution = useMemo(() => computeMinutesDistribution(users), [users]);
+  const minutesBySub = useMemo(() => computeMinutesBySubscription(users), [users]);
+  const minutesVsExcuses = useMemo(() => computeMinutesVsExcuses(users), [users]);
 
   // ── Stat Strip ──
   const summaryStats = useMemo(() => {
@@ -402,6 +419,99 @@ function ExcuseDataPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pr
   }, [excuses]);
 
   // ── Charts ──
+
+  // Unlock Minutes — distribution histogram (users by lifetime hours requested)
+  useEffect(() => {
+    if (minutesHistInstance.current) { minutesHistInstance.current.destroy(); minutesHistInstance.current = null; }
+    if (activeTab !== 'overview' || collapsed.minutes) return;
+    if (!minutesDistribution || minutesDistribution.every(b => b.count === 0)) return;
+    if (minutesHistRef.current) {
+      minutesHistInstance.current = new Chart(minutesHistRef.current, {
+        type: 'bar',
+        data: {
+          labels: minutesDistribution.map(b => b.label),
+          datasets: [{ label: 'Users', data: minutesDistribution.map(b => b.count), backgroundColor: '#5499C7', borderWidth: 0 }],
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: ctx => `${ctx.parsed.y} user${ctx.parsed.y === 1 ? '' : 's'}` } },
+          },
+          scales: {
+            x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+            y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { precision: 0 } },
+          },
+        },
+      });
+    }
+    return () => { if (minutesHistInstance.current) { minutesHistInstance.current.destroy(); minutesHistInstance.current = null; } };
+  }, [minutesDistribution, collapsed, activeTab]);
+
+  // Unlock Minutes — avg hours requested, paying vs free
+  useEffect(() => {
+    if (minutesSubInstance.current) { minutesSubInstance.current.destroy(); minutesSubInstance.current = null; }
+    if (activeTab !== 'overview' || collapsed.minutes || !minutesBySub) return;
+    if (minutesSubRef.current) {
+      minutesSubInstance.current = new Chart(minutesSubRef.current, {
+        type: 'bar',
+        data: {
+          labels: ['Paying', 'Free'],
+          datasets: [{ data: [minutesBySub.paying.avgHrs, minutesBySub.free.avgHrs], backgroundColor: ['#58D68D', '#5499C7'], borderWidth: 0 }],
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: ctx => {
+              const g = ctx.dataIndex === 0 ? minutesBySub.paying : minutesBySub.free;
+              return `${g.avgHrs.toFixed(1)}h avg · ${g.count} user${g.count === 1 ? '' : 's'}`;
+            } } },
+          },
+          scales: {
+            x: { grid: { display: false } },
+            y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' }, title: { display: true, text: 'Avg hours / user' } },
+          },
+        },
+      });
+    }
+    return () => { if (minutesSubInstance.current) { minutesSubInstance.current.destroy(); minutesSubInstance.current = null; } };
+  }, [minutesBySub, collapsed, activeTab]);
+
+  // Unlock Minutes — hours requested vs excuse count (per user)
+  useEffect(() => {
+    if (minutesScatterInstance.current) { minutesScatterInstance.current.destroy(); minutesScatterInstance.current = null; }
+    if (activeTab !== 'overview' || collapsed.minutes) return;
+    if (!minutesVsExcuses || minutesVsExcuses.length === 0) return;
+    if (minutesScatterRef.current) {
+      minutesScatterInstance.current = new Chart(minutesScatterRef.current, {
+        type: 'scatter',
+        data: {
+          datasets: [{
+            label: 'Users',
+            data: minutesVsExcuses.map(p => ({ x: p.x, y: p.y / 60 })),
+            backgroundColor: 'rgba(84,153,199,0.55)',
+            pointRadius: 4, pointHoverRadius: 6,
+          }],
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: ctx => {
+              const p = minutesVsExcuses[ctx.dataIndex];
+              return `${displayName(p.name, p.userId)}: ${p.x} excuses · ${(p.y / 60).toFixed(1)}h · ${p.minPerExcuse.toFixed(0)} min/excuse`;
+            } } },
+          },
+          scales: {
+            x: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' }, title: { display: true, text: 'Excuse count' } },
+            y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' }, title: { display: true, text: 'Hours requested' } },
+          },
+        },
+      });
+    }
+    return () => { if (minutesScatterInstance.current) { minutesScatterInstance.current.destroy(); minutesScatterInstance.current = null; } };
+  }, [minutesVsExcuses, collapsed, activeTab]);
 
   // Activity Trend + Moving Average
   useEffect(() => {
@@ -860,6 +970,11 @@ function ExcuseDataPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pr
   const handleRefresh = () => { setExcuses([]); setUsers([]); setError(null); fetchData(); };
 
   const displayName = (name, userId) => (!name || name === userId) ? 'Anonymous User' : name;
+  const formatMinutes = (min) => {
+    const m = Math.round(Number(min) || 0);
+    if (m < 60) return `${m}m`;
+    return `${Math.floor(m / 60)}h ${m % 60}m`;
+  };
 
   const formatDate = (d) => d ? d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '--';
   const formatDateTime = (d) => d ? d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' }) : '--';
@@ -1123,6 +1238,52 @@ function ExcuseDataPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pr
                         <div className="ed-empty-inline">Not enough cohort data yet (need 8+ users per cohort)</div>
                       );
                     })()}
+                  </div>
+                )}
+              </div>
+
+              {/* ── 6. Unlock Minutes Requested ── */}
+              <div className="ed-panel">
+                <div className="ed-panel-head" onClick={() => toggleCollapse('minutes')}>
+                  <div>
+                    <h2>Unlock Minutes Requested</h2>
+                    <span className="ed-panel-sub">Lifetime cumulative unlock time each user has requested and been granted — the 1/5/10/15-minute unlock choices summed across their entire history (online + offline, granted unlocks only). This is a point-in-time snapshot per user, not a time series, so these are cross-sectional views, not trends. Excludes team accounts and users who have never requested an unlock; not affected by the Real Journalers filter (unlock minutes exist regardless of excuse-text diversity).</span>
+                  </div>
+                  <span className="ed-collapse-icon">{collapsed.minutes ? '+' : '−'}</span>
+                </div>
+                {!collapsed.minutes && (
+                  <div className="ed-panel-body">
+                    {minutesStats ? (
+                      <>
+                        <div className="stat-strip">
+                          <div className="stat-item"><span className="stat-value">{Math.round(minutesStats.grandTotalHrs).toLocaleString()}<small> h</small></span><span className="stat-label">Total Requested</span></div>
+                          <div className="stat-sep" />
+                          <div className="stat-item"><span className="stat-value">{minutesStats.countOverZero}</span><span className="stat-label">Users &gt; 0</span></div>
+                          <div className="stat-sep" />
+                          <div className="stat-item"><span className="stat-value">{minutesStats.meanHrs.toFixed(1)}<small> h</small></span><span className="stat-label">Mean / User</span></div>
+                          <div className="stat-sep" />
+                          <div className="stat-item"><span className="stat-value">{minutesStats.medianHrs.toFixed(1)}<small> h</small></span><span className="stat-label">Median / User</span></div>
+                          <div className="stat-sep" />
+                          <div className="stat-item"><span className="stat-value">{Math.round(minutesStats.maxHrs).toLocaleString()}<small> h</small></span><span className="stat-label">Max</span></div>
+                        </div>
+                        <div style={{ marginTop: 16 }}>
+                          <div className="ed-panel-sub" style={{ display: 'block', marginBottom: 6 }}>Distribution — number of users by lifetime hours requested</div>
+                          <div className="ed-chart-wrap" style={{ height: 200 }}><canvas ref={minutesHistRef} /></div>
+                        </div>
+                        <div className="ed-minutes-grid" style={{ marginTop: 16, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                          <div>
+                            <div className="ed-panel-sub" style={{ display: 'block', marginBottom: 6 }}>Avg hours requested — paying vs free{minutesBySub ? ` (${minutesBySub.paying.count} paying · ${minutesBySub.free.count} free)` : ''}</div>
+                            <div className="ed-chart-wrap" style={{ height: 200 }}><canvas ref={minutesSubRef} /></div>
+                          </div>
+                          <div>
+                            <div className="ed-panel-sub" style={{ display: 'block', marginBottom: 6 }}>Hours requested vs excuse count{minutesVsExcuses ? ` (${minutesVsExcuses.length} users with excuse counts)` : ''}</div>
+                            <div className="ed-chart-wrap" style={{ height: 200 }}><canvas ref={minutesScatterRef} /></div>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="ed-empty-inline">No unlock-minute data yet.</div>
+                    )}
                   </div>
                 )}
               </div>
@@ -1528,7 +1689,7 @@ function ExcuseDataPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pr
                                   Diversity {leaderboardSort.field === 'diversityPct' ? (leaderboardSort.dir === 'asc' ? '↑' : '↓') : ''}
                                 </th>
                                 <th onClick={() => handleSort('totalMinutes')} className="ed-sortable">
-                                  Total Min {leaderboardSort.field === 'totalMinutes' ? (leaderboardSort.dir === 'asc' ? '↑' : '↓') : ''}
+                                  Unlock Time {leaderboardSort.field === 'totalMinutes' ? (leaderboardSort.dir === 'asc' ? '↑' : '↓') : ''}
                                 </th>
                                 <th onClick={() => handleSort('lastActive')} className="ed-sortable">
                                   Last Active {leaderboardSort.field === 'lastActive' ? (leaderboardSort.dir === 'asc' ? '↑' : '↓') : ''}
@@ -1543,7 +1704,7 @@ function ExcuseDataPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pr
                                   <td>{u.excuseCount}</td>
                                   <td>{u.streak}d</td>
                                   <td>{(u.diversityPct * 100).toFixed(0)}%</td>
-                                  <td>{u.totalMinutes}</td>
+                                  <td title={`${u.totalMinutes} min`}>{formatMinutes(u.totalMinutes)}</td>
                                   <td>{formatDate(u.lastActive)}</td>
                                   <td><span className="ed-badge">{topCategory(u.categories)}</span></td>
                                 </tr>

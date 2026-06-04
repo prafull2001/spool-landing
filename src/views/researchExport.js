@@ -5,6 +5,9 @@
  */
 import JSZip from 'jszip';
 import { Chart } from 'chart.js';
+import {
+  computeMinutesDistribution, computeMinutesBySubscription, computeMinutesVsExcuses,
+} from './excuseDataHelpers';
 
 // ─── Anonymization ───────────────────────────────────────────────────────────
 
@@ -155,7 +158,7 @@ function generateMethodology(stats) {
 
 ## Export metadata
 - **Generated:** ${new Date().toISOString()}
-- **Export version:** 1.1
+- **Export version:** 1.2
 - **Tool:** Spool Admin Dashboard (client-side export)
 
 ## Sample size
@@ -198,7 +201,7 @@ Word count per excuse is computed by splitting the excuse text on whitespace (\`
 ## Known caveats
 1. **Selection bias:** All users are opt-in Spool users; no control group
 2. **Self-reported baseline:** \`screenTimeHours\` is user-reported during onboarding, not measured
-3. **Aggregate duration:** Uses cumulative \`totalExtraMinutesRequested\` from the user doc, not per-excuse duration
+3. **Aggregate duration is a snapshot, not a time series:** \`totalExtraMinutesRequested\` is a single cumulative lifetime total per user (granted unlocks only, online + offline). There is no per-day/per-event history behind it, so charts 10–12 are strictly cross-sectional (distribution, segment comparison, ratio) — no "minutes over time" trend can be derived from this field.
 4. **App coverage gap:** Excuses logged before app tracking shipped have no app field
 5. **Anonymization is regex-based (v1):** May miss some PII patterns
 
@@ -212,6 +215,9 @@ Word count per excuse is computed by splitting the excuse text on whitespace (\`
 7. App × category heatmap (stacked bar, % of each app's excuses)
 8. Time of day per app (line, normalized %)
 9. Intent vs behavior (paired bar) — onboarding goals vs actual categories
+10. Unlock minutes requested — distribution (histogram, lifetime hours per user; team + zero-minute users excluded)
+11. Avg unlock hours requested — paying vs free (bar)
+12. Unlock hours vs excuse count (scatter, per user; only users with a recorded excuseCount > 0)
 `;
 }
 
@@ -606,6 +612,73 @@ function intentVsBehaviorChart(users, excusesByUser, onboardingSurveys) {
 
 // ─── Main Export Function ────────────────────────────────────────────────────
 
+// ─── Unlock Minutes Charts (lifetime snapshot, cross-sectional) ──────────────
+// These reuse the SAME compute helpers as the live dashboard so the two surfaces
+// never drift. All exclude team accounts + users with 0 lifetime minutes.
+
+function minutesDistributionChart(users) {
+  const buckets = computeMinutesDistribution(users);
+  return {
+    type: 'bar',
+    data: {
+      labels: buckets.map(b => b.label),
+      datasets: [{ data: buckets.map(b => b.count), backgroundColor: CHART_STYLE.colors[0], borderWidth: 0 }],
+    },
+    options: {
+      plugins: {
+        title: { display: true, text: 'Unlock Minutes Requested — Distribution (lifetime hours per user)', font: { size: 16 } },
+        legend: { display: false },
+      },
+      scales: {
+        y: { beginAtZero: true, title: { display: true, text: 'Users' } },
+        x: { title: { display: true, text: 'Lifetime hours requested' } },
+      },
+    },
+  };
+}
+
+function minutesBySubscriptionChart(users) {
+  const s = computeMinutesBySubscription(users);
+  return {
+    type: 'bar',
+    data: {
+      labels: [`Paying (n=${s.paying.count})`, `Free (n=${s.free.count})`],
+      datasets: [{ data: [s.paying.avgHrs, s.free.avgHrs], backgroundColor: [CHART_STYLE.colors[1], CHART_STYLE.colors[0]], borderWidth: 0 }],
+    },
+    options: {
+      plugins: {
+        title: { display: true, text: 'Avg Unlock Hours Requested — Paying vs Free', font: { size: 16 } },
+        legend: { display: false },
+      },
+      scales: { y: { beginAtZero: true, title: { display: true, text: 'Avg hours / user' } } },
+    },
+  };
+}
+
+function minutesVsExcusesChart(users) {
+  const pts = computeMinutesVsExcuses(users);
+  return {
+    type: 'scatter',
+    data: {
+      datasets: [{
+        data: pts.map(p => ({ x: p.x, y: p.y / 60 })),
+        backgroundColor: 'rgba(84,153,199,0.55)',
+        pointRadius: 4,
+      }],
+    },
+    options: {
+      plugins: {
+        title: { display: true, text: 'Unlock Hours vs Excuse Count (per user)', font: { size: 16 } },
+        legend: { display: false },
+      },
+      scales: {
+        x: { beginAtZero: true, title: { display: true, text: 'Excuse count' } },
+        y: { beginAtZero: true, title: { display: true, text: 'Hours requested' } },
+      },
+    },
+  };
+}
+
 export async function generateResearchPackage({ users, excuses, excusesByUser, onboardingSurveys, onProgress }) {
   const zip = new JSZip();
   const chartsFolder = zip.folder('charts');
@@ -621,33 +694,42 @@ export async function generateResearchPackage({ users, excuses, excusesByUser, o
   onProgress?.('Generating users CSV...');
   zip.file('users_augmented.csv', generateUsersCSV(users, excusesByUser, onboardingSurveys, anonMap));
 
-  // ─── Charts (9 total) ───
-  onProgress?.('Generating charts (1/9)...');
+  // ─── Charts (12 total) ───
+  onProgress?.('Generating charts (1/12)...');
   chartsFolder.file('01_category_distribution.png', await renderChartToPNG(categoryDistributionChart(excuses)));
 
-  onProgress?.('Generating charts (2/9)...');
+  onProgress?.('Generating charts (2/12)...');
   chartsFolder.file('02_time_of_day.png', await renderChartToPNG(timeOfDayChart(excuses)));
 
-  onProgress?.('Generating charts (3/9)...');
+  onProgress?.('Generating charts (3/12)...');
   chartsFolder.file('03_time_of_day_by_category.png', await renderChartToPNG(timeOfDayByCategoryChart(excuses)));
 
-  onProgress?.('Generating charts (4/9)...');
+  onProgress?.('Generating charts (4/12)...');
   chartsFolder.file('04_word_count_distribution.png', await renderChartToPNG(wordCountDistributionChart(excuses)));
 
-  onProgress?.('Generating charts (5/9)...');
+  onProgress?.('Generating charts (5/12)...');
   chartsFolder.file('05_screen_time_baseline_vs_actual.png', await renderChartToPNG(screenTimeComparisonChart(users, excusesByUser, onboardingSurveys)));
 
-  onProgress?.('Generating charts (6/9)...');
+  onProgress?.('Generating charts (6/12)...');
   chartsFolder.file('06_top_apps_volume.png', await renderChartToPNG(topAppsByVolumeChart(excuses)));
 
-  onProgress?.('Generating charts (7/9)...');
+  onProgress?.('Generating charts (7/12)...');
   chartsFolder.file('07_app_category_heatmap.png', await renderChartToPNG(appCategoryHeatmapChart(excuses)));
 
-  onProgress?.('Generating charts (8/9)...');
+  onProgress?.('Generating charts (8/12)...');
   chartsFolder.file('08_time_of_day_per_app.png', await renderChartToPNG(timeOfDayPerAppChart(excuses)));
 
-  onProgress?.('Generating charts (9/9)...');
+  onProgress?.('Generating charts (9/12)...');
   chartsFolder.file('09_intent_vs_behavior.png', await renderChartToPNG(intentVsBehaviorChart(users, excusesByUser, onboardingSurveys)));
+
+  onProgress?.('Generating charts (10/12)...');
+  chartsFolder.file('10_minutes_requested_distribution.png', await renderChartToPNG(minutesDistributionChart(users)));
+
+  onProgress?.('Generating charts (11/12)...');
+  chartsFolder.file('11_minutes_by_subscription.png', await renderChartToPNG(minutesBySubscriptionChart(users)));
+
+  onProgress?.('Generating charts (12/12)...');
+  chartsFolder.file('12_minutes_vs_excuses.png', await renderChartToPNG(minutesVsExcusesChart(users)));
 
   // ─── Methodology ───
   onProgress?.('Generating methodology note...');

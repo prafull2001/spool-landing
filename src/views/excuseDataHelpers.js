@@ -606,3 +606,118 @@ export function computeWeek2DeepDive(excuses, filteredUserIds, categories) {
     totalEligible,
   };
 }
+
+// ─── Unlock Minutes Requested (lifetime snapshot) ────────────────────────────
+// `totalExtraMinutesRequested` on the user doc is a single cumulative lifetime
+// total per user (sum of the 1/5/10/15-min granted unlock choices, online +
+// offline). It is a point-in-time SNAPSHOT, not a time series — there is no
+// per-day/per-event history behind it, so every function below is strictly
+// cross-sectional. All of these exclude team accounts and users who have never
+// requested an unlock (value 0 / absent). Diversity filtering does NOT apply:
+// unlock minutes exist regardless of how varied a user's excuse text is.
+
+const MIN_PER_HOUR = 60;
+
+/**
+ * Users with a positive lifetime `totalExtraMinutesRequested`, team excluded.
+ * @param {Array} users - raw user docs ({ id, totalExtraMinutesRequested, ... })
+ * @param {boolean} excludeTeam
+ * @returns {Array} filtered user docs
+ */
+export function getMinutesUsers(users, excludeTeam = true) {
+  return (users || []).filter(u => {
+    if (excludeTeam && TEAM_USER_IDS.includes(u.id)) return false;
+    return (Number(u.totalExtraMinutesRequested) || 0) > 0;
+  });
+}
+
+/**
+ * Summary stats over users with >0 minutes requested (zeros excluded entirely).
+ * @returns {null | { countOverZero, grandTotalMin, grandTotalHrs, meanMin, meanHrs, medianMin, medianHrs, maxMin, maxHrs }}
+ */
+export function computeMinutesStats(users, excludeTeam = true) {
+  const pop = getMinutesUsers(users, excludeTeam);
+  if (pop.length === 0) return null;
+  const vals = pop.map(u => Number(u.totalExtraMinutesRequested) || 0).sort((a, b) => a - b);
+  const grandTotal = vals.reduce((s, v) => s + v, 0);
+  const mean = grandTotal / vals.length;
+  const mid = Math.floor(vals.length / 2);
+  const median = vals.length % 2 ? vals[mid] : (vals[mid - 1] + vals[mid]) / 2;
+  const max = vals[vals.length - 1];
+  return {
+    countOverZero: vals.length,
+    grandTotalMin: grandTotal,
+    grandTotalHrs: grandTotal / MIN_PER_HOUR,
+    meanMin: mean,
+    meanHrs: mean / MIN_PER_HOUR,
+    medianMin: median,
+    medianHrs: median / MIN_PER_HOUR,
+    maxMin: max,
+    maxHrs: max / MIN_PER_HOUR,
+  };
+}
+
+/**
+ * Histogram of lifetime minutes requested, bucketed by hours (last bucket open-ended).
+ * @returns {Array<{ label: string, loMin: number, hiMin: number, count: number }>}
+ */
+export function computeMinutesDistribution(users, excludeTeam = true) {
+  const pop = getMinutesUsers(users, excludeTeam);
+  const edgesHrs = [0, 1, 5, 10, 25, 50, 100]; // hour boundaries; last edge is open-ended
+  const buckets = edgesHrs.map((lo, i) => {
+    const hi = edgesHrs[i + 1];
+    return {
+      label: hi == null ? `${lo}h+` : `${lo}–${hi}h`,
+      loMin: lo * MIN_PER_HOUR,
+      hiMin: hi == null ? Infinity : hi * MIN_PER_HOUR,
+      count: 0,
+    };
+  });
+  pop.forEach(u => {
+    const m = Number(u.totalExtraMinutesRequested) || 0;
+    const b = buckets.find(bk => m >= bk.loMin && m < bk.hiMin);
+    if (b) b.count++;
+  });
+  return buckets;
+}
+
+/**
+ * Average minutes/hours requested, paying (subscriptionActive) vs free.
+ * @returns {{ paying: GroupStat, free: GroupStat }} where GroupStat = { count, avgMin, avgHrs, totalMin }
+ */
+export function computeMinutesBySubscription(users, excludeTeam = true) {
+  const pop = getMinutesUsers(users, excludeTeam);
+  const groups = { paying: [], free: [] };
+  pop.forEach(u => {
+    const m = Number(u.totalExtraMinutesRequested) || 0;
+    (u.subscriptionActive ? groups.paying : groups.free).push(m);
+  });
+  const stat = arr => {
+    if (arr.length === 0) return { count: 0, avgMin: 0, avgHrs: 0, totalMin: 0 };
+    const total = arr.reduce((s, v) => s + v, 0);
+    return { count: arr.length, avgMin: total / arr.length, avgHrs: total / arr.length / MIN_PER_HOUR, totalMin: total };
+  };
+  return { paying: stat(groups.paying), free: stat(groups.free) };
+}
+
+/**
+ * Scatter points of excuse count (x) vs minutes requested (y), one per user.
+ * Null-safe: only users whose `excuseCount` field exists and is > 0 are included
+ * (so "avg minutes per excuse" is well-defined). Users missing excuseCount are skipped.
+ * @returns {Array<{ x, y, userId, name, minPerExcuse }>}
+ */
+export function computeMinutesVsExcuses(users, excludeTeam = true) {
+  return getMinutesUsers(users, excludeTeam)
+    .filter(u => Number.isFinite(Number(u.excuseCount)) && Number(u.excuseCount) > 0)
+    .map(u => {
+      const m = Number(u.totalExtraMinutesRequested) || 0;
+      const c = Number(u.excuseCount);
+      return {
+        x: c,
+        y: m,
+        userId: u.id,
+        name: u.displayName || u.name || u.email || u.id,
+        minPerExcuse: m / c,
+      };
+    });
+}
