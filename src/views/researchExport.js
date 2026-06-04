@@ -7,6 +7,7 @@ import JSZip from 'jszip';
 import { Chart } from 'chart.js';
 import {
   computeMinutesDistribution, computeMinutesBySubscription, computeMinutesVsExcuses,
+  computeMinutesPerUser,
 } from './excuseDataHelpers';
 
 // ─── Anonymization ───────────────────────────────────────────────────────────
@@ -151,6 +152,23 @@ function generateUsersCSV(users, excusesByUser, onboardingSurveys, anonMap) {
   return csvFromRows(headers, rows);
 }
 
+function generateMinutesByUserCSV(users, anonMap) {
+  const headers = [
+    'participant_id', 'subscription_active', 'excuse_count',
+    'total_extra_minutes_requested', 'total_extra_hours_requested',
+    'avg_minutes_per_excuse',
+  ];
+  const rows = computeMinutesPerUser(users).map(u => [
+    anonMap[u.userId] || 'unknown',
+    u.subscriptionActive ? 'true' : 'false',
+    u.excuseCount == null ? '' : u.excuseCount,
+    u.minutes,
+    u.hours.toFixed(2),
+    u.minPerExcuse == null ? '' : u.minPerExcuse.toFixed(1),
+  ]);
+  return csvFromRows(headers, rows);
+}
+
 // ─── Methodology Note ────────────────────────────────────────────────────────
 
 function generateMethodology(stats) {
@@ -158,7 +176,7 @@ function generateMethodology(stats) {
 
 ## Export metadata
 - **Generated:** ${new Date().toISOString()}
-- **Export version:** 1.2
+- **Export version:** 1.3
 - **Tool:** Spool Admin Dashboard (client-side export)
 
 ## Sample size
@@ -217,7 +235,12 @@ Word count per excuse is computed by splitting the excuse text on whitespace (\`
 9. Intent vs behavior (paired bar) — onboarding goals vs actual categories
 10. Unlock minutes requested — distribution (histogram, lifetime hours per user; team + zero-minute users excluded)
 11. Avg unlock hours requested — paying vs free (bar)
-12. Unlock hours vs excuse count (scatter, per user; only users with a recorded excuseCount > 0)
+12. Unlock hours vs excuse count (scatter, per user, colored by plan, log axes; only users with a recorded excuseCount > 0)
+
+## Data files
+- \`excuses_anonymized.csv\` — one row per excuse (anonymized text, category, app, word count)
+- \`users_augmented.csv\` — per-participant outcome metrics; **filtered** to users with a screen-time baseline + ≥1 excuse
+- \`unlock_minutes_by_user.csv\` — **every** user with >0 lifetime unlock minutes (team excluded), one row each: subscription, excuse count, total minutes, total hours, avg minutes/excuse. \`excuse_count\` and \`avg_minutes_per_excuse\` are blank where the user has no recorded \`excuseCount\`. This is the per-user data behind chart 12 (a superset — it also includes users the scatter omits for lacking an excuse count).
 `;
 }
 
@@ -657,23 +680,23 @@ function minutesBySubscriptionChart(users) {
 
 function minutesVsExcusesChart(users) {
   const pts = computeMinutesVsExcuses(users);
+  const toPoint = p => ({ x: p.x, y: p.y / 60 });
   return {
     type: 'scatter',
     data: {
-      datasets: [{
-        data: pts.map(p => ({ x: p.x, y: p.y / 60 })),
-        backgroundColor: 'rgba(84,153,199,0.55)',
-        pointRadius: 4,
-      }],
+      datasets: [
+        { label: 'Paying', data: pts.filter(p => p.subscriptionActive).map(toPoint), backgroundColor: 'rgba(88,214,141,0.7)', pointRadius: 5 },
+        { label: 'Free', data: pts.filter(p => !p.subscriptionActive).map(toPoint), backgroundColor: 'rgba(84,153,199,0.6)', pointRadius: 5 },
+      ],
     },
     options: {
       plugins: {
-        title: { display: true, text: 'Unlock Hours vs Excuse Count (per user)', font: { size: 16 } },
-        legend: { display: false },
+        title: { display: true, text: 'Unlock Hours vs Excuse Count (per user, by plan)', font: { size: 16 } },
+        legend: { display: true, position: 'top', labels: { usePointStyle: true } },
       },
       scales: {
-        x: { beginAtZero: true, title: { display: true, text: 'Excuse count' } },
-        y: { beginAtZero: true, title: { display: true, text: 'Hours requested' } },
+        x: { type: 'logarithmic', title: { display: true, text: 'Excuse count (log scale)' } },
+        y: { type: 'logarithmic', title: { display: true, text: 'Hours requested (log scale)' } },
       },
     },
   };
@@ -693,6 +716,9 @@ export async function generateResearchPackage({ users, excuses, excusesByUser, o
 
   onProgress?.('Generating users CSV...');
   zip.file('users_augmented.csv', generateUsersCSV(users, excusesByUser, onboardingSurveys, anonMap));
+
+  onProgress?.('Generating unlock-minutes CSV...');
+  zip.file('unlock_minutes_by_user.csv', generateMinutesByUserCSV(users, anonMap));
 
   // ─── Charts (12 total) ───
   onProgress?.('Generating charts (1/12)...');

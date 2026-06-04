@@ -718,6 +718,32 @@ export function computeMinutesVsExcuses(users, excludeTeam = true) {
         userId: u.id,
         name: u.displayName || u.name || u.email || u.id,
         minPerExcuse: m / c,
+        subscriptionActive: !!u.subscriptionActive,
       };
     });
+}
+
+/**
+ * Full per-user unlock-minutes table for export — every user with >0 lifetime
+ * minutes (team excluded), sorted desc. Superset of the scatter population:
+ * `excuseCount`/`minPerExcuse` are null when excuseCount is absent or 0.
+ * @returns {Array<{ userId, name, minutes, hours, excuseCount: number|null, minPerExcuse: number|null, subscriptionActive: boolean }>}
+ */
+export function computeMinutesPerUser(users, excludeTeam = true) {
+  return getMinutesUsers(users, excludeTeam)
+    .map(u => {
+      const minutes = Number(u.totalExtraMinutesRequested) || 0;
+      const hasCount = Number.isFinite(Number(u.excuseCount)) && Number(u.excuseCount) > 0;
+      const excuseCount = hasCount ? Number(u.excuseCount) : null;
+      return {
+        userId: u.id,
+        name: u.displayName || u.name || u.email || u.id,
+        minutes,
+        hours: minutes / MIN_PER_HOUR,
+        excuseCount,
+        minPerExcuse: excuseCount ? minutes / excuseCount : null,
+        subscriptionActive: !!u.subscriptionActive,
+      };
+    })
+    .sort((a, b) => b.minutes - a.minutes);
 }

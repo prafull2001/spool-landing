@@ -478,34 +478,47 @@ function ExcuseDataPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pr
     return () => { if (minutesSubInstance.current) { minutesSubInstance.current.destroy(); minutesSubInstance.current = null; } };
   }, [minutesBySub, collapsed, activeTab]);
 
-  // Unlock Minutes — hours requested vs excuse count (per user)
+  // Unlock Minutes — hours requested vs excuse count (per user), colored by plan
   useEffect(() => {
     if (minutesScatterInstance.current) { minutesScatterInstance.current.destroy(); minutesScatterInstance.current = null; }
     if (activeTab !== 'overview' || collapsed.minutes) return;
     if (!minutesVsExcuses || minutesVsExcuses.length === 0) return;
     if (minutesScatterRef.current) {
+      // Each point carries its own metadata so tooltips read from ctx.raw (no index math).
+      const toPoint = p => ({ x: p.x, y: p.y / 60, name: p.name, userId: p.userId, minPerExcuse: p.minPerExcuse });
       minutesScatterInstance.current = new Chart(minutesScatterRef.current, {
         type: 'scatter',
         data: {
-          datasets: [{
-            label: 'Users',
-            data: minutesVsExcuses.map(p => ({ x: p.x, y: p.y / 60 })),
-            backgroundColor: 'rgba(84,153,199,0.55)',
-            pointRadius: 4, pointHoverRadius: 6,
-          }],
+          datasets: [
+            {
+              label: 'Paying',
+              data: minutesVsExcuses.filter(p => p.subscriptionActive).map(toPoint),
+              backgroundColor: 'rgba(88,214,141,0.7)',
+              pointRadius: 5, pointHoverRadius: 7,
+            },
+            {
+              label: 'Free',
+              data: minutesVsExcuses.filter(p => !p.subscriptionActive).map(toPoint),
+              backgroundColor: 'rgba(84,153,199,0.6)',
+              pointRadius: 5, pointHoverRadius: 7,
+            },
+          ],
         },
         options: {
           responsive: true, maintainAspectRatio: false,
           plugins: {
-            legend: { display: false },
+            legend: { display: true, position: 'top', align: 'end',
+              labels: { font: { size: 11 }, boxWidth: 10, padding: 12, usePointStyle: true } },
             tooltip: { callbacks: { label: ctx => {
-              const p = minutesVsExcuses[ctx.dataIndex];
-              return `${displayName(p.name, p.userId)}: ${p.x} excuses · ${(p.y / 60).toFixed(1)}h · ${p.minPerExcuse.toFixed(0)} min/excuse`;
+              const p = ctx.raw;
+              return `${displayName(p.name, p.userId)}: ${p.x} excuses · ${p.y.toFixed(1)}h · ${p.minPerExcuse != null ? p.minPerExcuse.toFixed(0) + ' min/excuse' : '—'}`;
             } } },
           },
           scales: {
-            x: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' }, title: { display: true, text: 'Excuse count' } },
-            y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' }, title: { display: true, text: 'Hours requested' } },
+            x: { type: 'logarithmic', grid: { color: 'rgba(0,0,0,0.04)' },
+              title: { display: true, text: 'Excuse count (log scale)' }, ticks: { font: { size: 10 } } },
+            y: { type: 'logarithmic', grid: { color: 'rgba(0,0,0,0.04)' },
+              title: { display: true, text: 'Hours requested (log scale)' }, ticks: { font: { size: 10 } } },
           },
         },
       });
@@ -1266,19 +1279,19 @@ function ExcuseDataPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pr
                           <div className="stat-sep" />
                           <div className="stat-item"><span className="stat-value">{Math.round(minutesStats.maxHrs).toLocaleString()}<small> h</small></span><span className="stat-label">Max</span></div>
                         </div>
-                        <div style={{ marginTop: 16 }}>
-                          <div className="ed-panel-sub" style={{ display: 'block', marginBottom: 6 }}>Distribution — number of users by lifetime hours requested</div>
-                          <div className="ed-chart-wrap" style={{ height: 200 }}><canvas ref={minutesHistRef} /></div>
-                        </div>
                         <div className="ed-minutes-grid" style={{ marginTop: 16, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
                           <div>
-                            <div className="ed-panel-sub" style={{ display: 'block', marginBottom: 6 }}>Avg hours requested — paying vs free{minutesBySub ? ` (${minutesBySub.paying.count} paying · ${minutesBySub.free.count} free)` : ''}</div>
-                            <div className="ed-chart-wrap" style={{ height: 200 }}><canvas ref={minutesSubRef} /></div>
+                            <div className="ed-panel-sub" style={{ display: 'block', marginBottom: 6 }}>Distribution — number of users by lifetime hours requested</div>
+                            <div className="ed-chart-wrap" style={{ height: 220 }}><canvas ref={minutesHistRef} /></div>
                           </div>
                           <div>
-                            <div className="ed-panel-sub" style={{ display: 'block', marginBottom: 6 }}>Hours requested vs excuse count{minutesVsExcuses ? ` (${minutesVsExcuses.length} users with excuse counts)` : ''}</div>
-                            <div className="ed-chart-wrap" style={{ height: 200 }}><canvas ref={minutesScatterRef} /></div>
+                            <div className="ed-panel-sub" style={{ display: 'block', marginBottom: 6 }}>Avg hours requested — paying vs free{minutesBySub ? ` (${minutesBySub.paying.count} paying · ${minutesBySub.free.count} free)` : ''}</div>
+                            <div className="ed-chart-wrap" style={{ height: 220 }}><canvas ref={minutesSubRef} /></div>
                           </div>
+                        </div>
+                        <div style={{ marginTop: 20 }}>
+                          <div className="ed-panel-sub" style={{ display: 'block', marginBottom: 6 }}>Hours requested vs excuse count — one dot per user, colored by plan, log axes so the dense cluster spreads out{minutesVsExcuses ? ` (${minutesVsExcuses.length} users with a recorded excuse count)` : ''}. Dots further up-and-right requested more total time; the diagonal spread shows minutes-per-excuse. Full per-user data is in the research package CSV.</div>
+                          <div className="ed-chart-wrap" style={{ height: 340 }}><canvas ref={minutesScatterRef} /></div>
                         </div>
                       </>
                     ) : (
