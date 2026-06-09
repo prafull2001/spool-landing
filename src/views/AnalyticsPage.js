@@ -129,6 +129,79 @@ const SCREEN_ORDER_V4 = [
   { number: 22, name: 'blocking_confirmation', label: 'Confirm' },
 ];
 
+// v5 changes vs v4:
+//  - removed: name_input, checkbox_selection (main_issue), top_app_demon, life_in_dots
+//  - new Spooli intro arc after welcome: meet_spooli → thread_unravel → see_for_yourself → modern_apps
+//  - new personalization questions after chat: goal → screen_time_affect → profession → when_rot → tried_before
+//  - new archetype_reveal after progress_bar; commitment_ritual split into commitment_reason + commitment_hold
+// Funnel matching is by screen_name only — `number` values for new v5 screens are
+// dashboard-side placeholders until real v5 screen_number data lands in Firestore.
+const SCREEN_ORDER_V5 = [
+  { number: 0, name: 'welcome', label: 'Welcome' },
+  { number: 0.1, name: 'meet_spooli', label: 'Meet Spooli' },
+  { number: 0.2, name: 'thread_unravel', label: 'Thread Unravel' },
+  { number: 0.3, name: 'see_for_yourself', label: 'See For Yourself' },
+  { number: 0.4, name: 'modern_apps', label: 'Modern Apps' },
+  { number: 0.5, name: 'how_did_you_hear', label: 'How Heard' },
+  { number: 0.75, name: 'chat_onboarding', label: 'Chat (Spooli)' },
+  { number: 1, name: 'goal', label: 'Goal' },
+  { number: 1.25, name: 'screen_time_affect', label: 'ST Affect' },
+  { number: 1.5, name: 'profession', label: 'Profession' },
+  { number: 1.75, name: 'when_rot', label: 'When Rot' },
+  { number: 2, name: 'tried_before', label: 'Tried Before' },
+  { number: 3, name: 'age_selection', label: 'Age' },
+  { number: 4, name: 'screen_time_slider', label: 'Screen Time' },
+  { number: 4.5, name: 'screen_time_connect', label: 'ST Connect' },
+  { number: 4.75, name: 'screen_time_dialog', label: 'ST Dialog' },
+  { number: 5, name: 'progress_bar', label: 'Progress Bar' },
+  { number: 5.5, name: 'archetype_reveal', label: 'Archetype' },
+  { number: 6, name: 'phone_usage_stats', label: 'Usage Stats' },
+  { number: 7, name: 'lifetime_stats', label: 'Lifetime Stats' },
+  { number: 8, name: 'average_lifespan', label: 'Avg Lifespan' },
+  { number: 8.5, name: 'review_request', label: 'Review' },
+  { number: 8.75, name: 'academic_studies', label: 'Studies' },
+  { number: 9, name: 'weekly_benefits', label: 'Benefits' },
+  { number: 9.25, name: 'commitment_reason', label: 'Commit Reason' },
+  { number: 9.5, name: 'commitment_hold', label: 'Commit Hold' },
+  { number: 9.75, name: 'before_after', label: 'Before/After' },
+  { number: 10.5, name: 'sky_paywall', label: 'Paywall' },
+  { number: 11, name: 'welcome_to_spool', label: 'Welcome' },
+  { number: 12, name: 'name_collection', label: 'Name' },
+  { number: 13, name: 'create_account', label: 'Account' },
+  { number: 14, name: 'notification_permission', label: 'Notifications' },
+  { number: 16, name: 'schedule_selection', label: 'Schedule' },
+  { number: 17, name: 'choose_apps', label: 'Choose Apps' },
+  { number: 18, name: 'daily_limit_explanation', label: 'Limit Explain' },
+  { number: 19, name: 'daily_request_pool', label: 'Daily Pool' },
+  { number: 20, name: 'excuse_explanation', label: 'Excuse' },
+  { number: 21, name: 'pattern_explanation', label: 'Pattern' },
+  { number: 22, name: 'blocking_confirmation', label: 'Confirm' },
+];
+
+// v5 survey/personalization answers (onboarding_surveys) shown as per-answer breakdowns.
+// archetypeId backs up archetypeName so computed archetypes still chart if the name is missing.
+const V5_SURVEY_FIELDS = [
+  { key: 'goal', label: 'Goal' },
+  { key: 'screenTimeAffect', label: 'Screen Time Affect' },
+  { key: 'profession', label: 'Profession' },
+  { key: 'whenRot', label: 'When They Rot' },
+  { key: 'triedBefore', label: 'Tried Before' },
+  { key: 'archetypeName', fallbackKey: 'archetypeId', label: 'Archetype' },
+  { key: 'stimulationExposure', label: 'Stimulation Exposure', bucketScore: true },
+  { key: 'daytimeVulnerability', label: 'Daytime Vulnerability', bucketScore: true },
+];
+
+// stimulationExposure / daytimeVulnerability land as 0-1 float scores —
+// bucket them so the breakdown isn't one bar per user
+function bucketZeroToOne(v) {
+  if (typeof v !== 'number' || isNaN(v)) return String(v);
+  if (v < 0.2) return '0.0–0.2';
+  if (v < 0.4) return '0.2–0.4';
+  if (v < 0.6) return '0.4–0.6';
+  if (v < 0.8) return '0.6–0.8';
+  return '0.8–1.0';
+}
+
 // Paywall screen names per version
 const PAYWALL_SCREEN_V1 = 'paywall';
 const PAYWALL_SCREEN_V2 = 'sky_paywall';
@@ -148,7 +221,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
   const [loading, setLoading] = useState(false);
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
-  const [version, setVersion] = useState('v4');
+  const [version, setVersion] = useState('v5');
   const [splitByAB, setSplitByAB] = useState(false);
   const [expandedSessionIdx, setExpandedSessionIdx] = useState(null);
   const [sessionSearch, setSessionSearch] = useState('');
@@ -164,6 +237,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
 
   const screenOrder =
     version === 'v1' ? SCREEN_ORDER_V1 :
+    version === 'v5' ? SCREEN_ORDER_V5 :
     version === 'v4' ? SCREEN_ORDER_V4 :
     version === 'v3' ? SCREEN_ORDER_V3 :
     SCREEN_ORDER_V2;
@@ -172,6 +246,12 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
   const sessions = useMemo(() => {
     if (version === 'v1') {
       return allSessions.filter(s => !s.flow_version);
+    }
+    if (version === 'v5') {
+      // Spec says the new flow stamps flow_version 5, but the first real session in prod
+      // (63B65744-..., 2026-06-09) stamped 6 with exactly the v5 screens — match both
+      // until iOS confirms the stamp, then tighten to the confirmed value.
+      return allSessions.filter(s => s.flow_version === 5 || s.flow_version === 6);
     }
     if (version === 'v4') {
       return allSessions.filter(s => s.flow_version === 4);
@@ -415,16 +495,17 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
 
   // Render charts whenever sessions/version/splitByAB change
   useEffect(() => {
+    // Destroy old charts first so a version with no sessions shows empty canvases,
+    // not the previous version's charts
+    if (funnelInstance.current) { funnelInstance.current.destroy(); funnelInstance.current = null; }
+    if (dropoffInstance.current) { dropoffInstance.current.destroy(); dropoffInstance.current = null; }
+    if (timeInstance.current) { timeInstance.current.destroy(); timeInstance.current = null; }
+
     const analytics = computeAnalytics();
     if (!analytics) return;
 
     const labels = screenOrder.map(s => s.label);
     const screenNames = screenOrder.map(s => s.name);
-
-    // Destroy old charts
-    if (funnelInstance.current) funnelInstance.current.destroy();
-    if (dropoffInstance.current) dropoffInstance.current.destroy();
-    if (timeInstance.current) timeInstance.current.destroy();
 
     if (splitByAB) {
       const funnelA = buildFunnelData(abGroups.groupA, screenOrder) || screenNames.map(() => 0);
@@ -754,6 +835,33 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
     };
   }, [sessions, surveys]);
 
+  // Per-answer counts for v5 survey fields, v5 tab only — survey docs are
+  // per-device latest-state, so without the version gate a re-onboarded device
+  // would attribute its v5 answers to its old v1-v4 sessions
+  const v5SurveyBreakdowns = useMemo(() => {
+    if (version !== 'v5') return [];
+    return V5_SURVEY_FIELDS.map(field => {
+      const counts = {};
+      let answered = 0;
+      sessions.forEach(s => {
+        const survey = s.device_id ? surveys.get(s.device_id) : null;
+        let value = survey?.[field.key];
+        if (value == null && field.fallbackKey) value = survey?.[field.fallbackKey];
+        if (value == null || value === '') return;
+        const values = Array.isArray(value) ? value : [value];
+        if (values.length === 0) return;
+        answered++;
+        values.forEach(v => {
+          const answer = field.bucketScore && typeof v === 'number'
+            ? bucketZeroToOne(v)
+            : typeof v === 'boolean' ? (v ? 'Yes' : 'No') : String(v);
+          counts[answer] = (counts[answer] || 0) + 1;
+        });
+      });
+      return { ...field, counts, answered };
+    }).filter(f => f.answered > 0);
+  }, [sessions, surveys, version]);
+
   // Session explorer data
   const sessionExplorerData = useMemo(() => {
     let filtered = sessions.map((s, idx) => {
@@ -848,6 +956,13 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
   const formatDate = (d) => {
     if (!d) return '--';
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  };
+
+  const formatSurveyValue = (v) => {
+    if (typeof v === 'boolean') return v ? 'Yes' : 'No';
+    if (typeof v === 'number' && !Number.isInteger(v)) return v.toFixed(2);
+    if (Array.isArray(v)) return v.join(', ');
+    return String(v);
   };
 
   const analytics = computeAnalytics();
@@ -992,6 +1107,28 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
                   </div>
                 </div>
 
+                {v5SurveyBreakdowns.map((field, fi) => (
+                  <div key={field.key} className="survey-section">
+                    <h3>{field.label} — {field.answered} answered</h3>
+                    <div className="survey-bars">
+                      {Object.entries(field.counts)
+                        .sort((a, b) => field.bucketScore ? a[0].localeCompare(b[0]) : b[1] - a[1])
+                        .map(([answer, count]) => (
+                          <div key={answer} className="survey-bar-row">
+                            <span className="survey-bar-label">{answer}</span>
+                            <div className="survey-bar-track">
+                              <div
+                                className={`survey-bar-fill ${['', 'reason', 'age', 'screentime'][fi % 4]}`.trim()}
+                                style={{ width: `${Math.min((count / field.answered) * 100, 100)}%` }}
+                              />
+                            </div>
+                            <span className="survey-bar-value">{count} ({((count / field.answered) * 100).toFixed(0)}%)</span>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                ))}
+
                 <div className="survey-section">
                   <h3>Funnel Outcomes</h3>
                   <div className="outcome-stats">
@@ -1049,7 +1186,13 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
                 className={`version-btn ${version === 'v4' ? 'active' : ''}`}
                 onClick={() => setVersion('v4')}
               >
-                Chat + Journey (v4) — Current
+                Chat + Journey (v4)
+              </button>
+              <button
+                className={`version-btn ${version === 'v5' ? 'active' : ''}`}
+                onClick={() => setVersion('v5')}
+              >
+                Spooli + Archetype (v5) — Current
               </button>
             </div>
 
@@ -1213,6 +1356,18 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
                                       {row.survey.ab_showVideoIntro !== undefined && (
                                         <div><strong>A/B Video Intro:</strong> {row.survey.ab_showVideoIntro ? 'Yes' : 'No'}</div>
                                       )}
+                                      {V5_SURVEY_FIELDS.map(f => {
+                                        let v = row.survey[f.key];
+                                        if (v == null && f.fallbackKey) v = row.survey[f.fallbackKey];
+                                        if (v == null || v === '') return null;
+                                        const archetypeId = f.key === 'archetypeName' && row.survey.archetypeId !== v
+                                          ? row.survey.archetypeId : null;
+                                        return (
+                                          <div key={f.key}>
+                                            <strong>{f.label}:</strong> {formatSurveyValue(v)}{archetypeId ? ` (${archetypeId})` : ''}
+                                          </div>
+                                        );
+                                      })}
                                     </div>
                                   </div>
                                 )}
