@@ -142,7 +142,7 @@ https://www.linkedin.com/in/prafull-sharma-363187168/
 | G2 | Create listing (need 5+ reviews to be effective) | MEDIUM | https://www.g2.com/products/new |
 | MicroLaunch | ✅ LISTED (found 2026-06-12), added to Organization sameAs | — | https://microlaunch.net/p/spool |
 
-**MicroLaunch follow-ups (Prafull, needs listing login):** the "Visit Website" field points to the App Store, not thespoolapp.com — change it to https://www.thespoolapp.com to turn the listing into an actual backlink (the platform does NOT nofollow outbound links, so it passes equity). Also: product name is lowercase "spool" throughout — capitalize it (AI engines scrape these directories for category answers, and entity matching is name-sensitive). Consider pasting the llms.txt feature list into the description while there.
+**MicroLaunch follow-ups (status 2026-06-12):** the "Visit Website" field points to the App Store, not thespoolapp.com. The product edit form doesn't expose the URL field, and URLs pasted into the description get stripped on save (tested). Support email drafted in Prafull's Gmail to microlaunch@stimpack.io requesting the URL change — SEND IT, then verify the listing links to https://www.thespoolapp.com (the platform does NOT nofollow outbound links, so it passes equity once fixed). Still open: product name is lowercase "spool" on the listing — capitalize via the edit form (entity matching is name-sensitive and AI engines scrape these directories).
 
 ---
 
