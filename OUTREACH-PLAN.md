@@ -140,6 +140,9 @@ https://www.linkedin.com/in/prafull-sharma-363187168/
 | BetaList | Submit as startup | MEDIUM | https://betalist.com/submit |
 | Indie Hackers | Post founder story in products section | HIGH | https://www.indiehackers.com/products |
 | G2 | Create listing (need 5+ reviews to be effective) | MEDIUM | https://www.g2.com/products/new |
+| MicroLaunch | ✅ LISTED (found 2026-06-12), added to Organization sameAs | — | https://microlaunch.net/p/spool |
+
+**MicroLaunch follow-ups (Prafull, needs listing login):** the "Visit Website" field points to the App Store, not thespoolapp.com — change it to https://www.thespoolapp.com to turn the listing into an actual backlink (the platform does NOT nofollow outbound links, so it passes equity). Also: product name is lowercase "spool" throughout — capitalize it (AI engines scrape these directories for category answers, and entity matching is name-sensitive). Consider pasting the llms.txt feature list into the description while there.
 
 ---
 

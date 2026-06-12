@@ -68,7 +68,8 @@ export default function RootLayout({ children }) {
                 "https://twitter.com/the_spool_app",
                 "https://www.linkedin.com/company/spooli/",
                 "https://github.com/prafull2001/spool-landing",
-                "https://apps.apple.com/us/app/spool-save-your-thread/id6749428484"
+                "https://apps.apple.com/us/app/spool-save-your-thread/id6749428484",
+                "https://microlaunch.net/p/spool"
               ],
               "subjectOf": PRESS_ITEMS.map(item => ({
                 "@type": "NewsArticle",
