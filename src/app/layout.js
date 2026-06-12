@@ -2,6 +2,7 @@ import { Quicksand } from 'next/font/google';
 import '../index.css';
 import { Analytics } from '@vercel/analytics/react';
 import MotionProvider from '../components/MotionProvider';
+import { PRESS_ITEMS } from '../data/press';
 
 const quicksand = Quicksand({ subsets: ['latin'], display: 'swap', variable: '--font-quicksand' });
 
@@ -68,7 +69,15 @@ export default function RootLayout({ children }) {
                 "https://www.linkedin.com/company/spooli/",
                 "https://github.com/prafull2001/spool-landing",
                 "https://apps.apple.com/us/app/spool-save-your-thread/id6749428484"
-              ]
+              ],
+              "subjectOf": PRESS_ITEMS.map(item => ({
+                "@type": "NewsArticle",
+                "headline": item.title,
+                "author": item.authors.map(name => ({ "@type": "Person", "name": name })),
+                "publisher": { "@type": "Organization", "name": item.outlet, "url": item.outletUrl },
+                "datePublished": item.datePublished,
+                "url": item.url
+              }))
             })
           }}
         />

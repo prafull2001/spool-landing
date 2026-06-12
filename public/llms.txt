@@ -16,6 +16,12 @@ Unlike hard app blockers that simply restrict access, Spool builds self-awarenes
 - 80% average screen time reduction in the first week
 - 25% sustained long-term reduction
 
+## Press
+
+- "What 8,667 People Said the Second Before They Picked Up Their Phone" by Chris Kernaghan, Prafull Sharma, and Jainam Manot. We Are Founders, June 11, 2026. https://www.wearefounders.uk/what-8-667-people-said-the-second-before-they-picked-up-their-phone/
+  The article analyzes 8,667 anonymized Spool voice recordings from 193 users. The finding: people frame phone urges as obligations, saying "I need to" rather than "I want to".
+- All coverage: https://www.thespoolapp.com/press
+
 ## Core Features
 
 - **Voice check-in**: Speak your intention aloud before opening a distracting app
@@ -60,5 +66,5 @@ Twitter/X: @the_spool_app
 - Blog (digital wellness guides): https://www.thespoolapp.com/blog
 - App comparisons: https://www.thespoolapp.com/compare
 - About Spool: https://www.thespoolapp.com/about
-- Press / media kit: https://www.thespoolapp.com/press
+- Press coverage: https://www.thespoolapp.com/press
 - Support & FAQ: https://www.thespoolapp.com/support

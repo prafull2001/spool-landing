@@ -14,6 +14,7 @@ const Footer = () => {
             <div className="footer-links">
               <Link href="/blog">Blog</Link>
               <Link href="/science">The Science</Link>
+              <Link href="/press">Press</Link>
               <Link href="/about">About</Link>
               <Link href="/privacy">Privacy Policy</Link>
               <Link href="/terms">Terms of Service</Link>

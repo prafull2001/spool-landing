@@ -1,6 +1,7 @@
 "use client";
 import React from 'react';
 import ScrollHero from '../components/ScrollHero';
+import PressStrip from '../components/PressStrip/PressStrip.js';
 import Features from '../components/Features/Features.js';
 import CTA from '../components/CTA/CTA.js';
 import FAQ from '../components/FAQ/FAQ.js';
@@ -11,6 +12,7 @@ const HomePage = () => {
   return (
     <>
       <ScrollHero />
+      <PressStrip />
       <Features />
       <CTA />
       <FAQ />
