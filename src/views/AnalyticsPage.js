@@ -248,10 +248,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
       return allSessions.filter(s => !s.flow_version);
     }
     if (version === 'v5') {
-      // Spec says the new flow stamps flow_version 5, but the first real session in prod
-      // (63B65744-..., 2026-06-09) stamped 6 with exactly the v5 screens — match both
-      // until iOS confirms the stamp, then tighten to the confirmed value.
-      return allSessions.filter(s => s.flow_version === 5 || s.flow_version === 6);
+      return allSessions.filter(s => s.flow_version === 5);
     }
     if (version === 'v4') {
       return allSessions.filter(s => s.flow_version === 4);
