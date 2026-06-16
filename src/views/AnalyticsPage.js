@@ -398,6 +398,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
 
       const completed = session.screens_completed || [];
       const seenScreens = new Set();
+      seenScreens.add(firstScreen); // counted above; mark seen so it can't be recounted below
       completed.forEach(sc => {
         // Track time for all occurrences
         if (sc.time_spent_seconds !== undefined && sc.time_spent_seconds !== null) {
@@ -421,7 +422,17 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
         // Only count paywall if not already counted from screens_completed
         if (screenCounts[pw] !== undefined && !seenScreens.has(pw)) {
           screenCounts[pw]++;
+          seenScreens.add(pw);
         }
+      }
+      // iOS logs a screen when the user LEAVES it, so the screen they stopped on is
+      // absent from screens_completed and lives only in last_screen_name. Count it so
+      // each bar reflects everyone who reached that screen, including the final screen
+      // for users who completed (no one leaves the last screen).
+      const lastScreen = session.last_screen_name;
+      if (lastScreen && screenCounts[lastScreen] !== undefined && !seenScreens.has(lastScreen)) {
+        seenScreens.add(lastScreen);
+        screenCounts[lastScreen]++;
       }
       if (session.dropped_off) {
         droppedOff++;
