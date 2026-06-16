@@ -129,13 +129,17 @@ const SCREEN_ORDER_V4 = [
   { number: 22, name: 'blocking_confirmation', label: 'Confirm' },
 ];
 
-// v5 changes vs v4:
-//  - removed: name_input, checkbox_selection (main_issue), top_app_demon, life_in_dots
-//  - new Spooli intro arc after welcome: meet_spooli → thread_unravel → see_for_yourself → modern_apps
-//  - new personalization questions after chat: goal → screen_time_affect → profession → when_rot → tried_before
-//  - new archetype_reveal after progress_bar; commitment_ritual split into commitment_reason + commitment_hold
-// Funnel matching is by screen_name only — `number` values for new v5 screens are
-// dashboard-side placeholders until real v5 screen_number data lands in Firestore.
+// v5 changes vs v4. screen_name strings confirmed against iOS
+// SpoolOnboardingFlowView.swift analyticsScreenName (2026-06-15):
+//  - removed: name_input, checkbox_selection (main_issue), life_in_dots
+//  - new Spooli intro arc after welcome: meet_spooli, thread_unravel, see_for_yourself, modern_apps
+//  - new personalization questions after chat: goal, screen_time_affect, profession, when_rot, tried_before
+//  - archetype arc at 5 to 5.6: progress_bar (the loading screen, legacy screen_name),
+//    grounding_breath, archetype_reveal, top_app_demon (re-added; was cut in the first v5 draft)
+//  - commitment_ritual split into commitment_reason + commitment_hold
+// flow_version is always 5 in this build (showCommitmentRitual is unconditionally true).
+// Funnel matches by screen_name; `number` is only a display-ordering annotation (array
+// order drives the chart), so it need not equal the literal Firestore screen_number.
 const SCREEN_ORDER_V5 = [
   { number: 0, name: 'welcome', label: 'Welcome' },
   { number: 0.1, name: 'meet_spooli', label: 'Meet Spooli' },
@@ -153,8 +157,10 @@ const SCREEN_ORDER_V5 = [
   { number: 4, name: 'screen_time_slider', label: 'Screen Time' },
   { number: 4.5, name: 'screen_time_connect', label: 'ST Connect' },
   { number: 4.75, name: 'screen_time_dialog', label: 'ST Dialog' },
-  { number: 5, name: 'progress_bar', label: 'Progress Bar' },
-  { number: 5.5, name: 'archetype_reveal', label: 'Archetype' },
+  { number: 5, name: 'progress_bar', label: 'Loading' },
+  { number: 5.2, name: 'grounding_breath', label: 'Breathing' },
+  { number: 5.4, name: 'archetype_reveal', label: 'Archetype' },
+  { number: 5.6, name: 'top_app_demon', label: 'App Demon' },
   { number: 6, name: 'phone_usage_stats', label: 'Usage Stats' },
   { number: 7, name: 'lifetime_stats', label: 'Lifetime Stats' },
   { number: 8, name: 'average_lifespan', label: 'Avg Lifespan' },
