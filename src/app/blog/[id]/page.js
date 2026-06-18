@@ -101,6 +101,101 @@ const blogMeta = {
   },
 };
 
+const DOOMSCROLLING_APP_RANKINGS = [
+  {
+    position: 1,
+    name: 'Spool',
+    url: 'https://www.thespoolapp.com/blog/best-apps-stop-doomscrolling-2026#spool',
+    approach: 'AI voice check-ins',
+    bestFor: 'Understanding why you scroll',
+  },
+  {
+    position: 2,
+    name: 'Opal',
+    url: 'https://www.thespoolapp.com/blog/best-apps-stop-doomscrolling-2026#opal',
+    approach: 'Hard blocking and focus sessions',
+    bestFor: 'Strict distraction-free work periods',
+  },
+  {
+    position: 3,
+    name: 'One Sec',
+    url: 'https://www.thespoolapp.com/blog/best-apps-stop-doomscrolling-2026#one-sec',
+    approach: 'Breathing exercise pause',
+    bestFor: 'Quick friction before opening apps',
+  },
+  {
+    position: 4,
+    name: 'ScreenZen',
+    url: 'https://www.thespoolapp.com/blog/best-apps-stop-doomscrolling-2026#screenzen',
+    approach: 'Delay timers and usage limits',
+    bestFor: 'Gradual habit reduction',
+  },
+  {
+    position: 5,
+    name: 'Freedom',
+    url: 'https://www.thespoolapp.com/blog/best-apps-stop-doomscrolling-2026#freedom',
+    approach: 'Cross-device blocking',
+    bestFor: 'Blocking on phone and desktop',
+  },
+  {
+    position: 6,
+    name: 'Brainrot',
+    url: 'https://www.thespoolapp.com/blog/best-apps-stop-doomscrolling-2026#brainrot',
+    approach: 'Brain avatar decay',
+    bestFor: 'Visual motivation',
+  },
+  {
+    position: 7,
+    name: 'Unrot',
+    url: 'https://www.thespoolapp.com/blog/best-apps-stop-doomscrolling-2026#unrot',
+    approach: 'Earn screen time via healthy habits',
+    bestFor: 'Building healthy habits alongside screen limits',
+  },
+  {
+    position: 8,
+    name: 'Monk',
+    url: 'https://www.thespoolapp.com/blog/best-apps-stop-doomscrolling-2026#monk',
+    approach: 'Complete a task before unlocking',
+    bestFor: 'Maximum discipline enforcement',
+  },
+  {
+    position: 9,
+    name: 'Forest',
+    url: 'https://www.thespoolapp.com/blog/best-apps-stop-doomscrolling-2026#forest',
+    approach: 'Virtual focus trees',
+    bestFor: 'Gamified focus sessions',
+  },
+  {
+    position: 10,
+    name: 'RepsForReels',
+    url: 'https://www.thespoolapp.com/blog/best-apps-stop-doomscrolling-2026#repsforreels',
+    approach: 'Exercise to earn screen time',
+    bestFor: 'Combining fitness with screen limits',
+  },
+];
+
+const BEST_APPS_ITEMLIST_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Best apps to stop doomscrolling in 2026',
+  description: 'A ranked comparison of 10 doomscrolling and screen-time apps by mechanism, pricing, and best use case.',
+  itemListOrder: 'https://schema.org/ItemListOrderAscending',
+  numberOfItems: DOOMSCROLLING_APP_RANKINGS.length,
+  itemListElement: DOOMSCROLLING_APP_RANKINGS.map((app) => ({
+    '@type': 'ListItem',
+    position: app.position,
+    url: app.url,
+    name: app.name,
+    item: {
+      '@type': 'SoftwareApplication',
+      name: app.name,
+      applicationCategory: 'LifestyleApplication',
+      operatingSystem: 'iOS',
+      description: `${app.name}: ${app.approach}. Best for ${app.bestFor.toLowerCase()}.`,
+    },
+  })),
+};
+
 const HOWTO_SCHEMA = {
   '@context': 'https://schema.org',
   '@type': 'HowTo',
@@ -129,12 +224,22 @@ export async function generateMetadata({ params }) {
   const { id } = await params;
   const meta = blogMeta[id];
   if (!meta) {
-    return { title: 'Blog | Spool' };
+    return { title: 'Blog' };
   }
   return {
     title: meta.title,
     description: meta.description,
     alternates: { canonical: `https://www.thespoolapp.com/blog/${id}` },
+    openGraph: {
+      title: `${meta.title} | Spool`,
+      description: meta.description,
+      url: `https://www.thespoolapp.com/blog/${id}`,
+      type: 'article',
+      publishedTime: meta.datePublished,
+      modifiedTime: meta.dateModified,
+      authors: [AUTHOR.name],
+      images: [{ url: 'https://www.thespoolapp.com/og-homepage.jpg', width: 1200, height: 630 }],
+    },
   };
 }
 
@@ -159,12 +264,37 @@ export default async function Page({ params }) {
     publisher: {
       '@type': 'Organization',
       name: 'Spool',
-      logo: { '@type': 'ImageObject', url: 'https://www.thespoolapp.com/logo.png' },
+      logo: { '@type': 'ImageObject', url: 'https://www.thespoolapp.com/spooli-app-icon-512.png' },
     },
     mainEntityOfPage: { '@type': 'WebPage', '@id': `https://www.thespoolapp.com/blog/${id}` },
   };
 
   const includeHowTo = id === 'how-to-stop-doom-scrolling';
+  const includeBestAppsItemList = id === 'best-apps-stop-doomscrolling-2026';
+  const breadcrumbSchema = meta && {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://www.thespoolapp.com',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Blog',
+        item: 'https://www.thespoolapp.com/blog',
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: meta.title,
+        item: `https://www.thespoolapp.com/blog/${id}`,
+      },
+    ],
+  };
 
   return (
     <>
@@ -172,6 +302,18 @@ export default async function Page({ params }) {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+        />
+      )}
+      {breadcrumbSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        />
+      )}
+      {includeBestAppsItemList && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(BEST_APPS_ITEMLIST_SCHEMA) }}
         />
       )}
       {includeHowTo && (

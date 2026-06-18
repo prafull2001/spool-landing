@@ -1,0 +1,160 @@
+.page {
+  min-height: 100vh;
+  padding: 7rem 1.5rem 4rem;
+}
+
+.hero,
+.summary,
+.grid,
+.listicle {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+}
+
+.hero {
+  margin-bottom: 2rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.75rem;
+  color: #8c3b1f;
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  max-width: 820px;
+  margin: 0;
+  color: var(--dark-text);
+  font-size: clamp(2.4rem, 5vw, 4.5rem);
+  line-height: 1.03;
+}
+
+.lede {
+  max-width: 760px;
+  margin: 1.25rem 0 0;
+  color: #374151;
+  font-size: 1.2rem;
+  line-height: 1.65;
+}
+
+.summary {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(86, 181, 227, 0.28);
+  border-left: 5px solid var(--primary-blue);
+  border-radius: 8px;
+}
+
+.summary h2,
+.listicle h2 {
+  margin: 0 0 0.75rem;
+  color: var(--dark-text);
+  font-size: 1.35rem;
+}
+
+.summary p,
+.listicle p,
+.card p {
+  color: #374151;
+  line-height: 1.65;
+}
+
+.summary p,
+.listicle p {
+  margin: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  display: flex;
+  min-height: 230px;
+  flex-direction: column;
+  padding: 1.35rem;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(31, 41, 55, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 14px 36px rgba(31, 41, 55, 0.08);
+}
+
+.mechanism {
+  margin: 0 0 0.8rem;
+  color: #8c3b1f;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.card h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+
+.card h2 a {
+  color: var(--dark-text);
+}
+
+.card p:last-of-type {
+  margin-bottom: 1.25rem;
+}
+
+.cardLink {
+  margin-top: auto;
+  font-weight: 800;
+}
+
+.listicle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: rgba(255, 250, 247, 0.92);
+  border: 1px solid rgba(255, 107, 53, 0.28);
+  border-radius: 8px;
+}
+
+.primaryLink {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 1.15rem;
+  color: white;
+  background: var(--primary-orange);
+  border-radius: 8px;
+  font-weight: 800;
+}
+
+.primaryLink:hover {
+  text-decoration: none;
+  filter: brightness(0.95);
+}
+
+@media (max-width: 780px) {
+  .page {
+    padding-top: 5rem;
+  }
+
+  .grid,
+  .listicle {
+    grid-template-columns: 1fr;
+  }
+
+  .listicle {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}

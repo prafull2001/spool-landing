@@ -252,10 +252,10 @@ export async function generateMetadata({ params }) {
   const { id } = await params;
   const meta = compareMeta[id];
   if (!meta) {
-    return { title: 'Compare | Spool' };
+    return { title: 'Compare' };
   }
   return {
-    title: `${meta.title} | Spool`,
+    title: meta.title,
     description: meta.description,
     alternates: { canonical: `https://www.thespoolapp.com/compare/${id}` },
     openGraph: {
@@ -263,6 +263,7 @@ export async function generateMetadata({ params }) {
       description: meta.description,
       url: `https://www.thespoolapp.com/compare/${id}`,
       type: 'article',
+      images: [{ url: 'https://www.thespoolapp.com/og-compare.jpg', width: 1200, height: 630 }],
     },
   };
 }
@@ -292,7 +293,7 @@ export default async function Page({ params }) {
           url: 'https://www.thespoolapp.com',
           logo: {
             '@type': 'ImageObject',
-            url: 'https://www.thespoolapp.com/logo.png',
+            url: 'https://www.thespoolapp.com/spooli-app-icon-512.png',
           },
         },
         mainEntityOfPage: {
@@ -315,12 +316,6 @@ export default async function Page({ params }) {
                 priceCurrency: 'USD',
                 unitText: 'MONTH',
               },
-            },
-            aggregateRating: {
-              '@type': 'AggregateRating',
-              ratingValue: '4.8',
-              ratingCount: '2000',
-              bestRating: '5',
             },
           },
           {
@@ -347,6 +342,32 @@ export default async function Page({ params }) {
         })),
       }
     : null;
+  const breadcrumbSchema = meta
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: 'https://www.thespoolapp.com',
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Compare',
+            item: 'https://www.thespoolapp.com/compare',
+          },
+          {
+            '@type': 'ListItem',
+            position: 3,
+            name: meta.title,
+            item: `https://www.thespoolapp.com/compare/${id}`,
+          },
+        ],
+      }
+    : null;
 
   return (
     <>
@@ -360,6 +381,12 @@ export default async function Page({ params }) {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
+      {breadcrumbSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
         />
       )}
       <BlogPost />

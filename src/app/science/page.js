@@ -12,6 +12,14 @@ export const metadata = {
   description:
     'Spool operationalizes peer-reviewed research from UCLA, Stanford, NYU, Yale, Harvard, and UC Irvine. The papers on affect labeling, mindfulness and craving, and digital addiction that the product is built on.',
   alternates: { canonical: CANONICAL },
+  openGraph: {
+    title: 'The Science Behind Spool — Research Foundation',
+    description:
+      'Spool operationalizes peer-reviewed research from UCLA, Stanford, NYU, Yale, Harvard, and UC Irvine. The papers on affect labeling, mindfulness and craving, and digital addiction that the product is built on.',
+    url: CANONICAL,
+    type: 'website',
+    images: [{ url: 'https://www.thespoolapp.com/og-homepage.jpg', width: 1200, height: 630 }],
+  },
 };
 
 const collectionSchema = {

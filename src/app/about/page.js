@@ -6,6 +6,13 @@ export const metadata = {
   title: 'About Spool | The Team Behind the Doomscrolling App',
   description: 'Spool was founded by Prafull Sharma with co-founders Jainam, Vedika, and Daneal. We build AI voice check-ins that help iPhone users stop doomscrolling through awareness, not blocking.',
   alternates: { canonical: 'https://www.thespoolapp.com/about' },
+  openGraph: {
+    title: 'About Spool | The Team Behind the Doomscrolling App',
+    description: 'Spool was founded by Prafull Sharma with co-founders Jainam, Vedika, and Daneal. We build AI voice check-ins that help iPhone users stop doomscrolling through awareness, not blocking.',
+    url: 'https://www.thespoolapp.com/about',
+    type: 'website',
+    images: [{ url: 'https://www.thespoolapp.com/og-homepage.jpg', width: 1200, height: 630 }],
+  },
 };
 
 const LAST_UPDATED_ISO = '2026-05-19';
@@ -189,7 +196,7 @@ export default function AboutPage() {
 
           <h2>By the numbers</h2>
           <ul>
-            <li>4.8 stars on the App Store (84+ reviews)</li>
+            <li>4.8 stars on the App Store (120+ global reviews)</li>
             <li>2,000+ downloads</li>
             <li>8,000+ scrolling sessions interrupted</li>
             <li>80% average screen time reduction in the first week</li>

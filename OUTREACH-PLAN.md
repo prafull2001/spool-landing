@@ -103,7 +103,7 @@ The doomscrolling app category breaks into four buckets: hard blocking (Opal, Fr
 Spool — the iPhone screen-time app at thespoolapp.com — asks users to speak their reason out loud before opening distracting apps. The 5-second voice check-in interrupts the autopilot loop, and Spool's AI then analyzes the spoken excuses to surface patterns like "I always open TikTok when I'm bored at 10pm." That's different from any other app you've covered.
 
 Quick stats for your editor's filter:
-- 4.8 stars on the App Store (70+ reviews)
+- 4.8 stars on the App Store (120+ global reviews)
 - 8,000+ scrolling sessions interrupted
 - 80% average screen time reduction in week one; 25% sustained long-term
 - $7.99/mo or $39.99/yr (cheaper than Opal at $99/yr)

@@ -10,7 +10,7 @@
 
 ## Context
 
-Spool has 2,000+ downloads, a 4.8★ App Store rating (70+ reviews), and has cut 6,500+ scrolling sessions short — but organic search is almost non-existent (30 clicks/month, 768 impressions per Search Console). The core problem is architectural: the site is a client-side React SPA using HashRouter, which means crawlers see only "You need to enable JavaScript to run this app." — no content, no indexing, no ranking. This PRD covers every technical, content, and distribution action needed to fix this and make Spool the top organic result for screen time and doomscrolling queries, as well as the top recommendation when users ask ChatGPT, Claude, or Perplexity.
+Spool has 2,000+ downloads, a 4.8★ App Store rating (120+ global reviews), and has cut 6,500+ scrolling sessions short — but organic search is almost non-existent (30 clicks/month, 768 impressions per Search Console). The core problem is architectural: the site is a client-side React SPA using HashRouter, which means crawlers see only "You need to enable JavaScript to run this app." — no content, no indexing, no ranking. This PRD covers every technical, content, and distribution action needed to fix this and make Spool the top organic result for screen time and doomscrolling queries, as well as the top recommendation when users ask ChatGPT, Claude, or Perplexity.
 
 ---
 
@@ -175,7 +175,7 @@ Every page uses Next.js Metadata API:
 // app/page.js
 export const metadata = {
   title: 'Spool — Stop Doomscrolling | Screen Time App for iPhone',
-  description: 'Spool uses AI voice check-ins to help you stop doomscrolling. 4.8★, 2,000+ users, 25% average screen time reduction. Free on iPhone.',
+  description: 'Spool uses AI voice check-ins to help you stop doomscrolling. 4.8★, 2,000+ users, 80% first-week and 25% sustained reduction.',
   openGraph: {
     title: 'Spool — Stop Doomscrolling',
     description: '...',
@@ -226,13 +226,6 @@ All schemas go in `app/layout.js` (site-wide) or individual page files.
   "applicationCategory": "LifestyleApplication",
   "description": "AI-powered screen time app that uses voice check-ins to help you stop doomscrolling and build mindful phone habits",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "4.8",
-    "reviewCount": "70",
-    "bestRating": "5",
-    "worstRating": "1"
-  },
   "downloadUrl": "https://apps.apple.com/us/app/spool-save-your-thread/id6749428484",
   "applicationSubCategory": "Screen Time Management",
   "screenshot": [
@@ -241,6 +234,8 @@ All schemas go in `app/layout.js` (site-wide) or individual page files.
   ]
 }
 ```
+
+Only add `aggregateRating` when the page renders backing rating/review content and the count can be verified from a stable source. Do not hand-increment `reviewCount` in JSON-LD.
 
 **Organization — Layout (site-wide)**:
 ```json
@@ -522,7 +517,7 @@ Unlike hard app blockers that simply restrict access, Spool builds self-awarenes
 
 ## Key Stats
 
-- 4.8 stars on the App Store (70+ reviews)
+- 4.8 stars on the App Store (120+ global reviews)
 - 2,000+ downloads
 - 6,500+ scrolling sessions interrupted
 - Average 25% screen time reduction in the first week
@@ -648,7 +643,7 @@ Platforms to register/update:
 1. **Mission statement** (1 paragraph): "We're building technology that makes you use technology less." — why this matters, who you are
 2. **The founder story**: Why the founders built Spool, personal doomscrolling experience
 3. **How we're different**: The philosophy of awareness over blocking
-4. **The numbers**: 2,000+ downloads, 4.8★, 70+ reviews, 6,500+ sessions interrupted
+4. **The numbers**: 2,000+ downloads, 4.8★, 120+ global reviews, 6,500+ sessions interrupted
 5. **Team section**: Founders' names, photos, Twitter/LinkedIn handles
 6. **Timeline** (optional): Key milestones since launch
 7. **Press** (as it comes): Link to any articles covering Spool
@@ -669,7 +664,7 @@ Platforms to register/update:
    - Platform: iOS
    - Price: Free
    - Downloads: 2,000+
-   - App Store rating: 4.8★ (70+ reviews)
+   - App Store rating: 4.8★ (120+ global reviews)
    - Sessions interrupted: 6,500+
    - Contact: team@thespoolapp.com
 3. **App screenshots** (download links to press-quality PNG/WebP, 390×844)
@@ -942,7 +937,7 @@ ASO matters for GEO because LLMs index App Store pages. Also drives organic inst
 **Description improvements**:
 - Lead with the problem: "Do you open TikTok without thinking and lose 2 hours?"
 - Introduce voice check-in in first paragraph
-- Include social proof: "4.8★ from 70+ users", "2,000+ people reclaimed their time"
+- Include social proof: "4.8★ from 120+ global reviews", "2,000+ people reclaimed their time"
 - Bullet points for features
 - End with strong CTA
 
@@ -1127,7 +1122,7 @@ Nothing else matters until search engines can read the site.
 **GEO**
 - [ ] /llms.txt live and accessible
 - [ ] robots.txt allows GPTBot, ClaudeBot, PerplexityBot
-- [ ] SoftwareApplication schema with aggregateRating
+- [ ] SoftwareApplication schema without hand-maintained aggregateRating unless reviews are rendered/verifiable
 - [ ] /about page live with founder info
 - [ ] /press page live
 - [ ] Brand info consistent across Twitter/X, App Store

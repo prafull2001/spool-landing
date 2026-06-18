@@ -23,6 +23,20 @@
 - [x] New Spooli mascot assets swapped in
 - [x] Phone mockup welcome screen updated
 - [x] Tab favicon updated to spool_final_icon.png
+- [x] Sharpened the first-answer intro on the "Best Apps to Stop Doomscrolling in 2026" listicle
+- [x] Added ranked ItemList schema for the 10-app doomscrolling listicle
+- [x] Rebuilt `/compare` as a crawlable comparison hub with links to all comparison pages
+- [x] Fixed missing homepage Open Graph image (`public/og-homepage.jpg`)
+- [x] Replaced broken JSON-LD logo references with existing `spooli-app-icon.png`
+- [x] Added BreadcrumbList schema to blog and compare detail pages
+- [x] Removed duplicated `| Spool | Spool` title tags from child routes
+- [x] Added per-post Open Graph metadata to blog detail pages
+- [x] Updated public review copy to 120+ global App Store reviews
+- [x] Removed hand-maintained homepage aggregate rating markup until reviews are rendered/verifiable
+- [x] Removed hidden/inconsistent aggregate rating markup from comparison pages
+- [x] Added self canonicals and matching Open Graph URLs/images to secondary pages
+- [x] Added compare-specific Open Graph image (`public/og-compare.jpg`)
+- [x] Added optimized 512px schema logo asset (`public/spooli-app-icon-512.png`)
 
 ---
 
@@ -31,9 +45,9 @@
 ### Technical SEO
 - [ ] Move FAQ JSON-LD schema from client-side `FAQ.js` to server-side `page.js` (crawlers may not see client-rendered schema)
 - [ ] Resubmit sitemap in Google Search Console (the old one had broken URLs)
-- [ ] Create OG image (`public/og-homepage.jpg`, 1200x630px) — currently referenced in metadata but file doesn't exist
-- [ ] Add Article schema (datePublished, author) to blog post pages
-- [ ] Add BreadcrumbList schema to blog and compare pages
+- [x] Create OG image (`public/og-homepage.jpg`, 1200x630px) — currently referenced in metadata but file doesn't exist
+- [x] Add Article schema (datePublished, author) to blog post pages
+- [x] Add BreadcrumbList schema to blog and compare pages
 
 ### Content
 - [ ] Fill out `/about` page — founder story, mission, team (currently placeholder)
@@ -137,7 +151,7 @@
 ---
 
 ## Key Stats to Use in Content
-- 4.8 stars on App Store (70+ reviews)
+- 4.8 stars on App Store (120+ global reviews)
 - 2,000+ downloads
 - 8,000+ scrolling sessions interrupted
 - 80% avg screen time reduction in first week
