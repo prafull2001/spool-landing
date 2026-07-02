@@ -20,6 +20,13 @@
   font-style: italic;
 }
 
+.privacy-effective-date {
+  text-align: center;
+  color: #888;
+  font-size: 0.95rem;
+  margin-bottom: 3rem;
+}
+
 .privacy-policy-container h2 {
   font-size: 1.8rem;
   color: var(--primary-orange);

@@ -11,7 +11,7 @@ const TermsOfServicePage = () => {
       <div className="terms-container">
         <h1>Terms of Service</h1>
         
-        <p className="terms-intro">Effective Date: September 23, 2025</p>
+        <p className="terms-intro">Effective Date: July 1, 2026</p>
 
         <section>
           <h2>1. Introduction</h2>
@@ -42,6 +42,9 @@ const TermsOfServicePage = () => {
 
           <h3>2.3 App Blocking Functionality</h3>
           <p>The App uses iOS Family Controls APIs to restrict access to selected applications. Blocked apps remain inaccessible according to your settings and schedules. You can configure different blocking durations and schedules within the App.</p>
+
+          <h3>2.4 Advertising, Analytics, and Data Processing</h3>
+          <p>The App uses third-party service providers to authenticate accounts, process subscriptions, analyze product usage, and measure and optimize our advertising. These include AppsFlyer, Meta (Facebook), Firebase (Google), RevenueCat, and PostHog. With your permission through Apple's App Tracking Transparency prompt, we access your device advertising identifier (IDFA) and share product-interaction and purchase events with our advertising and measurement partners, which may involve tracking across apps and websites owned by other companies. You can decline or withdraw this permission at any time through the App Tracking Transparency prompt or in iOS Settings. How we collect, use, and share this data — and how to opt out — is described in our <a href="/privacy">Privacy Policy</a>, which is incorporated into these Terms by reference. By using the App, you acknowledge the data practices described in the Privacy Policy.</p>
         </section>
 
         <section>
