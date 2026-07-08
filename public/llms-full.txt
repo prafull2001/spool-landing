@@ -29,11 +29,11 @@ Spool is built around the only approach that actually produces lasting change: h
 
 Spool captures each user's statement at the moment of temptation — a category of data that's rare in digital-wellbeing research, which mostly relies on retrospective self-report. Some findings from the corpus:
 
-- **85% of users frame their unlock as a first-person want or need** ("I want to…", "I need to…", "I just…").
+- **Most users frame their unlock as a first-person want or need** ("I want to…", "I need to…", "I just…").
 - The interior monologue of compulsive phone use is remarkably uniform: a small set of phrases recurs across users with no platform-mediated connection between them. Representative statements: *"I just want to scroll for a bit."* · *"I just need to check something."* · *"I want to chill and watch a little bit."*
-- "Just checking" is the single most common excuse, appearing in roughly 37% of check-ins.
+- "Just checking" is the single most common excuse in the corpus.
 - Boredom excuses peak between 10pm and midnight — the late-night doomscroll window.
-- Stress/anxiety excuses correlate with ~3× longer post-unlock session length than habit-only excuses.
+- Stress/anxiety excuses tend to correlate with longer post-unlock sessions than habit-only excuses.
 - The same user cycles through 2–3 default excuses. Surfacing this pattern back ("you said 'just checking' 47 times this week") is what produces behavior change.
 
 ## Press Coverage
