@@ -47,7 +47,7 @@ export const CONTENT = {
       <h2>The voice check-in approach</h2>
       <p>Spool was built specifically for this kind of moment. When you tap TikTok, Spool asks you to speak your reason out loud in 5 seconds. "Why am I opening TikTok?" You answer: "I'm bored," "Just checking what's trending," "I want to numb out." The app then opens.</p>
 
-      <p>The mechanism is grounded in <a href="/science">Lieberman et al. (2007)</a>: verbalizing the urge engages the prefrontal cortex and reduces its intensity. It's not blocking — you can still open TikTok. But about 30-40% of attempted opens end with the user closing the app instead of speaking, because the act of having to articulate why often reveals there isn't a good reason.</p>
+      <p>The mechanism is grounded in <a href="/science">Lieberman et al. (2007)</a>: verbalizing the urge engages the prefrontal cortex and reduces its intensity. It's not blocking — you can still open TikTok. But having to articulate why you're opening it often reveals there isn't a good reason, and many attempted opens end with the user closing the app instead of speaking.</p>
 
       <h2>Tactical sequence that actually works for most people</h2>
       <ol>
@@ -55,11 +55,11 @@ export const CONTENT = {
         <li><strong>Disable TikTok push notifications entirely.</strong> Settings → Notifications → TikTok → Allow Notifications: off. No "important" notifications from TikTok exist.</li>
         <li><strong>Turn off autoplay in TikTok itself.</strong> Profile → Settings → Screen Time → Restricted Mode and Daily Screen Time. TikTok's own controls are weaker than Apple's but better than nothing.</li>
         <li><strong>Install a moment-of-impulse intervention.</strong> Spool's voice check-in is the most effective option we've tested; ScreenZen's wait timer works initially but habituates within 2 weeks.</li>
-        <li><strong>Track your spoken reasons for two weeks.</strong> The data is the lever. Most TikTok users discover their #1 trigger is boredom (~40% of opens), with anxiety (~20%) and avoidance (~15%) close behind. Once you see your own pattern, you can address the underlying state instead of the app.</li>
+        <li><strong>Track your spoken reasons for two weeks.</strong> The data is the lever. Across Spool's voice check-in data, the most common stated trigger for opening TikTok is boredom, with anxiety and avoidance close behind. Once you see your own pattern, you can address the underlying state instead of the app.</li>
       </ol>
 
       <h2>What "stopping" looks like in practice</h2>
-      <p>Realistic outcome: not zero TikTok, but TikTok used intentionally. The users in Spool's data who succeed at reducing TikTok don't quit — they go from 90 minutes a day of mostly-unconscious scrolling to 15-20 minutes of intentional, lower-frequency use. The endpoint isn't no TikTok; it's TikTok that you actually chose to open.</p>
+      <p>Realistic outcome: not zero TikTok, but TikTok used intentionally. The people who succeed at reducing TikTok don't quit — they shift from long stretches of mostly-unconscious scrolling to shorter, intentional, lower-frequency use. The endpoint isn't no TikTok; it's TikTok that you actually chose to open.</p>
 
       <h2>The deeper move</h2>
       <p>TikTok is harder to put down than other platforms because the platform is better at predicting what holds your attention. The fix is not more willpower — willpower scales linearly while algorithmic personalization scales exponentially. The fix is a mechanism that engages your conscious decision-making before the algorithm gets its hooks in. Speaking your reason in 5 seconds is one such mechanism; whatever you pick, it has to interrupt the autopilot reach, because that's the moment the platform wins.</p>
@@ -310,7 +310,7 @@ export const CONTENT = {
       <h2>The psychological answer (the part most articles miss)</h2>
       <p>Compulsive phone checking isn't only a "I lack willpower" or "the app is too addictive" problem. It's a regulation problem. You reach for your phone because something else is happening — an emotional state you're trying to manage without consciously processing it.</p>
 
-      <p>Across <a href="/">Spool</a>'s 8,000+ voice check-ins (where users speak their reason for opening a distracting app), the most common stated reasons fall into a small set:</p>
+      <p>Across <a href="/">Spool</a>'s 13,000+ voice check-ins (where users speak their reason for opening a distracting app), the most common stated reasons fall into a small set:</p>
       <ul>
         <li>Boredom (~40% of opens)</li>
         <li>Anxiety / restlessness (~20%)</li>
@@ -328,7 +328,7 @@ export const CONTENT = {
       <h2>What actually works: address the trigger, not the app</h2>
       <p>The intervention that produces lasting change is one that makes you conscious of the underlying state at the moment of impulse. That's why naming the urge — speaking your reason out loud before opening the app — works. Lieberman et al. (2007) at UCLA showed that verbal labeling of an emotional state reduces amygdala activity and engages the prefrontal cortex. The 5-second pause isn't just friction; it's a moment of conscious processing that the autopilot reach didn't have.</p>
 
-      <p>Spool was built around this finding specifically. The voice check-in asks "Why am I opening Instagram?" You answer "I'm bored," "I'm anxious," "I'm avoiding." Hearing yourself say it changes what happens next. About 30-40% of attempted opens end with closing the app instead of speaking, because the act of having to articulate the urge often reveals it isn't actually about the app.</p>
+      <p>Spool was built around this finding specifically. The voice check-in asks "Why am I opening Instagram?" You answer "I'm bored," "I'm anxious," "I'm avoiding." Hearing yourself say it changes what happens next. Having to articulate the urge often reveals it isn't actually about the app, and many attempted opens end with closing the app instead of speaking.</p>
 
       <h2>The practical sequence</h2>
       <ol>
@@ -467,10 +467,10 @@ export const CONTENT = {
       <h2>The intervention isn't reducing minutes</h2>
       <p>The standard advice is to set time limits and try to hit them. This fails for the same reason all duration-targeting fails — it doesn't change the trigger, so the use migrates to wherever the timer isn't watching.</p>
 
-      <p>What works is shifting the ratio of intentional to compulsive opens. Speaking your reason out loud before opening a distracting app (Spool's mechanism) typically converts 30-40% of attempted opens into "actually I don't need to" closures. The total time drops as a byproduct of higher consciousness, not as the target itself.</p>
+      <p>What works is shifting the ratio of intentional to compulsive opens. Speaking your reason out loud before opening a distracting app (Spool's mechanism) turns many attempted opens into "actually I don't need to" closures. The total time drops as a byproduct of higher consciousness, not as the target itself.</p>
 
       <h2>The bottom line</h2>
-      <p>"How much screen time is too much" is the wrong question. The right question is "what percentage of your phone use is intentional, and what is it costing you?" Most heavy users land at 20-30% intentional and 70-80% compulsive. Moving that ratio is what changes the experience — and the total minutes follow.</p>
+      <p>"How much screen time is too much" is the wrong question. The right question is "what percentage of your phone use is intentional, and what is it costing you?" Among Spool's heaviest users, only a minority of opens are intentional and the rest are compulsive. Moving that ratio is what changes the experience — and the total minutes follow.</p>
     `,
     cluster: "daily-rhythms",
     related: ["intentional-screen-time", "does-grayscale-mode-work", "why-cant-i-put-my-phone-down"],
@@ -560,7 +560,7 @@ export const CONTENT = {
 <p>If your phone use spikes when you're stressed, anxious, or overwhelmed, you're not unusual — you're using your phone the way most people do. The scroll-when-anxious pattern is the single most common driver of compulsive use after pure boredom. The mechanism is not mysterious, and understanding it changes what works to interrupt it.</p>
 
       <h2>The pattern in the data</h2>
-      <p>Across <a href="/">Spool</a>'s voice check-in data, about 20% of all stated reasons for opening a distracting app fall into the anxiety / restlessness category. This is the second-largest category after boredom. The phrases are consistent across users:</p>
+      <p>Across <a href="/">Spool</a>'s voice check-in data, anxiety and restlessness are the second-largest category of stated reasons for opening a distracting app, after boredom. The phrases are consistent across users:</p>
       <ul>
         <li>"I'm stressed and want to numb out"</li>
         <li>"I just need a break from this"</li>
@@ -751,7 +751,7 @@ export const CONTENT = {
 
       <p>This works for all-day, low-grade compulsive checking — the 47 micro-opens of Instagram between 9am and 11pm, the reach-for-the-phone-when-bored that Freedom's scheduled blocks don't catch.</p>
 
-      <p>Spool also captures structured data: across 8,000+ recorded voice check-ins, about 85% of users frame their unlock as a first-person want or need ("I just want to scroll," "I just need to check"). The AI surfaces those patterns back to the user as the actual driver of change.</p>
+      <p>Spool also captures structured data: across 13,000+ recorded voice check-ins, most users frame their unlock as a first-person want or need ("I just want to scroll," "I just need to check"). The AI surfaces those patterns back to the user as the actual driver of change.</p>
 
       <h2>Use case breakdown</h2>
       <p><strong>You want scheduled deep work across multiple devices →</strong> Freedom. This is exactly the problem it solves.</p>
@@ -967,7 +967,7 @@ export const CONTENT = {
       <h2>The data difference</h2>
       <p>Jomo tracks structured behavioral data — block compliance, session counts, mood ratings, streak length. This data is useful for "am I sticking to my program?" questions.</p>
 
-      <p>Spool tracks qualitative data — your actual spoken statements at the moment of impulse. Across 8,000+ recordings, this has surfaced a finding Jomo's data structure can't produce: about 85% of users frame their unlock as a first-person want or need, and a small set of phrases recurs across users with no platform-mediated connection. "Just checking" appears in the data of users who have never spoken to each other.</p>
+      <p>Spool tracks qualitative data — your actual spoken statements at the moment of impulse. Across 13,000+ recordings, this has surfaced a finding Jomo's data structure can't produce: most users frame their unlock as a first-person want or need, and a small set of phrases recurs across users with no platform-mediated connection. "Just checking" appears in the data of users who have never spoken to each other.</p>
 
       <p>Different data, different insights. Jomo answers "am I doing my program?" Spool answers "what am I actually saying to myself when I reach for the phone?"</p>
 
@@ -1171,7 +1171,7 @@ export const CONTENT = {
       <p><strong>One Sec</strong> feels more like a speed bump. The breathing pause is effective at interrupting automatic behavior, but it's more passive. You might zone out during the animation.</p>
 
       <h2>Effectiveness Research</h2>
-      <p>Studies show that verbalizing intentions increases follow-through by 42%. When you speak your intention ("I'm opening Instagram because I'm avoiding work"), you're more likely to recognize and change the behavior.</p>
+      <p>Naming a feeling or intention out loud measurably lowers its grip: UCLA psychologist Matthew Lieberman found that verbalizing engages the prefrontal cortex and dampens amygdala activity, the brain's threat-response center (Lieberman et al., 2007, <em>Psychological Science</em>). When you speak your intention ("I'm opening Instagram because I'm avoiding work"), you're more likely to recognize and change the behavior.</p>
 
       <p>Breathing exercises are proven to reduce anxiety, which can help if your phone use is stress-driven. However, they don't provide the self-awareness data that Spool captures.</p>
 
@@ -1517,7 +1517,7 @@ export const CONTENT = {
         <li>Over time, you address root causes (boredom, stress, avoidance)</li>
       </ul>
 
-      <p>Studies show that verbalizing intentions increases behavior change success by 42%. Spool leverages this science directly.</p>
+      <p>Verbalizing an intention engages the prefrontal cortex and dampens the amygdala's threat response (Lieberman et al., 2007, <em>Psychological Science</em>) — the neurological basis for why saying a reason out loud interrupts autopilot. Spool leverages this science directly.</p>
 
       <h2>Gamification: Helpful or Distracting?</h2>
       <p><strong>Unrot leans heavily into gamification:</strong> credits, challenges, medals, mascots, streaks. This can be motivating initially, but research on gamification shows diminishing returns. Once the novelty wears off, users often disengage entirely.</p>
@@ -1638,16 +1638,14 @@ export const CONTENT = {
       <h2 id="spool">1. Spool — AI Voice Check-Ins</h2>
       <p>Spool takes a fundamentally different approach from every other app on this list. Instead of blocking apps or adding passive friction, Spool asks you to <strong>speak your reason out loud</strong> before opening distracting apps like TikTok, Instagram, or YouTube.</p>
 
-      <p>This 5-second voice check-in does something no other app can: it captures <em>why</em> you're reaching for your phone. Spool's AI then analyzes your excuses over time to reveal patterns — like "I always open Instagram when I'm bored at 10pm" or "I use 'just checking' as my default excuse 73% of the time."</p>
+      <p>This 5-second voice check-in does something no other app can: it captures <em>why</em> you're reaching for your phone. Spool's AI then analyzes your excuses over time to reveal patterns — like "I always open Instagram when I'm bored at 10pm" or "'just checking' is my most common excuse."</p>
 
-      <p>The science behind this is solid: research from Harvard and Yale shows that verbalizing intentions increases behavior change by 42%. Speaking out loud engages your prefrontal cortex — the part of your brain responsible for conscious decision-making — in a way that passive barriers don't.</p>
+      <p>The science behind this is solid: UCLA's Matthew Lieberman found that verbalizing a feeling or intention engages the prefrontal cortex and dampens amygdala activity — the brain's threat-response center (Lieberman et al., 2007, <em>Psychological Science</em>). Speaking out loud engages conscious, deliberate processing in a way that passive barriers don't.</p>
 
       <p><strong>Key stats:</strong></p>
       <ul>
-        <li>4.8 stars on the App Store (120+ global reviews)</li>
-        <li>8,000+ scrolling sessions interrupted</li>
-        <li>80% average screen time reduction in first week</li>
-        <li>25% sustained long-term reduction</li>
+        <li>4.8 stars on the App Store (126 reviews)</li>
+        <li>13,000+ scrolling sessions interrupted</li>
         <li>$7.99/month or $39.99/year</li>
       </ul>
 
@@ -1743,7 +1741,7 @@ export const CONTENT = {
         <li><strong>If you've tried blockers and they didn't stick:</strong> Spool (addresses the why, not just the when)</li>
       </ul>
 
-      <p>The most important thing is to try something. 46% of Americans self-identify as phone addicted, and the average person checks their phone 96 times per day. Any of these apps is better than doing nothing.</p>
+      <p>The most important thing is to try something. The average American checks their phone 96 times a day — once every 10 minutes (Asurion, 2019 survey of 2,000 U.S. smartphone users). Any of these apps is better than doing nothing.</p>
 
       <h2>Methodology</h2>
       <p>We tested each app for at least one week on an iPhone 15 Pro running iOS 18. We evaluated based on: effectiveness at reducing screen time, ease of setup, daily friction level, long-term sustainability, pricing, and unique features. App ratings and review counts were pulled from the App Store in April 2026.</p>
@@ -1881,7 +1879,7 @@ export const CONTENT = {
       <h2>The Psychology Behind Doom Scrolling</h2>
       <p>Doom scrolling isn't just a bad habit; it's a neurological trap. Every swipe triggers a small dopamine hit, creating what psychologists call a "variable ratio reinforcement schedule"—the same mechanism that powers gambling addiction. Your brain literally becomes wired to seek the next scroll, even when you consciously want to stop.</p>
 
-      <p>Research from Stanford University shows that the average person checks their phone 96 times per day—once every 10 minutes. Even more concerning, 71% of Americans admit to checking their phone within the first 10 minutes of waking up, starting their day already caught in the scroll.</p>
+      <p>The average American checks their phone 96 times a day — once every 10 minutes (Asurion, 2019 survey of 2,000 U.S. smartphone users). For many people, that pattern starts within minutes of waking up, before the day's first conscious decision gets made.</p>
 
       <h2>Why Traditional App Blockers Don't Work</h2>
       <p>Most screen time apps rely on hard blocks or time limits, but these approaches fail because they fight against your habits rather than working with them. When you hit a hard block, your brain—still craving that dopamine hit—finds workarounds. You might switch to a different app, grab another device, or simply disable the blocker entirely.</p>
@@ -1900,10 +1898,10 @@ export const CONTENT = {
       <h2>The Science of Voice Activation</h2>
       <p>Why voice? Speaking engages different parts of your brain than thinking alone. When you verbalize your intention, you activate your prefrontal cortex—the brain's executive control center. This simple act shifts you from autopilot to conscious decision-making.</p>
 
-      <p>Studies show that people who verbalize their goals are 42% more likely to achieve them. By asking yourself "Why am I opening this app?" out loud, you transform mindless scrolling into intentional action.</p>
+      <p>This isn't a Spool invention — it's Matthew Lieberman's 2007 UCLA finding that naming a feeling or intention out loud dampens the amygdala's threat response (Lieberman et al., 2007, <em>Psychological Science</em>). By asking yourself "Why am I opening this app?" out loud, you transform mindless scrolling into intentional action.</p>
 
       <h2>Real Results From Real Users</h2>
-      <p>Our users report an average 80% reduction in screen time in the first week and a 25% sustained long-term reduction—without feeling restricted or frustrated. Unlike traditional blockers, Spool doesn't create friction; it creates awareness. Users tell us they don't feel like they're fighting their phones anymore. Instead, they're finally in control.</p>
+      <p>Our users report a sharp drop in screen time in the first week and meaningful, sustained reductions over the long term—without feeling restricted or frustrated. Unlike traditional blockers, Spool doesn't create friction; it creates awareness. Users tell us they don't feel like they're fighting their phones anymore. Instead, they're finally in control.</p>
 
       <blockquote>"I didn't realize how often I was opening Instagram without even thinking about it. Spool's voice check-in made me aware of my patterns, and now I actually choose when to scroll instead of doing it automatically."</blockquote>
 
@@ -1932,7 +1930,7 @@ export const CONTENT = {
 <p>What if your phone could actually help you achieve your goals instead of distracting you from them? The problem isn't technology itself—it's unconscious usage. When you transform screen time from mindless to mindful, your device becomes a tool for growth rather than a source of guilt.</p>
 
       <h2>The Hidden Cost of Unconscious Phone Use</h2>
-      <p>Every unconscious scroll carries a cost beyond just time. Research from the University of California, Irvine, found that it takes an average of 23 minutes to fully refocus after a distraction. When you mindlessly check your phone during work, you're not just losing those 5 minutes of scrolling—you're sacrificing nearly half an hour of deep focus.</p>
+      <p>Every unconscious scroll carries a cost beyond just time. UC Irvine researcher Gloria Mark's studies on workplace interruptions found that it takes an average of 23 minutes and 15 seconds to fully refocus after a distraction (Mark, 2004). When you mindlessly check your phone during work, you're not just losing those 5 minutes of scrolling—you're sacrificing nearly half an hour of deep focus.</p>
 
       <p>But the cost goes deeper than productivity. Unconscious phone use affects your relationships, sleep quality, mental health, and even your sense of self. When your days blur together in a haze of notifications and feeds, you lose the intentionality that gives life meaning.</p>
 

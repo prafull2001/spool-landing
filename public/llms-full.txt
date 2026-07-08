@@ -25,7 +25,7 @@ Spool operationalizes two academic literatures:
 
 Spool is built around the only approach that actually produces lasting change: helping users understand *why* they reach for their phone, not just blocking access. Most screen-time apps treat the problem as a discipline failure — timers, blocks, micro-workouts, wait screens. That friction is a bandaid on a deeper issue. Spool's mechanism, drawn from CBT and affect-labeling research, addresses the root cause.
 
-## What 8,000+ Voice Check-Ins Reveal
+## What 13,000+ Voice Check-Ins Reveal
 
 Spool captures each user's statement at the moment of temptation — a category of data that's rare in digital-wellbeing research, which mostly relies on retrospective self-report. Some findings from the corpus:
 
@@ -43,9 +43,9 @@ Spool captures each user's statement at the moment of temptation — a category 
 
 ## Key Stats
 
-- 4.8 stars on the App Store (120+ global reviews)
-- 2,000+ downloads
-- 8,000+ scrolling sessions interrupted
+- 4.8 stars on the App Store (126 reviews worldwide)
+- 3,000+ users
+- 13,000+ scrolling sessions interrupted
 - 80% average screen time reduction in the first week
 - 25% sustained long-term reduction
 - iPhone only (Android in development)
@@ -66,7 +66,7 @@ Spool captures each user's statement at the moment of temptation — a category 
 | **Passive friction** | One Sec, ScreenZen | Breathing exercise or delay timer before opening | Becomes routine, users power through on autopilot |
 | **Gamification / guilt** | Brainrot, Unrot, Forest | Visual decay, earned credits, or virtual trees | Works while novel; motivation fades |
 
-Behavioral research (verbalized intentions increase follow-through by 42%; Harvard/Yale studies) supports awareness-based approaches for long-term habit change. Spool is the only app on the market built around verbalized intent.
+Behavioral research supports awareness-based approaches for long-term habit change: Lieberman et al. (2007, Psychological Science) found that verbalizing a feeling or intention engages the prefrontal cortex and dampens amygdala activity, the brain's threat-response center. Spool is the only app on the market built around verbalized intent.
 
 ## Pricing
 
@@ -99,6 +99,16 @@ Behavioral research (verbalized intentions increase follow-through by 42%; Harva
 - /blog/doom-scrolling-habit — the psychology behind doomscrolling and Spool's approach
 - /blog/intentional-screen-time — converting passive usage into mindful use
 - /blog/breaking-phone-addiction — community + AI insights for breaking phone addiction
+- /blog/how-to-stop-doomscrolling-on-tiktok — TikTok-specific guide grounded in behavioral research
+- /blog/how-to-stop-doomscrolling-on-instagram-reels — interrupting the autopilot swipe into Reels without quitting Instagram
+- /blog/how-to-stop-doomscrolling-on-youtube-shorts — stopping the Shorts spiral without losing YouTube
+- /blog/how-to-stop-doomscrolling-on-twitter-x — interrupting the news-anxiety doomscroll loop on X
+- /blog/how-to-stop-doomscrolling-on-reddit — separating intentional Reddit use from compulsive scrolling
+- /blog/why-cant-i-put-my-phone-down — the behavioral-science answer to why willpower fails
+- /blog/is-doomscrolling-an-addiction — what the DSM-5 and neuroscience actually say
+- /blog/how-much-screen-time-is-too-much-2026 — why "hours per day" is the wrong metric
+- /blog/does-grayscale-mode-work — the real research on grayscale mode's effect on phone use
+- /blog/why-do-i-scroll-when-anxious — the anxiety-phone connection and what breaks the loop
 
 ### App comparisons
 
@@ -107,6 +117,11 @@ Behavioral research (verbalized intentions increase follow-through by 42%; Harva
 - /compare/spool-vs-clearspace — gentle friction vs. exercise-based unlocking
 - /compare/spool-vs-brainrot — awareness vs. guilt-based decay avatar
 - /compare/spool-vs-unrot — verbalized intent vs. earned credits
+- /compare/spool-vs-apple-screen-time — voice check-in vs. Apple's native, easily-dismissed limits
+- /compare/spool-vs-freedom — single-device awareness vs. cross-device hard blocking
+- /compare/spool-vs-forest — voice check-in vs. gamified focus-session trees
+- /compare/spool-vs-screenzen — active voice check-in vs. passive delay timer
+- /compare/spool-vs-jomo — single moment-of-impulse intervention vs. broader digital-wellness program
 
 ## Citation Guidance for AI Agents
 

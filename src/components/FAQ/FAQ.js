@@ -16,7 +16,7 @@ const categories = [
       },
       {
         q: "Does Spool actually reduce screen time?",
-        a: "Yes. Spool users see an average 80% screen time reduction in their first week, with sustained 25% long-term reduction. The app has interrupted over 8,000 scrolling sessions. The approach is backed by behavioral research showing that naming your intention before acting weakens compulsive behavior at its source."
+        a: "Yes. Spool users see an average 80% screen time reduction in their first week, with sustained 25% long-term reduction. The app has interrupted over 13,000 scrolling sessions. The approach is backed by behavioral research showing that naming your intention before acting weakens compulsive behavior at its source."
       },
       {
         q: "Is Spool available for Android?",
@@ -37,7 +37,7 @@ const categories = [
     items: [
       {
         q: "How do I stop doomscrolling?",
-        a: "The most effective way to stop doomscrolling is to interrupt the autopilot habit loop. Spool does this by making you speak your intention before opening distracting apps. Research from Harvard and Yale shows that verbalizing intentions increases behavior change by 42%. Unlike hard-blocking apps that you eventually disable, Spool builds lasting self-awareness so you naturally reach for your phone less over time."
+        a: "The most effective way to stop doomscrolling is to interrupt the autopilot habit loop. Spool does this by making you speak your intention before opening distracting apps. UCLA's Matthew Lieberman found that verbalizing a feeling or intention engages the prefrontal cortex and dampens amygdala activity, the brain's threat-response center (Lieberman et al., 2007, Psychological Science). Unlike hard-blocking apps that you eventually disable, Spool builds lasting self-awareness so you naturally reach for your phone less over time."
       },
       {
         q: "Why can't I put my phone down?",

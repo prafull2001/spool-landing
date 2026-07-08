@@ -2,11 +2,11 @@ import BlogPage from '@/views/BlogPage';
 
 export const metadata = {
   title: 'Blog — Digital Wellness & Screen Time Research',
-  description: 'Original research and head-to-head app comparisons from Spool. Read what 8,000+ voice check-ins reveal about why people doomscroll, plus honest reviews of Opal, One Sec, Freedom, ScreenZen, and more.',
+  description: 'Original research and head-to-head app comparisons from Spool. Read what 13,000+ voice check-ins reveal about why people doomscroll, plus honest reviews of Opal, One Sec, Freedom, ScreenZen, and more.',
   alternates: { canonical: 'https://www.thespoolapp.com/blog' },
   openGraph: {
     title: 'Blog — Digital Wellness & Screen Time Research | Spool',
-    description: 'Original research and head-to-head app comparisons from Spool. Read what 8,000+ voice check-ins reveal about why people doomscroll, plus honest reviews of Opal, One Sec, Freedom, ScreenZen, and more.',
+    description: 'Original research and head-to-head app comparisons from Spool. Read what 13,000+ voice check-ins reveal about why people doomscroll, plus honest reviews of Opal, One Sec, Freedom, ScreenZen, and more.',
     url: 'https://www.thespoolapp.com/blog',
     type: 'website',
     images: [{ url: 'https://www.thespoolapp.com/og-homepage.jpg', width: 1200, height: 630 }],
@@ -20,7 +20,7 @@ const FAQS = [
   },
   {
     q: 'Does Spool actually reduce screen time?',
-    a: 'Yes. Users see an average 80% reduction in screen time during the first week and a 25% sustained long-term reduction. Some users have dropped from 6 hours of daily phone use to under 2.',
+    a: 'Yes. Many users see a sharp drop in screen time during the first week, with meaningful reductions sustained over the long term. Some have gone from several hours of daily phone use to a fraction of that.',
   },
   {
     q: 'How does the voice check-in work?',
@@ -50,7 +50,7 @@ const blogSchema = {
   '@id': 'https://www.thespoolapp.com/blog',
   url: 'https://www.thespoolapp.com/blog',
   name: 'The Spool Blog',
-  description: 'Digital-wellness research, app comparisons, and practical guides on stopping doomscrolling — drawn from 8,000+ voice check-ins from Spool users.',
+  description: 'Digital-wellness research, app comparisons, and practical guides on stopping doomscrolling — drawn from 13,000+ voice check-ins from Spool users.',
   publisher: {
     '@type': 'Organization',
     name: 'Spool',
