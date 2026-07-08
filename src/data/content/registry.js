@@ -193,7 +193,7 @@ export const CONTENT = {
       <h2>Why X scrolling is uniquely justified-feeling</h2>
       <p>Three structural factors make X harder to recognize as doomscrolling:</p>
       <ul>
-        <li><strong>The For You feed mixes signal with noise at a high rate.</strong> Unlike TikTok where 90% of content is entertainment, X mixes genuine news, breaking events, and substantive thinking with low-quality engagement bait. There's enough signal to justify staying.</li>
+        <li><strong>The For You feed mixes signal with noise at a high rate.</strong> Unlike TikTok, which is almost entirely entertainment, X mixes genuine news, breaking events, and substantive thinking with low-quality engagement bait. There's enough signal to justify staying.</li>
         <li><strong>The intermittent reward is informational, not emotional.</strong> Sometimes you actually learn something. That occasional payoff sustains the habit longer than pure entertainment would.</li>
         <li><strong>Anxiety drives engagement.</strong> Negative news, conflict, and outrage are over-represented because they produce higher engagement. The same psychological mechanism that makes you check on a worrying situation drives compulsive X opening.</li>
       </ul>
@@ -448,7 +448,7 @@ export const CONTENT = {
       <ul>
         <li><strong>How many of your phone unlocks are intentional?</strong> If you could decide before each unlock whether to open the app, would you have opened it? The honest answer for most heavy users is that 60-80% of unlocks fail this test.</li>
         <li><strong>What's your "just checking" rate?</strong> Across <a href="/">Spool</a>'s voice check-in data, "just checking" is the modal stated reason for compulsive opens. If a high percentage of your opens are unconscious or rationalized, the duration doesn't matter — the relationship is wrong.</li>
-        <li><strong>What does it cost?</strong> What are you not doing because of the time spent? Sleep is the most common displaced activity (87% of US adults use phones within an hour of bed). Concentration on demanding tasks is second. Real-world conversation is third.</li>
+        <li><strong>What does it cost?</strong> What are you not doing because of the time spent? Sleep is the most common displaced activity — around 9 in 10 US adults use a screen in the hour before bed (National Sleep Foundation, 2011). Concentration on demanding tasks is second. Real-world conversation is third.</li>
         <li><strong>How do you feel after a heavy-use day?</strong> Tired? Restless? Numb? The post-session affect is a stronger signal than duration.</li>
       </ul>
 
@@ -479,7 +479,7 @@ export const CONTENT = {
     type: "blog",
     meta: {
       title: "Does Grayscale Mode Actually Reduce Phone Use? The Real Answer",
-      description: "Grayscale mode works — about 15-20% reduction in the Trinity College Dublin study, fading after 1-3 weeks. Here's when to try it and when not to.",
+      description: "Grayscale mode works — roughly 38 fewer minutes of screen time a day in one controlled study, but the effect fades as you habituate. Here's when to try it and when not to.",
       datePublished: "2026-05-21",
       dateModified: "2026-05-21",
     },
@@ -492,7 +492,7 @@ export const CONTENT = {
 <p>The advice to switch your iPhone to grayscale (no color) has been circulating in digital-wellness culture since at least 2017. The pitch: color is a major attention driver — app icons, photos, video thumbnails — and removing color makes your phone less visually rewarding, so you use it less. Some people swear it cuts their screen time in half. Others try it for two days and switch back. What's actually going on?</p>
 
       <h2>The research that exists</h2>
-      <p>The strongest single piece of evidence is a 2022 randomized study at Trinity College Dublin where participants used grayscale mode for two weeks. The results were modest but real: average screen time dropped by about 15-20% versus a control group, and self-reported "phone craving" decreased.</p>
+      <p>The strongest published evidence comes from Holte and Ferraro (2020, <em>The Social Science Journal</em>), who had 73 of 161 undergraduates switch their phones to grayscale for eight to ten days. The result was modest but real: grayscale users averaged about 38 minutes less screen time per day — roughly a 10-15% drop for a typical user. A later study (Dekker &amp; Baumgartner, 2024) found similar short-term reductions that were partly offset as the novelty wore off.</p>
 
       <p>The effect is smaller than the more dramatic anecdotes suggest, but it's not zero. Grayscale does work for some people, modestly, in the short term.</p>
 
@@ -504,12 +504,12 @@ export const CONTENT = {
       </ul>
 
       <h2>Why it stops working (when it does)</h2>
-      <p>Within 1-3 weeks, most users habituate. The phone becomes visually normal in grayscale, and the friction effect disappears. This is the same pattern as every passive intervention — the brain adapts.</p>
+      <p>Within a few weeks, most users habituate. The phone becomes visually normal in grayscale, and the friction effect disappears. This is the same pattern as every passive intervention — the brain adapts.</p>
 
       <p>It also fails entirely for content that doesn't depend on color for its hook. Text-heavy apps (X, Reddit, Notes) work essentially the same in grayscale. The doomscroll experience on text-based platforms is mostly unchanged.</p>
 
       <h2>Who it works best for</h2>
-      <p>The Trinity study suggested grayscale is most effective for:</p>
+      <p>In practice, grayscale tends to be most effective for:</p>
       <ul>
         <li>Heavy Instagram / TikTok / YouTube Shorts users (where visual content is the hook)</li>
         <li>Users early in their digital-wellness journey (the friction is novel)</li>
@@ -535,7 +535,7 @@ export const CONTENT = {
 
       <p>Compare to a moment-of-impulse intervention like <a href="/">Spool</a>'s voice check-in, which engages active conscious processing at the exact moment of compulsive reach. The Spool mechanism doesn't habituate the same way because every check-in requires active verbal output — you can't grayscale-style ignore it.</p>
 
-      <p>The honest comparison: grayscale produces ~15-20% reduction in the short term that fades; awareness-based interventions produce smaller initial drops but more durable change. They're not exclusive — you can do both.</p>
+      <p>The honest comparison: grayscale produces a modest short-term reduction that fades; awareness-based interventions produce smaller initial drops but more durable change. They're not exclusive — you can do both.</p>
 
       <h2>The bottom line</h2>
       <p>Does grayscale work? Yes, modestly, for some people, in the short term, mostly on visual-content platforms. Should you try it? Sure — it's free, takes one minute to enable, and has no downside. But don't expect it to be the solution. It's a small lever in a system that needs a bigger one if your phone use is meaningful enough to be worth changing.</p>
@@ -632,7 +632,7 @@ export const CONTENT = {
       category: "Comparison",
     },
     body: `
-<p>Apple Screen Time has been built into every iPhone since iOS 12 (2018). It is free, native, and tracks every app you use down to the minute. So why does the average American still spend 4-7 hours a day on their phone, and why does 64% of the US population identify as habitual doomscrollers?</p>
+<p>Apple Screen Time has been built into every iPhone since iOS 12 (2018). It is free, native, and tracks every app you use down to the minute. So why does the average American still spend hours a day on their phone, much of it scrolling on autopilot?</p>
 
       <p>The answer is not that Apple built the wrong feature. The answer is that <em>tracking time and adding a dismissible limit</em> is a fundamentally different problem from <em>changing the behavior that drives the time</em>. Spool was built specifically for that second problem, and it sits on top of the Apple Screen Time API rather than competing with it.</p>
 
@@ -2002,7 +2002,7 @@ export const CONTENT = {
       <p>But phone addiction isn't just about time. It's about what we're losing:</p>
 
       <ul>
-        <li>Sleep quality (87% of people use phones within an hour of bed)</li>
+        <li>Sleep quality (most US adults use a screen in the hour before bed — National Sleep Foundation, 2011)</li>
         <li>Real connections (families report feeling disconnected despite being in the same room)</li>
         <li>Mental health (studies link excessive phone use to increased anxiety and depression)</li>
         <li>Productivity (knowledge workers lose 2.5 hours daily to phone distractions)</li>
