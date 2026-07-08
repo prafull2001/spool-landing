@@ -99,6 +99,12 @@ export function getCardList() {
   }));
 }
 
+// Pages that show a visible "Last updated" badge — the listicle + every
+// compare page (freshness signaling proven to matter; see E1 in the backlog).
+function showsLastUpdated(slug, entry) {
+  return entry.type === 'compare' || slug === 'best-apps-stop-doomscrolling-2026';
+}
+
 // For views/BlogPost.js — shared renderer for both /blog/[id] and /compare/[id].
 export function getBlogContentMap() {
   const out = {};
@@ -106,6 +112,8 @@ export function getBlogContentMap() {
     out[slug] = {
       title: displayTitle(entry),
       date: formatDisplayDate(entry.meta.datePublished),
+      dateModified: formatDisplayDate(entry.meta.dateModified),
+      showLastUpdated: showsLastUpdated(slug, entry),
       readTime: entry.card.readTime,
       category: entry.card.category,
       content: entry.body,

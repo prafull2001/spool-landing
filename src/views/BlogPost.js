@@ -55,6 +55,12 @@ const BlogPost = () => {
             </time>
             <span>•</span>
             <span>{post.readTime}</span>
+            {post.showLastUpdated && (
+              <>
+                <span>•</span>
+                <span className="blog-post-last-updated">Last updated: {post.dateModified}</span>
+              </>
+            )}
           </div>
         </div>
 
