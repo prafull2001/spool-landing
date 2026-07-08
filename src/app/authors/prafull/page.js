@@ -3,6 +3,7 @@ import Logo from '@/components/Logo/Logo';
 import Footer from '@/components/Footer/Footer';
 import '@/views/BlogPost.css';
 import { PRAFULL } from '@/data/authors';
+import { getCardList } from '@/data/content';
 
 export const metadata = {
   title: 'Prafull Sharma — Founder of Spool',
@@ -19,33 +20,12 @@ export const metadata = {
   },
 };
 
-const POSTS_BY_PRAFULL = [
-  {
-    slug: 'best-apps-stop-doomscrolling-2026',
-    title: 'Best Apps to Stop Doomscrolling in 2026 (Honest Comparison)',
-    date: 'May 1, 2026',
-  },
-  {
-    slug: 'how-to-stop-doom-scrolling',
-    title: 'How to Stop Doom Scrolling: 10 Proven Strategies That Work',
-    date: 'February 8, 2026',
-  },
-  {
-    slug: 'doom-scrolling-habit',
-    title: 'How Spool Breaks Your Doom Scrolling Habit',
-    date: 'October 9, 2024',
-  },
-  {
-    slug: 'intentional-screen-time',
-    title: 'Transform Screen Time Into Intentional Time',
-    date: 'October 9, 2024',
-  },
-  {
-    slug: 'breaking-phone-addiction',
-    title: 'Join Thousands Breaking Free From Phone Addiction',
-    date: 'October 9, 2024',
-  },
-];
+const POSTS_BY_PRAFULL = getCardList().map((post) => ({
+  slug: post.id,
+  title: post.title,
+  date: post.date,
+  href: post.isComparison ? `/compare/${post.id}` : `/blog/${post.id}`,
+}));
 
 const personSchema = {
   '@context': 'https://schema.org',
@@ -125,7 +105,7 @@ export default function PrafullAuthorPage() {
           <ul>
             {POSTS_BY_PRAFULL.map((post) => (
               <li key={post.slug}>
-                <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+                <Link href={post.href}>{post.title}</Link>
                 {' — '}
                 <time>{post.date}</time>
               </li>

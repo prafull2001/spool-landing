@@ -60,6 +60,32 @@ const BlogPost = () => {
 
         <div className="blog-post-content" dangerouslySetInnerHTML={{ __html: post.content }} />
 
+        {post.platformSiblings && (
+          <aside className="blog-post-platform-siblings">
+            <h3>Stop scrolling on every platform</h3>
+            <ul>
+              {post.platformSiblings.map((p) => (
+                <li key={p.slug}>
+                  <Link href={p.href}>{p.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </aside>
+        )}
+
+        {post.related.length > 0 && (
+          <aside className="blog-post-related">
+            <h3>Related reading</h3>
+            <ul>
+              {post.related.map((r) => (
+                <li key={r.slug}>
+                  <Link href={r.href}>{r.title}</Link>
+                </li>
+              ))}
+            </ul>
+          </aside>
+        )}
+
         <aside className="blog-post-author-card">
           <h3>About the author</h3>
           <p>

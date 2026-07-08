@@ -16,6 +16,44 @@ function displayTitle(entry) {
   return entry.card.title || entry.meta.title;
 }
 
+function hrefFor(slug, entry) {
+  return entry.type === 'compare' ? `/compare/${slug}` : `/blog/${slug}`;
+}
+
+// The 5 platform-specific doomscrolling guides get a dedicated cross-link
+// block ("Stop scrolling on every platform") in addition to their normal
+// Related block — see L1 in SEO-CONTENT-BACKLOG.md.
+const PLATFORM_GUIDES = [
+  { slug: 'how-to-stop-doomscrolling-on-tiktok', label: 'TikTok' },
+  { slug: 'how-to-stop-doomscrolling-on-instagram-reels', label: 'Instagram Reels' },
+  { slug: 'how-to-stop-doomscrolling-on-youtube-shorts', label: 'YouTube Shorts' },
+  { slug: 'how-to-stop-doomscrolling-on-twitter-x', label: 'X (Twitter)' },
+  { slug: 'how-to-stop-doomscrolling-on-reddit', label: 'Reddit' },
+];
+
+// Returns the other 4 platform guides (with href) if slug is one of the 5, else null.
+export function getPlatformSiblings(slug) {
+  if (!PLATFORM_GUIDES.some((p) => p.slug === slug)) return null;
+  return PLATFORM_GUIDES.filter((p) => p.slug !== slug).map((p) => ({
+    slug: p.slug,
+    label: p.label,
+    href: `/blog/${p.slug}`,
+  }));
+}
+
+// Resolves an entry's related[] slugs into {slug, title, href}.
+export function getRelatedLinks(slug) {
+  const entry = CONTENT[slug];
+  if (!entry) return [];
+  return entry.related
+    .map((relSlug) => {
+      const rel = CONTENT[relSlug];
+      if (!rel) return null;
+      return { slug: relSlug, title: displayTitle(rel), href: hrefFor(relSlug, rel) };
+    })
+    .filter(Boolean);
+}
+
 // For app/blog/[id]/page.js — { [slug]: { title, description, datePublished, dateModified } }
 export function getBlogMetaMap() {
   const out = {};
@@ -71,6 +109,8 @@ export function getBlogContentMap() {
       readTime: entry.card.readTime,
       category: entry.card.category,
       content: entry.body,
+      related: getRelatedLinks(slug),
+      platformSiblings: getPlatformSiblings(slug),
     };
   }
   return out;

@@ -59,9 +59,9 @@ const BlogPage = ({ faqs = [] }) => {
                 <div className="blog-meta">
                   <span className="blog-byline">
                     By{' '}
-                    <a href={AUTHOR_URL} rel="author" target="_blank">
+                    <Link href="/authors/prafull" rel="author">
                       {AUTHOR_NAME}
-                    </a>
+                    </Link>
                   </span>
                   <time dateTime={post.dateISO} className="blog-date">{post.date}</time>
                 </div>
