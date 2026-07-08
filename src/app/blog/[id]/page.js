@@ -1,5 +1,6 @@
 import BlogPost from '@/views/BlogPost';
 import { PRAFULL } from '@/data/authors';
+import { getBlogMetaMap } from '@/data/content';
 
 const AUTHOR = {
   name: PRAFULL.name,
@@ -8,98 +9,7 @@ const AUTHOR = {
   sameAs: PRAFULL.sameAs,
 };
 
-const blogMeta = {
-  'best-apps-stop-doomscrolling-2026': {
-    title: 'Best Apps to Stop Doomscrolling in 2026 (Honest Comparison of 10 Apps)',
-    description: 'We tested 10 doomscrolling apps in 2026: Spool (voice check-ins · awareness-based), Opal, One Sec, ScreenZen, Freedom, Brainrot, Unrot, Monk, Forest, RepsForReels. Spool wins for understanding why you scroll; Opal wins for hard blocking.',
-    datePublished: '2026-05-01',
-    dateModified: '2026-05-19',
-  },
-  'how-to-stop-doom-scrolling': {
-    title: 'How to Stop Doom Scrolling: 10 Proven Strategies That Work',
-    description: 'Practical, science-backed techniques to break your doom scrolling habit and reclaim hours of your day. No willpower required.',
-    datePublished: '2026-02-08',
-    dateModified: '2026-02-08',
-  },
-  'doom-scrolling-habit': {
-    title: 'How Spool Breaks Your Doom Scrolling Habit',
-    description: 'Discover how a simple 5-second voice check-in can interrupt your automatic phone habits and help you break free from endless scrolling.',
-    datePublished: '2024-10-09',
-    dateModified: '2024-10-09',
-  },
-  'intentional-screen-time': {
-    title: 'Transform Screen Time Into Intentional Time',
-    description: 'Learn how to turn mindless app usage into conscious choices through voice journaling and personalized insights.',
-    datePublished: '2024-10-09',
-    dateModified: '2024-10-09',
-  },
-  'breaking-phone-addiction': {
-    title: 'Join Thousands Breaking Free From Phone Addiction',
-    description: 'Explore how AI-powered insights and community support can help you reclaim your time from the endless scroll.',
-    datePublished: '2024-10-09',
-    dateModified: '2024-10-09',
-  },
-  'how-to-stop-doomscrolling-on-tiktok': {
-    title: 'How to Stop Doomscrolling on TikTok (2026 Guide)',
-    description: 'TikTok is the hardest app on your phone to put down — and it isn\'t your willpower. A 2026 guide to what actually works, grounded in behavioral research.',
-    datePublished: '2026-05-21',
-    dateModified: '2026-05-21',
-  },
-  'how-to-stop-doomscrolling-on-instagram-reels': {
-    title: 'How to Stop Doomscrolling on Instagram Reels (Without Quitting Instagram)',
-    description: 'Keep the Instagram you use and lose the Reels habit. Tactical guide to interrupting the autopilot swipe into Reels using voice check-ins and feed controls.',
-    datePublished: '2026-05-21',
-    dateModified: '2026-05-21',
-  },
-  'how-to-stop-doomscrolling-on-youtube-shorts': {
-    title: 'How to Stop Doomscrolling on YouTube Shorts',
-    description: 'YouTube Shorts is harder to quit than TikTok because it piggybacks on legitimate YouTube use. Here\'s how to stop the Shorts spiral without losing YouTube.',
-    datePublished: '2026-05-21',
-    dateModified: '2026-05-21',
-  },
-  'how-to-stop-doomscrolling-on-twitter-x': {
-    title: 'How to Stop Doomscrolling on X (Formerly Twitter)',
-    description: 'X scrolling feels intellectually justified — "I need to stay informed." It usually isn\'t. How to interrupt the news-anxiety doomscroll loop.',
-    datePublished: '2026-05-21',
-    dateModified: '2026-05-21',
-  },
-  'how-to-stop-doomscrolling-on-reddit': {
-    title: 'How to Stop Doomscrolling on Reddit (Without Quitting It)',
-    description: 'Keep the subreddits you actually value, lose the front-page time sink. How to separate intentional Reddit use from compulsive Reddit scrolling.',
-    datePublished: '2026-05-21',
-    dateModified: '2026-05-21',
-  },
-  'why-cant-i-put-my-phone-down': {
-    title: 'Why Can\'t I Put My Phone Down? The Behavioral Science Answer',
-    description: 'Two answers run in parallel — psychological and technological. Why willpower fails, what the research actually says, and what works instead.',
-    datePublished: '2026-05-21',
-    dateModified: '2026-05-21',
-  },
-  'is-doomscrolling-an-addiction': {
-    title: 'Is Doomscrolling an Addiction? What the Clinical Research Says',
-    description: 'Clinically: not formally yet. Neurologically: yes. Functionally: yes. What the DSM-5 says, what the neuroscience says, and why it matters for intervention.',
-    datePublished: '2026-05-21',
-    dateModified: '2026-05-21',
-  },
-  'how-much-screen-time-is-too-much-2026': {
-    title: 'How Much Screen Time Is Too Much in 2026? The Honest Answer',
-    description: 'The "X hours per day" question is the wrong question. The right question is what percentage of your phone use is intentional. Here\'s how to tell.',
-    datePublished: '2026-05-21',
-    dateModified: '2026-05-21',
-  },
-  'does-grayscale-mode-work': {
-    title: 'Does Grayscale Mode Actually Reduce Phone Use? The Real Answer',
-    description: 'Grayscale mode works — about 15-20% reduction in the Trinity College Dublin study, fading after 1-3 weeks. Here\'s when to try it and when not to.',
-    datePublished: '2026-05-21',
-    dateModified: '2026-05-21',
-  },
-  'why-do-i-scroll-when-anxious': {
-    title: 'Why Do I Scroll When I\'m Anxious? The Connection Between Anxiety and Phone Use',
-    description: 'Anxiety scrolling is regulation, not resolution. The behavioral science of why your phone use spikes when you\'re stressed — and what actually breaks the loop.',
-    datePublished: '2026-05-21',
-    dateModified: '2026-05-21',
-  },
-};
+const blogMeta = getBlogMetaMap();
 
 const DOOMSCROLLING_APP_RANKINGS = [
   {
