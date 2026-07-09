@@ -39,19 +39,21 @@ export default function RootLayout({ children }) {
              __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
+              "@id": "https://www.thespoolapp.com/#spool",
               "name": "Spool",
-              "alternateName": "Spool App",
+              "alternateName": ["Spool App", "Spool: Screen Time Control"],
               "url": "https://www.thespoolapp.com",
               "logo": "https://www.thespoolapp.com/spooli-app-icon-512.png",
               "description": "Spool uses AI voice check-ins to help you stop doomscrolling. iPhone app for screen time reduction through awareness, not blocking.",
+              "foundingDate": "2024",
               "founder": [
                 {
                   "@type": "Person",
+                  "@id": "https://prafullsharma.me/#prafull-sharma",
                   "name": "Prafull Sharma",
-                  "jobTitle": "Founder & CEO",
-                  "url": "https://www.linkedin.com/in/prafull-sharma-363187168/",
+                  "jobTitle": "Co-founder",
+                  "url": "https://prafullsharma.me",
                   "sameAs": [
-                    "https://prafullsharma.me",
                     "https://www.linkedin.com/in/prafull-sharma-363187168/",
                     "https://github.com/prafull2001"
                   ]
@@ -80,7 +82,7 @@ export default function RootLayout({ children }) {
                 "https://twitter.com/the_spool_app",
                 "https://www.linkedin.com/company/spooli/",
                 "https://github.com/prafull2001/spool-landing",
-                "https://apps.apple.com/us/app/spool-save-your-thread/id6749428484",
+                "https://apps.apple.com/us/app/spool-screen-time-control/id6749428484",
                 "https://microlaunch.net/p/spool"
               ],
               "subjectOf": PRESS_ITEMS.map(item => ({

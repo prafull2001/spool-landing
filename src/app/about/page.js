@@ -24,6 +24,10 @@ const CO_FOUNDERS = [
     name: 'Prafull Sharma',
     initials: 'PS',
     url: 'https://www.linkedin.com/in/prafull-sharma-363187168/',
+    // Entity link: resolve to the same Person node his personal site publishes,
+    // so Google reconciles prafullsharma.me and Spool as one connected graph.
+    entityId: 'https://prafullsharma.me/#prafull-sharma',
+    entityUrl: 'https://prafullsharma.me',
     sameAs: [
       'https://www.linkedin.com/in/prafull-sharma-363187168/',
       'https://github.com/prafull2001',
@@ -53,9 +57,10 @@ const STATS = [
 
 const personSchema = (p) => ({
   '@type': 'Person',
+  ...(p.entityId ? { '@id': p.entityId } : {}),
   name: p.name,
   jobTitle: 'Co-founder',
-  ...(p.url ? { url: p.url } : {}),
+  url: p.entityUrl || p.url,
   ...(p.sameAs ? { sameAs: p.sameAs } : {}),
 });
 
@@ -68,6 +73,7 @@ const aboutSchema = {
   dateModified: LAST_UPDATED_ISO,
   mainEntity: {
     '@type': 'Organization',
+    '@id': 'https://www.thespoolapp.com/#spool',
     name: 'Spool',
     url: 'https://www.thespoolapp.com',
     founder: CO_FOUNDERS.map(personSchema),
@@ -111,6 +117,14 @@ export default function AboutPage() {
           <p>
             Spool was founded in 2024 by co-founders Prafull Sharma, Jainam Manot, and Neal Shah.
             The team is based in the United States and ships iPhone-first.
+          </p>
+          <p>
+            Co-founder{' '}
+            <a href="https://prafullsharma.me" target="_blank" rel="noopener author">
+              Prafull Sharma
+            </a>{' '}
+            writes about attention, habit change, and the behavioral science behind Spool on his
+            personal site.
           </p>
 
           <div className="about-team">
