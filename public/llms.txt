@@ -54,7 +54,7 @@ Unlike hard app blockers that simply restrict access, Spool builds self-awarenes
 ## Platform
 
 iOS (iPhone). Free to download.
-App Store: https://apps.apple.com/us/app/spool-save-your-thread/id6749428484
+App Store: https://apps.apple.com/us/app/spool-screen-time-control/id6749428484
 
 ## Company
 

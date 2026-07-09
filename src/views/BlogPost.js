@@ -111,7 +111,7 @@ const BlogPost = () => {
         <div className="blog-post-cta">
           <h3>Ready to break free from mindless scrolling?</h3>
           <p>Join thousands who've transformed their relationship with their phones.</p>
-          <a href="https://apps.apple.com/us/app/spool-save-your-thread/id6749428484?platform=iphone"
+          <a href="https://apps.apple.com/us/app/spool-screen-time-control/id6749428484?platform=iphone"
              className="blog-cta-button"
              target="_blank"
              rel="noopener noreferrer">

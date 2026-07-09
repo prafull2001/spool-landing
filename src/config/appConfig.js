@@ -5,7 +5,7 @@ export const APP_CONFIG = {
   IS_APP_LIVE: true, // Change this to true when app is live
   
   // App Store link (when app is live)
-  APP_STORE_URL: "https://apps.apple.com/us/app/spool-save-your-thread/id6749428484?platform=iphone",
+  APP_STORE_URL: "https://apps.apple.com/us/app/spool-screen-time-control/id6749428484?platform=iphone",
   
   // Waitlist link (when app is not live)
   WAITLIST_URL: "https://spool-app.vercel.app/",

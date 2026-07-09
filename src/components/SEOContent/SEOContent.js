@@ -38,7 +38,7 @@ const SEOContent = () => {
             time and mental energy from the endless scroll.
           </p>
           <div className="seo-cta">
-            <a href="https://apps.apple.com/us/app/spool-save-your-thread/id6749428484?platform=iphone" 
+            <a href="https://apps.apple.com/us/app/spool-screen-time-control/id6749428484?platform=iphone" 
                className="seo-download-btn" 
                target="_blank" 
                rel="noopener noreferrer">

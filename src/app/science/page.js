@@ -145,7 +145,7 @@ export default function SciencePage() {
           <h3>Want to feel the mechanism, not read about it?</h3>
           <p>Spool is the affect-labeling finding turned into a 5-second iPhone interaction.</p>
           <a
-            href="https://apps.apple.com/us/app/spool-save-your-thread/id6749428484?platform=iphone"
+            href="https://apps.apple.com/us/app/spool-screen-time-control/id6749428484?platform=iphone"
             className="blog-cta-button"
             target="_blank"
             rel="noopener noreferrer"

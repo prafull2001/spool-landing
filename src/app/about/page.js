@@ -249,7 +249,7 @@ export default function AboutPage() {
           <h3>Try Spool</h3>
           <p>The only screen-time app that asks you to speak your reason before you scroll.</p>
           <a
-            href="https://apps.apple.com/us/app/spool-save-your-thread/id6749428484?platform=iphone"
+            href="https://apps.apple.com/us/app/spool-screen-time-control/id6749428484?platform=iphone"
             className="about-cta-button"
             target="_blank"
             rel="noopener noreferrer"
