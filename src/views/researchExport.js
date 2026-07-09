@@ -169,6 +169,84 @@ function generateMinutesByUserCSV(users, anonMap) {
   return csvFromRows(headers, rows);
 }
 
+// One row per onboarding survey respondent — the full demographic dataset.
+// Covers EVERY survey doc (keyed by device id), not just those matched to an
+// account, so on the demographic side it's a superset of users_augmented.
+function generateDemographicsCSV(allSurveys, users, anonMap) {
+  // Map onboarding device id -> account uid so a respondent who later created
+  // an account reuses the same participant id across all CSVs in the package.
+  const deviceToUid = {};
+  users.forEach(u => { if (u.onboardingDeviceId) deviceToUid[u.onboardingDeviceId] = u.id; });
+
+  let extraIdx = Object.keys(anonMap).length; // survey-only ids continue the P### sequence
+  const surveyOnlyIds = {};
+  const participantId = (s) => {
+    const uid = s.uid || deviceToUid[s.deviceId];
+    if (uid && anonMap[uid]) return anonMap[uid];
+    if (!surveyOnlyIds[s.deviceId]) {
+      extraIdx += 1;
+      surveyOnlyIds[s.deviceId] = `P${String(extraIdx).padStart(3, '0')}`;
+    }
+    return surveyOnlyIds[s.deviceId];
+  };
+
+  const tsToIso = (ts) => {
+    if (!ts) return '';
+    if (typeof ts.toDate === 'function') return ts.toDate().toISOString();
+    if (typeof ts.seconds === 'number') return new Date(ts.seconds * 1000).toISOString();
+    return '';
+  };
+  const num = (v, dp) => (typeof v === 'number' && !isNaN(v)) ? v.toFixed(dp) : '';
+
+  const headers = [
+    'participant_id', 'has_account', 'survey_created_at',
+    'age', 'referral_source', 'main_issue', 'main_issues',
+    'goal', 'screen_time_affect', 'profession', 'when_rot', 'tried_before',
+    'archetype', 'stimulation_exposure', 'daytime_vulnerability',
+    'screen_time_hours', 'commitment_used_voice', 'commitment_text',
+  ];
+
+  // Keep any respondent who answered at least one real question (skip docs that
+  // only carry the A/B flag + timestamps).
+  const rows = allSurveys.filter(hasAnySurveyAnswer).map(s => {
+    const uid = s.uid || deviceToUid[s.deviceId];
+    return [
+      participantId(s),
+      uid ? 'true' : 'false',
+      tsToIso(s.createdAt),
+      s.age != null ? s.age : '',
+      s.referralSource || '',
+      s.mainIssue || '',
+      Array.isArray(s.mainIssues) ? s.mainIssues.join('; ') : (s.mainIssues || ''),
+      s.goal || '',
+      s.screenTimeAffect || '',
+      s.profession || '',
+      s.whenRot || '',
+      s.triedBefore || '',
+      s.archetypeName || s.archetypeId || '',
+      num(s.stimulationExposure, 4),
+      num(s.daytimeVulnerability, 4),
+      num(s.screenTimeHours, 2),
+      s.commitmentUsedVoice === true ? 'true' : (s.commitmentUsedVoice === false ? 'false' : ''),
+      scrubPII(s.commitmentText || ''),
+    ];
+  });
+
+  return csvFromRows(headers, rows);
+}
+
+// True when a survey doc carries at least one real answer (not just A/B flag + timestamps).
+function hasAnySurveyAnswer(s) {
+  return !!(
+    s.referralSource || s.age != null || s.mainIssue ||
+    (Array.isArray(s.mainIssues) && s.mainIssues.length) ||
+    s.goal || s.screenTimeAffect || s.profession || s.whenRot || s.triedBefore ||
+    s.archetypeName || s.archetypeId ||
+    s.stimulationExposure != null || s.daytimeVulnerability != null ||
+    s.screenTimeHours != null || s.commitmentText
+  );
+}
+
 // ─── Methodology Note ────────────────────────────────────────────────────────
 
 function generateMethodology(stats) {
@@ -176,18 +254,42 @@ function generateMethodology(stats) {
 
 ## Export metadata
 - **Generated:** ${new Date().toISOString()}
-- **Export version:** 1.3
+- **Export version:** 1.4
 - **Tool:** Spool Admin Dashboard (client-side export)
 
 ## Sample size
 - **Total users:** ${stats.totalUsers}
 - **Users with complete data (in augmented CSV):** ${stats.qualifiedUsers} (have screen time baseline + at least 1 excuse)
+- **Onboarding respondents (in demographics CSV):** ${stats.demographicsRespondents} (answered at least one onboarding question; superset of users — includes people who never created an account)
 - **Total excuses:** ${stats.totalExcuses}
 - **Date range:** ${stats.dateRange}
 
 ## Coverage
 - **Excuses with app field:** ${stats.appCoveragePct}%
 - **Users with onboarding survey:** ${stats.surveyMatchPct}%
+
+## Onboarding demographics (\`onboarding_demographics.csv\`)
+
+One row per onboarding survey respondent — the complete demographic dataset. This is a **superset** of \`users_augmented.csv\` on the demographic side: it includes everyone who answered onboarding questions, not only those who created an account and logged excuses. Fields not asked in a given onboarding version are left blank (the survey schema expanded over time; the v5 personalization questions — goal, profession, screen-time affect, when-they-rot, tried-before, archetype, stimulation exposure, daytime vulnerability — only appear on later respondents).
+
+Up to ~15 data points per respondent:
+- \`participant_id\` — same ID space as the other CSVs. A respondent who later created an account reuses their account participant ID (joined via \`onboardingDeviceId\`); respondents with no account get a survey-only ID continuing the sequence.
+- \`has_account\` — whether this respondent maps to a Spool account
+- \`survey_created_at\` — onboarding completion timestamp
+- \`age\` — self-reported age
+- \`referral_source\` — how they heard about Spool (TikTok, Instagram, Friend, …)
+- \`main_issue\` / \`main_issues\` — the problem(s) they came to solve (older onboarding)
+- \`goal\` — primary goal (v5: focus, reclaim_time, less_scroll, …)
+- \`screen_time_affect\` — how screen time affects them (v5: focus_drain, anxious, disconnected, …)
+- \`profession\` — self-described profession/segment (v5: student, founder, knowledge_worker, …)
+- \`when_rot\` — when they doomscroll most (v5: all_day, mornings, evenings, …)
+- \`tried_before\` — prior attempts to cut back (v5: first_attempt, tried_failed, tried_partial)
+- \`archetype\` — computed archetype (name, falling back to id)
+- \`stimulation_exposure\` / \`daytime_vulnerability\` — computed 0–1 scores
+- \`screen_time_hours\` — self-reported daily screen time (hours)
+- \`commitment_used_voice\` / \`commitment_text\` — the closing commitment (free text scrubbed for PII)
+
+Rows with only the A/B flag and timestamps (no actual answers) are omitted. \`displayName\` is dropped entirely; \`commitment_text\` is run through the same PII scrub as other free-text fields.
 
 ## Outcome metric definition
 
@@ -239,6 +341,7 @@ Word count per excuse is computed by splitting the excuse text on whitespace (\`
 
 ## Data files
 - \`excuses_anonymized.csv\` — one row per excuse (anonymized text, category, app, word count)
+- \`onboarding_demographics.csv\` — one row per onboarding respondent; **all collected demographic + personalization fields**, every respondent (superset of users), blanks where a field wasn't asked
 - \`users_augmented.csv\` — per-participant outcome metrics; **filtered** to users with a screen-time baseline + ≥1 excuse
 - \`unlock_minutes_by_user.csv\` — **every** user with >0 lifetime unlock minutes (team excluded), one row each: subscription, excuse count, total minutes, total hours, avg minutes/excuse. \`excuse_count\` and \`avg_minutes_per_excuse\` are blank where the user has no recorded \`excuseCount\`. This is the per-user data behind chart 12 (a superset — it also includes users the scatter omits for lacking an excuse count).
 `;
@@ -702,7 +805,7 @@ function minutesVsExcusesChart(users) {
   };
 }
 
-export async function generateResearchPackage({ users, excuses, excusesByUser, onboardingSurveys, onProgress }) {
+export async function generateResearchPackage({ users, excuses, excusesByUser, onboardingSurveys, allSurveys = [], onProgress }) {
   const zip = new JSZip();
   const chartsFolder = zip.folder('charts');
 
@@ -716,6 +819,9 @@ export async function generateResearchPackage({ users, excuses, excusesByUser, o
 
   onProgress?.('Generating users CSV...');
   zip.file('users_augmented.csv', generateUsersCSV(users, excusesByUser, onboardingSurveys, anonMap));
+
+  onProgress?.('Generating demographics CSV...');
+  zip.file('onboarding_demographics.csv', generateDemographicsCSV(allSurveys, users, anonMap));
 
   onProgress?.('Generating unlock-minutes CSV...');
   zip.file('unlock_minutes_by_user.csv', generateMinutesByUserCSV(users, anonMap));
@@ -780,6 +886,7 @@ export async function generateResearchPackage({ users, excuses, excusesByUser, o
     dateRange: `${minDate} to ${maxDate}`,
     appCoveragePct: excuses.length > 0 ? ((excusesWithApp / excuses.length) * 100).toFixed(1) : '0',
     surveyMatchPct: ((usersWithSurvey / Math.max(users.length, 1)) * 100).toFixed(1),
+    demographicsRespondents: allSurveys.filter(hasAnySurveyAnswer).length,
   }));
 
   // ─── Generate ZIP ───

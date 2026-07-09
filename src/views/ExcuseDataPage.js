@@ -45,6 +45,7 @@ function ExcuseDataPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pr
 
   // Research export state
   const [onboardingSurveys, setOnboardingSurveys] = useState({});
+  const [allSurveys, setAllSurveys] = useState([]);
   const [walkAwaysByUser, setWalkAwaysByUser] = useState({});
   const [cancellationsByUser, setCancellationsByUser] = useState({});
   const [exportProgress, setExportProgress] = useState(null);
@@ -135,11 +136,16 @@ function ExcuseDataPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pr
         try {
           const surveysSnap = await getDocs(collection(db, 'onboarding_surveys'));
           const surveyMap = {};
+          const allSurveysList = [];
           surveysSnap.docs.forEach(doc => {
             const data = doc.data();
             if (data.uid) surveyMap[data.uid] = data;
+            // Keep EVERY survey doc keyed by device id (the doc id) so the
+            // demographics export covers all respondents, not just uid-tagged ones.
+            allSurveysList.push({ deviceId: doc.id, ...data });
           });
           setOnboardingSurveys(surveyMap);
+          setAllSurveys(allSurveysList);
         } catch (_) { /* non-critical */ }
 
         // Try collection group query first (if rules deployed), fall back to per-user
@@ -967,6 +973,7 @@ function ExcuseDataPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pr
         excuses,
         excusesByUser,
         onboardingSurveys,
+        allSurveys,
         onProgress: setExportProgress,
       });
     } catch (err) {
