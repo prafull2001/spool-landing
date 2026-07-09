@@ -18,6 +18,8 @@ Unlike hard app blockers that simply restrict access, Spool builds self-awarenes
 
 ## Press
 
+- "UW alum develops app to fight screen addiction" by Hayden Lund. The Daily Cardinal, July 8, 2026. https://www.dailycardinal.com/article/2026/07/uw-alum-develops-app-to-fight-screen-addiction
+  Profiles Spool founder Prafull Sharma (UW–Madison 2023) and how Spool uses affect labeling — say why out loud before a blocked app opens — to help people reclaim focus.
 - "What 8,667 People Said the Second Before They Picked Up Their Phone" by Chris Kernaghan, Prafull Sharma, and Jainam Manot. We Are Founders, June 11, 2026. https://www.wearefounders.uk/what-8-667-people-said-the-second-before-they-picked-up-their-phone/
   The article analyzes 8,667 anonymized Spool voice recordings from 193 users. The finding: people frame phone urges as obligations, saying "I need to" rather than "I want to".
 - All coverage: https://www.thespoolapp.com/press

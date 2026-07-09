@@ -9,12 +9,12 @@ const CANONICAL = 'https://www.thespoolapp.com/press';
 export const metadata = {
   title: 'Press Coverage',
   description:
-    'Published coverage of Spool. Featured: We Are Founders on what 8,667 voice recordings reveal about the moment people reach for their phones.',
+    'Published coverage of Spool — including The Daily Cardinal on founder Prafull Sharma and We Are Founders on what 8,667 voice check-ins reveal about the moment people reach for their phones.',
   alternates: { canonical: CANONICAL },
   openGraph: {
     title: 'Spool Press Coverage',
     description:
-      'Published coverage of Spool. Featured: We Are Founders on what 8,667 voice recordings reveal about the moment people reach for their phones.',
+      'Published coverage of Spool — including The Daily Cardinal on founder Prafull Sharma and We Are Founders on what 8,667 voice check-ins reveal about the moment people reach for their phones.',
     url: CANONICAL,
     siteName: 'Spool',
     images: [{ url: 'https://www.thespoolapp.com/og-press.jpg', width: 1200, height: 630 }],
@@ -67,9 +67,9 @@ export default function PressPage() {
 
         <div className="blog-post-content">
           <p>
-            Journalists sometimes work with our anonymized voice check-in data. This page
-            collects the coverage that results. For interviews, data questions, or assets,
-            email <a href="mailto:team@thespoolapp.com">team@thespoolapp.com</a>.
+            Coverage of Spool, its founder, and the voice check-in research behind it —
+            sometimes drawing on our anonymized check-in data. For interviews, data questions,
+            or assets, email <a href="mailto:team@thespoolapp.com">team@thespoolapp.com</a>.
           </p>
 
           {PRESS_ITEMS.map((item) => (

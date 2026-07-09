@@ -3,6 +3,18 @@
 // Organization schema's subjectOf in layout.js.
 export const PRESS_ITEMS = [
   {
+    slug: 'daily-cardinal-uw-alum-screen-addiction',
+    outlet: 'The Daily Cardinal',
+    outletUrl: 'https://www.dailycardinal.com',
+    title: 'UW alum develops app to fight screen addiction',
+    authors: ['Hayden Lund'],
+    datePublished: '2026-07-08',
+    dateDisplay: 'July 8, 2026',
+    url: 'https://www.dailycardinal.com/article/2026/07/uw-alum-develops-app-to-fight-screen-addiction',
+    description:
+      'The Daily Cardinal profiles Spool founder Prafull Sharma (UW–Madison ’23) and how Spool uses affect labeling — asking you to say why out loud before a blocked app opens — to act "as a mirror" for phone use and help people reclaim their focus.',
+  },
+  {
     slug: 'wearefounders-8667-voice-recordings',
     outlet: 'We Are Founders',
     outletUrl: 'https://www.wearefounders.uk',
