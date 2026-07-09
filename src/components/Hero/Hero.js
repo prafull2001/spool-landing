@@ -30,7 +30,7 @@ const Hero = () => {
           <a href={url} className="app-store-button" target="_blank" rel="noopener noreferrer">
             <img src="/app-store-badge.svg" alt="Download on the App Store" />
           </a>
-          <p className="hero-excuses-count">12k+ excuses recorded</p>
+          <p className="hero-excuses-count">13k+ excuses recorded</p>
           <div className="hero-image">
             <img src={appBoquet.src} alt="Spool App Screenshots" />
           </div>
