@@ -69,7 +69,7 @@ function generateExcusesCSV(excuses, anonMap) {
   return csvFromRows(headers, rows);
 }
 
-function generateUsersCSV(users, excusesByUser, onboardingSurveys, anonMap) {
+function generateUsersCSV(users, excusesByUser, surveyByUser, anonMap) {
   const headers = [
     'participant_id', 'age', 'referral_source', 'main_issues',
     'subscription_active', 'current_streak', 'longest_streak',
@@ -84,7 +84,7 @@ function generateUsersCSV(users, excusesByUser, onboardingSurveys, anonMap) {
 
   // Only include users with complete data (screen time baseline + excuses)
   const qualifiedUsers = users.filter(u => {
-    const survey = onboardingSurveys[u.id];
+    const survey = surveyByUser[u.id];
     if (!survey?.screenTimeHours) return false;
     const userExcuses = excusesByUser[u.id] || [];
     return userExcuses.length > 0;
@@ -94,7 +94,7 @@ function generateUsersCSV(users, excusesByUser, onboardingSurveys, anonMap) {
     const uid = u.id;
     const pid = anonMap[uid] || 'unknown';
     const userExcuses = excusesByUser[uid] || [];
-    const survey = onboardingSurveys[uid] || {};
+    const survey = surveyByUser[uid] || {};
 
     // Compute per-user metrics
     const activeDates = userExcuses.filter(e => e.date).map(e => e.date);
@@ -306,7 +306,7 @@ outcome_ratio = avg_daily_requested_hours / screen_time_hours_baseline
 - \`outcome_ratio\`: < 1.0 means requesting less than baseline. Lower = stronger reduction signal.
 
 ### Who is included
-Only users with a non-null \`screenTimeHours\` from the onboarding survey and at least 1 excuse are included in the augmented CSV. This ensures every row has the data needed for the before/after comparison.
+Only users with a non-null \`screenTimeHours\` from the onboarding survey and at least 1 excuse are included in the augmented CSV. This ensures every row has the data needed for the before/after comparison. The onboarding survey is matched to each account by \`uid\` when present, otherwise by device id (\`users.onboardingDeviceId\` == survey doc id) — most survey docs carry no \`uid\`, so the device-id join is what attaches the screen-time baseline to the majority of users.
 
 ## Word count calculation
 Word count per excuse is computed by splitting the excuse text on whitespace (\`text.split(/\\s+/)\`) and counting the resulting tokens. Empty excuses are excluded from the distribution chart.
@@ -516,12 +516,12 @@ function wordCountDistributionChart(excuses) {
   };
 }
 
-function screenTimeComparisonChart(users, excusesByUser, onboardingSurveys) {
+function screenTimeComparisonChart(users, excusesByUser, surveyByUser) {
   // Per-user: baseline screen time vs avg daily requested hours
   // Only users with complete data
   const userData = [];
   users.forEach(u => {
-    const survey = onboardingSurveys[u.id];
+    const survey = surveyByUser[u.id];
     if (!survey?.screenTimeHours) return;
     const userExcuses = excusesByUser[u.id] || [];
     if (userExcuses.length === 0) return;
@@ -692,12 +692,12 @@ function timeOfDayPerAppChart(excuses) {
   };
 }
 
-function intentVsBehaviorChart(users, excusesByUser, onboardingSurveys) {
+function intentVsBehaviorChart(users, excusesByUser, surveyByUser) {
   const intentCounts = {};
   const behaviorCounts = {};
 
   users.forEach(u => {
-    const survey = onboardingSurveys[u.id];
+    const survey = surveyByUser[u.id];
     const issues = u.mainIssues || survey?.mainIssues;
     if (!issues) return;
     const issueList = Array.isArray(issues) ? issues : [issues];
@@ -813,12 +813,24 @@ export async function generateResearchPackage({ users, excuses, excusesByUser, o
   const allUserIds = users.map(u => u.id);
   const anonMap = buildAnonymizationMap(allUserIds);
 
+  // Resolve each user's onboarding survey. Most survey docs have NO `uid`, so
+  // the uid-keyed map alone misses the majority — fall back to the device-id
+  // join (users.onboardingDeviceId == survey doc id) so the screen-time
+  // baseline attaches to every user who actually answered onboarding.
+  const surveyByDevice = {};
+  allSurveys.forEach(s => { if (s.deviceId) surveyByDevice[s.deviceId] = s; });
+  const surveyByUser = {};
+  users.forEach(u => {
+    const s = onboardingSurveys[u.id] || surveyByDevice[u.onboardingDeviceId];
+    if (s) surveyByUser[u.id] = s;
+  });
+
   // ─── CSVs ───
   onProgress?.('Generating excuses CSV...');
   zip.file('excuses_anonymized.csv', generateExcusesCSV(excuses, anonMap));
 
   onProgress?.('Generating users CSV...');
-  zip.file('users_augmented.csv', generateUsersCSV(users, excusesByUser, onboardingSurveys, anonMap));
+  zip.file('users_augmented.csv', generateUsersCSV(users, excusesByUser, surveyByUser, anonMap));
 
   onProgress?.('Generating demographics CSV...');
   zip.file('onboarding_demographics.csv', generateDemographicsCSV(allSurveys, users, anonMap));
@@ -840,7 +852,7 @@ export async function generateResearchPackage({ users, excuses, excusesByUser, o
   chartsFolder.file('04_word_count_distribution.png', await renderChartToPNG(wordCountDistributionChart(excuses)));
 
   onProgress?.('Generating charts (5/12)...');
-  chartsFolder.file('05_screen_time_baseline_vs_actual.png', await renderChartToPNG(screenTimeComparisonChart(users, excusesByUser, onboardingSurveys)));
+  chartsFolder.file('05_screen_time_baseline_vs_actual.png', await renderChartToPNG(screenTimeComparisonChart(users, excusesByUser, surveyByUser)));
 
   onProgress?.('Generating charts (6/12)...');
   chartsFolder.file('06_top_apps_volume.png', await renderChartToPNG(topAppsByVolumeChart(excuses)));
@@ -852,7 +864,7 @@ export async function generateResearchPackage({ users, excuses, excusesByUser, o
   chartsFolder.file('08_time_of_day_per_app.png', await renderChartToPNG(timeOfDayPerAppChart(excuses)));
 
   onProgress?.('Generating charts (9/12)...');
-  chartsFolder.file('09_intent_vs_behavior.png', await renderChartToPNG(intentVsBehaviorChart(users, excusesByUser, onboardingSurveys)));
+  chartsFolder.file('09_intent_vs_behavior.png', await renderChartToPNG(intentVsBehaviorChart(users, excusesByUser, surveyByUser)));
 
   onProgress?.('Generating charts (10/12)...');
   chartsFolder.file('10_minutes_requested_distribution.png', await renderChartToPNG(minutesDistributionChart(users)));
@@ -871,9 +883,9 @@ export async function generateResearchPackage({ users, excuses, excusesByUser, o
   const minDate = datesWithData.length > 0 ? new Date(Math.min(...datesWithData)).toISOString().split('T')[0] : 'N/A';
   const maxDate = datesWithData.length > 0 ? new Date(Math.max(...datesWithData)).toISOString().split('T')[0] : 'N/A';
 
-  const usersWithSurvey = users.filter(u => onboardingSurveys[u.id]).length;
+  const usersWithSurvey = users.filter(u => surveyByUser[u.id]).length;
   const qualifiedUsers = users.filter(u => {
-    const survey = onboardingSurveys[u.id];
+    const survey = surveyByUser[u.id];
     if (!survey?.screenTimeHours) return false;
     const userExcuses = excusesByUser[u.id] || [];
     return userExcuses.length > 0;
