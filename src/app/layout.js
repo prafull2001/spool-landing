@@ -12,10 +12,10 @@ export const metadata = {
     default: 'Spool — Stop Doomscrolling | Screen Time App for iPhone',
     template: '%s | Spool',
   },
-  description: 'Spool uses AI voice check-ins to help you stop doomscrolling. 4.8★, 2,000+ users, 80% first-week and 25% sustained reduction.',
+  description: 'Spool uses AI voice check-ins to help you stop doomscrolling. 4.8★, 3,000+ users, 80% first-week and 25% sustained reduction.',
   openGraph: {
     title: 'Spool — Stop Doomscrolling',
-    description: 'Spool uses AI voice check-ins to help you stop doomscrolling. 4.8★, 2,000+ users, 80% first-week and 25% sustained reduction.',
+    description: 'Spool uses AI voice check-ins to help you stop doomscrolling. 4.8★, 3,000+ users, 80% first-week and 25% sustained reduction.',
     url: 'https://www.thespoolapp.com',
     siteName: 'Spool',
     images: [{ url: 'https://www.thespoolapp.com/og-homepage.jpg', width: 1200, height: 630 }],
@@ -51,13 +51,25 @@ export default function RootLayout({ children }) {
                   "jobTitle": "Founder & CEO",
                   "url": "https://www.linkedin.com/in/prafull-sharma-363187168/",
                   "sameAs": [
+                    "https://prafullsharma.me",
                     "https://www.linkedin.com/in/prafull-sharma-363187168/",
                     "https://github.com/prafull2001"
                   ]
                 },
-                { "@type": "Person", "name": "Jainam", "jobTitle": "Co-founder" },
-                { "@type": "Person", "name": "Vedika", "jobTitle": "Co-founder" },
-                { "@type": "Person", "name": "Daneal", "jobTitle": "Co-founder" }
+                {
+                  "@type": "Person",
+                  "name": "Jainam Manot",
+                  "jobTitle": "Co-founder",
+                  "url": "https://www.linkedin.com/in/jainam-manot/",
+                  "sameAs": ["https://www.linkedin.com/in/jainam-manot/"]
+                },
+                {
+                  "@type": "Person",
+                  "name": "Neal Shah",
+                  "jobTitle": "Co-founder",
+                  "url": "https://www.linkedin.com/in/nealmshah/",
+                  "sameAs": ["https://www.linkedin.com/in/nealmshah/"]
+                }
               ],
               "contactPoint": {
                 "@type": "ContactPoint",
