@@ -101,9 +101,9 @@ const ScrollHero = () => {
                         <a href={downloadUrl} className="app-store-button" target="_blank" rel="noopener noreferrer">
                             <img src="/app-store-badge.svg" alt="Download on the App Store" />
                         </a>
-                        <div className="hero-excuses-badge">
+                        <aside className="hero-excuses-badge">
                             <span>13k+ excuses recorded</span>
-                        </div>
+                        </aside>
                     </div>
                 </motion.div>
 
