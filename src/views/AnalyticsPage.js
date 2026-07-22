@@ -184,6 +184,77 @@ const SCREEN_ORDER_V5 = [
   { number: 22, name: 'blocking_confirmation', label: 'Confirm' },
 ];
 
+// "v6" tab = the latest reels-demo + personalized-plan onboarding. CONFIRMED against iOS
+// SpoolOnboardingFlowView.swift analyticsScreenName (2026-07-22, via iOS Claude). Emitted by
+// two builds with identical screens: flow_version 6 (cohort instagram_demo_v6, currently
+// deployed) and flow_version 9 (cohort personal_plan_reveal_v9, next build) — the `sessions`
+// filter folds both. NOT an A/B split; cohort is deterministic from install/resume state.
+// New vs v5:
+//  - "focus web / reels" demo arc after modern_apps: focus_web_intro, instagram_reels_demo,
+//    focus_web_apps (0.425 to 0.475)
+//  - notification_priming at 4.85 (after screen_time_dialog) — distinct from the post-paywall
+//    notification_permission at 14
+//  - personalized_plan at 9.85 (after before_after, immediately before the paywall)
+//  - goal arc 1.25 to 1.45, commitment split 9.5/9.6 (numbers are display-ordering only;
+//    funnel matches by screen_name)
+// Paywall trap at 10.5: analyticsScreenName returns "sky_paywall" but the rendered view is
+// JourneyPaywallView (paywall_type "journey"). The sky_paywall bar IS the journey paywall.
+// Conditional / low-traffic-by-design bars (not bugs):
+//  - name_collection (12): shown only to fresh, name-less users; skipped if already authed
+//    (->14) or a name was captured earlier (->13)
+//  - create_account (13): skipped when a Firebase user already exists (resumed after purchase)
+// Never emitted by this flow: screen 10 (Glass paywall, dead code — jumps 9.85 -> 10.5);
+// screen 15 (app-blocker permission, always skipped, 14 -> 16).
+// New top-level session fields (not yet surfaced here): flow_cohort, onboarding_attempt_id.
+const SCREEN_ORDER_V6 = [
+  { number: 0, name: 'welcome', label: 'Welcome' },
+  { number: 0.1, name: 'meet_spooli', label: 'Meet Spooli' },
+  { number: 0.2, name: 'thread_unravel', label: 'Thread Unravel' },
+  { number: 0.3, name: 'see_for_yourself', label: 'See For Yourself' },
+  { number: 0.4, name: 'modern_apps', label: 'Modern Apps' },
+  { number: 0.425, name: 'focus_web_intro', label: 'Focus Web Intro' },
+  { number: 0.45, name: 'instagram_reels_demo', label: 'Reels Demo' },
+  { number: 0.475, name: 'focus_web_apps', label: 'Focus Web Apps' },
+  { number: 0.5, name: 'how_did_you_hear', label: 'How Heard' },
+  { number: 0.75, name: 'chat_onboarding', label: 'Chat (Spooli)' },
+  { number: 1.25, name: 'goal', label: 'Goal' },
+  { number: 1.3, name: 'screen_time_affect', label: 'ST Affect' },
+  { number: 1.35, name: 'profession', label: 'Profession' },
+  { number: 1.4, name: 'when_rot', label: 'When Rot' },
+  { number: 1.45, name: 'tried_before', label: 'Tried Before' },
+  { number: 3, name: 'age_selection', label: 'Age' },
+  { number: 4, name: 'screen_time_slider', label: 'Screen Time' },
+  { number: 4.5, name: 'screen_time_connect', label: 'ST Connect' },
+  { number: 4.75, name: 'screen_time_dialog', label: 'ST Dialog' },
+  { number: 4.85, name: 'notification_priming', label: 'Notif Priming' },
+  { number: 5, name: 'progress_bar', label: 'Loading' },
+  { number: 5.2, name: 'grounding_breath', label: 'Breathing' },
+  { number: 5.4, name: 'archetype_reveal', label: 'Archetype' },
+  { number: 5.6, name: 'top_app_demon', label: 'App Demon' },
+  { number: 6, name: 'phone_usage_stats', label: 'Usage Stats' },
+  { number: 7, name: 'lifetime_stats', label: 'Lifetime Stats' },
+  { number: 8, name: 'average_lifespan', label: 'Avg Lifespan' },
+  { number: 8.5, name: 'review_request', label: 'Review' },
+  { number: 8.75, name: 'academic_studies', label: 'Studies' },
+  { number: 9, name: 'weekly_benefits', label: 'Benefits' },
+  { number: 9.5, name: 'commitment_reason', label: 'Commit Reason' },
+  { number: 9.6, name: 'commitment_hold', label: 'Commit Hold' },
+  { number: 9.75, name: 'before_after', label: 'Before/After' },
+  { number: 9.85, name: 'personalized_plan', label: 'Personalized Plan' },
+  { number: 10.5, name: 'sky_paywall', label: 'Paywall' },
+  { number: 11, name: 'welcome_to_spool', label: 'Welcome' },
+  { number: 12, name: 'name_collection', label: 'Name' },
+  { number: 13, name: 'create_account', label: 'Account' },
+  { number: 14, name: 'notification_permission', label: 'Notifications' },
+  { number: 16, name: 'schedule_selection', label: 'Schedule' },
+  { number: 17, name: 'choose_apps', label: 'Choose Apps' },
+  { number: 18, name: 'daily_limit_explanation', label: 'Limit Explain' },
+  { number: 19, name: 'daily_request_pool', label: 'Daily Pool' },
+  { number: 20, name: 'excuse_explanation', label: 'Excuse' },
+  { number: 21, name: 'pattern_explanation', label: 'Pattern' },
+  { number: 22, name: 'blocking_confirmation', label: 'Confirm' },
+];
+
 // v5 survey/personalization answers (onboarding_surveys) shown as per-answer breakdowns.
 // archetypeId backs up archetypeName so computed archetypes still chart if the name is missing.
 const V5_SURVEY_FIELDS = [
@@ -227,7 +298,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
   const [loading, setLoading] = useState(false);
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
-  const [version, setVersion] = useState('v5');
+  const [version, setVersion] = useState('v6');
   const [splitByAB, setSplitByAB] = useState(false);
   const [expandedSessionIdx, setExpandedSessionIdx] = useState(null);
   const [sessionSearch, setSessionSearch] = useState('');
@@ -243,6 +314,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
 
   const screenOrder =
     version === 'v1' ? SCREEN_ORDER_V1 :
+    version === 'v6' ? SCREEN_ORDER_V6 :
     version === 'v5' ? SCREEN_ORDER_V5 :
     version === 'v4' ? SCREEN_ORDER_V4 :
     version === 'v3' ? SCREEN_ORDER_V3 :
@@ -252,6 +324,15 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
   const sessions = useMemo(() => {
     if (version === 'v1') {
       return allSessions.filter(s => !s.flow_version);
+    }
+    if (version === 'v6') {
+      // "v6" = the latest reels-demo + personalized-plan flow. Two builds emit it with
+      // identical screens: flow_version 6 (cohort instagram_demo_v6, the currently-deployed
+      // build) and flow_version 9 (cohort personal_plan_reveal_v9, the next build rolling
+      // out). Fold both so the tab captures all current-flow traffic. Legacy mid-flow
+      // resumers on the v9 build are stamped flow_version 5 (legacy_resume_pre_demo_v5)
+      // and correctly stay on the v5 tab.
+      return allSessions.filter(s => s.flow_version === 6 || s.flow_version === 9);
     }
     if (version === 'v5') {
       return allSessions.filter(s => s.flow_version === 5);
@@ -849,11 +930,11 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
     };
   }, [sessions, surveys]);
 
-  // Per-answer counts for v5 survey fields, v5 tab only — survey docs are
-  // per-device latest-state, so without the version gate a re-onboarded device
-  // would attribute its v5 answers to its old v1-v4 sessions
+  // Per-answer counts for v5 survey fields, v5/v6 tabs only — v6 collects the same
+  // personalization answers. Survey docs are per-device latest-state, so without the
+  // version gate a re-onboarded device would attribute its answers to old v1-v4 sessions
   const v5SurveyBreakdowns = useMemo(() => {
-    if (version !== 'v5') return [];
+    if (version !== 'v5' && version !== 'v6') return [];
     return V5_SURVEY_FIELDS.map(field => {
       const counts = {};
       let answered = 0;
@@ -1206,7 +1287,13 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
                 className={`version-btn ${version === 'v5' ? 'active' : ''}`}
                 onClick={() => setVersion('v5')}
               >
-                Spooli + Archetype (v5) — Current
+                Spooli + Archetype (v5)
+              </button>
+              <button
+                className={`version-btn ${version === 'v6' ? 'active' : ''}`}
+                onClick={() => setVersion('v6')}
+              >
+                Latest (v6)
               </button>
             </div>
 
