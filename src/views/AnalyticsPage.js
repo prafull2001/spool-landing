@@ -1259,42 +1259,28 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
             )}
 
             <div className="version-toggle">
-              <button
-                className={`version-btn ${version === 'v1' ? 'active' : ''}`}
-                onClick={() => setVersion('v1')}
-              >
-                Pre-Update (v1)
-              </button>
-              <button
-                className={`version-btn ${version === 'v2' ? 'active' : ''}`}
-                onClick={() => setVersion('v2')}
-              >
-                Post-Update (v2)
-              </button>
-              <button
-                className={`version-btn ${version === 'v3' ? 'active' : ''}`}
-                onClick={() => setVersion('v3')}
-              >
-                Commitment (v3)
-              </button>
-              <button
-                className={`version-btn ${version === 'v4' ? 'active' : ''}`}
-                onClick={() => setVersion('v4')}
-              >
-                Chat + Journey (v4)
-              </button>
-              <button
-                className={`version-btn ${version === 'v5' ? 'active' : ''}`}
-                onClick={() => setVersion('v5')}
-              >
-                Spooli + Archetype (v5)
-              </button>
-              <button
-                className={`version-btn ${version === 'v6' ? 'active' : ''}`}
-                onClick={() => setVersion('v6')}
-              >
-                Latest (v6)
-              </button>
+              {[
+                // Live-traffic windows: app-release date of the build that
+                // introduced the flow → the date the next flow's build shipped.
+                { id: 'v1', label: 'Pre-Update (v1)',        dates: '→ Apr 5 ’26',        detail: 'sessions with no flow_version · app ≤3.3' },
+                { id: 'v2', label: 'Post-Update (v2)',       dates: 'Apr 5 – Apr 28 ’26', detail: 'app 4.1–4.14 (+ later "unassigned" fallback trickle)' },
+                { id: 'v3', label: 'Commitment (v3)',        dates: 'Apr 28 – May 17 ’26', detail: 'app 4.16–4.17' },
+                { id: 'v4', label: 'Chat + Journey (v4)',    dates: 'May 17 – Jul 6 ’26',  detail: 'app 4.18' },
+                { id: 'v5', label: 'Spooli + Archetype (v5)', dates: 'Jul 6 – ~Jul 22 ’26', detail: 'app 4.20/4.21 · also legacy resumers (legacy_resume_pre_demo_v5) after Jul 22' },
+                { id: 'v6', label: 'Latest (v6)',            dates: '~Jul 22 ’26 → now',   detail: 'reels demo + personalized plan · flow_version 6 (deployed) & 9 (repo HEAD), identical flows' },
+              ].map(v => (
+                <button
+                  key={v.id}
+                  className={`version-btn ${version === v.id ? 'active' : ''}`}
+                  onClick={() => setVersion(v.id)}
+                  title={v.detail}
+                >
+                  {v.label}
+                  <span style={{ display: 'block', fontSize: '10px', fontWeight: 400, opacity: 0.75 }}>
+                    {v.dates}
+                  </span>
+                </button>
+              ))}
             </div>
 
             <label className="ab-checkbox">

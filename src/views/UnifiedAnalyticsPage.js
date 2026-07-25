@@ -5,6 +5,7 @@ import useFirebaseAuth from '../hooks/useFirebaseAuth';
 import AgeCohortPage from './AgeCohortPage';
 import AnalyticsPage from './AnalyticsPage';
 import ExcuseDataPage from './ExcuseDataPage';
+import ReleasesPage from './ReleasesPage';
 import './AnalyticsPage.css';
 import './UnifiedAnalyticsPage.css';
 
@@ -12,6 +13,15 @@ const TABS = [
   { id: 'age-cohort',  label: 'Age Cohort' },
   { id: 'excuse-data', label: 'Excuse Data' },
   { id: 'analytics',   label: 'Onboarding Funnel' },
+  { id: 'releases',    label: 'Releases' },
+];
+
+// Client-side gate only — Firestore security rules are the real enforcement.
+// Add cofounder Google emails here to grant dashboard access.
+const ALLOWED_EMAILS = [
+  'prafull2001@gmail.com',
+  'spoolappteam@gmail.com',
+  // TODO: add Jainam's and Neal's Google account emails
 ];
 
 const LIFETIME_START = '2024-01-01';
@@ -68,8 +78,13 @@ function UnifiedAnalyticsInner() {
         <div className="login-prompt">
           <p>Sign in with an authorized Google account to view the dashboard.</p>
         </div>
+      ) : !ALLOWED_EMAILS.includes((user.email || '').toLowerCase()) ? (
+        <div className="login-prompt">
+          <p>This account ({user.email}) is not authorized for the Spool dashboard.</p>
+        </div>
       ) : (
         <>
+          {activeTab !== 'releases' && (
           <div className="filters">
             <label>
               From:
@@ -81,6 +96,7 @@ function UnifiedAnalyticsInner() {
             </label>
             <button className="btn-refresh" onClick={handleApply}>Apply</button>
           </div>
+          )}
 
           <div className="unified-tabs">
             {TABS.map(t => (
@@ -104,6 +120,7 @@ function UnifiedAnalyticsInner() {
             {activeTab === 'analytics' && (
               <AnalyticsPage panelMode dateFrom={appliedFrom} dateTo={appliedTo} />
             )}
+            {activeTab === 'releases' && <ReleasesPage />}
           </div>
         </>
       )}
