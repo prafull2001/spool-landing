@@ -21,7 +21,8 @@ const TABS = [
 const ALLOWED_EMAILS = [
   'prafull2001@gmail.com',
   'spoolappteam@gmail.com',
-  // TODO: add Jainam's and Neal's Google account emails
+  'manot.jainam@gmail.com',
+  // TODO: add Neal's Google account email
 ];
 
 const LIFETIME_START = '2024-01-01';
