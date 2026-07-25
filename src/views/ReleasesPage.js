@@ -74,7 +74,7 @@ function MdBlock({ md }) {
 // ---------------------------------------------------------------------------
 // Copy button with "Copied ✓" feedback and a token-size hint.
 // ---------------------------------------------------------------------------
-function CopyButton({ label, getText, primary = false }) {
+function CopyButton({ label, getText, primary = false, compact = false }) {
   const [copied, setCopied] = useState(false);
   const tokens = useMemo(() => estimateTokens(getText()), [getText]);
 
@@ -95,7 +95,10 @@ function CopyButton({ label, getText, primary = false }) {
   };
 
   return (
-    <button className={`rel-copy-btn ${primary ? 'primary' : ''}`} onClick={handleCopy}>
+    <button
+      className={`rel-copy-btn ${primary ? 'primary' : ''} ${compact ? 'compact' : ''}`}
+      onClick={handleCopy}
+    >
       {copied ? 'Copied ✓' : label}
       <span className="rel-token-hint">~{tokens >= 1000 ? `${(tokens / 1000).toFixed(1)}k` : tokens} tok</span>
     </button>
@@ -103,15 +106,16 @@ function CopyButton({ label, getText, primary = false }) {
 }
 
 // ---------------------------------------------------------------------------
-// Page
+// Page — sticky version sidebar + one detail panel; reference material
+// (mapping table, quirks) lives in collapsible sections up top.
 // ---------------------------------------------------------------------------
 export default function ReleasesPage() {
-  const [expanded, setExpanded] = useState(() =>
-    RELEASES.length ? { [RELEASES[0].version]: true } : {}
-  );
   const versions = RELEASES.map(r => r.version); // newest first
+  const [selected, setSelected] = useState(versions[0] || '');
   const [rangeFrom, setRangeFrom] = useState(versions[versions.length - 1] || '');
   const [rangeTo, setRangeTo] = useState(versions[0] || '');
+
+  const current = RELEASES.find(r => r.version === selected);
 
   const rangeReleases = useMemo(() => {
     const iFrom = versions.indexOf(rangeFrom);
@@ -121,8 +125,6 @@ export default function ReleasesPage() {
     return RELEASES.slice(lo, hi + 1);
   }, [rangeFrom, rangeTo, versions]);
 
-  const toggle = v => setExpanded(e => ({ ...e, [v]: !e[v] }));
-
   if (!RELEASES.length) {
     return (
       <div className="rel-panel">
@@ -131,24 +133,31 @@ export default function ReleasesPage() {
     );
   }
 
+  const facts = current
+    ? [
+        { label: 'Live window', value: `${current.releaseDate} → ${current.liveUntil || 'now'}` },
+        { label: 'flow_version', value: current.flowVersions },
+        { label: 'Cohorts', value: current.cohorts },
+        { label: 'Paywall', value: current.paywall },
+        { label: 'Pricing', value: current.pricing },
+      ].filter(f => f.value && f.value !== '—')
+    : [];
+
   return (
     <div className="rel-panel">
-      <div className="rel-intro">
-        <h2>App Release Context</h2>
-        <p>
-          What shipped in each iOS app version, written to be pasted into Claude
-          chats next to RevenueCat or PostHog data. Every copy includes a
-          preamble explaining Spool, the version↔funnel mapping table, and the
-          known data quirks — so a fresh chat needs nothing else.
-        </p>
-        <div className="rel-actions">
+      <div className="rel-toolbar">
+        <div className="rel-toolbar-copy">
+          <h2>App Release Context</h2>
+          <p>
+            Per-version context packs for Claude chats — each copy includes the
+            Spool preamble, the version↔funnel mapping table, and the known data
+            quirks, so a fresh chat needs nothing else.
+          </p>
+        </div>
+        <div className="rel-toolbar-actions">
+          <CopyButton primary label="Copy ALL versions" getText={() => buildCopyText(RELEASES)} />
           <CopyButton
-            primary
-            label="Copy ALL versions for Claude"
-            getText={() => buildCopyText(RELEASES)}
-          />
-          <CopyButton
-            label="Copy mapping table + quirks only"
+            label="Copy mapping + quirks"
             getText={() =>
               [
                 CLAUDE_PREAMBLE.trim(),
@@ -159,7 +168,6 @@ export default function ReleasesPage() {
             }
           />
           <div className="rel-range">
-            <span>Copy range:</span>
             <select value={rangeFrom} onChange={e => setRangeFrom(e.target.value)}>
               {versions.map(v => <option key={v} value={v}>{v}</option>)}
             </select>
@@ -167,16 +175,13 @@ export default function ReleasesPage() {
             <select value={rangeTo} onChange={e => setRangeTo(e.target.value)}>
               {versions.map(v => <option key={v} value={v}>{v}</option>)}
             </select>
-            <CopyButton
-              label="Copy range"
-              getText={() => buildCopyText(rangeReleases)}
-            />
+            <CopyButton compact label="Copy range" getText={() => buildCopyText(rangeReleases)} />
           </div>
         </div>
       </div>
 
-      <div className="rel-mapping">
-        <h3>Version ↔ funnel mapping</h3>
+      <details className="rel-collapse">
+        <summary>Version ↔ funnel mapping table</summary>
         <div className="rel-table-scroll">
           <table>
             <thead>
@@ -187,7 +192,11 @@ export default function ReleasesPage() {
             </thead>
             <tbody>
               {RELEASES.map(r => (
-                <tr key={r.version}>
+                <tr
+                  key={r.version}
+                  className={r.version === selected ? 'active' : ''}
+                  onClick={() => setSelected(r.version)}
+                >
                   <td className="rel-v">{r.version}</td>
                   <td>{r.releaseDate}</td>
                   <td>{r.liveUntil || 'current'}</td>
@@ -200,53 +209,81 @@ export default function ReleasesPage() {
             </tbody>
           </table>
         </div>
-      </div>
+      </details>
 
-      <div className="rel-quirks">
-        <MdBlock md={DATA_QUIRKS_MD} />
-      </div>
+      <details className="rel-collapse">
+        <summary>Data quirks & cross-version joining rules</summary>
+        <div className="rel-collapse-body">
+          <MdBlock md={DATA_QUIRKS_MD} />
+          <MdBlock md={MAPPING_NOTES_MD} />
+        </div>
+      </details>
 
-      <div className="rel-quirks">
-        <MdBlock md={MAPPING_NOTES_MD} />
-      </div>
-
-      <div className="rel-timeline">
-        {RELEASES.map(r => (
-          <div key={r.version} className={`rel-card ${expanded[r.version] ? 'open' : ''}`}>
-            <button className="rel-card-head" onClick={() => toggle(r.version)}>
-              <div className="rel-card-title">
-                <span className="rel-version">{r.version}</span>
-                <span className="rel-headline">{r.headline}</span>
-              </div>
-              <div className="rel-card-meta">
-                <span>{r.releaseDate} → {r.liveUntil || 'now'}</span>
-                <span>{r.commitCount} commits</span>
-                <span className="rel-chevron">{expanded[r.version] ? '▾' : '▸'}</span>
-              </div>
+      <div className="rel-layout">
+        <nav className="rel-sidebar" aria-label="App versions">
+          {RELEASES.map(r => (
+            <button
+              key={r.version}
+              className={`rel-nav-item ${r.version === selected ? 'active' : ''}`}
+              onClick={() => setSelected(r.version)}
+            >
+              <span className="rel-nav-version">
+                {r.version}
+                {!r.liveUntil && <span className="rel-live-dot" title="Currently live" />}
+              </span>
+              <span className="rel-nav-dates">
+                {r.releaseDate.slice(5)} → {r.liveUntil ? r.liveUntil.slice(5) : 'now'}
+              </span>
+              <span className="rel-nav-headline">{r.headline}</span>
             </button>
-            {expanded[r.version] && (
-              <div className="rel-card-body">
-                <div className="rel-card-actions">
-                  <CopyButton
-                    primary
-                    label={`Copy ${r.version} for Claude`}
-                    getText={() => buildCopyText([r])}
-                  />
-                  <CopyButton
-                    label="Copy notes only (no preamble)"
-                    getText={() => buildCopyText([r], { includePreamble: false })}
-                  />
-                </div>
-                {r.sections.map(s => (
-                  <div key={s.title} className="rel-section">
-                    <h4>{s.title}</h4>
-                    <MdBlock md={s.md} />
-                  </div>
-                ))}
+          ))}
+        </nav>
+
+        {current && (
+          <article className="rel-detail" key={current.version}>
+            <header className="rel-detail-head">
+              <div className="rel-detail-title">
+                <h3>
+                  {current.version}
+                  {!current.liveUntil && <span className="rel-live-badge">LIVE</span>}
+                </h3>
+                <p>{current.headline}</p>
               </div>
-            )}
-          </div>
-        ))}
+              <div className="rel-detail-copy">
+                <CopyButton
+                  primary
+                  label={`Copy ${current.version} for Claude`}
+                  getText={() => buildCopyText([current])}
+                />
+                <CopyButton
+                  compact
+                  label="Notes only"
+                  getText={() => buildCopyText([current], { includePreamble: false })}
+                />
+              </div>
+            </header>
+
+            <dl className="rel-facts">
+              {facts.map(f => (
+                <div key={f.label} className="rel-fact">
+                  <dt>{f.label}</dt>
+                  <dd>{inlineMd(f.value)}</dd>
+                </div>
+              ))}
+              <div className="rel-fact">
+                <dt>Commits</dt>
+                <dd>{current.commitCount}</dd>
+              </div>
+            </dl>
+
+            {current.sections.map(s => (
+              <section key={s.title} className="rel-section">
+                <h4>{s.title}</h4>
+                <MdBlock md={s.md} />
+              </section>
+            ))}
+          </article>
+        )}
       </div>
     </div>
   );
