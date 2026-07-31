@@ -12,10 +12,10 @@ export const metadata = {
     default: 'Spool — Stop Doomscrolling | Screen Time App for iPhone',
     template: '%s | Spool',
   },
-  description: 'Spool uses AI voice check-ins to help you stop doomscrolling. 4.8★, 3,000+ users, 80% first-week and 25% sustained reduction.',
+  description: 'Spool pairs AI voice check-ins with Focus Web, a social media feed blocker and distraction-free browser for iPhone.',
   openGraph: {
     title: 'Spool — Stop Doomscrolling',
-    description: 'Spool uses AI voice check-ins to help you stop doomscrolling. 4.8★, 3,000+ users, 80% first-week and 25% sustained reduction.',
+    description: 'Spool pairs AI voice check-ins with Focus Web, a social media feed blocker and distraction-free browser for iPhone.',
     url: 'https://www.thespoolapp.com',
     siteName: 'Spool',
     images: [{ url: 'https://www.thespoolapp.com/og-homepage.jpg', width: 1200, height: 630 }],
@@ -44,7 +44,7 @@ export default function RootLayout({ children }) {
               "alternateName": ["Spool App", "Spool: Screen Time Control"],
               "url": "https://www.thespoolapp.com",
               "logo": "https://www.thespoolapp.com/spooli-app-icon-512.png",
-              "description": "Spool uses AI voice check-ins to help you stop doomscrolling. iPhone app for screen time reduction through awareness, not blocking.",
+              "description": "Spool is an iPhone screen time app with AI voice check-ins and Focus Web, a social media feed blocker and distraction-free browser.",
               "foundingDate": "2024",
               "founder": [
                 {

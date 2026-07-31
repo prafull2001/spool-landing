@@ -16,7 +16,7 @@ export const metadata = {
 const FAQS = [
   {
     q: "What's the difference between Spool and other screen-time apps like Opal or One Sec?",
-    a: "Spool is the only app in the category built around verbalized intent. Other apps use hard blocking (Opal, Freedom), passive friction (One Sec, ScreenZen), or gamification (Forest, Brainrot). Spool asks you to speak your reason out loud before opening a distracting app — engaging the prefrontal cortex via affect labeling (Lieberman 2007). The 5-second voice check-in captures why you're scrolling, which becomes the data Spool's AI uses to surface your patterns.",
+    a: "Spool combines two mechanisms: Focus Web, its social media feed blocker, removes selected distracting feeds inside Instagram, YouTube, X, and Snapchat, while a 5-second voice check-in captures why you tried to open the full native app. Spool's AI then surfaces patterns in those spoken reasons. Traditional blockers, passive delays, and gamified focus apps usually address only access or time.",
   },
   {
     q: 'Does Spool actually reduce screen time?',
@@ -32,7 +32,7 @@ const FAQS = [
   },
   {
     q: 'Is Spool just another app blocker?',
-    a: 'No. Most screen-time tools treat phone use as a discipline problem and try to slow you down with timers, blocks, breathing exercises, or guilt-based gimmicks. Spool takes the only approach that produces lasting change: addressing the root cause — lack of awareness about why you\'re scrolling — using techniques drawn from CBT and affect-labeling research.',
+    a: 'No. Focus Web can remove individual social-media surfaces without blocking the whole platform, and the voice check-in addresses why you reached for the native app. Spool combines content filtering with reflection instead of relying on one all-or-nothing block.',
   },
   {
     q: 'Is Spool available on Android?',

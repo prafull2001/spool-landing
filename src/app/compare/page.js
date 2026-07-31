@@ -3,7 +3,7 @@ import styles from './page.module.css';
 
 export const metadata = {
   title: 'Compare Screen Time Apps',
-  description: 'Compare Spool with Opal, One Sec, Apple Screen Time, Freedom, ScreenZen, Brainrot, Forest, Jomo, Unrot, and Clearspace by mechanism, pricing, and best use case.',
+  description: 'Compare Spool with SocialLite, Dull, UNDOOMED, Opal, One Sec, Apple Screen Time, and more by feed filters, mechanism, platform, and best use case.',
   alternates: { canonical: 'https://www.thespoolapp.com/compare' },
   openGraph: {
     title: 'Compare Screen Time Apps | Spool',
@@ -15,6 +15,27 @@ export const metadata = {
 };
 
 const COMPARISONS = [
+  {
+    href: '/compare/spool-vs-sociallite',
+    title: 'Spool vs SocialLite',
+    competitor: 'SocialLite',
+    mechanism: 'Filtering + reflection vs filtering + app shielding',
+    summary: 'Both remove Reels and Shorts; SocialLite adds broader platform access and native-app shielding, while Spool adds voice check-ins and AI trigger insights.',
+  },
+  {
+    href: '/compare/spool-vs-dull',
+    title: 'Spool vs Dull',
+    competitor: 'Dull',
+    mechanism: 'Filtering + reflection vs filter toolkit',
+    summary: 'Both remove Reels and Shorts; Dull goes deeper on browser controls while Spool adds spoken intention and AI trigger insights.',
+  },
+  {
+    href: '/compare/spool-vs-undoomed',
+    title: 'Spool vs UNDOOMED',
+    competitor: 'UNDOOMED',
+    mechanism: 'Reflection vs 54 visual filters',
+    summary: 'UNDOOMED offers broader platform and filter coverage; Spool adds voice check-ins, AI patterns, and Snapchat filters.',
+  },
   {
     href: '/compare/spool-vs-opal',
     title: 'Spool vs Opal',
@@ -68,8 +89,8 @@ const COMPARISONS = [
     href: '/compare/spool-vs-jomo',
     title: 'Spool vs Jomo',
     competitor: 'Jomo',
-    mechanism: 'Single intervention vs digital-wellness toolkit',
-    summary: 'Jomo offers a broader program; Spool is a narrow intervention at the moment of impulse.',
+    mechanism: 'Targeted filters + reflection vs broad toolkit',
+    summary: 'Jomo offers a broader program; Spool pairs filtered social feeds with reflection at the moment of impulse.',
   },
   {
     href: '/compare/spool-vs-unrot',
@@ -138,9 +159,9 @@ export default function ComparePage() {
         <p className={styles.eyebrow}>Screen time app comparisons</p>
         <h1>Compare the best apps to stop doomscrolling</h1>
         <p className={styles.lede}>
-          Spool is the awareness-based iPhone screen-time app: it asks why you
-          are opening a distracting app before you scroll. Use this hub to
-          compare Spool with blockers, delay timers, and gamified focus apps.
+          Spool combines a social media feed blocker and distraction-free browser with
+          a spoken check-in before selected apps open. Use this hub to compare Spool with content filters,
+          hard blockers, delay timers, and gamified focus apps.
         </p>
       </section>
 
@@ -148,6 +169,8 @@ export default function ComparePage() {
         <h2 id="compare-summary-heading">Quick answer</h2>
         <p>
           Choose <strong>Spool</strong> if you want to understand why you scroll.
+          Choose <strong>SocialLite</strong>, <strong>Dull</strong>, or{' '}
+          <strong>UNDOOMED</strong> if filter breadth and browser controls are your priority.{' '}
           Choose <strong>Opal</strong> or <strong>Freedom</strong> if you need
           hard blocking. Choose <strong>One Sec</strong> or{' '}
           <strong>ScreenZen</strong> if you want lightweight friction. Choose{' '}

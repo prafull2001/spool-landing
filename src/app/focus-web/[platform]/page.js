@@ -1,0 +1,130 @@
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import Footer from '@/components/Footer/Footer';
+import Logo from '@/components/Logo/Logo';
+import { FOCUS_WEB_PLATFORMS, getFocusWebPlatform } from '@/data/focusWeb';
+import styles from '../focus-web.module.css';
+
+export function generateStaticParams() {
+  return FOCUS_WEB_PLATFORMS.map(({ slug }) => ({ platform: slug }));
+}
+
+export async function generateMetadata({ params }) {
+  const { platform: slug } = await params;
+  const item = getFocusWebPlatform(slug);
+  if (!item) return { title: 'Focus Web' };
+
+  const url = `https://www.thespoolapp.com/focus-web/${item.slug}`;
+  return {
+    title: item.title,
+    description: item.description,
+    alternates: { canonical: url },
+    openGraph: {
+      title: `${item.title} | Spool`,
+      description: item.description,
+      url,
+      images: [{ url: 'https://www.thespoolapp.com/og-homepage.jpg', width: 1200, height: 630 }],
+    },
+  };
+}
+
+export default async function FocusWebPlatformPage({ params }) {
+  const { platform: slug } = await params;
+  const item = getFocusWebPlatform(slug);
+  if (!item) notFound();
+
+  const url = `https://www.thespoolapp.com/focus-web/${item.slug}`;
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.thespoolapp.com' },
+      { '@type': 'ListItem', position: 2, name: 'Focus Web', item: 'https://www.thespoolapp.com/focus-web' },
+      { '@type': 'ListItem', position: 3, name: item.title, item: url },
+    ],
+  };
+
+  return (
+    <>
+      <Logo />
+      <main className={styles.page}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        />
+
+        <header className={styles.hero}>
+          <Link className={styles.backLink} href="/focus-web">
+            ← All Focus Web filters
+          </Link>
+          <p className={styles.eyebrow}>Spool Focus Web for {item.platform}</p>
+          <h1>{item.title}</h1>
+          <p className={styles.lede}>{item.description}</p>
+        </header>
+
+        <section className={styles.answer} aria-labelledby="quick-answer">
+          <h2 id="quick-answer">Quick answer</h2>
+          <p>{item.answer}</p>
+        </section>
+
+        <section className={styles.twoColumn} aria-label={`${item.platform} Focus Web details`}>
+          <article>
+            <h2>What Spool can remove</h2>
+            <ul>
+              {item.removes.map((surface) => <li key={surface}>{surface}</li>)}
+            </ul>
+          </article>
+          <article>
+            <h2>What remains available</h2>
+            <p>{item.available}</p>
+          </article>
+        </section>
+
+        <section className={styles.explainer}>
+          <h2>Why filter {item.platform} instead of blocking it?</h2>
+          <p>{item.problem}</p>
+
+          <h2>How to use {item.shortLabel}</h2>
+          <ol>
+            {item.details.map((detail) => <li key={detail}>{detail}</li>)}
+          </ol>
+        </section>
+
+        <section className={styles.faq} aria-labelledby="platform-faq-heading">
+          <h2 id="platform-faq-heading">Questions about {item.shortLabel}</h2>
+          <dl>
+            {item.faq.map(({ q, a }) => (
+              <div key={q}>
+                <dt>{q}</dt>
+                <dd>{a}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        <nav className={styles.related} aria-label="Other Focus Web platform guides">
+          <h2>Remove distracting feeds on other platforms</h2>
+          <ul>
+            {FOCUS_WEB_PLATFORMS.filter(({ slug: otherSlug }) => otherSlug !== item.slug).map((other) => (
+              <li key={other.slug}>
+                <Link href={`/focus-web/${other.slug}`}>{other.shortLabel}</Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <section className={styles.cta}>
+          <h2>Keep the platform. Remove the part that pulls you in.</h2>
+          <a
+            href="https://apps.apple.com/us/app/spool-screen-time-control/id6749428484?platform=iphone"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Download Spool for iPhone
+          </a>
+        </section>
+      </main>
+      <Footer />
+    </>
+  );
+}

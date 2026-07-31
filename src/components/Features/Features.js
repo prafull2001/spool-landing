@@ -1,23 +1,30 @@
 "use client";
 
 import React from 'react';
+import Link from 'next/link';
 import './Features.css';
 
 const features = [
   { 
     icon: '/images/spooli_block.png',
-    title: 'Block distractions',
-    description: 'Stop mindless scrolling with smart app blocking when you need focus'
+    title: 'Block addictive social feeds',
+    description: 'Focus Web is a social media feed blocker that hides Instagram Reels, Stories, Explore or DMs; YouTube Shorts; X Explore; and Snapchat Spotlight, Stories or Discover.',
+    href: '/focus-web'
+  },
+  {
+    icon: '/images/spooli_breath_preview.png',
+    title: 'Say why before you scroll',
+    description: 'A 5-second voice check-in interrupts autopilot before a distracting app opens.'
   },
   { 
     icon: '/images/spooli_brain.png',
     title: 'Understand your triggers',
-    description: 'Discover what drives your phone usage and build awareness'
+    description: 'Spool turns your spoken reasons into patterns you can actually change.'
   },
   { 
     icon: '/images/spooli_point.png',
-    title: 'Get daily insights',
-    description: 'Track progress with personalized analytics on your digital habits'
+    title: 'See your progress',
+    description: 'Track screen time, check-ins, and the moments that pull you back to your phone.'
   }
 ];
 
@@ -25,7 +32,7 @@ const Features = () => {
   return (
     <section className="features">
       <div className="features-container">
-        <h2 className="features-title" data-aos="fade-up">Take control today</h2>
+        <h2 className="features-title" data-aos="fade-up">Block the scroll, not your whole life</h2>
         <div className="features-grid">
           {features.map((feature, index) => (
             <div 
@@ -39,6 +46,11 @@ const Features = () => {
               </div>
               <h3 className="feature-card-title">{feature.title}</h3>
               <p className="feature-card-description">{feature.description}</p>
+              {feature.href && (
+                <Link className="feature-card-link" href={feature.href}>
+                  Explore the Focus Web feed blocker
+                </Link>
+              )}
             </div>
           ))}
         </div>

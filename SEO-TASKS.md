@@ -1,5 +1,21 @@
 # Spool SEO / ASO / GEO Task List
 
+## DONE — SocialLite + Focus Web category language (2026-07-31)
+
+- [x] Added a verified Spool vs SocialLite comparison page and comparison-hub entry
+- [x] Defined Focus Web consistently as Spool's social media feed blocker / distraction-free social media browser
+- [x] Rebuilt 49 static pages and verified all 43 sitemap URLs return HTTP 200
+- [ ] Commit only the SEO scope, push the branch, and open a draft PR
+
+## DONE — Focus Web SEO cluster (2026-07-31)
+
+- [x] Added a crawlable Focus Web feature hub with a removed-vs-available platform table
+- [x] Added exact-intent pages for Instagram, YouTube, X, and Snapchat
+- [x] Added evidence-based Spool vs Dull and Spool vs UNDOOMED comparison pages
+- [x] Linked the new cluster from the homepage, comparison hub, footer, sitemap, and AI-readable summaries
+- [x] Refreshed existing Instagram, YouTube, and X guides so they describe the shipped product accurately
+- [x] Built all static routes and verified all 42 sitemap URLs return HTTP 200
+
 ## Google Search Console Issues (from screenshots)
 
 | Issue | Status | Notes |

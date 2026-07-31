@@ -1,12 +1,21 @@
 # Spool
 
-> Spool is an iOS app that helps people stop doomscrolling and reduce screen time through AI-powered voice check-ins, personalized usage insights, and friend accountability.
+> Spool is an iOS app that helps people stop doomscrolling through AI-powered voice check-ins, a social media feed blocker and distraction-free browser called Focus Web, personalized usage insights, and friend accountability.
 
 ## What Spool Does
 
 Spool adds a brief voice check-in before you open distracting apps like TikTok, Instagram, or Twitter. Before the app opens, you speak your intention aloud: "I'm opening Instagram to check my friend's vacation photos." This 5-second pause breaks the automatic, compulsive scrolling reflex and replaces it with intentional, mindful phone use.
 
 Unlike hard app blockers that simply restrict access, Spool builds self-awareness. Users understand *why* they reach for their phones and can make conscious choices instead of defaulting to compulsive behavior.
+
+Spool also includes **Focus Web**, its social media feed blocker and distraction-free in-app browser. It removes selected distracting surfaces without blocking the whole social platform:
+
+- Instagram: Reels, Stories, Explore, and direct messages (DMs)
+- YouTube: Shorts
+- X (formerly Twitter): Explore
+- Snapchat: Spotlight, Stories, and Discover (Snapchat's official term; not "Explorer")
+
+Focus Web filters the web interfaces shown inside Spool. It does not modify the native Instagram, YouTube, X, or Snapchat apps.
 
 ## Key Stats
 
@@ -32,6 +41,7 @@ Unlike hard app blockers that simply restrict access, Spool builds self-awarenes
 - **Friend accountability**: Share screen time progress with friends
 - **App-specific blocking**: Target specific apps (TikTok, Instagram, etc.)
 - **Daily summaries**: See your wins and patterns each day
+- **Focus Web**: Remove selected Reels, Shorts, Spotlight, Stories, Discover, Explore, and DM surfaces inside Spool's browser
 
 ## Who Spool Is For
 
@@ -51,6 +61,12 @@ Unlike hard app blockers that simply restrict access, Spool builds self-awarenes
 
 **vs. Freedom / RescueTime**: Those focus on hard blocking and time tracking for productivity. Spool focuses on phone addiction specifically and building self-awareness.
 
+**vs. Dull**: Both provide filtered social browsing. Dull offers a broader browser-control toolkit; Spool pairs filters with a spoken intention check-in, AI trigger analysis, and friend accountability.
+
+**vs. UNDOOMED**: UNDOOMED offers 54 filters across six platforms and supports Android. Spool supports four Focus Web platforms on iPhone and adds voice check-ins, AI insights, friend accountability, and Snapchat filters.
+
+**vs. SocialLite**: Both remove Reels, Shorts, and other algorithmic surfaces in filtered browsers. SocialLite supports more social platforms, native-app shielding, Post Mode, and parent controls; Spool adds separately configurable Snapchat and Instagram filters, voice check-ins, AI trigger insights, and friend accountability.
+
 ## Platform
 
 iOS (iPhone). Free to download.
@@ -65,8 +81,14 @@ Twitter/X: @the_spool_app
 ## Key Pages
 
 - Homepage: https://www.thespoolapp.com
+- Focus Web: https://www.thespoolapp.com/focus-web
+- Instagram without Reels: https://www.thespoolapp.com/focus-web/instagram-without-reels
+- YouTube without Shorts: https://www.thespoolapp.com/focus-web/youtube-without-shorts
+- X without Explore: https://www.thespoolapp.com/focus-web/x-without-explore
+- Snapchat without Spotlight: https://www.thespoolapp.com/focus-web/snapchat-without-spotlight
 - Blog (digital wellness guides): https://www.thespoolapp.com/blog
 - App comparisons: https://www.thespoolapp.com/compare
+- Spool vs SocialLite: https://www.thespoolapp.com/compare/spool-vs-sociallite
 - About Spool: https://www.thespoolapp.com/about
 - Press coverage: https://www.thespoolapp.com/press
 - Support & FAQ: https://www.thespoolapp.com/support

@@ -105,7 +105,7 @@ Captures Foqos/Blok/Unpluq/Locked seekers; fold the hardware-blocker roundup in 
 ### C10. [NEW PAGE] "Apps That Make You Pause Before Opening Instagram (2026)"
 Spool's EXACT mechanic; SERP owned by one sec + Android "Pause Point" coverage; Spool absent. Compare one sec, ScreenZen, Android Pause Point, Spool — with affect labeling (Lieberman 2007) as the quotable mechanism differentiator.
 
-Watchlist (do NOT build yet, revisit ~Jan 2027): Dull/UNDOOMED (content-filter category emerging), Refocus, Focus Bear (ADHD roundup inclusion only), "Lock In" (blog post keyword, not compare — 7+ apps share the name). Not viable (checked): Yaap (unverifiable), Clarymind/Flora/Session (no comparison demand), Cold Turkey (desktop-only).
+Shipped July 31, 2026: SocialLite, Dull, and UNDOOMED comparison pages moved off the watchlist after Spool launched Focus Web and entered the content-filter category directly. Remaining watchlist (revisit ~Jan 2027): Refocus, Focus Bear (ADHD roundup inclusion only), "Lock In" (blog post keyword, not compare — 7+ apps share the name). Not viable (checked): Yaap (unverifiable), Clarymind/Flora/Session (no comparison demand), Cold Turkey (desktop-only).
 
 ---
 

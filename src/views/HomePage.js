@@ -26,7 +26,7 @@ const HomePage = () => {
       >
         {/* lowercase `datetime` (not React's `dateTime`) so the SSR HTML
             carries the spec-cased attribute AI-readiness scanners grep for */}
-        <time datetime="2026-07-14">Last updated July 14, 2026</time>
+        <time datetime="2026-07-31">Last updated July 31, 2026</time>
       </p>
       <Footer />
       <Popup />

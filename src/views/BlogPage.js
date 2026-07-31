@@ -13,7 +13,7 @@ const blogPosts = getCardList();
 
 const TOPICS = [
   'Doomscrolling research & behavioral science',
-  'Head-to-head app comparisons (Opal, One Sec, Freedom, ScreenZen, Brainrot, Unrot, Clearspace)',
+  'Head-to-head app comparisons (Dull, UNDOOMED, Opal, One Sec, Freedom, ScreenZen, Brainrot, Unrot, Clearspace)',
   'Practical guides for breaking phone-checking habits',
   'What Spool\'s 13,000+ voice check-ins reveal about why people scroll',
 ];

@@ -82,7 +82,7 @@ export default async function Page({ params }) {
             '@type': 'SoftwareApplication',
             name: meta.competitor,
             applicationCategory: 'HealthApplication',
-            operatingSystem: 'iOS',
+            operatingSystem: meta.competitorOperatingSystem || 'iOS',
           },
         ],
       }

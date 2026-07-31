@@ -149,12 +149,12 @@ export default function AboutPage() {
             deeper issue. Users either bypass it or grow resentful and uninstall.
           </p>
           <p>
-            Spool takes the only approach that actually produces lasting change: helping you
-            understand <em>why</em> you reach for your phone, not just slowing you down with another
-            timer. When users articulate out loud why they want to scroll, we mirror their own
-            patterns back to them as AI-generated insights. The change comes from inside the user
-            rather than being imposed on them. Some have dropped from 6 hours of daily use to 4;
-            others describe cutting their use to roughly a quarter of what it was.
+            Spool works on both sides of the habit: Focus Web, its social media feed blocker,
+            removes selected distracting feeds, while the voice check-in helps you understand{' '}
+            <em>why</em> you reached for the full app.
+            When users articulate out loud why they want to scroll, we mirror their own patterns
+            back to them as AI-generated insights. Some have dropped from 6 hours of daily use to
+            4; others describe cutting their use to roughly a quarter of what it was.
           </p>
 
           <h2>Research foundation</h2>
@@ -201,12 +201,13 @@ export default function AboutPage() {
           <h2>What makes Spool different</h2>
           <ul className="about-list">
             <li>
-              <strong>Awareness-based, not restriction-based.</strong> Spool does not hard-block
-              apps. It captures why you opened them.
+              <strong>Feature-level filtering.</strong> Focus Web is a distraction-free social
+              media browser that can remove Instagram Reels, YouTube Shorts, X Explore, and
+              Snapchat Spotlight without blocking every part of each platform.
             </li>
             <li>
-              <strong>Voice as the input.</strong> Speaking forces conscious engagement that tapping
-              a button cannot.
+              <strong>Voice as the input.</strong> Speaking captures why you opened the full native
+              app and forces conscious engagement that tapping a button cannot.
             </li>
             <li>
               <strong>AI pattern analysis.</strong> Excuses like &quot;just checking&quot; or

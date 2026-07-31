@@ -79,6 +79,7 @@ export function getCompareMetaMap() {
       description: entry.meta.description,
       date: entry.meta.dateModified,
       competitor: entry.meta.competitor,
+      competitorOperatingSystem: entry.meta.competitorOperatingSystem,
       faq: entry.meta.faq,
     };
   }

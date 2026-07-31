@@ -18,7 +18,7 @@
 
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1rem;
 }
 
@@ -69,4 +69,11 @@
   font-size: 1rem;
   line-height: 1.4;
   margin: 0;
+}
+
+.feature-card-link {
+  display: inline-block;
+  margin-top: 1rem;
+  color: var(--primary-blue);
+  font-weight: 700;
 }

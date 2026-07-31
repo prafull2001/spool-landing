@@ -8,7 +8,23 @@ const categories = [
     items: [
       {
         q: "What is Spool and how does it work?",
-        a: "Spool is an AI-powered screen time app for iPhone that uses voice check-ins to help you stop doomscrolling. When you try to open a distracting app like TikTok, Instagram, or YouTube, Spool asks you to speak your reason out loud. This 5-second pause interrupts autopilot scrolling and builds self-awareness. Over time, Spool's AI analyzes your excuses to reveal your personal triggers, peak distraction times, and emotional patterns."
+        a: "Spool is an AI-powered screen time app for iPhone. Its 5-second voice check-in interrupts autopilot before a distracting app opens, while Focus Web—Spool's social media feed blocker and distraction-free browser—removes selected feeds and features inside Instagram, YouTube, X, and Snapchat. Over time, Spool's AI analyzes your spoken reasons to reveal personal triggers, peak distraction times, and emotional patterns."
+      },
+      {
+        q: "Is Focus Web a social media feed blocker?",
+        a: "Yes. Focus Web is Spool's product name for its social media feed blocker and distraction-free in-app browser. It can remove specific feeds and tabs without blocking the whole platform. The filters apply to the web experience inside Spool, not the native social apps."
+      },
+      {
+        q: "Can Spool remove Instagram Reels without blocking Instagram?",
+        a: "Yes. Open Instagram inside Spool's Focus Web browser and switch off the surfaces you do not want. Spool can hide Reels, Stories, Explore, and direct messages (DMs) separately, so you choose what disappears instead of blocking Instagram as one all-or-nothing app."
+      },
+      {
+        q: "Can Spool block YouTube Shorts without blocking YouTube?",
+        a: "Yes. Spool Focus Web removes YouTube Shorts from its filtered browser experience while keeping intentional long-form viewing available. It does not modify the native YouTube app."
+      },
+      {
+        q: "Which X and Snapchat feeds can Spool remove?",
+        a: "Spool can remove X's Explore surface and Snapchat Spotlight, Stories, and Discover inside Focus Web. Snapchat calls the recommendation surface Discover, not Explorer. On X, Explore is separate from the For You home timeline."
       },
       {
         q: "Is Spool free?",
@@ -70,7 +86,7 @@ const categories = [
     items: [
       {
         q: "What makes Spool different from other screen time apps?",
-        a: "Most screen time apps either hard-block your apps (Opal, Freedom) or add passive friction like breathing exercises (One Sec). Spool is the only app that asks you to voice WHY you're reaching for your phone. This creates a spoken record that Spool's AI analyzes to reveal patterns you can't see yourself. No other app captures this data."
+        a: "Spool combines feature-level filtering with active reflection. Focus Web is a social media feed blocker that removes selected feeds inside Instagram, YouTube, X, and Snapchat, while a voice check-in captures WHY you tried to open the full native app. Spool's AI analyzes that spoken record to reveal patterns that timers and block counts cannot show."
       },
       {
         q: "How is Spool different from Apple Screen Time?",

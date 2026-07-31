@@ -75,7 +75,7 @@ export const CONTENT = {
       title: "How to Stop Doomscrolling on Instagram Reels (Without Quitting Instagram)",
       description: "Keep the Instagram you use and lose the Reels habit. Tactical guide to interrupting the autopilot swipe into Reels using voice check-ins and feed controls.",
       datePublished: "2026-05-21",
-      dateModified: "2026-05-21",
+      dateModified: "2026-07-31",
     },
     card: {
       excerpt: "Keep the Instagram you use and lose the Reels habit. Tactical guide to interrupting the autopilot swipe into Reels.",
@@ -83,7 +83,7 @@ export const CONTENT = {
       category: "Digital Wellness",
     },
     body: `
-<p class="ai-answer-summary"><strong>How to stop doomscrolling Instagram Reels:</strong> Target the Reels habit specifically rather than quitting Instagram. Reels behaves like TikTok but hides inside an app you use for real reasons. The fix is interrupting the autopilot swipe into Reels — a spoken check-in like Spool's — plus hiding Reels from your home screen and feed.</p>
+<p class="ai-answer-summary"><strong>How to stop doomscrolling Instagram Reels:</strong> Remove the Reels surface instead of blocking all of Instagram. <a href="/focus-web/instagram-without-reels">Spool Focus Web</a> can hide Reels, Stories, Explore, and DMs separately inside its browser; Spool's voice check-in adds a second pause before the native app opens.</p>
 
 <p>For most Instagram users, the doomscrolling problem isn't the feed, the DMs, or stories — it's Reels. Reels behaves like TikTok and consumes time the same way, but it's embedded in an app you probably also use for things you actually want to do (messaging friends, following accounts you chose). That's the bind: you can't delete Instagram, but you can't open Instagram without falling into Reels for 40 minutes.</p>
 
@@ -100,15 +100,16 @@ export const CONTENT = {
       <h2>What partially works</h2>
       <p><strong>Marking "Not Interested" aggressively.</strong> If you only watch a Reel for 2 seconds before swiping past, you're training the algorithm to show you more of the same. Active "Not Interested" feedback on the topics you don't want (dance trends, food porn, political content, whatever your trigger category is) genuinely reduces your Reels appetite over 2-3 weeks.</p>
 
-      <p><strong>Switching to the Instagram web app.</strong> Reels on web is worse than Reels in the app. If you can stomach using Instagram in Safari instead of the app, the friction reduces your Reels time significantly. You'll lose some functionality (DMs, story posting) but those are the things you probably want to do anyway.</p>
+      <p><strong>Using a filtered Instagram web experience.</strong> Plain Safari still exposes Reels and Explore. Spool's Focus Web browser can remove Reels, Stories, Explore, and DMs individually, which is more precise than deleting Instagram or blocking the whole app.</p>
 
-      <h2>What actually works</h2>
-      <p>The right intervention is one that catches the moment you open Instagram — before the autopilot swipe to Reels — and forces a conscious choice. <a href="/">Spool's</a> voice check-in does this: when you tap Instagram, Spool asks "Why am I opening Instagram?" You speak the reason in 5 seconds, then the app opens.</p>
+      <h2>What actually works: filtering plus a voice check-in</h2>
+      <p>Spool now gives you two separate interventions. <a href="/focus-web/instagram-without-reels">Focus Web</a> removes the Instagram surfaces you select inside Spool's browser. The voice check-in catches the moment you open the native app and asks, "Why am I opening Instagram?" You speak the reason in 5 seconds, then the app opens.</p>
 
       <p>The interesting effect: most users who set Spool on Instagram discover that their stated reason rarely involves Reels. They open Instagram to message a friend, check a story, look up an account — but the autopilot swipe to Reels happens once they're inside. Naming the actual reason out loud often produces a "wait, I was just going to send a DM" course-correction.</p>
 
       <h2>Tactical sequence for the Instagram + Reels split</h2>
       <ol>
+        <li><strong>Use Instagram through Spool Focus Web.</strong> Switch off Reels first; hide Stories, Explore, or DMs too if any of those are part of your loop.</li>
         <li><strong>Decide what you actually use Instagram for.</strong> Most users land on messaging + following ~20 specific accounts. That's the use case worth preserving.</li>
         <li><strong>Disable Reels notifications and badges.</strong> Settings → Notifications → Reels and Video Posts: off.</li>
         <li><strong>Use the Following feed, not the For You feed.</strong> Tap the Instagram logo at the top → Following. This shows only the accounts you actually chose to follow, in reverse chronological order. There's a natural endpoint.</li>
@@ -117,7 +118,7 @@ export const CONTENT = {
       </ol>
 
       <h2>The deeper diagnosis</h2>
-      <p>"How do I stop watching Reels" usually decomposes into "how do I stop opening Instagram unconsciously." Once you're conscious about the open, Reels mostly takes care of itself — you don't drift into the Reels tab if you were never on autopilot to begin with. The 5-second voice check-in produces consciousness at the right moment. That's the mechanism that turns Instagram from "infinite scroll machine I can't quit" back into "the app I use to message my friends."</p>
+      <p>"How do I stop watching Reels" has two answers: remove the Reels entry point when you want a cleaner Instagram, and interrupt unconscious native-app opens when you still need the full app. Focus Web handles the surface; the 5-second voice check-in handles the habit.</p>
     `,
     cluster: "doomscrolling",
     related: ["how-to-stop-doom-scrolling", "is-doomscrolling-an-addiction", "why-do-i-scroll-when-anxious"],
@@ -128,7 +129,7 @@ export const CONTENT = {
       title: "How to Stop Doomscrolling on YouTube Shorts",
       description: "YouTube Shorts is harder to quit than TikTok because it piggybacks on legitimate YouTube use. Here's how to stop the Shorts spiral without losing YouTube.",
       datePublished: "2026-05-21",
-      dateModified: "2026-05-21",
+      dateModified: "2026-07-31",
     },
     card: {
       excerpt: "YouTube Shorts is harder to quit than TikTok because it piggybacks on legitimate YouTube use. Here's how to stop the Shorts spiral.",
@@ -136,7 +137,7 @@ export const CONTENT = {
       category: "Digital Wellness",
     },
     body: `
-<p class="ai-answer-summary"><strong>How to stop doomscrolling YouTube Shorts:</strong> Separate Shorts from the long-form YouTube you actually want. Shorts piggybacks on legitimate YouTube use and shares its algorithm, which makes it uniquely sticky. Disable Shorts where you can, and add a conscious pause — Spool asks you to say why before the app opens — so the spiral never starts on autopilot.</p>
+<p class="ai-answer-summary"><strong>How to stop doomscrolling YouTube Shorts:</strong> Use <a href="/focus-web/youtube-without-shorts">YouTube without Shorts</a> inside Spool Focus Web, where the Shorts surface is removed but intentional long-form viewing remains available. Spool's voice check-in can also interrupt native YouTube opens before they turn into a Shorts session.</p>
 
 <p>YouTube Shorts is the youngest TikTok-clone of the three major short-form feeds (TikTok, Reels, Shorts), but it's grown fastest. Two factors make Shorts uniquely sticky: it's embedded in an app you might use for legitimate long-form video, and the same algorithm that knows your YouTube watch history powers your Shorts feed. The personalization is already calibrated before you've watched a single Short.</p>
 
@@ -159,12 +160,13 @@ export const CONTENT = {
       <p><strong>Subscribing to long-form creators only.</strong> If your subscription feed contains only 15+ minute videos, the Shorts shelf feels jarring by contrast, and you're more likely to navigate past it.</p>
 
       <h2>What actually works</h2>
-      <p>The structural fix is a moment-of-impulse intervention on YouTube itself, not on Shorts specifically. When you open YouTube, you don't always know whether you're going to long-form or Shorts. Speaking your reason out loud — <a href="/">Spool's</a> approach — clarifies it.</p>
+      <p>If you want long-form YouTube without the short-form loop, open it through <a href="/focus-web/youtube-without-shorts">Spool Focus Web</a> and remove Shorts. If you still use the native app, Spool's spoken check-in clarifies whether you are opening YouTube for a specific video or for an open-ended scroll.</p>
 
       <p>Most users who flag YouTube in Spool see two distinct intent patterns: "I want to watch [specific creator/topic]" (high consciousness, low Shorts risk) and "just checking" (low consciousness, very high Shorts risk). The voice check-in forces you to commit to one or the other before the app opens.</p>
 
       <h2>Tactical sequence</h2>
       <ol>
+        <li><strong>Open YouTube through Spool Focus Web.</strong> The Shorts filter removes the short-form surface while long-form web viewing remains available.</li>
         <li><strong>Use YouTube on web for long-form.</strong> The desktop or iPad web experience makes Shorts harder to reach. If you can shift your long-form YouTube to a larger device, the iPhone YouTube app becomes mostly the Shorts entry point — and you can treat it accordingly.</li>
         <li><strong>Disable Shorts notifications.</strong> Settings → Notifications → Shorts: off.</li>
         <li><strong>Set Shorts watch time limit in YouTube's own settings.</strong> Settings → General → Remind me to take a break / Bedtime reminder. Weak but free.</li>
@@ -173,7 +175,7 @@ export const CONTENT = {
       </ol>
 
       <h2>The bottom line</h2>
-      <p>YouTube Shorts isn't quite the same problem as TikTok or Reels — it shares an app with content you might legitimately want. The intervention has to be at the YouTube app level, not the Shorts feature level, and it has to produce consciousness about <em>which kind</em> of YouTube use is starting before the autopilot decides for you.</p>
+      <p>YouTube Shorts shares an app with content you might legitimately want, so all-or-nothing blocking is a poor fit. Feature-level filtering removes Shorts when you want a clean YouTube; the voice check-in adds awareness when you enter the full native app.</p>
     `,
     cluster: "doomscrolling",
     related: ["how-to-stop-doom-scrolling", "is-doomscrolling-an-addiction", "why-do-i-scroll-when-anxious"],
@@ -184,7 +186,7 @@ export const CONTENT = {
       title: "How to Stop Doomscrolling on X (Formerly Twitter)",
       description: "X scrolling feels intellectually justified — \"I need to stay informed.\" It usually isn't. How to interrupt the news-anxiety doomscroll loop.",
       datePublished: "2026-05-21",
-      dateModified: "2026-05-21",
+      dateModified: "2026-07-31",
     },
     card: {
       excerpt: "X scrolling feels intellectually justified — \"I need to stay informed.\" It usually isn't. How to interrupt the news-anxiety loop.",
@@ -192,7 +194,7 @@ export const CONTENT = {
       category: "Digital Wellness",
     },
     body: `
-<p class="ai-answer-summary"><strong>How to stop doomscrolling on X:</strong> Treat it as an anxiety-and-information loop, not just a time sink. The urge feels justified ("staying informed"), which is why "just put your phone down" fails. What works is naming the real reason you're opening it — Spool's spoken check-in usually surfaces anxiety, not news — plus muting and feed limits.</p>
+<p class="ai-answer-summary"><strong>How to stop doomscrolling on X:</strong> Remove X's Explore discovery surface inside <a href="/focus-web/x-without-explore">Spool Focus Web</a>, then add a spoken check-in before native-app opens. X calls its recommended home timeline “For You”; that is separate from Explore, which contains personalized trends, events, topics, and videos.</p>
 
 <p>X (formerly Twitter) has a different doomscroll texture than TikTok or Reels. It's not just visual stimulation — it's information stimulation, news, opinion, conflict, anxiety. The compulsive checking has a different driver, and the standard advice ("just put your phone down") works even less well because the urge feels intellectually justified. You're not wasting time, you're staying informed. Right?</p>
 
@@ -217,6 +219,8 @@ export const CONTENT = {
       <p><strong>Quitting X.</strong> Works for some users; for most it shifts the same compulsive-checking behavior to another news/feed source (Reddit, Hacker News, news apps).</p>
 
       <h2>What works</h2>
+      <p><strong>Remove Explore inside Spool Focus Web.</strong> Explore is X's recommendation-led discovery surface for trends, events, topics, and videos. Removing it closes one major open-ended path without blocking the entire platform.</p>
+
       <p><strong>Default to the Following tab, not For You.</strong> The Following tab is reverse chronological from accounts you chose. It has a natural endpoint. The For You tab is algorithmic and bottomless.</p>
 
       <p><strong>Disable notifications except DMs.</strong> Settings → Notifications → Filters → Quality filter on. Disable everything except messages.</p>
@@ -771,7 +775,7 @@ export const CONTENT = {
       <p>The deeper issue: Freedom does not address why you reach for the phone. When the block ends, the underlying trigger is still there. Awareness-based interventions like Spool produce more durable change because they work on the trigger itself, not the access.</p>
 
       <h2>Where Spool fits differently</h2>
-      <p>Spool doesn't block apps. It asks you to verbalize your reason for opening one. The 5-second voice check-in operationalizes <a href="/science">Matthew Lieberman's 2007 affect-labeling research</a>: naming an urge reduces its intensity.</p>
+      <p>Spool does not rely only on app-level blocks. It asks you to verbalize your reason for opening one, and Focus Web can remove selected social-media surfaces without blocking the whole platform. The 5-second voice check-in operationalizes <a href="/science">Matthew Lieberman's 2007 affect-labeling research</a>: naming an urge reduces its intensity.</p>
 
       <p>This works for all-day, low-grade compulsive checking — the 47 micro-opens of Instagram between 9am and 11pm, the reach-for-the-phone-when-bored that Freedom's scheduled blocks don't catch.</p>
 
@@ -942,28 +946,251 @@ export const CONTENT = {
     cluster: "choosing-an-app",
     related: ["spool-vs-one-sec", "spool-vs-clearspace", "best-apps-stop-doomscrolling-2026"],
   },
+  "spool-vs-sociallite": {
+    type: "compare",
+    meta: {
+      title: "Spool vs SocialLite: Reels and Shorts Blockers Compared",
+      description: "Compare Spool and SocialLite for blocking Instagram Reels, YouTube Shorts, Snapchat Spotlight, Explore feeds, native apps, and doomscrolling on iPhone.",
+      datePublished: "2026-07-31",
+      dateModified: "2026-07-31",
+      competitor: "SocialLite",
+      competitorOperatingSystem: "iOS, Android",
+      faq: [
+        { question: "What is the main difference between Spool and SocialLite?", answer: "Both provide filtered social-media browsing without Reels and Shorts. SocialLite emphasizes broader platform access, native-app shielding, Post Mode, routines, and parent controls. Spool pairs independently selectable feed filters with a 5-second voice check-in, AI analysis of spoken triggers, and friend accountability." },
+        { question: "Can Spool and SocialLite both block Instagram Reels and YouTube Shorts?", answer: "Yes. Both remove Instagram Reels and YouTube Shorts inside their own filtered browser experiences rather than modifying the native Instagram or YouTube apps." },
+        { question: "Which platforms do Spool and SocialLite support?", answer: "Spool Focus Web covers Instagram, YouTube, X, and Snapchat on iPhone. SocialLite's current website lists Instagram and YouTube as its most complete platforms, beta support for Snapchat, TikTok, Facebook, X, and LinkedIn, and its July 2026 iOS release adds Reddit." },
+        { question: "Should I choose Spool or SocialLite?", answer: "Choose SocialLite if you want broader platform coverage, native-app shielding, temporary Post Mode access, multiple accounts, or parent controls. Choose Spool if you want feed filtering combined with a spoken intention check-in, AI trigger insights, friend accountability, and the option to hide Instagram DMs or Snapchat Stories." },
+      ],
+    },
+    card: {
+      excerpt: "Both block Reels and Shorts. SocialLite adds broader platform access and app shielding; Spool adds voice reflection and AI trigger insights.",
+      readTime: "7 min read",
+      category: "Comparison",
+    },
+    body: `
+<p class="ai-answer-summary"><strong>Spool vs SocialLite:</strong> Both are social media feed blockers that remove Reels, Shorts, and other algorithmic surfaces inside filtered browsers. SocialLite offers broader platform coverage, native-app shielding, Post Mode, routines, multiple accounts, and parent controls. Spool covers Instagram, YouTube, X, and Snapchat on iPhone, with independently selectable filters plus a 5-second voice check-in, AI trigger insights, and friend accountability. Choose SocialLite for access controls and platform breadth; Spool for filtering plus reflection.</p>
+
+<p>SocialLite and Spool Focus Web solve the same basic problem: you may need social media for messages, specific accounts, or intentional videos without wanting every infinite feed attached to it. Both replace the all-or-nothing choice with a filtered web experience. Their biggest difference is what happens around that browser.</p>
+
+<p><em>SocialLite details were checked against <a href="https://sociallite.app/">SocialLite's official website</a>, its published product guides, and its U.S. App Store listing on July 31, 2026. Platform support and features can change; verify the current listing before purchasing.</em></p>
+
+      <h2>Spool vs SocialLite at a glance</h2>
+      <table class="comparison-table">
+        <tr><th>Feature</th><th>Spool</th><th>SocialLite</th></tr>
+        <tr><td>Core approach</td><td>Filtered browser + spoken intention</td><td>Filtered browser + native-app shielding</td></tr>
+        <tr><td>Instagram Reels</td><td>Can remove</td><td>Removes</td></tr>
+        <tr><td>YouTube Shorts</td><td>Can remove</td><td>Removes</td></tr>
+        <tr><td>Snapchat</td><td>Can remove Spotlight, Stories, and Discover</td><td>Beta support; removes Spotlight and Discover while keeping Stories</td></tr>
+        <tr><td>Instagram messages</td><td>DMs can stay or be hidden</td><td>Keeps DMs</td></tr>
+        <tr><td>Platform breadth</td><td>Instagram, YouTube, X, Snapchat</td><td>Instagram, YouTube, Snapchat, TikTok, Facebook, X, LinkedIn, and Reddit with varying support</td></tr>
+        <tr><td>Native-app intervention</td><td>5-second voice check-in before selected apps</td><td>App shielding with temporary Post Mode access</td></tr>
+        <tr><td>Behavior insights</td><td>AI analysis of spoken reasons</td><td>In-app time tracking; no spoken-reason analysis advertised</td></tr>
+        <tr><td>Accountability</td><td>Friends</td><td>Parent controls</td></tr>
+        <tr><td>Mobile platforms</td><td>iPhone</td><td>iOS and Android advertised</td></tr>
+      </table>
+
+      <h2>What both apps get right</h2>
+      <p>Instagram Reels and YouTube Shorts are features inside useful platforms, not separate apps. Blocking all of Instagram also removes DMs and accounts you intentionally follow. Blocking all of YouTube also removes long-form videos, channels, and search. Spool and SocialLite both let you enter a filtered version instead.</p>
+
+      <p>Neither app modifies Instagram, YouTube, Snapchat, or another company's native app. The cleaner experience runs in an embedded browser, so some native functionality may be limited or behave differently.</p>
+
+      <h2>Where SocialLite is stronger</h2>
+      <p>SocialLite currently goes wider. Its official site describes Instagram and YouTube as its most complete experiences, beta support for Snapchat, TikTok, Facebook, X, and LinkedIn, and its latest iOS release adds Reddit. Its Instagram experience also removes suggested posts and ads, supports multiple accounts, and keeps messages available.</p>
+
+      <p>SocialLite also builds enforcement around the browser. It can shield the original native apps and redirect the user toward SocialLite. When the native app is genuinely needed for posting, Post Mode grants a short temporary unlock. Routines, Sleep Mode, and parent-managed controls make it a better fit when access rules matter more than self-reflection.</p>
+
+      <h2>Where Spool is different</h2>
+      <p>Spool adds an active intervention before selected native apps open. You say why you are reaching for the app in about five seconds. Spool then analyzes those spoken reasons to surface patterns such as boredom, avoidance, or repeated “just checking” opens. SocialLite reduces exposure to the feed; Spool is designed to reveal the trigger behind the attempt as well.</p>
+
+      <p>Spool also gives different choices on two surfaces SocialLite treats as useful. Instagram DMs can remain available or be hidden, and Snapchat Stories can be removed alongside Spotlight and Discover. That is useful when messages or Stories—not only short-form video—are part of the user's loop.</p>
+
+      <h2>Which app should you choose?</h2>
+      <p><strong>Choose SocialLite if:</strong> you need more supported social platforms, want the original apps shielded, need temporary posting access, use several Instagram accounts, or want parent-managed controls.</p>
+      <p><strong>Choose Spool if:</strong> you want Instagram, YouTube, X, and Snapchat feed filters paired with a spoken intention check-in, AI insight into why you opened an app, and friend accountability.</p>
+      <p><strong>Choose by the failure mode:</strong> if the main problem is getting around a cleaner browser and returning to the native app, SocialLite's shielding is the stronger tool. If the main problem is not understanding why the urge keeps returning, Spool's voice data is the meaningful difference.</p>
+
+      <h2>Frequently asked questions</h2>
+      <h3>Do Spool and SocialLite both remove Reels and Shorts?</h3>
+      <p>Yes. Both remove Instagram Reels and YouTube Shorts inside a filtered browser experience.</p>
+      <h3>Can I keep Instagram DMs?</h3>
+      <p>Yes. SocialLite keeps DMs. Spool lets you keep DMs or hide them separately from Reels, Stories, and Explore.</p>
+      <h3>Which app is better for Snapchat?</h3>
+      <p>It depends on what you want to remove. Both target Spotlight. SocialLite's guide keeps Stories, while Spool can remove Spotlight, Stories, and Discover separately.</p>
+    `,
+    cluster: "choosing-an-app",
+    related: ["spool-vs-dull", "spool-vs-undoomed", "best-apps-stop-doomscrolling-2026"],
+  },
+  "spool-vs-dull": {
+    type: "compare",
+    meta: {
+      title: "Spool vs Dull: Which Reels and Shorts Blocker Is Better?",
+      description: "Spool and Dull both filter distracting social-media features. Compare platforms, Reels and Shorts removal, voice check-ins, limits, privacy, and the best fit for you.",
+      datePublished: "2026-07-31",
+      dateModified: "2026-07-31",
+      competitor: "Dull",
+      faq: [
+        { question: "What is the main difference between Spool and Dull?", answer: "Both provide filtered social-media browsing. Dull centers on granular filters, limits, friction gates, grayscale, and usage tracking. Spool combines feature-level filters with a spoken intention check-in, AI trigger insights, and friend accountability." },
+        { question: "Which platforms do Spool and Dull support?", answer: "Spool Focus Web supports Instagram, YouTube, X, and Snapchat. Dull's current website lists Instagram, YouTube, Facebook, X, and Reddit. Dull says Snapchat is not supported in its current version." },
+        { question: "Can Spool and Dull both remove Instagram Reels and YouTube Shorts?", answer: "Yes. Both offer filtered browser experiences that remove Instagram Reels and YouTube Shorts without blocking the entire platform." },
+        { question: "Should I choose Spool or Dull?", answer: "Choose Dull if you want a broad set of configurable browser filters, limits, grayscale, and commitment controls. Choose Spool if you want those surface-level filters paired with an active voice check-in and AI analysis of why you reach for social media." },
+      ],
+    },
+    card: {
+      excerpt: "Both remove Reels and Shorts. Dull centers on granular controls; Spool adds spoken intention and AI trigger insights.",
+      readTime: "7 min read",
+      category: "Comparison",
+    },
+    body: `
+<p class="ai-answer-summary"><strong>Spool vs Dull:</strong> Both apps let you use social media through a filtered browser without Reels and Shorts. Dull offers a wider control toolkit across five platforms; Spool combines filters across Instagram, YouTube, X, and Snapchat with a 5-second voice check-in, AI trigger analysis, and friend accountability. Choose Dull for browser customization; Spool for filtering plus behavior change.</p>
+
+<p>Dull and Spool now overlap more than most screen-time comparisons. Neither requires you to choose between the full native app and no access at all. Both let you open social platforms through an in-app browser and remove the features that start an unintended scroll. The difference is what each app builds around that filtered experience.</p>
+
+<p><em>Competitor details were checked against <a href="https://getdull.app/">Dull's website</a> and App Store listing on July 31, 2026. Features can change; verify the current listing before purchasing.</em></p>
+
+      <h2>Spool vs Dull at a glance</h2>
+      <table class="comparison-table">
+        <tr><th>Feature</th><th>Spool</th><th>Dull</th></tr>
+        <tr><td>Core approach</td><td>Filtered browser + spoken intention</td><td>Filtered browser + configurable controls</td></tr>
+        <tr><td>Instagram Reels</td><td>Can remove</td><td>Removes</td></tr>
+        <tr><td>YouTube Shorts</td><td>Can remove</td><td>Removes</td></tr>
+        <tr><td>X</td><td>Can remove Explore</td><td>Following-only feed; removes For You and trends</td></tr>
+        <tr><td>Snapchat</td><td>Spotlight, Stories, Discover filters</td><td>Not currently supported</td></tr>
+        <tr><td>Other platforms</td><td>Instagram, YouTube, X, Snapchat</td><td>Instagram, YouTube, Facebook, X, Reddit</td></tr>
+        <tr><td>Voice check-in</td><td>Yes</td><td>No</td></tr>
+        <tr><td>AI trigger insights</td><td>Yes</td><td>No; local usage statistics</td></tr>
+        <tr><td>Limits and friction gates</td><td>App rules + voice friction</td><td>Daily limits, quiet hours, math/wait/breath gates</td></tr>
+      </table>
+
+      <h2>The core similarity: filter the surface, not the whole app</h2>
+      <p>Both products recognize that "block Instagram" is often the wrong job. The person may want Instagram for one intentional task but not want Reels, Stories, Explore, or suggested content waiting beside it. Dull and Spool solve that by loading the web platform inside a controlled browser and hiding selected surfaces.</p>
+
+      <p>That makes both meaningfully different from traditional app blockers. A blocker controls <em>whether</em> the app opens. A filtered browser controls <em>what is present</em> after it opens.</p>
+
+      <h2>Where Dull is stronger</h2>
+      <p>Dull is the more mature filtering toolkit. Its current site documents five supported platforms, platform-by-platform removed and kept lists, daily limits, quiet hours, friction gates, grayscale, on-device usage statistics, a 24-hour commitment delay, and a PIN. It also publishes precise technical explanations of how its browser filters work.</p>
+
+      <p>If your goal is to design several different versions of social media—strict during work, looser on weekends, grayscale at night—Dull's control surface is the more expansive one.</p>
+
+      <h2>Where Spool is different</h2>
+      <p>Spool treats content filtering as one layer, not the entire intervention. Its second layer is a 5-second voice check-in before a selected native app opens. You say why you are reaching for the app; Spool then turns those statements into a record of triggers and patterns.</p>
+
+      <p>This matters when removing the feed does not remove the urge. A filtered Instagram can prevent a Reels spiral, but it cannot explain why you tried to open Instagram 30 times while avoiding a deadline. Spool's spoken data is built for that question.</p>
+
+      <h2>Instagram DMs reveal the product philosophy</h2>
+      <p>Dull preserves Instagram DMs by default because it defines messaging as utility. Spool lets the user hide DMs too, because a communication surface can still be a trigger for some people. Neither choice is universally right. Dull makes a stronger default judgment about what should stay; Spool gives the user a separate switch.</p>
+
+      <h2>Who should choose which?</h2>
+      <p><strong>Choose Dull if:</strong> you want extensive browser customization, five supported platforms, grayscale, time limits, commitment controls, and detailed local usage stats.</p>
+      <p><strong>Choose Spool if:</strong> you want Instagram, YouTube, X, and Snapchat filters plus an active voice intervention, AI analysis of your stated reasons, and friend accountability.</p>
+      <p><strong>Either can be the right answer:</strong> the deciding question is whether your main problem is the content surface itself or the emotional habit that keeps sending you back. Dull goes deeper on the surface. Spool works on both.</p>
+
+      <h2>Frequently asked questions</h2>
+      <h3>Can Spool and Dull both remove Instagram Reels?</h3>
+      <p>Yes. Both provide a filtered Instagram web experience rather than modifying the native Instagram app.</p>
+      <h3>Does Dull support Snapchat?</h3>
+      <p>Dull's current platform page says Snapchat is not supported in its present version. Spool Focus Web can hide Spotlight, Stories, and Discover from its Snapchat web experience.</p>
+      <h3>Is Dull or Spool better for understanding why I scroll?</h3>
+      <p>Spool. Dull shows behavioral usage data; Spool captures the spoken reason at the moment of the app open and analyzes those reasons for recurring triggers.</p>
+    `,
+    cluster: "choosing-an-app",
+    related: ["spool-vs-sociallite", "spool-vs-undoomed", "best-apps-stop-doomscrolling-2026"],
+  },
+  "spool-vs-undoomed": {
+    type: "compare",
+    meta: {
+      title: "Spool vs UNDOOMED: Social Feed Filters Compared",
+      description: "Compare Spool and UNDOOMED for blocking Reels, Shorts, Stories, Explore, and feeds. See platform support, messages modes, limits, analytics, and best use cases.",
+      datePublished: "2026-07-31",
+      dateModified: "2026-07-31",
+      competitor: "UNDOOMED",
+      competitorOperatingSystem: "iOS, Android",
+      faq: [
+        { question: "What is the main difference between Spool and UNDOOMED?", answer: "UNDOOMED is a broad visual-filtering and time-limit toolkit with 54 filters across six platforms. Spool combines feature filters with voice check-ins, AI analysis of your spoken reasons, and friend accountability." },
+        { question: "Does UNDOOMED support more platforms than Spool?", answer: "Yes. UNDOOMED currently lists Instagram, Reddit, Facebook, X, YouTube, and LinkedIn on iOS and Android. Spool Focus Web currently covers Instagram, YouTube, X, and Snapchat on iPhone." },
+        { question: "Can both apps keep messages while blocking feeds?", answer: "UNDOOMED offers a Messages Only mode for Instagram and LinkedIn. Spool gives Instagram users separate controls for Reels, Stories, Explore, and DMs, so DMs can remain available or be hidden." },
+        { question: "Should I choose Spool or UNDOOMED?", answer: "Choose UNDOOMED for Android support, many granular visual filters, hard time limits, and local Clarity Score analytics. Choose Spool for filtering paired with a spoken intention intervention and AI insight into why you opened the app." },
+      ],
+    },
+    card: {
+      excerpt: "UNDOOMED offers 54 visual filters; Spool adds spoken intention, AI trigger analysis, and Snapchat filters.",
+      readTime: "7 min read",
+      category: "Comparison",
+    },
+    body: `
+<p class="ai-answer-summary"><strong>Spool vs UNDOOMED:</strong> UNDOOMED is the broader visual-filtering toolkit: 54 filters across six platforms, iOS and Android support, Messages Only mode, time limits, and a local Clarity Score. Spool covers four platforms on iPhone and pairs feature filters with voice check-ins, AI trigger insights, and friend accountability. Choose UNDOOMED for filter breadth; Spool for filtering plus reflection.</p>
+
+<p>UNDOOMED and Spool both reject the all-or-nothing assumption behind traditional app blockers. Each lets you enter social media through a filtered browser and remove selected feeds or tabs. UNDOOMED goes wider on filter count and platform coverage. Spool adds a different behavior-change mechanism before the native app opens.</p>
+
+<p><em>Competitor details were checked against <a href="https://undoomed.app/">UNDOOMED's website</a> and App Store listing on July 31, 2026. Features can change; verify the current listing before purchasing.</em></p>
+
+      <h2>Spool vs UNDOOMED at a glance</h2>
+      <table class="comparison-table">
+        <tr><th>Feature</th><th>Spool</th><th>UNDOOMED</th></tr>
+        <tr><td>Core approach</td><td>Filtered browser + spoken intention</td><td>Visual filters + limits</td></tr>
+        <tr><td>Platforms</td><td>Instagram, YouTube, X, Snapchat</td><td>Instagram, Reddit, Facebook, X, YouTube, LinkedIn</td></tr>
+        <tr><td>Mobile platforms</td><td>iPhone</td><td>iOS and Android</td></tr>
+        <tr><td>Instagram Reels</td><td>Can remove</td><td>Can remove</td></tr>
+        <tr><td>YouTube Shorts</td><td>Can remove</td><td>Can remove</td></tr>
+        <tr><td>Snapchat feeds</td><td>Spotlight, Stories, Discover</td><td>Not listed</td></tr>
+        <tr><td>Messages control</td><td>Instagram DMs can stay or be hidden</td><td>Messages Only for Instagram and LinkedIn</td></tr>
+        <tr><td>Voice check-in</td><td>Yes</td><td>No</td></tr>
+        <tr><td>Progress data</td><td>Spoken reasons + AI patterns</td><td>Local usage charts + Clarity Score</td></tr>
+        <tr><td>Filter breadth</td><td>Selected high-impact surfaces</td><td>54 filters advertised</td></tr>
+      </table>
+
+      <h2>Where UNDOOMED is stronger</h2>
+      <p>UNDOOMED is built for breadth. Its current product pages advertise 54 filters across six social platforms, hourly and daily limits, a parental PIN, Messages Only modes, local statistics, 10 languages, and both iOS and Android. For someone who wants to tune many parts of several platforms—or who does not use an iPhone—it is the more complete filtering product.</p>
+
+      <p>UNDOOMED also documents the filter mechanics in unusually specific terms. Its Instagram guide names the surfaces, URL paths, redirects, and configuration steps. That level of product documentation is useful before download.</p>
+
+      <h2>Where Spool is different</h2>
+      <p>Spool's product thesis is that removing content can stop a scroll session, but it does not automatically reveal the trigger behind the urge. Spool therefore adds a 5-second voice check-in before selected native apps open. The user speaks a reason—"I'm bored," "I need to reply," "I'm avoiding work"—and Spool's AI surfaces repeated language and patterns over time.</p>
+
+      <p>Spool also supports Snapchat surfaces that UNDOOMED does not currently list: Spotlight, Stories, and Discover. That matters if Snapchat, not Reddit or LinkedIn, is the main short-form loop.</p>
+
+      <h2>Messages Only versus user-chosen removal</h2>
+      <p>UNDOOMED's Messages Only mode turns Instagram or LinkedIn into a communication tool by redirecting away from feeds. Spool lets the user control Instagram surfaces independently—including DMs. If messages are the utility you want to protect, keep DMs. If checking messages is itself the trigger, hide them. The products make different assumptions about what “useful” social media means.</p>
+
+      <h2>Clarity Score versus spoken-reason data</h2>
+      <p>UNDOOMED reports time, session trends, and a Clarity Score that summarizes focused versus endless-scroll use. Spool records qualitative intent: what you said immediately before opening the app. The first answers "how did I use it?" The second answers "what was happening when I reached for it?"</p>
+
+      <h2>Who should choose which?</h2>
+      <p><strong>Choose UNDOOMED if:</strong> you need Android, want the broadest visual-filter library, care about hard hourly or daily limits, or prefer all progress data to stay local.</p>
+      <p><strong>Choose Spool if:</strong> you use an iPhone, need Snapchat filters, want to hide Instagram surfaces independently, and want your spoken reasons turned into AI insights and friend accountability.</p>
+
+      <h2>Frequently asked questions</h2>
+      <h3>Do Spool and UNDOOMED both block Reels and Shorts?</h3>
+      <p>Yes. Both can remove Instagram Reels and YouTube Shorts inside their own filtered browser experiences.</p>
+      <h3>Which app is better for Android?</h3>
+      <p>UNDOOMED. Spool is currently an iPhone app; UNDOOMED advertises both iOS and Android support.</p>
+      <h3>Which app is better for Snapchat?</h3>
+      <p>Spool. Focus Web can hide Snapchat Spotlight, Stories, and Discover; UNDOOMED's current supported-platform list does not include Snapchat.</p>
+    `,
+    cluster: "choosing-an-app",
+    related: ["spool-vs-sociallite", "spool-vs-dull", "best-apps-stop-doomscrolling-2026"],
+  },
   "spool-vs-jomo": {
     type: "compare",
     meta: {
       title: "Spool vs Jomo: Two Approaches to Mindful Phone Use",
-      description: "Jomo (Joy of Missing Out) blocks distracting apps with timer-based friction. Spool uses voice check-ins to build awareness. Both reject pure hard-blocking — but which approach lasts?",
+      description: "Jomo offers a broad digital-wellness toolkit. Spool combines Focus Web feed filters with voice check-ins and AI trigger insights. Which approach fits you?",
       datePublished: "2026-05-21",
-      dateModified: "2026-05-21",
+      dateModified: "2026-07-31",
       competitor: "Jomo",
       faq: [
-        { question: "How does Spool compare to Jomo?", answer: "Jomo blocks distracting apps and uses a \"dopamine reset\" framing — schedule mindful breaks, see your stats, build streaks. Spool addresses the moment-of-impulse itself with a voice check-in that captures why you tried to open the app. Jomo manages your relationship with your phone at the session level; Spool manages it at the individual unlock level." },
-        { question: "Does Jomo have features Spool doesn't?", answer: "Yes. Jomo has scheduled blocking, \"phone fasts,\" mood tracking, and a stronger community/streak emphasis. Spool focuses narrowly on the voice check-in and AI pattern analysis. If you want a full digital-wellness toolkit, Jomo offers more breadth. If you want a single high-leverage intervention at the moment of compulsive use, Spool is more focused." },
+        { question: "How does Spool compare to Jomo?", answer: "Jomo offers scheduled blocks, mindful breaks, statistics, and streaks. Spool combines Focus Web feed filters with a voice check-in that captures why you tried to open the full native app. Jomo manages broader digital-wellness routines; Spool targets the content surface and individual moment of impulse." },
+        { question: "Does Jomo have features Spool doesn't?", answer: "Yes. Jomo has phone fasts, mood tracking, and a stronger program and streak emphasis. Spool focuses on feature-level social filters, the voice check-in, and AI pattern analysis. If you want a broad digital-wellness program, Jomo offers more structure. If you want filtered feeds plus reflection at the moment of compulsive use, Spool is more focused." },
         { question: "Which is better for someone who has tried multiple screen-time apps and quit them all?", answer: "Spool, in most cases. Repeat-quitters typically uninstall because the friction becomes annoying and feels punitive. Spool's 5-second voice check-in is less punishing than hard blocks or long wait timers, and the data it produces (your spoken reasons) provides positive reinforcement to keep using it — you learn something about yourself each time, instead of just being told \"no.\"" },
         { question: "Is Jomo or Spool more expensive?", answer: "Pricing is comparable. Jomo is around $7.99/month or $59.99/year (varies by promo). Spool is $7.99/month or $39.99/year. Spool's annual plan is cheaper." },
       ],
     },
     card: {
-      excerpt: "Jomo is a digital-wellness program. Spool is a single intervention at the moment of impulse. Which fits your style?",
+      excerpt: "Jomo is a digital-wellness program. Spool pairs filtered social feeds with reflection at the moment of impulse.",
       readTime: "7 min read",
       category: "Comparison",
     },
     body: `
-<p class="ai-answer-summary"><strong>Spool vs Jomo:</strong> Both reject hard blocking, but Jomo is a broad digital-wellness program (scheduling, stats, streaks) while Spool is one focused intervention: speak your reason before opening a distracting app. Choose Jomo for a full toolkit; Spool if you want a single high-leverage habit-changer at the moment of impulse.</p>
+<p class="ai-answer-summary"><strong>Spool vs Jomo:</strong> Jomo is a broad digital-wellness program with scheduling, stats, and streaks. Spool combines feature-level social filters with a spoken check-in before the full native app opens. Choose Jomo for a structured toolkit; Spool for filtered feeds plus reflection and AI trigger insights.</p>
 
 <p>Jomo (Joy of Missing Out) and Spool are unusual in the screen-time category because neither defaults to hard blocking. Both reject the "make apps inaccessible" approach. Both target the relationship between you and your phone, not the access. But they implement that idea very differently — and the difference matters for who each app actually works for.</p>
 
@@ -989,8 +1216,8 @@ export const CONTENT = {
 
       <p>For someone who wants a structured 30-day program with clear ramps and social accountability, Jomo is well-designed. It treats screen time as something to actively program against, with multiple ramps and rituals.</p>
 
-      <h2>Where Jomo is broader, Spool is narrower</h2>
-      <p>Spool deliberately doesn't try to be a full digital-wellness platform. It does one thing — capture your spoken reason at the moment you try to open a distracting app, and surface patterns back to you — and refuses to do much else.</p>
+      <h2>Where Jomo is broader, Spool is more targeted</h2>
+      <p>Spool concentrates on two connected moments: what is present after you enter social media, and why you tried to open the full native app. Focus Web removes selected Reels, Shorts, Explore, Spotlight, Stories, Discover, or DM surfaces; the voice check-in captures the reason behind a native-app open.</p>
 
       <p>This is a feature, not a limitation. Most users who quit screen-time apps cite "too much overhead" as the reason. Jomo asks you to engage with multiple rituals, set up programs, log moods, maintain streaks. Spool asks you to do one thing: speak the reason in 5 seconds. The narrower scope is what keeps the daily use cost low.</p>
 
@@ -1018,7 +1245,7 @@ export const CONTENT = {
       </ul>
 
       <h2>The bottom line</h2>
-      <p>Jomo is a digital-wellness program; Spool is a single intervention at the moment of impulse. Both reject hard blocking, both treat phone use as something to relate to consciously. The choice between them is largely a question of how much structure you want — and historically, narrower interventions have higher long-term retention than broader programs.</p>
+      <p>Jomo is a broad digital-wellness program; Spool is a targeted combination of filtered social browsing and reflection at the moment of impulse. The choice is largely a question of whether you want a structured program or a focused intervention around social feeds and app opens.</p>
     `,
     cluster: "choosing-an-app",
     related: ["spool-vs-opal", "spool-vs-freedom", "best-apps-stop-doomscrolling-2026"],
