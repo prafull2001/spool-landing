@@ -5,7 +5,8 @@
 - [x] Added a verified Spool vs SocialLite comparison page and comparison-hub entry
 - [x] Defined Focus Web consistently as Spool's social media feed blocker / distraction-free social media browser
 - [x] Rebuilt 49 static pages and verified all 43 sitemap URLs return HTTP 200
-- [ ] Commit only the SEO scope, push the branch, and open a draft PR
+- [x] Committed only the SEO scope and pushed `codex/focus-web-seo-sociallite`
+- [ ] Open the draft PR (GitHub integration returned 403; prefilled link is ready)
 
 ## DONE — Focus Web SEO cluster (2026-07-31)
 
