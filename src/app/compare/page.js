@@ -3,7 +3,7 @@ import styles from './page.module.css';
 
 export const metadata = {
   title: 'Compare Screen Time Apps',
-  description: 'Compare Spool with SocialLite, Dull, UNDOOMED, Opal, One Sec, Apple Screen Time, and more by feed filters, mechanism, platform, and best use case.',
+  description: 'Compare Spool with SocialLite, Dull, UNDOOMED, Opal, One Sec, and other screen-time apps. See why Spool combines feed blocking with behavior change.',
   alternates: { canonical: 'https://www.thespoolapp.com/compare' },
   openGraph: {
     title: 'Compare Screen Time Apps | Spool',
@@ -19,29 +19,29 @@ const COMPARISONS = [
     href: '/compare/spool-vs-sociallite',
     title: 'Spool vs SocialLite',
     competitor: 'SocialLite',
-    mechanism: 'Filtering + reflection vs filtering + app shielding',
-    summary: 'Both remove Reels and Shorts; SocialLite adds broader platform access and native-app shielding, while Spool adds voice check-ins and AI trigger insights.',
+    mechanism: 'Feed blocking plus behavior change',
+    summary: 'SocialLite cleans up the feed. Spool does that, then catches the impulse with a voice check-in and turns your reasons into useful patterns.',
   },
   {
     href: '/compare/spool-vs-dull',
     title: 'Spool vs Dull',
     competitor: 'Dull',
-    mechanism: 'Filtering + reflection vs filter toolkit',
-    summary: 'Both remove Reels and Shorts; Dull goes deeper on browser controls while Spool adds spoken intention and AI trigger insights.',
+    mechanism: 'Root-cause insight vs more toggles',
+    summary: 'Dull changes what appears on screen. Spool changes the screen and helps you understand why you kept reaching for it.',
   },
   {
     href: '/compare/spool-vs-undoomed',
     title: 'Spool vs UNDOOMED',
     competitor: 'UNDOOMED',
-    mechanism: 'Reflection vs 54 visual filters',
-    summary: 'UNDOOMED offers broader platform and filter coverage; Spool adds voice check-ins, AI patterns, and Snapchat filters.',
+    mechanism: 'Intent data vs filter count',
+    summary: 'UNDOOMED counts filters and screen time. Spool removes the high-impact feeds and captures the reason behind each compulsive open.',
   },
   {
     href: '/compare/spool-vs-opal',
     title: 'Spool vs Opal',
     competitor: 'Opal',
     mechanism: 'Awareness vs hard blocking',
-    summary: 'Choose Spool for daily self-awareness; choose Opal for strict scheduled focus blocks.',
+    summary: 'Opal locks apps. Spool helps you stop needing the lock by interrupting the urge and showing you the pattern behind it.',
   },
   {
     href: '/compare/spool-vs-one-sec',
@@ -62,7 +62,7 @@ const COMPARISONS = [
     title: 'Spool vs Freedom',
     competitor: 'Freedom',
     mechanism: 'iPhone awareness vs cross-device blocking',
-    summary: 'Freedom is best for scheduled blocks across devices; Spool is best for all-day phone habits.',
+    summary: 'Freedom blocks across devices. Spool focuses on the everyday iPhone habit and the reason behind each compulsive open.',
   },
   {
     href: '/compare/spool-vs-screenzen',
@@ -83,14 +83,14 @@ const COMPARISONS = [
     title: 'Spool vs Forest',
     competitor: 'Forest',
     mechanism: 'Impulse intervention vs focus timer',
-    summary: 'Forest helps you stay off your phone during focus sessions; Spool targets compulsive app opens.',
+    summary: 'Forest runs focus timers. Spool intervenes at the exact moment you reach for a distracting app.',
   },
   {
     href: '/compare/spool-vs-jomo',
     title: 'Spool vs Jomo',
     competitor: 'Jomo',
     mechanism: 'Targeted filters + reflection vs broad toolkit',
-    summary: 'Jomo offers a broader program; Spool pairs filtered social feeds with reflection at the moment of impulse.',
+    summary: 'Jomo adds a wellness program. Spool keeps the intervention focused: clean the feed, name the urge, see the pattern.',
   },
   {
     href: '/compare/spool-vs-unrot',
@@ -159,23 +159,21 @@ export default function ComparePage() {
         <p className={styles.eyebrow}>Screen time app comparisons</p>
         <h1>Compare the best apps to stop doomscrolling</h1>
         <p className={styles.lede}>
-          Spool combines a social media feed blocker and distraction-free browser with
-          a spoken check-in before selected apps open. Use this hub to compare Spool with content filters,
-          hard blockers, delay timers, and gamified focus apps.
+          Most screen-time apps attack one piece of the problem. Spool handles two:
+          Focus Web removes the feeds that trap you, and a 5-second voice check-in
+          interrupts the impulse that brought you there.
         </p>
       </section>
 
       <section className={styles.summary} aria-labelledby="compare-summary-heading">
         <h2 id="compare-summary-heading">Quick answer</h2>
         <p>
-          Choose <strong>Spool</strong> if you want to understand why you scroll.
-          Choose <strong>SocialLite</strong>, <strong>Dull</strong>, or{' '}
-          <strong>UNDOOMED</strong> if filter breadth and browser controls are your priority.{' '}
-          Choose <strong>Opal</strong> or <strong>Freedom</strong> if you need
-          hard blocking. Choose <strong>One Sec</strong> or{' '}
-          <strong>ScreenZen</strong> if you want lightweight friction. Choose{' '}
-          <strong>Forest</strong>, <strong>Brainrot</strong>, or{' '}
-          <strong>Unrot</strong> if motivation systems work for you.
+          <strong>Spool is the strongest fit for iPhone users who want to stop
+          doomscrolling without giving up social media.</strong> Filter-only tools can
+          clean the page but leave the habit untouched. Hard blockers can lock the app
+          but teach you nothing about the urge. Spool removes distracting feeds and
+          captures why you tried to open the full app, so the intervention keeps working
+          after novelty and willpower wear off.
         </p>
       </section>
 
@@ -198,9 +196,9 @@ export default function ComparePage() {
         <div>
           <h2 id="best-apps-heading">Need the full ranked list?</h2>
           <p>
-            Our 2026 listicle ranks 10 doomscrolling apps by approach, price,
-            and best use case. It puts Spool first for lasting behavior change,
-            then explains when competitors are better fits.
+            Our 2026 listicle ranks 10 doomscrolling apps by what they actually change:
+            access, friction, motivation, or the habit itself. Spool ranks first because
+            it combines a cleaner feed with active reflection.
           </p>
         </div>
         <Link className={styles.primaryLink} href="/blog/best-apps-stop-doomscrolling-2026">

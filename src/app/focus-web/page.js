@@ -118,12 +118,13 @@ export default function FocusWebPage() {
           </p>
           <h2>How does Focus Web compare with other feed filters?</h2>
           <p>
-            SocialLite, Dull, and UNDOOMED also use filtered browsers, but their surrounding
-            tools differ. Read the verified{' '}
+            SocialLite, Dull, and UNDOOMED stop at the browser layer. Focus Web removes
+            the distracting surface, while Spool&apos;s voice check-in tackles the reason
+            you keep reaching for the full app. See the fact-checked{' '}
             <Link href="/compare/spool-vs-sociallite">Spool vs SocialLite</Link>,{' '}
             <Link href="/compare/spool-vs-dull">Spool vs Dull</Link>, and{' '}
-            <Link href="/compare/spool-vs-undoomed">Spool vs UNDOOMED</Link> comparisons for
-            platform coverage, filter depth, limits, and best-fit guidance.
+            <Link href="/compare/spool-vs-undoomed">Spool vs UNDOOMED</Link> comparisons
+            to see why filtering plus reflection is a more complete intervention.
           </p>
         </section>
       </main>

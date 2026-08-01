@@ -43,6 +43,25 @@ export default async function FocusWebPlatformPage({ params }) {
       { '@type': 'ListItem', position: 3, name: item.title, item: url },
     ],
   };
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: item.faq.map(({ q, a }) => ({
+      '@type': 'Question',
+      name: q,
+      acceptedAnswer: { '@type': 'Answer', text: a },
+    })),
+  };
+  const howToSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: `How to use ${item.shortLabel} on iPhone`,
+    step: item.details.map((detail, index) => ({
+      '@type': 'HowToStep',
+      position: index + 1,
+      text: detail,
+    })),
+  };
 
   return (
     <>
@@ -52,6 +71,14 @@ export default async function FocusWebPlatformPage({ params }) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+        />
 
         <header className={styles.hero}>
           <Link className={styles.backLink} href="/focus-web">
@@ -60,6 +87,14 @@ export default async function FocusWebPlatformPage({ params }) {
           <p className={styles.eyebrow}>Spool Focus Web for {item.platform}</p>
           <h1>{item.title}</h1>
           <p className={styles.lede}>{item.description}</p>
+          <a
+            className={styles.primaryLink}
+            href="https://apps.apple.com/us/app/spool-screen-time-control/id6749428484?platform=iphone"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Try Spool on iPhone
+          </a>
         </header>
 
         <section className={styles.answer} aria-labelledby="quick-answer">
@@ -81,8 +116,14 @@ export default async function FocusWebPlatformPage({ params }) {
         </section>
 
         <section className={styles.explainer}>
-          <h2>Why filter {item.platform} instead of blocking it?</h2>
+          <h2>Why an app limit misses the real problem</h2>
           <p>{item.problem}</p>
+          <p>
+            Apple Screen Time can limit or block all of {item.platform}, but it cannot remove
+            only the specific feeds and tabs listed above. Focus Web changes the experience
+            inside Spool so the useful parts can stay without leaving the main scroll trap
+            one tap away.
+          </p>
 
           <h2>How to use {item.shortLabel}</h2>
           <ol>

@@ -30,12 +30,16 @@ const BlogPost = () => {
     );
   }
 
+  const isComparison = post.category === 'Comparison';
+
   return (
     <>
       <Logo />
       <article className="blog-post-container">
         <div className="blog-post-header">
-          <Link href="/blog" className="back-to-blog">← Back to Blog</Link>
+          <Link href={isComparison ? '/compare' : '/blog'} className="back-to-blog">
+            ← Back to {isComparison ? 'Comparisons' : 'Blog'}
+          </Link>
           <span className="blog-post-category">{post.category}</span>
           <h1>{post.title}</h1>
           <div className="blog-post-meta">
@@ -109,13 +113,17 @@ const BlogPost = () => {
         </aside>
 
         <div className="blog-post-cta">
-          <h3>Ready to break free from mindless scrolling?</h3>
-          <p>Join thousands who've transformed their relationship with their phones.</p>
+          <h3>{isComparison ? 'Clean up the feed. Change the habit.' : 'Ready to break free from mindless scrolling?'}</h3>
+          <p>
+            {isComparison
+              ? 'Spool removes the feeds that pull you in and helps you understand why you reached for them.'
+              : "Join thousands who've transformed their relationship with their phones."}
+          </p>
           <a href="https://apps.apple.com/us/app/spool-screen-time-control/id6749428484?platform=iphone"
              className="blog-cta-button"
              target="_blank"
              rel="noopener noreferrer">
-            Download Spool Now
+            Try Spool on iPhone
           </a>
         </div>
       </article>

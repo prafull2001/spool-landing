@@ -1,5 +1,16 @@
 # Spool SEO / ASO / GEO Task List
 
+## IN PROGRESS — Product-led comparison rewrite (2026-07-31)
+
+- [x] Re-audit SocialLite, Dull, UNDOOMED, and LoomWeb for the search structures they use—not their wording
+- [x] Rewrite the new comparison pages so Spool is the clear recommendation without making unverifiable claims
+- [x] Remove templated “choose either app” language and replace it with natural, problem-led copy across all comparison pages
+- [x] Tighten the comparison hub and AI-readable summaries around Spool's differentiators
+- [x] Build 49 static pages, crawl all 43 sitemap URLs locally, and verify comparison/Focus Web schema
+- [ ] Push the verified rewrite to `main`, confirm Vercel succeeds, and crawl the production routes
+
+Editorial correction: comparison pages must be honest but product-led. Do not create neutral buyer's guides that actively send qualified Spool visitors to competitors. Lead with the searcher's problem, make Spool's combined filtering + voice-reflection mechanism the recommendation, mention competitor advantages only when required for factual credibility, and end with Spool as the next action.
+
 ## DONE — SocialLite + Focus Web category language (2026-07-31)
 
 - [x] Added a verified Spool vs SocialLite comparison page and comparison-hub entry

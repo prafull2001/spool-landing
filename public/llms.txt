@@ -61,11 +61,11 @@ Focus Web filters the web interfaces shown inside Spool. It does not modify the 
 
 **vs. Freedom / RescueTime**: Those focus on hard blocking and time tracking for productivity. Spool focuses on phone addiction specifically and building self-awareness.
 
-**vs. Dull**: Both provide filtered social browsing. Dull offers a broader browser-control toolkit; Spool pairs filters with a spoken intention check-in, AI trigger analysis, and friend accountability.
+**vs. Dull**: Both remove Reels and Shorts in a filtered browser. Dull stops at browser controls and usage totals. Spool also records why the user opened the full app, turns those reasons into AI trigger insights, adds friend accountability, and supports Snapchat filtering.
 
-**vs. UNDOOMED**: UNDOOMED offers 54 filters across six platforms and supports Android. Spool supports four Focus Web platforms on iPhone and adds voice check-ins, AI insights, friend accountability, and Snapchat filters.
+**vs. UNDOOMED**: UNDOOMED emphasizes 54 visual filters and a Clarity Score. Spool addresses more of the habit loop: high-impact feed removal, a spoken check-in before selected native apps, AI analysis of recurring triggers, friend accountability, and Snapchat filters.
 
-**vs. SocialLite**: Both remove Reels, Shorts, and other algorithmic surfaces in filtered browsers. SocialLite supports more social platforms, native-app shielding, Post Mode, and parent controls; Spool adds separately configurable Snapchat and Instagram filters, voice check-ins, AI trigger insights, and friend accountability.
+**vs. SocialLite**: Both remove Reels, Shorts, and other algorithmic surfaces in filtered browsers. Spool goes beyond a cleaner destination by interrupting the compulsive open, analyzing the user's spoken reason, adding friend accountability, and letting Instagram DMs or Snapchat Stories be hidden separately.
 
 ## Platform
 
