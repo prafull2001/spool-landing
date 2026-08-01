@@ -963,7 +963,7 @@ export const CONTENT = {
 
 <p>That is the real difference between SocialLite and Spool. SocialLite is mainly a cleaner way to browse social platforms. <a href="/focus-web">Spool Focus Web</a> gives you the cleaner browser, then Spool catches the compulsive open before the full app loads. If the goal is lasting behavior change, that extra layer matters.</p>
 
-<p><em>SocialLite details were checked against <a href="https://sociallite.app/">SocialLite's official website</a>, its published product guides, and its U.S. App Store listing on July 31, 2026. Platform support and features can change; verify the current listing before purchasing.</em></p>
+<p><em>SocialLite details were checked against its publicly available product materials and U.S. App Store listing on July 31, 2026. Platform support and features can change.</em></p>
 
       <h2>Spool vs SocialLite at a glance</h2>
       <table class="comparison-table">
@@ -1038,7 +1038,7 @@ export const CONTENT = {
 
 <p>Spool works on both moments. <a href="/focus-web">Focus Web</a> removes the feed that turns five minutes into forty. The voice check-in interrupts the automatic reach and captures what was happening when it occurred.</p>
 
-<p><em>Competitor details were checked against <a href="https://getdull.app/">Dull's website</a> and App Store listing on July 31, 2026. Features can change; verify the current listing before purchasing.</em></p>
+<p><em>Dull details were checked against its publicly available product materials and App Store listing on July 31, 2026. Features can change.</em></p>
 
       <h2>Spool vs Dull at a glance</h2>
       <table class="comparison-table">
@@ -1114,7 +1114,7 @@ export const CONTENT = {
 
 <p>UNDOOMED works on the last step. Spool works on the last step and the first. <a href="/focus-web">Focus Web</a> removes the distracting surfaces; the voice check-in catches the urge before the full native app opens.</p>
 
-<p><em>Competitor details were checked against <a href="https://undoomed.app/">UNDOOMED's website</a> and App Store listing on July 31, 2026. Features can change; verify the current listing before purchasing.</em></p>
+<p><em>UNDOOMED details were checked against its publicly available product materials and App Store listing on July 31, 2026. Features can change.</em></p>
 
       <h2>Spool vs UNDOOMED at a glance</h2>
       <table class="comparison-table">

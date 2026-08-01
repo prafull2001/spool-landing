@@ -1,5 +1,14 @@
 # Spool SEO / ASO / GEO Task List
 
+## IN PROGRESS — Remove competitor backlinks (2026-07-31)
+
+- [x] Remove every outbound link to competitor websites while preserving comparison-keyword text
+- [x] Add a permanent editorial rule against competitor backlinks
+- [x] Build 49 static pages and verify generated HTML contains zero competitor-domain anchors across all 43 sitemap URLs
+- [ ] Push to `main`, confirm Vercel succeeds, and verify production
+
+Editorial correction: competitor names may appear as plain text for comparison relevance, but Spool pages must not link to competitor websites or send them referral authority. Link internally to Spool comparison pages and product pages instead.
+
 ## DONE — Product-led comparison rewrite (2026-07-31)
 
 - [x] Re-audit SocialLite, Dull, UNDOOMED, and LoomWeb for the search structures they use—not their wording
