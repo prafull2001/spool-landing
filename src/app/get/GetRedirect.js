@@ -29,7 +29,7 @@ export default function GetRedirect() {
     const mobile = isIOS(ua, navigator.maxTouchPoints) || isAndroid(ua) || /Mobile|IEMobile|Opera Mini/i.test(ua);
 
     if (!mobile) {
-      window.location.replace('/');
+      window.location.replace(APP_CONFIG.APP_STORE_URL);
       return undefined;
     }
 

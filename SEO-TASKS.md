@@ -6,6 +6,7 @@
 - [x] Add shared Instagram, Threads, Facebook, Messenger, TikTok, iOS, and Android browser detection
 - [x] Route every App Store CTA through a synchronous in-app-browser escape with a manual fallback
 - [x] Add a noindex `/get?src=<channel>` social-bio redirect page with neutral attribution fallback
+- [x] Ensure every `/get?src=` link opens the App Store rather than the homepage on desktop tests
 - [x] Pass 4 helper tests, scoped lint with zero errors, a 50-page production build, and local `/get` smoke checks
 
 Implementation note: the repository contains the live iOS App Store URL and now maps the supplied AppsFlyer OneLinks for Spool, Sean, and Alexis ManyChat/bio traffic. The Android package remains unset because Spool is currently iOS-only.
