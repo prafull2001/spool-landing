@@ -2,6 +2,7 @@ import { Quicksand } from 'next/font/google';
 import '../index.css';
 import { Analytics } from '@vercel/analytics/react';
 import MotionProvider from '../components/MotionProvider';
+import { DownloadLinkProvider } from '../components/DownloadLink/DownloadLink';
 import { PRESS_ITEMS } from '../data/press';
 
 const quicksand = Quicksand({ subsets: ['latin'], display: 'swap', variable: '--font-quicksand' });
@@ -114,9 +115,11 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className={quicksand.className}>
-        <MotionProvider>
-          {children}
-        </MotionProvider>
+        <DownloadLinkProvider>
+          <MotionProvider>
+            {children}
+          </MotionProvider>
+        </DownloadLinkProvider>
         <Analytics />
       </body>
     </html>

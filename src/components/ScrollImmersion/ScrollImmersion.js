@@ -5,6 +5,7 @@ import { Mail, MessageCircle, Bell, Instagram, Twitter, Facebook, Youtube, Twitc
 import './ScrollImmersion.css';
 import appBoquet from '../../assets/app_boquet.webp';
 import spooliLogo from '../../assets/spooli_logo.png';
+import { DownloadLink } from '../DownloadLink/DownloadLink';
 
 import { getCurrentURL } from '../../config/appConfig';
 
@@ -90,9 +91,9 @@ const ScrollImmersion = () => {
 
                     {/* Download Button (Appears at end) */}
                     <motion.div style={{ opacity: text3Opacity }}>
-                        <a href={downloadUrl} className="app-store-button" target="_blank" rel="noopener noreferrer">
+                        <DownloadLink href={downloadUrl} className="app-store-button" target="_blank" rel="noopener noreferrer">
                             <img src="/app-store-badge.svg" alt="Download on the App Store" />
-                        </a>
+                        </DownloadLink>
                     </motion.div>
                 </div>
 

@@ -5,7 +5,23 @@ export const APP_CONFIG = {
   IS_APP_LIVE: true, // Change this to true when app is live
   
   // App Store link (when app is live)
-  APP_STORE_URL: "https://apps.apple.com/us/app/spool-screen-time-control/id6749428484?platform=iphone",
+  APP_STORE_URL: "https://apps.apple.com/us/app/spool-screen-time-control/id6749428484",
+
+  // Spool is currently iOS-only. Add the Android package here if that changes.
+  ANDROID_PACKAGE: null,
+
+  // AppsFlyer OneLinks by ?src=. Unknown or missing sources intentionally fall
+  // back to the raw App Store URL.
+  ATTRIBUTION_LINKS: {
+    manychat: "https://spool.onelink.me/c5xQ/99xx9vdy",
+    "instagram-bio": "https://spool.onelink.me/c5xQ/3uxzx1hc",
+    alexis_instantdm: "https://spool.onelink.me/c5xQ/q1d0gdb9",
+    spool_manychat: "https://spool.onelink.me/c5xQ/99xx9vdy",
+    sean_manychat: "https://spool.onelink.me/c5xQ/3yu1dta4",
+    spool_bio: "https://spool.onelink.me/c5xQ/3uxzx1hc",
+    sean_bio: "https://spool.onelink.me/c5xQ/tnykj47a",
+    alexis_bio: "https://spool.onelink.me/c5xQ/6ezr2f75",
+  },
   
   // Waitlist link (when app is not live)
   WAITLIST_URL: "https://spool-app.vercel.app/",

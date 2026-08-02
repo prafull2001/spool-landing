@@ -5,6 +5,7 @@ import { motion, useMotionValue, useTransform } from 'framer-motion';
 import NotificationCards from './NotificationCards';
 import PhoneMockup from './PhoneMockup';
 import BackgroundGlow from './BackgroundGlow';
+import { DownloadLink } from '../DownloadLink/DownloadLink';
 import { getCurrentURL } from '../../config/appConfig';
 import './ScrollHero.css';
 
@@ -98,9 +99,9 @@ const ScrollHero = () => {
                             Stop doomscrolling with voice check-ins
                         </h1>
                         <p className="hero-tagline">Spool · Unwind wisely 🧵🪡</p>
-                        <a href={downloadUrl} className="app-store-button" target="_blank" rel="noopener noreferrer">
+                        <DownloadLink href={downloadUrl} className="app-store-button" target="_blank" rel="noopener noreferrer">
                             <img src="/app-store-badge.svg" alt="Download on the App Store" />
-                        </a>
+                        </DownloadLink>
                         <aside className="hero-excuses-badge">
                             <span>13k+ excuses recorded</span>
                         </aside>

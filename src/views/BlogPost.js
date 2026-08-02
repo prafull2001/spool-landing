@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import Logo from '../components/Logo/Logo';
 import Footer from '../components/Footer/Footer';
+import { DownloadLink } from '../components/DownloadLink/DownloadLink';
 import { PRAFULL } from '../data/authors';
 import { getBlogContentMap } from '../data/content';
 import './BlogPost.css';
@@ -21,7 +22,7 @@ const BlogPost = () => {
         <div className="blog-post-container">
           <div className="blog-post-content">
             <h1>Post Not Found</h1>
-            <p>Sorry, we couldn't find the blog post you're looking for.</p>
+            <p>Sorry, we couldn&apos;t find the blog post you&apos;re looking for.</p>
             <Link href="/blog" className="back-to-blog">← Back to Blog</Link>
           </div>
         </div>
@@ -119,12 +120,13 @@ const BlogPost = () => {
               ? 'Spool removes the feeds that pull you in and helps you understand why you reached for them.'
               : "Join thousands who've transformed their relationship with their phones."}
           </p>
-          <a href="https://apps.apple.com/us/app/spool-screen-time-control/id6749428484?platform=iphone"
-             className="blog-cta-button"
-             target="_blank"
-             rel="noopener noreferrer">
+          <DownloadLink
+            className="blog-cta-button"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Try Spool on iPhone
-          </a>
+          </DownloadLink>
         </div>
       </article>
       <Footer />

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { DownloadLink } from '../DownloadLink/DownloadLink';
 import './Hero.css';
 import { getCurrentURL } from '../../config/appConfig';
 
@@ -27,9 +28,9 @@ const Hero = () => {
             <span className="hero-title-main">Doomscrolling is stealing your life.</span><br/>
             <span className="hero-title-accent">Unwind Wisely. 🧵</span>
           </h1>
-          <a href={url} className="app-store-button" target="_blank" rel="noopener noreferrer">
+          <DownloadLink href={url} className="app-store-button" target="_blank" rel="noopener noreferrer">
             <img src="/app-store-badge.svg" alt="Download on the App Store" />
-          </a>
+          </DownloadLink>
           <p className="hero-excuses-count">13k+ excuses recorded</p>
           <div className="hero-image">
             <img src={appBoquet.src} alt="Spool App Screenshots" />

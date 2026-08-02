@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Footer from '@/components/Footer/Footer';
 import Logo from '@/components/Logo/Logo';
+import { DownloadLink } from '@/components/DownloadLink/DownloadLink';
 import { FOCUS_WEB_PLATFORMS } from '@/data/focusWeb';
 import styles from './focus-web.module.css';
 
@@ -45,14 +46,13 @@ export default function FocusWebPage() {
             selected features inside Instagram, YouTube, X, and Snapchat, so you can
             block the scroll surface instead of losing the whole platform.
           </p>
-          <a
+          <DownloadLink
             className={styles.primaryLink}
-            href="https://apps.apple.com/us/app/spool-screen-time-control/id6749428484?platform=iphone"
             target="_blank"
             rel="noopener noreferrer"
           >
             Try Focus Web on iPhone
-          </a>
+          </DownloadLink>
         </header>
 
         <section className={styles.answer} aria-labelledby="focus-web-answer">

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { DownloadLink } from '@/components/DownloadLink/DownloadLink';
 import Logo from '@/components/Logo/Logo';
 import Footer from '@/components/Footer/Footer';
 import './About.css';
@@ -249,14 +250,13 @@ export default function AboutPage() {
         <div className="about-cta">
           <h3>Try Spool</h3>
           <p>The only screen-time app that asks you to speak your reason before you scroll.</p>
-          <a
-            href="https://apps.apple.com/us/app/spool-screen-time-control/id6749428484?platform=iphone"
+          <DownloadLink
             className="about-cta-button"
             target="_blank"
             rel="noopener noreferrer"
           >
             Download Spool on iPhone
-          </a>
+          </DownloadLink>
         </div>
       </div>
       <Footer />

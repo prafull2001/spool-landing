@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Footer from '@/components/Footer/Footer';
 import Logo from '@/components/Logo/Logo';
+import { DownloadLink } from '@/components/DownloadLink/DownloadLink';
 import { FOCUS_WEB_PLATFORMS, getFocusWebPlatform } from '@/data/focusWeb';
 import styles from '../focus-web.module.css';
 
@@ -87,14 +88,13 @@ export default async function FocusWebPlatformPage({ params }) {
           <p className={styles.eyebrow}>Spool Focus Web for {item.platform}</p>
           <h1>{item.title}</h1>
           <p className={styles.lede}>{item.description}</p>
-          <a
+          <DownloadLink
             className={styles.primaryLink}
-            href="https://apps.apple.com/us/app/spool-screen-time-control/id6749428484?platform=iphone"
             target="_blank"
             rel="noopener noreferrer"
           >
             Try Spool on iPhone
-          </a>
+          </DownloadLink>
         </header>
 
         <section className={styles.answer} aria-labelledby="quick-answer">
@@ -156,13 +156,9 @@ export default async function FocusWebPlatformPage({ params }) {
 
         <section className={styles.cta}>
           <h2>Keep the platform. Remove the part that pulls you in.</h2>
-          <a
-            href="https://apps.apple.com/us/app/spool-screen-time-control/id6749428484?platform=iphone"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <DownloadLink target="_blank" rel="noopener noreferrer">
             Download Spool for iPhone
-          </a>
+          </DownloadLink>
         </section>
       </main>
       <Footer />

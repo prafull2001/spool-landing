@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import { DownloadLink } from '../DownloadLink/DownloadLink';
 import './Popup.css';
 import { getCurrentURL } from '../../config/appConfig';
 
@@ -27,11 +28,6 @@ const Popup = () => {
     sessionStorage.setItem('spoolPopupSeen', 'true');
   };
 
-  const handleDownload = () => {
-    window.open(url, '_blank');
-    handleClose();
-  };
-
   if (!isVisible) return null;
 
   return (
@@ -52,7 +48,9 @@ const Popup = () => {
         </div>
         
         <div className="popup-actions">
-          <img src="/app-store-badge.svg" alt="Download on the App Store" className="popup-app-store-badge" onClick={handleDownload} />
+          <DownloadLink href={url} target="_blank" rel="noopener noreferrer" onClick={handleClose}>
+            <img src="/app-store-badge.svg" alt="Download on the App Store" className="popup-app-store-badge" />
+          </DownloadLink>
         </div>
       </div>
     </div>

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { DownloadLink } from '../DownloadLink/DownloadLink';
 import './Header.css';
 import { getCurrentConfig, getCurrentURL } from '../../config/appConfig';
 
@@ -21,7 +22,9 @@ const Header = () => {
           <Link href="/blog">Blog</Link>
           <Link href="/privacy">Privacy</Link>
           <Link href="/support">Support</Link>
-          <a href={url} className="download-button" target="_blank" rel="noopener noreferrer">{config.header_button}</a>
+          <DownloadLink href={url} className="download-button" target="_blank" rel="noopener noreferrer">
+            {config.header_button}
+          </DownloadLink>
         </nav>
       </div>
     </header>

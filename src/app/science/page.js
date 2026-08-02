@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { DownloadLink } from '@/components/DownloadLink/DownloadLink';
 import Logo from '@/components/Logo/Logo';
 import Footer from '@/components/Footer/Footer';
 import '@/views/BlogPost.css';
@@ -144,14 +145,13 @@ export default function SciencePage() {
         <div className="blog-post-cta">
           <h3>Want to feel the mechanism, not read about it?</h3>
           <p>Spool is the affect-labeling finding turned into a 5-second iPhone interaction.</p>
-          <a
-            href="https://apps.apple.com/us/app/spool-screen-time-control/id6749428484?platform=iphone"
+          <DownloadLink
             className="blog-cta-button"
             target="_blank"
             rel="noopener noreferrer"
           >
             Try Spool on iPhone
-          </a>
+          </DownloadLink>
         </div>
       </article>
       <Footer />
