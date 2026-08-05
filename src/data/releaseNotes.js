@@ -52,8 +52,7 @@ export const DATA_QUIRKS_MD = `### Known data quirks (read before analyzing)
   dashboard's "v6" tab deliberately folds \`flow_version === 6 || 9\`.
 - Other flow_version facts: 1 and 7 never existed; 8 = \`focus_web_apps_v8\`
   (~1 day, dev-scale sample); 9 = \`personal_plan_reveal_v9\`; 10 =
-  \`post_purchase_journey_v10\` (current 4.27 development snapshot, not
-  confirmed live). Resumers get 5 /
+  \`post_purchase_journey_v10\` (current live 4.27 release). Resumers get 5 /
   \`legacy_resume_pre_demo_v5\` and legitimately show zero on screens 0–9.85.
   **Prefer \`flow_cohort\` for cohorting.**
 - Two \`flow_version\` fields can disagree in PostHog: the super property is the
@@ -63,8 +62,8 @@ export const DATA_QUIRKS_MD = `### Known data quirks (read before analyzing)
 - Multiple TestFlight/App Store builds share \`app_version\` 4.21 (at least 8
   builds, 2026-07-07 → 07-24+) — split by date range or \`app_build\` (which
   only exists as an event property from 2026-07-18). An uncommitted
-  \`MARKETING_VERSION → 4.27\` edit labels the current local development
-  snapshot; do not treat 4.27 as production until it appears in live data.
+  \`MARKETING_VERSION → 4.27\` edit became the current live release; use the
+  4.27 boundary below for new production comparisons.
 - \`name_collection\` and \`create_account\` are conditional screens with low
   traffic by design; low counts there are not dropoff.
 `;
@@ -86,8 +85,7 @@ export const MAPPING_NOTES_MD = `### Cross-version joining notes
   Dominant in live traffic as of late Jul 2026.
 - \`8\` — Jul 20 (\`focus_web_apps_v8\`, ~1 day) · \`9\` — Jul 21
   (\`personal_plan_reveal_v9\`; **identical flow to 6**) · \`10\` —
-  current 4.27 development snapshot (\`post_purchase_journey_v10\`, not
-  confirmed live). Resumers get
+  current live 4.27 release (\`post_purchase_journey_v10\`). Resumers get
   \`5\` / \`legacy_resume_pre_demo_v5\`.
 - The only randomized A/B ever was \`ab_showVideoIntro\` (2026-03-17 → concluded
   2026-04-28, Group A won; the field is a constant \`true\` afterwards).
@@ -585,11 +583,11 @@ Two flags: the headline "Reels-Free Instagram" feature is **debug-only** (never 
   {
     version: '4.21',
     releaseDate: '2026-07-07',
-    liveUntil: null,
+    liveUntil: '2026-08-05',
     commitCount: 52,
     headline: 'FocusWeb ships, then two weeks of funnel rebuilding under one version number',
-    flowVersions: '5 at release → **6 in the deployed build** (`instagram_demo_v6`, cut from uncommitted state) → 8/9 in repo (Jul 20/21) → 10 (unreleased). 6≡9 identical flows.',
-    cohorts: '`instagram_demo_v6` (deployed, dominant) · `personal_plan_reveal_v9` (repo HEAD) · `legacy_resume_pre_demo_v5` (resumers) · `focus_web_apps_v8` (~1 day) · `post_purchase_journey_v10` (unreleased)',
+    flowVersions: '5 at release → **6 in the deployed build** (`instagram_demo_v6`, cut from uncommitted state) → 8/9 in repo (Jul 20/21) → 10 (shipped in 4.27). 6≡9 identical flows.',
+    cohorts: '`instagram_demo_v6` (deployed, dominant) · `personal_plan_reveal_v9` · `legacy_resume_pre_demo_v5` (resumers) · `focus_web_apps_v8` (~1 day) · `post_purchase_journey_v10` (shipped in 4.27)',
     paywall: '`JourneyPaywallView` (hard); **Monthly → Weekly swap Jul 17**; win-back sheets unchanged',
     pricing: '$4.99/wk + annual (`default_wo_free_trial` — no trial on the main paywall) · $34.99/yr win-back deal',
     sections: [
@@ -599,7 +597,7 @@ Two flags: the headline "Reels-Free Instagram" feature is **debug-only** (never 
 
 Then 46 more commits landed under the same version number. The commercially critical ones: **Jul 17 — the onboarding paywall's Monthly plan replaced with Weekly** ($4.99/wk fallback, yearly stays default). **Jul 18 — purchase analytics rebuilt from scratch (SPO-219)**: one canonical \`paywall_purchase_completed\` deduped by transaction ID (13 duplicate call sites deleted), new failure/restore events, an \`access_source\` classifier (paid/trial/promotional/sandbox/dev_bypass/free_code), and a deployed Firebase function turning **RevenueCat webhooks into idempotent \`rc_*\` PostHog events** (renewals, cancels, billing issues, refunds — server-side truth PostHog never had). Same day, SPO-222 instrumented previously-silent surfaces (Focus Web funnel, Screen Time grant/deny, rule edits, support taps) and enabled PostHog surveys.
 
-Jul 20–22: the biggest onboarding rewrite of the era — three new early screens including an interactive **synthetic Instagram demo** (pixel-faithful fake IG with a real scrollable feed; user toggles Block Reels and watches reels disappear, before any paywall), a pre-paywall **Personalized Plan** reveal (local-only, no AI), an expanded archetype reveal, and \`onboarding_completed\` redefined to fire only after blocking is *verifiably* active. \`flow_version\` jumped 5 → 8 → 9 here (10 on origin/main, unreleased).`,
+Jul 20–22: the biggest onboarding rewrite of the era — three new early screens including an interactive **synthetic Instagram demo** (pixel-faithful fake IG with a real scrollable feed; user toggles Block Reels and watches reels disappear, before any paywall), a pre-paywall **Personalized Plan** reveal (local-only, no AI), an expanded archetype reveal, and \`onboarding_completed\` redefined to fire only after blocking is *verifiably* active. \`flow_version\` jumped 5 → 8 → 9 here; version 10 later shipped in 4.27.`,
       },
       {
         title: 'Builds within 4.21',
@@ -611,14 +609,14 @@ Jul 20–22: the biggest onboarding rewrite of the era — three new early scree
 - **Jul 17** — **Monthly → Weekly paywall swap** (highest-leverage revenue change in the window).
 - **Jul 18** — Help & Support overhaul; SPO-219 purchase analytics + RevenueCat→PostHog bridge; SPO-222 instrumentation + surveys.
 - **Jul 20–22** — flow v8/v9 onboarding (synthetic IG demo, Personalized Plan, "Best Value" yearly badge, yearly pill moved left). Likely TestFlight-only at time of mining.
-- **Jul 24 (origin/main, unreleased)** — post-purchase onboarding journey, flow_version 10 / \`post_purchase_journey_v10\`.
-- An uncommitted \`MARKETING_VERSION → 4.24\` edit exists locally, so the App Store may show 4.22–4.24 for content git labels 4.21.`,
+- **Jul 24 (later shipped in 4.27)** — post-purchase onboarding journey, flow_version 10 / \`post_purchase_journey_v10\`.
+- Intermediate local marketing-version edits did not define reliable live windows; 4.27 is the next confirmed production boundary after 4.21.`,
       },
       {
         title: 'Onboarding',
         md: `- New screens (Jul 20–22): \`focus_web_intro\` (0.425), \`instagram_reels_demo\` (0.45 — guided browse → toggle Block Reels → apply, state machine tracks \`toggleCount\`/\`scrollCount\`), \`focus_web_apps\` (0.475), \`personalized_plan\` (9.85).
 - Archetype reveal (5.4) heavily expanded (plain-language interpretations, new metric rows); \`grounding_breath\` (5.2) dropped from the flow order.
-- **flow_version/cohort truth:** the deployed App Store build stamps **6 / \`instagram_demo_v6\`** (cut from uncommitted local state — git itself never emits 6); repo history goes 5 → 8 (\`focus_web_apps_v8\`, Jul 20, ~1 day) → 9 (\`personal_plan_reveal_v9\`, Jul 21, HEAD) → 10 (\`post_purchase_journey_v10\`, unreleased). 6 and 9 are identical flows. Resumers get 5 / \`legacy_resume_pre_demo_v5\`. Assignment persisted per attempt (\`spool_onboarding_attempt_id\` etc. in UserDefaults).
+- **flow_version/cohort truth:** the deployed 4.21 build stamps **6 / \`instagram_demo_v6\`** (cut from uncommitted local state — git itself never emits 6); repo history goes 5 → 8 (\`focus_web_apps_v8\`, Jul 20, ~1 day) → 9 (\`personal_plan_reveal_v9\`, Jul 21) → 10 (\`post_purchase_journey_v10\`, shipped in 4.27). 6 and 9 are identical flows. Resumers get 5 / \`legacy_resume_pre_demo_v5\`. Assignment persisted per attempt (\`spool_onboarding_attempt_id\` etc. in UserDefaults).
 - \`onboarding_sessions\`/\`onboarding_surveys\` docs now stamped with \`onboarding_attempt_id\`, \`flow_version\`, \`flow_cohort\`.
 - Screen Time denial no longer dead-ends onboarding (screen 4.75 offers re-try / Open Settings).`,
       },
@@ -656,10 +654,9 @@ Jul 20–22: the biggest onboarding rewrite of the era — three new early scree
   {
     version: '4.27',
     releaseDate: '2026-08-05',
-    releaseStatus: 'development',
     liveUntil: null,
     commitCount: 47,
-    headline: 'Development snapshot: exercise unlocks, Snapchat, clearer blocking state, and retention repairs',
+    headline: 'Exercise unlocks, Snapchat, clearer blocking state, and retention repairs',
     flowVersions: '10 / `post_purchase_journey_v10` for new attempts · 5 / `legacy_resume_pre_demo_v5` for resumed attempts',
     cohorts: '`post_purchase_journey_v10` (new attempts) · `legacy_resume_pre_demo_v5` (resumers)',
     paywall: '`JourneyPaywallView` (hard, unchanged); new Apple promotional free-week save offer for eligible weekly/monthly cancellers',
@@ -667,7 +664,7 @@ Jul 20–22: the biggest onboarding rewrite of the era — three new early scree
     sections: [
       {
         title: 'Summary',
-        md: `This is a **development snapshot, not a confirmed App Store release**. It covers 47 commits after the Jul 24 boundary documented in 4.21 and uses the local user-owned \`MARKETING_VERSION = 4.27\` label.
+        md: `4.27 is the **current live release**. It covers 47 commits after the Jul 24 boundary documented in 4.21.
 
 The product gained two camera-based intervention styles: **Push-Ups and Squats**, each granting one minute per completed rep. The in-Spool app hub added **Snapchat** alongside Instagram, YouTube, and X, with controls that preserve chat/camera while hiding Spotlight and Stories. Public language now calls this surface **Apps** and explains that the cleaner experience happens inside Spool while regular installed apps remain unchanged; internal \`FocusWeb\` types, storage keys, and analytics event names stay stable.
 
@@ -699,7 +696,7 @@ Home now exposes a truthful blocking-status badge (on now, starts later, or off)
       },
       {
         title: 'Data quirks',
-        md: `- **Do not include 4.27 in production cohorts until \`app_version = 4.27\` is observed in App Store/TestFlight data.** The date above is the code-snapshot date, not a verified store release date.
+        md: `- **4.27 is live.** Use 2026-08-05 as its production boundary and segment earlier 4.21 traffic separately.
 - The Thread number on Home changes source by default: 4.27 uses approved requested minutes, while older builds used observed blocked-app Screen Time. The optional Settings switch restores the old display only; unlock enforcement never changes. Segment before comparing Thread percentages across versions.
 - Churn-save users are a rescue cohort, not ordinary paid conversion. The free week applies only to eligible weekly/monthly cancellers and begins at the next billing event; yearly and already-promotional access are excluded.
 - Push-Up/Squat availability and completion depend on camera permission plus on-device pose detection. Do not interpret low use as rejection without separating permission denial, setup failure, abandonment, and completed sessions.
@@ -724,25 +721,16 @@ export function mappingTableMarkdown() {
     '|---|---|---|---|---|---|---|';
   const rows = [...RELEASES]
     .reverse()
-    .map(r => {
-      const released = r.releaseStatus === 'development'
-        ? `${r.releaseDate} (development snapshot)`
-        : r.releaseDate;
-      const liveUntil = r.releaseStatus === 'development'
-        ? 'unreleased'
-        : (r.liveUntil || 'current');
-      return `| ${r.version} | ${released} | ${liveUntil} | ${r.flowVersions || '—'} | ${r.cohorts || '—'} | ${r.paywall || '—'} | ${r.pricing || '—'} |`;
-    });
+    .map(r =>
+      `| ${r.version} | ${r.releaseDate} | ${r.liveUntil || 'current'} | ${r.flowVersions || '—'} | ${r.cohorts || '—'} | ${r.paywall || '—'} | ${r.pricing || '—'} |`
+    );
   return `### Version mapping table\n${header}\n${rows.join('\n')}`;
 }
 
 export function releaseMarkdown(r) {
-  const releaseLine = r.releaseStatus === 'development'
-    ? `- Development snapshot: ${r.releaseDate} · Not confirmed live · ${r.commitCount} commits`
-    : `- Released: ${r.releaseDate} · Live until: ${r.liveUntil || 'current'} · ${r.commitCount} commits`;
   const lines = [
     `## Version ${r.version} — ${r.headline}`,
-    releaseLine,
+    `- Released: ${r.releaseDate} · Live until: ${r.liveUntil || 'current'} · ${r.commitCount} commits`,
   ];
   if (r.flowVersions) lines.push(`- Onboarding flow_version(s): ${r.flowVersions}${r.cohorts ? ` · Cohorts: ${r.cohorts}` : ''}`);
   if (r.paywall) lines.push(`- Paywall: ${r.paywall}${r.pricing ? ` · Pricing: ${r.pricing}` : ''}`);

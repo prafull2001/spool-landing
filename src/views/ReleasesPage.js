@@ -135,9 +135,7 @@ export default function ReleasesPage() {
 
   const facts = current
     ? [
-        current.releaseStatus === 'development'
-          ? { label: 'Status', value: `Development snapshot · ${current.releaseDate} · not confirmed live` }
-          : { label: 'Live window', value: `${current.releaseDate} → ${current.liveUntil || 'now'}` },
+        { label: 'Live window', value: `${current.releaseDate} → ${current.liveUntil || 'now'}` },
         { label: 'flow_version', value: current.flowVersions },
         { label: 'Cohorts', value: current.cohorts },
         { label: 'Paywall', value: current.paywall },
@@ -200,8 +198,8 @@ export default function ReleasesPage() {
                   onClick={() => setSelected(r.version)}
                 >
                   <td className="rel-v">{r.version}</td>
-                  <td>{r.releaseStatus === 'development' ? `${r.releaseDate} snapshot` : r.releaseDate}</td>
-                  <td>{r.releaseStatus === 'development' ? 'unreleased' : (r.liveUntil || 'current')}</td>
+                  <td>{r.releaseDate}</td>
+                  <td>{r.liveUntil || 'current'}</td>
                   <td>{inlineMd(r.flowVersions || '—')}</td>
                   <td>{inlineMd(r.cohorts || '—')}</td>
                   <td>{inlineMd(r.paywall || '—')}</td>
@@ -231,14 +229,10 @@ export default function ReleasesPage() {
             >
               <span className="rel-nav-version">
                 {r.version}
-                {!r.liveUntil && r.releaseStatus !== 'development' && (
-                  <span className="rel-live-dot" title="Currently live" />
-                )}
+                {!r.liveUntil && <span className="rel-live-dot" title="Currently live" />}
               </span>
               <span className="rel-nav-dates">
-                {r.releaseStatus === 'development'
-                  ? `${r.releaseDate.slice(5)} · dev snapshot`
-                  : `${r.releaseDate.slice(5)} → ${r.liveUntil ? r.liveUntil.slice(5) : 'now'}`}
+                {r.releaseDate.slice(5)} → {r.liveUntil ? r.liveUntil.slice(5) : 'now'}
               </span>
               <span className="rel-nav-headline">{r.headline}</span>
             </button>
@@ -251,9 +245,7 @@ export default function ReleasesPage() {
               <div className="rel-detail-title">
                 <h3>
                   {current.version}
-                  {current.releaseStatus === 'development'
-                    ? <span className="rel-live-badge">DEV</span>
-                    : (!current.liveUntil && <span className="rel-live-badge">LIVE</span>)}
+                  {!current.liveUntil && <span className="rel-live-badge">LIVE</span>}
                 </h3>
                 <p>{current.headline}</p>
               </div>

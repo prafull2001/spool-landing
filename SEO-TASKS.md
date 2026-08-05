@@ -4,19 +4,18 @@
 
 - [x] Fetch and merge the latest iOS `origin/main` while preserving the local 4.27 version edit
 - [x] Diff the 47 commits after the existing July 24 release-context boundary
-- [x] Add a clearly labeled 4.27 development snapshot covering product, onboarding, revenue,
+- [x] Add the live 4.27 release covering product, onboarding, revenue,
       analytics, and comparison caveats
-- [x] Update stale version/flow notes without presenting unverified development code as live
+- [x] Update stale version/flow notes with the user-confirmed live boundary
 - [x] Run production build/data-shape/diff checks and review the final diff
 
-Implementation note: the Release tab now labels 4.27 as a development snapshot and leaves 4.21 as
-the current production context until 4.27 is observed in App Store/TestFlight data. The new entry
-covers the 47-commit delta after July 24: exercise interventions, Snapchat and Apps clarity,
-blocking status/rule presets, flow v10, Thread display semantics, churn-save offers, and RevenueCat
-identity/analytics repairs.
+Implementation note: the Release tab now labels 4.27 as the current live release from 2026-08-05
+and closes the 4.21 live window on that date. The new entry covers the 47-commit delta after July
+24: exercise interventions, Snapchat and Apps clarity, blocking status/rule presets, flow v10,
+Thread display semantics, churn-save offers, and RevenueCat identity/analytics repairs.
 
-Verification note: targeted module assertions confirm 4.27 sorts first, stays marked development,
-exports as unreleased, and reports 47 commits; `git diff --check` passes and the 50-page Next.js
+Verification note: targeted module assertions confirm 4.27 sorts first, exports as current/live,
+closes 4.21 on 2026-08-05, and reports 47 commits; `git diff --check` passes and the 50-page Next.js
 production build succeeds. Scoped ESLint could not run because this checkout has no ESLint 9 flat
 configuration file.
 
