@@ -1,5 +1,13 @@
 # Spool SEO / ASO / GEO Task List
 
+## IN PROGRESS — New creator AppsFlyer links (2026-08-15)
+
+- [x] Add Peyton bio attribution (`peyton_bio`)
+- [x] Add Peyton DM attribution (`peyton_dm`)
+- [x] Add Simon bio attribution (`simon_bio`)
+- [ ] Add Simon DM attribution (URL is cut off in the supplied screenshot)
+- [ ] Add the unlabeled `tom6a7gl` OneLink after its `src` name is supplied
+
 ## DONE — Releases tab refresh from iOS Git (2026-08-05)
 
 - [x] Fetch and merge the latest iOS `origin/main` while preserving the local 4.27 version edit

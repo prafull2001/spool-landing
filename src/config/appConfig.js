@@ -21,6 +21,9 @@ export const APP_CONFIG = {
     spool_bio: "https://spool.onelink.me/c5xQ/3uxzx1hc",
     sean_bio: "https://spool.onelink.me/c5xQ/tnykj47a",
     alexis_bio: "https://spool.onelink.me/c5xQ/6ezr2f75",
+    peyton_bio: "https://spool.onelink.me/c5xQ/ponklr9l",
+    peyton_dm: "https://spool.onelink.me/c5xQ/rcqriaq7",
+    simon_bio: "https://spool.onelink.me/c5xQ/rayxcnkh",
   },
   
   // Waitlist link (when app is not live)
