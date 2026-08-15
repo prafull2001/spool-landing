@@ -24,7 +24,7 @@ export async function generateMetadata({ params }) {
       title: `${item.title} | Spool`,
       description: item.description,
       url,
-      images: [{ url: 'https://www.thespoolapp.com/og-homepage.jpg', width: 1200, height: 630 }],
+      images: [{ url: 'https://www.thespoolapp.com/og-homepage-20k.jpg', width: 1200, height: 630 }],
     },
   };
 }

@@ -9,7 +9,7 @@ export const metadata = {
     description: 'Learn how Spool protects your privacy and handles your screen time data securely.',
     url: 'https://www.thespoolapp.com/privacy',
     type: 'website',
-    images: [{ url: 'https://www.thespoolapp.com/og-homepage.jpg', width: 1200, height: 630 }],
+    images: [{ url: 'https://www.thespoolapp.com/og-homepage-20k.jpg', width: 1200, height: 630 }],
   },
 };
 

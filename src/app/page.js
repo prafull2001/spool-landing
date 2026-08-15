@@ -21,7 +21,7 @@ export default function Page() {
             "applicationCategory": "LifestyleApplication",
             "description": "AI-powered screen time app that uses voice check-ins to help you stop doomscrolling and build mindful phone habits",
             "url": "https://www.thespoolapp.com",
-            "image": "https://www.thespoolapp.com/og-homepage.jpg",
+            "image": "https://www.thespoolapp.com/og-homepage-20k.jpg",
             "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
             "downloadUrl": "https://apps.apple.com/us/app/spool-save-your-thread/id6749428484",
             "applicationSubCategory": "Screen Time Management"

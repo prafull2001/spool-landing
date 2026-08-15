@@ -1,5 +1,12 @@
 # Spool SEO / ASO / GEO Task List
 
+## DONE — 20,000-session social preview (2026-08-15)
+
+- [x] Replace the preview badge with `20,000+ sessions blocked`
+- [x] Publish a new cache-busting Open Graph image URL
+- [x] Update every site metadata reference to the new image
+- [x] Verify the production build and generated preview metadata
+
 ## DONE — New creator AppsFlyer links (2026-08-15)
 
 - [x] Add Peyton bio attribution (`peyton_bio`)

@@ -19,7 +19,7 @@ export const metadata = {
     description: 'Spool pairs AI voice check-ins with Focus Web, a social media feed blocker and distraction-free browser for iPhone.',
     url: 'https://www.thespoolapp.com',
     siteName: 'Spool',
-    images: [{ url: 'https://www.thespoolapp.com/og-homepage.jpg', width: 1200, height: 630 }],
+    images: [{ url: 'https://www.thespoolapp.com/og-homepage-20k.jpg', width: 1200, height: 630 }],
     type: 'website',
   },
   twitter: { card: 'summary_large_image', site: '@the_spool_app', creator: '@prafull_truffle' },

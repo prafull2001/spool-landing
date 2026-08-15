@@ -15,7 +15,7 @@ export const metadata = {
     description:
       'Remove Reels, Shorts, Spotlight, Stories, Discover, Explore, and DMs without blocking every social platform.',
     url: 'https://www.thespoolapp.com/focus-web',
-    images: [{ url: 'https://www.thespoolapp.com/og-homepage.jpg', width: 1200, height: 630 }],
+    images: [{ url: 'https://www.thespoolapp.com/og-homepage-20k.jpg', width: 1200, height: 630 }],
   },
 };
 

@@ -9,7 +9,7 @@ export const metadata = {
     description: 'Get help with Spool, find answers to common questions about voice check-ins, and contact our support team.',
     url: 'https://www.thespoolapp.com/support',
     type: 'website',
-    images: [{ url: 'https://www.thespoolapp.com/og-homepage.jpg', width: 1200, height: 630 }],
+    images: [{ url: 'https://www.thespoolapp.com/og-homepage-20k.jpg', width: 1200, height: 630 }],
   },
 };
 

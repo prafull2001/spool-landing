@@ -13,7 +13,7 @@ export const metadata = {
     description: 'Spool was founded by co-founders Prafull Sharma, Jainam Manot, and Neal Shah. We build AI voice check-ins that help iPhone users stop doomscrolling through awareness, not blocking.',
     url: 'https://www.thespoolapp.com/about',
     type: 'website',
-    images: [{ url: 'https://www.thespoolapp.com/og-homepage.jpg', width: 1200, height: 630 }],
+    images: [{ url: 'https://www.thespoolapp.com/og-homepage-20k.jpg', width: 1200, height: 630 }],
   },
 };
 

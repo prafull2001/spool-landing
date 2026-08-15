@@ -9,7 +9,7 @@ export const metadata = {
     description: 'Original research and head-to-head app comparisons from Spool. Read what 13,000+ voice check-ins reveal about why people doomscroll, plus honest reviews of Opal, One Sec, Freedom, ScreenZen, and more.',
     url: 'https://www.thespoolapp.com/blog',
     type: 'website',
-    images: [{ url: 'https://www.thespoolapp.com/og-homepage.jpg', width: 1200, height: 630 }],
+    images: [{ url: 'https://www.thespoolapp.com/og-homepage-20k.jpg', width: 1200, height: 630 }],
   },
 };
 

@@ -148,7 +148,7 @@ export async function generateMetadata({ params }) {
       publishedTime: meta.datePublished,
       modifiedTime: meta.dateModified,
       authors: [AUTHOR.name],
-      images: [{ url: 'https://www.thespoolapp.com/og-homepage.jpg', width: 1200, height: 630 }],
+      images: [{ url: 'https://www.thespoolapp.com/og-homepage-20k.jpg', width: 1200, height: 630 }],
     },
   };
 }
