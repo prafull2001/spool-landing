@@ -4,6 +4,13 @@ import { db } from '../config/firebase';
 import { collection, query, orderBy, where, getDocs, Timestamp, limit } from 'firebase/firestore';
 import { Chart, registerables } from 'chart.js';
 import useFirebaseAuth from '../hooks/useFirebaseAuth';
+import {
+  addUserToLookup,
+  classifyABGroup,
+  filterSessionsByVersion,
+  findSessionUser,
+  supportsABTesting,
+} from './analyticsModel.mjs';
 import './AnalyticsPage.css';
 
 Chart.register(...registerables);
@@ -184,11 +191,11 @@ const SCREEN_ORDER_V5 = [
   { number: 22, name: 'blocking_confirmation', label: 'Confirm' },
 ];
 
-// "v6" tab = the latest reels-demo + personalized-plan onboarding. CONFIRMED against iOS
+// "v6" tab = the historical reels-demo + personalized-plan onboarding. CONFIRMED against iOS
 // SpoolOnboardingFlowView.swift analyticsScreenName (2026-07-22, via iOS Claude). Emitted by
-// two builds with identical screens: flow_version 6 (cohort instagram_demo_v6, currently
-// deployed) and flow_version 9 (cohort personal_plan_reveal_v9, next build) — the `sessions`
-// filter folds both. NOT an A/B split; cohort is deterministic from install/resume state.
+// two builds with identical screens: flow_version 6 (cohort instagram_demo_v6) and
+// flow_version 9 (cohort personal_plan_reveal_v9) — the `sessions` filter folds both.
+// NOT an A/B split; cohort is deterministic from install/resume state.
 // New vs v5:
 //  - "focus web / reels" demo arc after modern_apps: focus_web_intro, instagram_reels_demo,
 //    focus_web_apps (0.425 to 0.475)
@@ -255,6 +262,97 @@ const SCREEN_ORDER_V6 = [
   { number: 22, name: 'blocking_confirmation', label: 'Confirm' },
 ];
 
+// v10 = the current 4.27 production flow. It keeps the reels-demo acquisition
+// journey, moves Review before Top App Demon, and adds the Apps alternative to
+// the retained post-purchase setup.
+const SCREEN_ORDER_V10 = [
+  { number: 0, name: 'welcome', label: 'Welcome' },
+  { number: 0.1, name: 'meet_spooli', label: 'Meet Spooli' },
+  { number: 0.2, name: 'thread_unravel', label: 'Thread Unravel' },
+  { number: 0.3, name: 'see_for_yourself', label: 'See For Yourself' },
+  { number: 0.4, name: 'modern_apps', label: 'Modern Apps' },
+  { number: 0.425, name: 'focus_web_intro', label: 'Focus Web Intro' },
+  { number: 0.45, name: 'instagram_reels_demo', label: 'Reels Demo' },
+  { number: 0.475, name: 'focus_web_apps', label: 'Focus Web Apps' },
+  { number: 0.5, name: 'how_did_you_hear', label: 'How Heard' },
+  { number: 0.75, name: 'chat_onboarding', label: 'Chat (Spooli)' },
+  { number: 1.25, name: 'goal', label: 'Goal' },
+  { number: 1.3, name: 'screen_time_affect', label: 'ST Affect' },
+  { number: 1.35, name: 'profession', label: 'Profession' },
+  { number: 1.4, name: 'when_rot', label: 'When Rot' },
+  { number: 1.45, name: 'tried_before', label: 'Tried Before' },
+  { number: 3, name: 'age_selection', label: 'Age' },
+  { number: 4, name: 'screen_time_slider', label: 'Screen Time' },
+  { number: 4.5, name: 'screen_time_connect', label: 'ST Connect' },
+  { number: 4.75, name: 'screen_time_dialog', label: 'ST Dialog' },
+  { number: 4.85, name: 'notification_priming', label: 'Notif Priming' },
+  { number: 5, name: 'progress_bar', label: 'Loading' },
+  { number: 5.2, name: 'grounding_breath', label: 'Breathing' },
+  { number: 5.4, name: 'archetype_reveal', label: 'Archetype' },
+  { number: 5.5, name: 'review_request', label: 'Review' },
+  { number: 5.6, name: 'top_app_demon', label: 'App Demon' },
+  { number: 6, name: 'phone_usage_stats', label: 'Usage Stats' },
+  { number: 7, name: 'lifetime_stats', label: 'Lifetime Stats' },
+  { number: 8, name: 'average_lifespan', label: 'Avg Lifespan' },
+  { number: 8.75, name: 'academic_studies', label: 'Studies' },
+  { number: 9, name: 'weekly_benefits', label: 'Benefits' },
+  { number: 9.5, name: 'commitment_reason', label: 'Commit Reason' },
+  { number: 9.6, name: 'commitment_hold', label: 'Commit Hold' },
+  { number: 9.75, name: 'before_after', label: 'Before/After' },
+  { number: 9.85, name: 'personalized_plan', label: 'Personalized Plan' },
+  { number: 10.5, name: 'sky_paywall', label: 'Paywall' },
+  { number: 11, name: 'welcome_to_spool', label: 'Welcome to Spool' },
+  { number: 12, name: 'name_collection', label: 'Name (Fallback)' },
+  { number: 13, name: 'create_account', label: 'Account' },
+  { number: 14, name: 'notification_permission', label: 'Notifications' },
+  { number: 16, name: 'schedule_selection', label: 'Schedule' },
+  { number: 17, name: 'choose_apps', label: 'Choose Apps' },
+  { number: 18, name: 'daily_limit_explanation', label: 'Thread Explain' },
+  { number: 19, name: 'daily_request_pool', label: 'Daily Pool' },
+  { number: 20, name: 'excuse_explanation', label: 'Request Flow' },
+  { number: 21, name: 'pattern_explanation', label: 'Pattern' },
+  { number: 21.5, name: 'focus_hub_alternative', label: 'Apps Alternative' },
+  { number: 22, name: 'blocking_confirmation', label: 'Confirm' },
+];
+
+// v14 = the transformation-first carousel onboarding introduced for app 4.30.
+// Match and order by screen_name: its acquisition ordinals 11–19 overlap the retained
+// post-purchase route's raw screen numbers, and sky_paywall is written by both coordinators.
+// The three opening slides intentionally share one opening_carousel timing row.
+const SCREEN_ORDER_V14 = [
+  { number: 1, name: 'opening_carousel', label: 'Opening Carousel' },
+  { number: 2, name: 'display_name', label: 'Your Name' },
+  { number: 3, name: 'age_selection', label: 'Age' },
+  { number: 4, name: 'screen_time_slider', label: 'Screen Time' },
+  { number: 5, name: 'phone_usage_stats', label: 'Usage Stats' },
+  { number: 6, name: 'lifetime_stats', label: 'Lifetime Stats' },
+  { number: 7, name: 'average_lifespan', label: 'Avg Lifespan' },
+  { number: 8, name: 'review_request', label: 'Review' },
+  { number: 9, name: 'goal', label: 'Goal' },
+  { number: 10, name: 'when_rot', label: 'Usage Time' },
+  { number: 11, name: 'notification_priming', label: 'Notif Primer' },
+  { number: 12, name: 'referral_source', label: 'How Heard' },
+  { number: 13, name: 'thirty_day_transformation', label: '30-Day Result' },
+  { number: 14, name: 'commitment_reason', label: 'Commit Reason' },
+  { number: 15, name: 'commitment_hold', label: 'Commit Hold' },
+  { number: 16, name: 'before_after', label: 'Before/After' },
+  { number: 17, name: 'first_week_roadmap', label: 'First Week' },
+  { number: 18, name: 'personalized_plan', label: 'Personalized Plan' },
+  { number: 19, name: 'sky_paywall', label: 'Paywall' },
+  { number: 11, name: 'welcome_to_spool', label: 'Welcome to Spool' },
+  { number: 12, name: 'name_collection', label: 'Name (Fallback)' },
+  { number: 13, name: 'create_account', label: 'Account' },
+  { number: 14, name: 'notification_permission', label: 'Notifications' },
+  { number: 16, name: 'schedule_selection', label: 'Schedule' },
+  { number: 17, name: 'choose_apps', label: 'Choose Apps' },
+  { number: 18, name: 'daily_limit_explanation', label: 'Thread Explain' },
+  { number: 19, name: 'daily_request_pool', label: 'Daily Pool' },
+  { number: 20, name: 'excuse_explanation', label: 'Request Flow' },
+  { number: 21, name: 'pattern_explanation', label: 'Pattern' },
+  { number: 21.5, name: 'focus_hub_alternative', label: 'Apps Alternative' },
+  { number: 22, name: 'blocking_confirmation', label: 'Confirm' },
+];
+
 // v5 survey/personalization answers (onboarding_surveys) shown as per-answer breakdowns.
 // archetypeId backs up archetypeName so computed archetypes still chart if the name is missing.
 const V5_SURVEY_FIELDS = [
@@ -298,7 +396,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
   const [loading, setLoading] = useState(false);
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
-  const [version, setVersion] = useState('v6');
+  const [version, setVersion] = useState('v10');
   const [splitByAB, setSplitByAB] = useState(false);
   const [expandedSessionIdx, setExpandedSessionIdx] = useState(null);
   const [sessionSearch, setSessionSearch] = useState('');
@@ -314,6 +412,8 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
 
   const screenOrder =
     version === 'v1' ? SCREEN_ORDER_V1 :
+    version === 'v14' ? SCREEN_ORDER_V14 :
+    version === 'v10' ? SCREEN_ORDER_V10 :
     version === 'v6' ? SCREEN_ORDER_V6 :
     version === 'v5' ? SCREEN_ORDER_V5 :
     version === 'v4' ? SCREEN_ORDER_V4 :
@@ -321,30 +421,11 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
     SCREEN_ORDER_V2;
 
   // Filter sessions by version
-  const sessions = useMemo(() => {
-    if (version === 'v1') {
-      return allSessions.filter(s => !s.flow_version);
-    }
-    if (version === 'v6') {
-      // "v6" = the latest reels-demo + personalized-plan flow. Two builds emit it with
-      // identical screens: flow_version 6 (cohort instagram_demo_v6, the currently-deployed
-      // build) and flow_version 9 (cohort personal_plan_reveal_v9, the next build rolling
-      // out). Fold both so the tab captures all current-flow traffic. Legacy mid-flow
-      // resumers on the v9 build are stamped flow_version 5 (legacy_resume_pre_demo_v5)
-      // and correctly stay on the v5 tab.
-      return allSessions.filter(s => s.flow_version === 6 || s.flow_version === 9);
-    }
-    if (version === 'v5') {
-      return allSessions.filter(s => s.flow_version === 5);
-    }
-    if (version === 'v4') {
-      return allSessions.filter(s => s.flow_version === 4);
-    }
-    if (version === 'v3') {
-      return allSessions.filter(s => s.flow_version === 3);
-    }
-    return allSessions.filter(s => s.flow_version === 2);
-  }, [allSessions, version]);
+  const sessions = useMemo(
+    () => filterSessionsByVersion(allSessions, version),
+    [allSessions, version],
+  );
+  const supportsABSplit = supportsABTesting(version);
 
   useEffect(() => {
     if (!user) return;
@@ -427,8 +508,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
       const snapshot = await getDocs(collection(db, 'users'));
       const map = new Map();
       snapshot.docs.forEach(doc => {
-        const data = doc.data();
-        map.set(doc.id, data);
+        addUserToLookup(map, doc.id, doc.data());
       });
       setUsersMap(map);
     } catch (err) {
@@ -443,11 +523,8 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
 
   // Get A/B group for a session
   const getABGroup = useCallback((session) => {
-    if (!session.device_id) return null;
-    const survey = surveys.get(session.device_id);
-    if (!survey) return null;
-    return survey.ab_showVideoIntro === true ? 'A' : 'B';
-  }, [surveys]);
+    return classifyABGroup(session, surveys, version);
+  }, [surveys, version]);
 
   // Compute analytics for a given set of sessions
   const computeForSessions = useCallback((sessionList, order) => {
@@ -558,6 +635,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
     });
     return { groupA, groupB };
   }, [sessions, getABGroup]);
+  const showABControls = supportsABSplit && (abGroups.groupA.length > 0 || abGroups.groupB.length > 0);
 
   // Helper to build chart datasets
   const buildFunnelData = useCallback((sessionList, order) => {
@@ -602,7 +680,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
     const labels = screenOrder.map(s => s.label);
     const screenNames = screenOrder.map(s => s.name);
 
-    if (splitByAB) {
+    if (splitByAB && showABControls) {
       const funnelA = buildFunnelData(abGroups.groupA, screenOrder) || screenNames.map(() => 0);
       const funnelB = buildFunnelData(abGroups.groupB, screenOrder) || screenNames.map(() => 0);
       const dropoffA = buildDropoffData(funnelA);
@@ -774,7 +852,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
         });
       }
     }
-  }, [sessions, computeAnalytics, splitByAB, abGroups, screenOrder, buildFunnelData, buildAvgTimeData]);
+  }, [sessions, computeAnalytics, splitByAB, showABControls, abGroups, screenOrder, buildFunnelData, buildAvgTimeData]);
 
   // Conversion breakdown data
   const conversionData = useMemo(() => {
@@ -803,9 +881,11 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
     const rows = [];
 
     // A/B groups
-    rows.push({ header: 'A/B Group' });
-    rows.push(buildRow('Video Intro (A)', abGroups.groupA));
-    rows.push(buildRow('No Video (B)', abGroups.groupB));
+    if (showABControls) {
+      rows.push({ header: 'A/B Group' });
+      rows.push(buildRow('Video Intro (A)', abGroups.groupA));
+      rows.push(buildRow('No Video (B)', abGroups.groupB));
+    }
 
     // Referral source
     rows.push({ header: 'Referral Source' });
@@ -843,7 +923,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
     });
 
     return rows;
-  }, [sessions, surveys, abGroups]);
+  }, [sessions, surveys, abGroups, showABControls]);
 
   // Survey overview stats
   const surveyOverview = useMemo(() => {
@@ -930,11 +1010,11 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
     };
   }, [sessions, surveys]);
 
-  // Per-answer counts for v5 survey fields, v5/v6 tabs only — v6 collects the same
-  // personalization answers. Survey docs are per-device latest-state, so without the
+  // Per-answer counts for personalization fields on flows that collect them. Survey docs
+  // are per-device latest-state, so without the
   // version gate a re-onboarded device would attribute its answers to old v1-v4 sessions
   const v5SurveyBreakdowns = useMemo(() => {
-    if (version !== 'v5' && version !== 'v6') return [];
+    if (version !== 'v5' && version !== 'v6' && version !== 'v10' && version !== 'v14') return [];
     return V5_SURVEY_FIELDS.map(field => {
       const counts = {};
       let answered = 0;
@@ -960,15 +1040,18 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
   // Session explorer data
   const sessionExplorerData = useMemo(() => {
     let filtered = sessions.map((s, idx) => {
-      const userData = s.uid ? usersMap.get(s.uid) : null;
-      const displayName = userData?.displayName || userData?.name || '';
-      const email = userData?.email || '';
       const survey = s.device_id ? surveys.get(s.device_id) : null;
+      const userData = findSessionUser(s, usersMap);
+      const displayName = userData?.displayName || userData?.name || survey?.displayName || '';
+      const email = userData?.email || '';
       const abGroup = getABGroup(s);
 
       const completedScreens = s.screens_completed || [];
-      let lastScreen = '--';
-      if (completedScreens.length > 0) {
+      let lastScreen = s.last_screen_name || '--';
+      if (s.last_screen_name) {
+        const found = screenOrder.find(o => o.name === s.last_screen_name);
+        lastScreen = found ? found.label : s.last_screen_name;
+      } else if (completedScreens.length > 0) {
         const lastSc = completedScreens[completedScreens.length - 1];
         const found = screenOrder.find(o => o.name === lastSc.screen_name);
         lastScreen = found ? found.label : lastSc.screen_name;
@@ -1042,6 +1125,13 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
       setSessionSortDir('desc');
     }
   };
+
+  const revealSelectedVersion = useCallback(node => {
+    if (!node) return;
+    const container = node.parentElement;
+    const offset = node.getBoundingClientRect().left - container.getBoundingClientRect().left;
+    container.scrollLeft += offset - (container.clientWidth - node.clientWidth) / 2;
+  }, []);
 
   const sortIndicator = (field) => {
     if (sessionSortField !== field) return '';
@@ -1266,11 +1356,14 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
                 { id: 'v2', label: 'Post-Update (v2)',       dates: 'Apr 5 – Apr 28 ’26', detail: 'app 4.1–4.14 (+ later "unassigned" fallback trickle)' },
                 { id: 'v3', label: 'Commitment (v3)',        dates: 'Apr 28 – May 17 ’26', detail: 'app 4.16–4.17' },
                 { id: 'v4', label: 'Chat + Journey (v4)',    dates: 'May 17 – Jul 6 ’26',  detail: 'app 4.18' },
-                { id: 'v5', label: 'Spooli + Archetype (v5)', dates: 'Jul 6 – ~Jul 22 ’26', detail: 'app 4.20/4.21 · also legacy resumers (legacy_resume_pre_demo_v5) after Jul 22' },
-                { id: 'v6', label: 'Latest (v6)',            dates: '~Jul 22 ’26 → now',   detail: 'reels demo + personalized plan · flow_version 6 (deployed) & 9 (repo HEAD), identical flows' },
+                { id: 'v5', label: 'Spooli + Archetype (v5)', dates: 'Jul 6 – ~Jul 22 ’26', detail: 'app 4.20/4.21 · also unassigned legacy-resume fallback traffic after Jul 22' },
+                { id: 'v6', label: 'Reels Demo (v6/9)',      dates: '~Jul 22 – Aug 5 ’26', detail: 'reels demo + personalized plan · flow_version 6 & 9, identical flows' },
+                { id: 'v10', label: 'Current (v10)',         dates: 'Aug 5 ’26 → now',     detail: 'app 4.27 · flow_version 10 · post_purchase_journey_v10' },
+                { id: 'v14', label: 'New Carousel (v14)',    dates: '4.30 / unreleased',   detail: 'transformation-first carousel · flow_version 14 · prayer_lock_carousel_v14' },
               ].map(v => (
                 <button
                   key={v.id}
+                  ref={version === v.id ? revealSelectedVersion : null}
                   className={`version-btn ${version === v.id ? 'active' : ''}`}
                   onClick={() => setVersion(v.id)}
                   title={v.detail}
@@ -1283,14 +1376,16 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
               ))}
             </div>
 
-            <label className="ab-checkbox">
-              <input
-                type="checkbox"
-                checked={splitByAB}
-                onChange={e => setSplitByAB(e.target.checked)}
-              />
-              Split by A/B Group
-            </label>
+            {showABControls && (
+              <label className="ab-checkbox">
+                <input
+                  type="checkbox"
+                  checked={splitByAB}
+                  onChange={e => setSplitByAB(e.target.checked)}
+                />
+                Split by A/B Group
+              </label>
+            )}
           </div>
 
           <div className="chart-container">
@@ -1374,9 +1469,11 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
                     <th onClick={() => handleSort('dropoff')} className="sortable">
                       Drop-off{sortIndicator('dropoff')}
                     </th>
-                    <th onClick={() => handleSort('abGroup')} className="sortable">
-                      A/B Group{sortIndicator('abGroup')}
-                    </th>
+                    {showABControls && (
+                      <th onClick={() => handleSort('abGroup')} className="sortable">
+                        A/B Group{sortIndicator('abGroup')}
+                      </th>
+                    )}
                   </tr>
                 </thead>
                 <tbody>
@@ -1393,11 +1490,11 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
                           <td>{row.lastScreen}</td>
                           <td>{row.totalTime > 0 ? row.totalTime : '--'}</td>
                           <td>{row.droppedOff ? 'Yes' : 'No'}</td>
-                          <td>{row.abGroup}</td>
+                          {showABControls && <td>{row.abGroup}</td>}
                         </tr>
                         {isExpanded && (
                           <tr className="session-detail-row">
-                            <td colSpan={6}>
+                            <td colSpan={showABControls ? 6 : 5}>
                               <div className="session-detail">
                                 {/* Screen timeline */}
                                 <div className="detail-section">
@@ -1440,7 +1537,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
                                       {row.survey.age && (
                                         <div><strong>Age:</strong> {row.survey.age}</div>
                                       )}
-                                      {row.survey.ab_showVideoIntro !== undefined && (
+                                      {row.abGroup !== '--' && row.survey.ab_showVideoIntro !== undefined && (
                                         <div><strong>A/B Video Intro:</strong> {row.survey.ab_showVideoIntro ? 'Yes' : 'No'}</div>
                                       )}
                                       {V5_SURVEY_FIELDS.map(f => {

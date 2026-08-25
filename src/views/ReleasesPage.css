@@ -198,12 +198,21 @@
   color: #FE723F;
 }
 
-.rel-live-dot {
+.rel-live-dot,
+.rel-main-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
+}
+
+.rel-live-dot {
   background: #3cb371;
   box-shadow: 0 0 0 3px rgba(60, 179, 113, 0.2);
+}
+
+.rel-main-dot {
+  background: #4668c4;
+  box-shadow: 0 0 0 3px rgba(70, 104, 196, 0.18);
 }
 
 .rel-nav-dates {
@@ -251,14 +260,22 @@
   color: #FE723F;
 }
 
-.rel-live-badge {
+.rel-live-badge,
+.rel-main-badge {
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.08em;
   color: #fff;
-  background: #3cb371;
   border-radius: 5px;
   padding: 2px 7px;
+}
+
+.rel-live-badge {
+  background: #3cb371;
+}
+
+.rel-main-badge {
+  background: #4668c4;
 }
 
 .rel-detail-title p {
