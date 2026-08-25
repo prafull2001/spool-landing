@@ -11,6 +11,8 @@ import {
 } from '../data/releaseNotes';
 import './ReleasesPage.css';
 
+const isMainSnapshot = release => release.stage === 'main';
+
 // ---------------------------------------------------------------------------
 // Tiny markdown renderer for the subset used in release notes:
 // ### headings, - bullets, **bold**, `code`, paragraphs. Content is our own
@@ -135,7 +137,12 @@ export default function ReleasesPage() {
 
   const facts = current
     ? [
-        { label: 'Live window', value: `${current.releaseDate} → ${current.liveUntil || 'now'}` },
+        {
+          label: isMainSnapshot(current) ? 'Main snapshot' : 'Live window',
+          value: isMainSnapshot(current)
+            ? `${current.releaseDate} · not released`
+            : `${current.releaseDate} → ${current.liveUntil || 'now'}`,
+        },
         { label: 'flow_version', value: current.flowVersions },
         { label: 'Cohorts', value: current.cohorts },
         { label: 'Paywall', value: current.paywall },
@@ -186,7 +193,7 @@ export default function ReleasesPage() {
           <table>
             <thead>
               <tr>
-                <th>Version</th><th>Released</th><th>Live until</th>
+                <th>Version</th><th>Released / snapshot</th><th>Live until / status</th>
                 <th>flow_version</th><th>Cohorts</th><th>Paywall</th><th>Pricing</th>
               </tr>
             </thead>
@@ -198,8 +205,8 @@ export default function ReleasesPage() {
                   onClick={() => setSelected(r.version)}
                 >
                   <td className="rel-v">{r.version}</td>
-                  <td>{r.releaseDate}</td>
-                  <td>{r.liveUntil || 'current'}</td>
+                  <td>{r.releaseDate}{isMainSnapshot(r) ? ' (main)' : ''}</td>
+                  <td>{isMainSnapshot(r) ? 'not released' : r.liveUntil || 'current'}</td>
                   <td>{inlineMd(r.flowVersions || '—')}</td>
                   <td>{inlineMd(r.cohorts || '—')}</td>
                   <td>{inlineMd(r.paywall || '—')}</td>
@@ -229,10 +236,14 @@ export default function ReleasesPage() {
             >
               <span className="rel-nav-version">
                 {r.version}
-                {!r.liveUntil && <span className="rel-live-dot" title="Currently live" />}
+                {isMainSnapshot(r)
+                  ? <span className="rel-main-dot" title="Merged to main; not released" />
+                  : !r.liveUntil && <span className="rel-live-dot" title="Currently live" />}
               </span>
               <span className="rel-nav-dates">
-                {r.releaseDate.slice(5)} → {r.liveUntil ? r.liveUntil.slice(5) : 'now'}
+                {isMainSnapshot(r)
+                  ? `${r.releaseDate.slice(5)} · not released`
+                  : `${r.releaseDate.slice(5)} → ${r.liveUntil ? r.liveUntil.slice(5) : 'now'}`}
               </span>
               <span className="rel-nav-headline">{r.headline}</span>
             </button>
@@ -245,7 +256,9 @@ export default function ReleasesPage() {
               <div className="rel-detail-title">
                 <h3>
                   {current.version}
-                  {!current.liveUntil && <span className="rel-live-badge">LIVE</span>}
+                  {isMainSnapshot(current)
+                    ? <span className="rel-main-badge">MAIN</span>
+                    : !current.liveUntil && <span className="rel-live-badge">LIVE</span>}
                 </h3>
                 <p>{current.headline}</p>
               </div>

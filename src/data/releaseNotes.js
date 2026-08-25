@@ -27,9 +27,12 @@ How to join data sources to app versions:
 - **PostHog**: events carry \`app_version\` and (during onboarding)
   \`flow_version\` / \`flow_cohort\` properties.
 - **Onboarding funnel dashboard**: sessions are bucketed by \`flow_version\`
-  (v1–v6 tabs), NOT by app version — use the mapping table to translate.
-- A version's "live window" runs from its release date until the next
+  (explicit v1–v6, v10, and v14 tabs), NOT by app version — use the mapping table to
+  translate.
+- A released version's "live window" runs from its release date until the next
   version's release date; adoption is gradual (users update over days).
+- An entry labeled **MAIN** is a merged-code snapshot, not an App Store release.
+  Do not assign production traffic to it until its actual release date is known.
 
 Read the mapping table and data quirks before drawing conclusions.
 `;
@@ -44,16 +47,18 @@ export const DATA_QUIRKS_MD = `### Known data quirks (read before analyzing)
   (\`paywall_type: "journey"\`) in recent versions — the name is historical.
 - In the v5 build, \`flow_version\` is always 5 (the commitment-ritual branch
   was unconditionally on).
-- **flow_version 6 exists in production but not in git.** Git history renumbered
-  6 → 5 on 2026-06-09 and never emits 6 again — but the currently-deployed App
-  Store build stamps \`flow_version: 6\` / cohort \`instagram_demo_v6\` (it was
-  cut from uncommitted local state; live traffic was dominated by 6 as of
+- **flow_version 6 appeared in production but not in git.** Git history renumbered
+  6 → 5 on 2026-06-09 and never emits 6 again — but a deployed 4.21 App Store
+  build stamped \`flow_version: 6\` / cohort \`instagram_demo_v6\` (it was cut
+  from uncommitted local state; live traffic was dominated by 6 as of
   2026-07-22, ~434 events vs 34 for v9). v6 and v9 are **identical flows**; the
   dashboard's "v6" tab deliberately folds \`flow_version === 6 || 9\`.
 - Other flow_version facts: 1 and 7 never existed; 8 = \`focus_web_apps_v8\`
   (~1 day, dev-scale sample); 9 = \`personal_plan_reveal_v9\`; 10 =
-  \`post_purchase_journey_v10\` (current live 4.27 release). Resumers get 5 /
-  \`legacy_resume_pre_demo_v5\` and legitimately show zero on screens 0–9.85.
+  \`post_purchase_journey_v10\` (current live 4.27 release). A resume keeps its
+  persisted assignment; only a resume without a valid stored assignment falls
+  back to 5 / \`legacy_resume_pre_demo_v5\` and legitimately starts post-paywall.
+  14 = \`prayer_lock_carousel_v14\` in the unreleased 4.30 main snapshot.
   **Prefer \`flow_cohort\` for cohorting.**
 - Two \`flow_version\` fields can disagree in PostHog: the super property is the
   app-build constant stamped on every event; the per-event onboarding field is
@@ -80,15 +85,21 @@ export const MAPPING_NOTES_MD = `### Cross-version joining notes
 - \`3\` — 4.16 (commitment ritual, on for 100%). \`4\` — 4.18 (chat onboarding).
 - \`5\` — 4.20/4.21 (quiz + archetype flow; in git it IS the "v6" restructure,
   renumbered Jun 9). \`1\` and \`7\` never existed.
-- \`6\` — **the deployed App Store build** (\`instagram_demo_v6\`, reels demo +
-  personalized plan; cut from uncommitted state, so git never shows it).
-  Dominant in live traffic as of late Jul 2026.
+- \`6\` — a historical deployed 4.21 App Store build (\`instagram_demo_v6\`,
+  reels demo + personalized plan; cut from uncommitted state, so git never shows
+  it). It was dominant in live traffic as of late Jul 2026.
 - \`8\` — Jul 20 (\`focus_web_apps_v8\`, ~1 day) · \`9\` — Jul 21
   (\`personal_plan_reveal_v9\`; **identical flow to 6**) · \`10\` —
-  current live 4.27 release (\`post_purchase_journey_v10\`). Resumers get
-  \`5\` / \`legacy_resume_pre_demo_v5\`.
-- The only randomized A/B ever was \`ab_showVideoIntro\` (2026-03-17 → concluded
-  2026-04-28, Group A won; the field is a constant \`true\` afterwards).
+  current live 4.27 release (\`post_purchase_journey_v10\`). A resumed attempt
+  keeps its persisted version/cohort; only a resume without a valid stored
+  assignment falls back to \`5\` / \`legacy_resume_pre_demo_v5\`.
+- \`14\` — 4.30 merged-main snapshot (\`prayer_lock_carousel_v14\`), a new
+  transformation-first acquisition flow. It is not production traffic until
+  4.30 ships. Fresh attempts receive 14; resumes retain a valid persisted
+  assignment, with 5 reserved for the unassigned legacy fallback.
+- The only randomized A/B ever was \`ab_showVideoIntro\` (introduced 2026-03-17
+  → removed in the 2026-04-05 Monster push; Group A won and the field is a
+  constant \`true\` afterwards).
 
 **Paywall identity rules:**
 - Onboarding screen 10.5 has been named \`sky_paywall\` since 2026-03-17 and was
@@ -122,7 +133,8 @@ export const MAPPING_NOTES_MD = `### Cross-version joining notes
 
 // ---------------------------------------------------------------------------
 // RELEASES — entries in any order here; sorted newest-first on export below.
-// All *Md fields are markdown strings. liveUntil: null means "current".
+// All *Md fields are markdown strings. liveUntil: null means "current" for a
+// released entry; stage: "main" means a merged-code snapshot not yet released.
 // ---------------------------------------------------------------------------
 const ENTRIES = [
   {
@@ -587,7 +599,7 @@ Two flags: the headline "Reels-Free Instagram" feature is **debug-only** (never 
     commitCount: 52,
     headline: 'FocusWeb ships, then two weeks of funnel rebuilding under one version number',
     flowVersions: '5 at release → **6 in the deployed build** (`instagram_demo_v6`, cut from uncommitted state) → 8/9 in repo (Jul 20/21) → 10 (shipped in 4.27). 6≡9 identical flows.',
-    cohorts: '`instagram_demo_v6` (deployed, dominant) · `personal_plan_reveal_v9` · `legacy_resume_pre_demo_v5` (resumers) · `focus_web_apps_v8` (~1 day) · `post_purchase_journey_v10` (shipped in 4.27)',
+    cohorts: '`instagram_demo_v6` (deployed, dominant) · `personal_plan_reveal_v9` · `legacy_resume_pre_demo_v5` (unassigned legacy fallback) · `focus_web_apps_v8` (~1 day) · `post_purchase_journey_v10` (shipped in 4.27)',
     paywall: '`JourneyPaywallView` (hard); **Monthly → Weekly swap Jul 17**; win-back sheets unchanged',
     pricing: '$4.99/wk + annual (`default_wo_free_trial` — no trial on the main paywall) · $34.99/yr win-back deal',
     sections: [
@@ -616,7 +628,7 @@ Jul 20–22: the biggest onboarding rewrite of the era — three new early scree
         title: 'Onboarding',
         md: `- New screens (Jul 20–22): \`focus_web_intro\` (0.425), \`instagram_reels_demo\` (0.45 — guided browse → toggle Block Reels → apply, state machine tracks \`toggleCount\`/\`scrollCount\`), \`focus_web_apps\` (0.475), \`personalized_plan\` (9.85).
 - Archetype reveal (5.4) heavily expanded (plain-language interpretations, new metric rows); \`grounding_breath\` (5.2) dropped from the flow order.
-- **flow_version/cohort truth:** the deployed 4.21 build stamps **6 / \`instagram_demo_v6\`** (cut from uncommitted local state — git itself never emits 6); repo history goes 5 → 8 (\`focus_web_apps_v8\`, Jul 20, ~1 day) → 9 (\`personal_plan_reveal_v9\`, Jul 21) → 10 (\`post_purchase_journey_v10\`, shipped in 4.27). 6 and 9 are identical flows. Resumers get 5 / \`legacy_resume_pre_demo_v5\`. Assignment persisted per attempt (\`spool_onboarding_attempt_id\` etc. in UserDefaults).
+- **flow_version/cohort truth:** the deployed 4.21 build stamps **6 / \`instagram_demo_v6\`** (cut from uncommitted local state — git itself never emits 6); repo history goes 5 → 8 (\`focus_web_apps_v8\`, Jul 20, ~1 day) → 9 (\`personal_plan_reveal_v9\`, Jul 21) → 10 (\`post_purchase_journey_v10\`, shipped in 4.27). 6 and 9 are identical flows. Assignments persist per attempt (\`spool_onboarding_attempt_id\` etc. in UserDefaults); only a resume without a valid stored assignment falls back to 5 / \`legacy_resume_pre_demo_v5\`.
 - \`onboarding_sessions\`/\`onboarding_surveys\` docs now stamped with \`onboarding_attempt_id\`, \`flow_version\`, \`flow_cohort\`.
 - Screen Time denial no longer dead-ends onboarding (screen 4.75 offers re-try / Open Settings).`,
       },
@@ -657,8 +669,8 @@ Jul 20–22: the biggest onboarding rewrite of the era — three new early scree
     liveUntil: null,
     commitCount: 47,
     headline: 'Exercise unlocks, Snapchat, clearer blocking state, and retention repairs',
-    flowVersions: '10 / `post_purchase_journey_v10` for new attempts · 5 / `legacy_resume_pre_demo_v5` for resumed attempts',
-    cohorts: '`post_purchase_journey_v10` (new attempts) · `legacy_resume_pre_demo_v5` (resumers)',
+    flowVersions: '10 / `post_purchase_journey_v10` for new attempts · persisted assignment on resume · 5 / `legacy_resume_pre_demo_v5` only for unassigned legacy resumes',
+    cohorts: '`post_purchase_journey_v10` (new attempts) · persisted prior cohort (assigned resumers) · `legacy_resume_pre_demo_v5` (unassigned legacy fallback)',
     paywall: '`JourneyPaywallView` (hard, unchanged); new Apple promotional free-week save offer for eligible weekly/monthly cancellers',
     pricing: '$4.99/wk + annual (`default_wo_free_trial`) · storefront price now read from live product metadata · eligible churn save = 1 free week at next renewal',
     sections: [
@@ -672,7 +684,7 @@ Home now exposes a truthful blocking-status badge (on now, starts later, or off)
       },
       {
         title: 'Onboarding',
-        md: `- New attempts use **flow_version 10 / \`post_purchase_journey_v10\`**; resumed attempts remain isolated in 5 / \`legacy_resume_pre_demo_v5\`.
+        md: `- New attempts use **flow_version 10 / \`post_purchase_journey_v10\`**. Resumed attempts keep their persisted assignment; only a resume without a valid stored assignment falls back to 5 / \`legacy_resume_pre_demo_v5\`.
 - The post-purchase journey keeps continuous progress through the current product story: Thread depletion, daily request pool, the real blocked-app request flow, and the cleaner Apps alternative.
 - Apps onboarding now names Instagram, YouTube, X, and Snapchat and explicitly says the experience opens inside Spool; regular apps are unchanged.
 - “How did you hear about Spool?” choices shuffle once per screen presentation to reduce first-row acquisition bias. Selection now persists the stable source value (Instagram, TikTok, Reddit, Friend, or Other), not the displayed row index.
@@ -700,8 +712,58 @@ Home now exposes a truthful blocking-status badge (on now, starts later, or off)
 - The Thread number on Home changes source by default: 4.27 uses approved requested minutes, while older builds used observed blocked-app Screen Time. The optional Settings switch restores the old display only; unlock enforcement never changes. Segment before comparing Thread percentages across versions.
 - Churn-save users are a rescue cohort, not ordinary paid conversion. The free week applies only to eligible weekly/monthly cancellers and begins at the next billing event; yearly and already-promotional access are excluded.
 - Push-Up/Squat availability and completion depend on camera permission plus on-device pose detection. Do not interpret low use as rejection without separating permission denial, setup failure, abandonment, and completed sessions.
-- \`flow_version 10\` persists per onboarding attempt. Late resumed attempts can legitimately emit version 5 even inside a 4.27 build.
+- \`flow_version 10\` persists per onboarding attempt. A valid v10 attempt stays v10 when resumed; version 5 inside a 4.27 build is the fallback for a resume with no valid stored assignment.
 - The public tab name changed from Focus/FocusWeb to Apps, but internal identifiers were deliberately preserved for continuity; a drop in old event names would indicate instrumentation breakage, not the rename itself.`,
+      },
+    ],
+  },
+  {
+    version: '4.30',
+    stage: 'main',
+    releaseDate: '2026-08-24',
+    liveUntil: null,
+    commitCount: 25,
+    headline: 'Transformation-first onboarding, live voice transcription, and collectible Home rooms',
+    flowVersions: '14 / `prayer_lock_carousel_v14` for new attempts · persisted assignment on resume · 5 / `legacy_resume_pre_demo_v5` only for unassigned legacy resumes',
+    cohorts: '`prayer_lock_carousel_v14` (new attempts) · persisted prior cohort (assigned resumers) · `legacy_resume_pre_demo_v5` (unassigned legacy fallback)',
+    paywall: '`JourneyPaywallView` (hard): no-trial annual + weekly, no-trial annual offer on close, separate eligibility-gated trial route retained',
+    pricing: 'Unchanged from 4.27; use live RevenueCat/StoreKit product metadata as authoritative',
+    sections: [
+      {
+        title: 'Summary',
+        md: `4.30 is a **merged-main snapshot, not an App Store release**. This entry describes main at \`84e7cbe\` on 2026-08-24 and covers 25 product-history commits from the reconciled 4.27 cutoff through the latest product merge; the final two main commits only rewrite the internal README. Keep 4.27 as the current production boundary until App Store Connect or RevenueCat confirms a real 4.30 first-live date.
+
+The headline changes are a shorter transformation-first onboarding for new installs, AssemblyAI live voice transcription throughout the real excuse paths, eight collectible Home rooms, polished exercise interventions, and end-to-end acquisition/subscription attribution. The marketing version on main is 4.30; the repository's unchanged internal build number is not reliable App Store metadata.`,
+      },
+      {
+        title: 'Onboarding',
+        md: `- New attempts use strict **flow_version 14 / \`prayer_lock_carousel_v14\`**. Mid-flow resumers keep their valid persisted assignment; only an unassigned legacy resume falls back to 5 / \`legacy_resume_pre_demo_v5\`.
+- The new acquisition journey is: three-slide opening carousel → display name → age → screen-time baseline and loss projections → review request → goal and usage-time questions → notification priming → referral source → 30-day transformation → commitment → Before/After → first-week roadmap → personalized plan → Journey paywall.
+- The carousel is one analytics screen (\`opening_carousel\`), not three separate funnel steps. The existing post-purchase setup journey is retained after checkout.
+- Flow identity, attempt ID, screen names, and cohort are persisted so Firestore/PostHog can segment v14 without mixing legacy resumers into the new funnel.`,
+      },
+      {
+        title: 'Voice unlocks, Home & interventions',
+        md: `- **AssemblyAI voice:** the real excuse and protected Rules paths moved off Apple Speech to authenticated AssemblyAI streaming using a short-lived Firebase-minted token. Users see a responsive waveform and rolling partial transcript; only the settled final transcript can be validated or saved.
+- **First-run reliability:** recording waits for the provider's begin signal, shows an honest “Getting voice ready” state, handles language/model fallback, and produces one stable result even if late callbacks arrive.
+- **Protected changes:** app-removal recording is five seconds; other protected Rules changes remain eight seconds.
+- **Collectible Home rooms:** eight permanent backgrounds cost 150 points each and can be unlocked, equipped, and changed from Home or Settings; Classic remains the fallback.
+- **Exercise polish:** push-up and squat sessions gained clearer skeleton/count feedback, per-rep sound, a victory chime, and explicit completion behavior. Home's Screen Time report also received a stable cold-load shell.`,
+      },
+      {
+        title: 'Paywall, analytics & attribution',
+        md: `- The visible Journey paywall keeps the no-trial annual and weekly ladder; closing it reveals the no-trial limited annual offer. The hidden mascot trial route remains separate and eligibility-gated, and purchase success still requires an active entitlement.
+- AppsFlyer now receives ATT/SKAN state plus paywall-view and checkout signals. Install identity is propagated through Firebase, RevenueCat, and PostHog so acquisition data can survive signup and purchase.
+- Onboarding distinguishes pre-purchase acquisition completion from final post-purchase activation instead of treating the paywall as the end of the whole product setup.
+- The deployed RevenueCat webhook emits normalized, retry-safe lifecycle records to PostHog and Firestore with identity, attribution, product, country, transaction, revenue, and currency context. Cancellation and subscription attribution gained deterministic trace IDs and debugging tooling.`,
+      },
+      {
+        title: 'Data quirks & release gates',
+        md: `- **Do not use 2026-08-24 as a production boundary.** It is the snapshot date. Attribution and v14 funnel traffic become comparable only after a real 4.30 App Store release date is confirmed.
+- Attribution improvements affect future installs and lifecycle events; they cannot backfill missing campaign data. RevenueCat → AppsFlyer → Meta mapping still needs external production verification.
+- Main still has a Screen Time authorization routing gap to close before release: the compact v14 route does not request authorization, while the retained coordinator skips its legacy permission screens because it assumes permission already happened.
+- Physical-device QA remains necessary for Screen Time authorization, microphone/provider startup, paywall offerings, purchases, and the complete post-purchase handoff.
+- The paired iOS onboarding timing/identity changes on \`codex/new-onboarding-analytics\` are intentionally excluded from this main snapshot until that app branch is merged.`,
       },
     ],
   },
@@ -717,12 +779,12 @@ export const RELEASES = [...ENTRIES].sort((a, b) =>
 
 export function mappingTableMarkdown() {
   const header =
-    '| App version | Released | Live until | flow_version(s) | Cohort(s) | Paywall | Pricing |\n' +
+    '| App version | Released / snapshot | Live until / status | flow_version(s) | Cohort(s) | Paywall | Pricing |\n' +
     '|---|---|---|---|---|---|---|';
   const rows = [...RELEASES]
     .reverse()
     .map(r =>
-      `| ${r.version} | ${r.releaseDate} | ${r.liveUntil || 'current'} | ${r.flowVersions || '—'} | ${r.cohorts || '—'} | ${r.paywall || '—'} | ${r.pricing || '—'} |`
+      `| ${r.version} | ${r.releaseDate}${r.stage === 'main' ? ' (main snapshot)' : ''} | ${r.stage === 'main' ? 'not released' : r.liveUntil || 'current'} | ${r.flowVersions || '—'} | ${r.cohorts || '—'} | ${r.paywall || '—'} | ${r.pricing || '—'} |`
     );
   return `### Version mapping table\n${header}\n${rows.join('\n')}`;
 }
@@ -730,7 +792,9 @@ export function mappingTableMarkdown() {
 export function releaseMarkdown(r) {
   const lines = [
     `## Version ${r.version} — ${r.headline}`,
-    `- Released: ${r.releaseDate} · Live until: ${r.liveUntil || 'current'} · ${r.commitCount} commits`,
+    r.stage === 'main'
+      ? `- Main snapshot: ${r.releaseDate} · Not yet released · ${r.commitCount} commits`
+      : `- Released: ${r.releaseDate} · Live until: ${r.liveUntil || 'current'} · ${r.commitCount} commits`,
   ];
   if (r.flowVersions) lines.push(`- Onboarding flow_version(s): ${r.flowVersions}${r.cohorts ? ` · Cohorts: ${r.cohorts}` : ''}`);
   if (r.paywall) lines.push(`- Paywall: ${r.paywall}${r.pricing ? ` · Pricing: ${r.pricing}` : ''}`);
