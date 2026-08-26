@@ -1,5 +1,6 @@
 # Project Lessons
 
+- In zsh verification scripts, avoid reserved task variables such as `status` (read-only) and `path` (tied to `PATH`); use specific names such as `http_status` and `asset_url` so the audit fails only for the deployed state being checked.
 - Analytics timing semantics must name the data source and event, not say “the app” does one thing. In current v14, Firestore `screens_completed` is written when a screen is left, while PostHog `onboarding_step_viewed` fires on entry; context packs must preserve that distinction before anyone interprets missing rows or dwell.
 - Route-specific analytics must hide inapplicable outcomes, not render them as zero. The direct existing-account setup never sees the paywall, so its cohort view should omit pre-paywall/paywall-rate cards, rows, and columns rather than implying a 0% paywall failure.
 - Versioned onboarding display numbers are not globally unique across coordinator handoffs. v14 acquisition and post-purchase both use ordinals 15–19, so never derive the direct-setup catalog with `number >= 15`; slice from the stable `screen_time_permission` name or it will prepend unrelated acquisition screens.
