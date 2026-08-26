@@ -41,6 +41,7 @@ test('v14 dashboard catalog matches the Firestore screen-name contract', () => {
     'name_collection',
     'create_account',
     'notification_permission',
+    'screen_time_permission',
     'schedule_selection',
     'choose_apps',
     'daily_limit_explanation',
@@ -110,15 +111,49 @@ test('current v10 traffic is the default while v14 remains independently selecta
     { id: 'v6', flow_version: 6 },
     { id: 'v9', flow_version: 9 },
     { id: 'v10', flow_version: 10 },
-    { id: 'v14', flow_version: 14 },
+    { id: 'v14-fresh', flow_version: 14, flow_cohort: 'prayer_lock_carousel_v14' },
+    { id: 'v14-existing', flow_version: 14, flow_cohort: 'existing_account_setup_v14' },
   ];
 
   assert.deepEqual(filterSessionsByVersion(sessions, 'v6').map(s => s.id), ['v6', 'v9']);
   assert.deepEqual(filterSessionsByVersion(sessions, 'v10').map(s => s.id), ['v10']);
-  assert.deepEqual(filterSessionsByVersion(sessions, 'v14').map(s => s.id), ['v14']);
+  assert.deepEqual(filterSessionsByVersion(sessions, 'v14').map(s => s.id), ['v14-fresh', 'v14-existing']);
   assert.match(source, /useState\('v10'\)/);
   assert.match(source, /\{ id: 'v10', label: 'Current \(v10\)'/);
   assert.match(source, /\{ id: 'v14', label: 'New Carousel \(v14\)'/);
+  assert.match(source, /prayer_lock_carousel_v14 \+ existing_account_setup_v14/);
+});
+
+test('v14 cohorts are filtered before their distinct funnel entry screens are calculated', () => {
+  const sessions = [
+    { id: 'fresh', flow_version: 14, flow_cohort: 'prayer_lock_carousel_v14' },
+    { id: 'existing', flow_version: 14, flow_cohort: 'existing_account_setup_v14' },
+  ];
+
+  assert.deepEqual(
+    filterSessionsByVersion(sessions, 'v14', 'prayer_lock_carousel_v14').map(s => s.id),
+    ['fresh'],
+  );
+  assert.deepEqual(
+    filterSessionsByVersion(sessions, 'v14', 'existing_account_setup_v14').map(s => s.id),
+    ['existing'],
+  );
+  assert.match(source, /useState\('prayer_lock_carousel_v14'\)/);
+  assert.match(source, /SCREEN_ORDER_V14\.findIndex\(screen => screen\.name === 'screen_time_permission'\)/);
+  assert.match(source, /label: 'Existing account setup'/);
+  assert.match(source, /showsPaywallMetrics = !\(version === 'v14' && v14Cohort === 'existing_account_setup_v14'\)/);
+  const v14Names = catalogNames('SCREEN_ORDER_V14');
+  assert.deepEqual(v14Names.slice(v14Names.indexOf('screen_time_permission')), [
+    'screen_time_permission',
+    'schedule_selection',
+    'choose_apps',
+    'daily_limit_explanation',
+    'daily_request_pool',
+    'excuse_explanation',
+    'pattern_explanation',
+    'focus_hub_alternative',
+    'blocking_confirmation',
+  ]);
 });
 
 test('legacy A/B membership is explicit and unavailable on later deterministic flows', () => {

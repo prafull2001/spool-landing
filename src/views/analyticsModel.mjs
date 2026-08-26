@@ -21,10 +21,13 @@ function startedAtMs(session) {
   return Number.isFinite(result) ? result : null;
 }
 
-export function filterSessionsByVersion(sessions, version) {
-  if (version === 'v1') return sessions.filter(session => !session.flow_version);
-  const versions = FLOW_VERSIONS[version] || FLOW_VERSIONS.v2;
-  return sessions.filter(session => versions.includes(session.flow_version));
+export function filterSessionsByVersion(sessions, version, cohort) {
+  const versionSessions = version === 'v1'
+    ? sessions.filter(session => !session.flow_version)
+    : sessions.filter(session => (FLOW_VERSIONS[version] || FLOW_VERSIONS.v2).includes(session.flow_version));
+  return cohort
+    ? versionSessions.filter(session => session.flow_cohort === cohort)
+    : versionSessions;
 }
 
 export function supportsABTesting(version) {

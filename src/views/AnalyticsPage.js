@@ -315,7 +315,8 @@ const SCREEN_ORDER_V10 = [
   { number: 22, name: 'blocking_confirmation', label: 'Confirm' },
 ];
 
-// v14 = the transformation-first carousel onboarding introduced for app 4.30.
+// v14 = the transformation-first carousel onboarding introduced in the 4.30
+// main snapshot and retained by the current 4.32 main branch.
 // Match and order by screen_name: its acquisition ordinals 11–19 overlap the retained
 // post-purchase route's raw screen numbers, and sky_paywall is written by both coordinators.
 // The three opening slides intentionally share one opening_carousel timing row.
@@ -343,6 +344,7 @@ const SCREEN_ORDER_V14 = [
   { number: 12, name: 'name_collection', label: 'Name (Fallback)' },
   { number: 13, name: 'create_account', label: 'Account' },
   { number: 14, name: 'notification_permission', label: 'Notifications' },
+  { number: 15, name: 'screen_time_permission', label: 'Screen Time' },
   { number: 16, name: 'schedule_selection', label: 'Schedule' },
   { number: 17, name: 'choose_apps', label: 'Choose Apps' },
   { number: 18, name: 'daily_limit_explanation', label: 'Thread Explain' },
@@ -352,6 +354,9 @@ const SCREEN_ORDER_V14 = [
   { number: 21.5, name: 'focus_hub_alternative', label: 'Apps Alternative' },
   { number: 22, name: 'blocking_confirmation', label: 'Confirm' },
 ];
+const SCREEN_ORDER_V14_EXISTING_ACCOUNT = SCREEN_ORDER_V14.slice(
+  SCREEN_ORDER_V14.findIndex(screen => screen.name === 'screen_time_permission')
+);
 
 // v5 survey/personalization answers (onboarding_surveys) shown as per-answer breakdowns.
 // archetypeId backs up archetypeName so computed archetypes still chart if the name is missing.
@@ -397,6 +402,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
   const [version, setVersion] = useState('v10');
+  const [v14Cohort, setV14Cohort] = useState('prayer_lock_carousel_v14');
   const [splitByAB, setSplitByAB] = useState(false);
   const [expandedSessionIdx, setExpandedSessionIdx] = useState(null);
   const [sessionSearch, setSessionSearch] = useState('');
@@ -412,6 +418,8 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
 
   const screenOrder =
     version === 'v1' ? SCREEN_ORDER_V1 :
+    version === 'v14' && v14Cohort === 'existing_account_setup_v14'
+      ? SCREEN_ORDER_V14_EXISTING_ACCOUNT :
     version === 'v14' ? SCREEN_ORDER_V14 :
     version === 'v10' ? SCREEN_ORDER_V10 :
     version === 'v6' ? SCREEN_ORDER_V6 :
@@ -422,10 +430,11 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
 
   // Filter sessions by version
   const sessions = useMemo(
-    () => filterSessionsByVersion(allSessions, version),
-    [allSessions, version],
+    () => filterSessionsByVersion(allSessions, version, version === 'v14' ? v14Cohort : null),
+    [allSessions, version, v14Cohort],
   );
   const supportsABSplit = supportsABTesting(version);
+  const showsPaywallMetrics = !(version === 'v14' && v14Cohort === 'existing_account_setup_v14');
 
   useEffect(() => {
     if (!user) return;
@@ -1186,16 +1195,20 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
               <span className="value">{analytics ? analytics.total : '--'}</span>
               <span className="card-desc">Unique devices that started onboarding</span>
             </div>
-            <div className="summary-card">
-              <h3>Pre-Paywall Dropoff</h3>
-              <span className="value">{analytics ? `${analytics.prePaywallDropoffRate}%` : '--'}</span>
-              <span className="card-desc">Left before ever seeing the paywall</span>
-            </div>
-            <div className="summary-card">
-              <h3>Paywall Reach Rate</h3>
-              <span className="value">{analytics ? `${analytics.paywallRate}%` : '--'}</span>
-              <span className="card-desc">Made it to the paywall screen</span>
-            </div>
+            {showsPaywallMetrics && (
+              <>
+                <div className="summary-card">
+                  <h3>Pre-Paywall Dropoff</h3>
+                  <span className="value">{analytics ? `${analytics.prePaywallDropoffRate}%` : '--'}</span>
+                  <span className="card-desc">Left before ever seeing the paywall</span>
+                </div>
+                <div className="summary-card">
+                  <h3>Paywall Reach Rate</h3>
+                  <span className="value">{analytics ? `${analytics.paywallRate}%` : '--'}</span>
+                  <span className="card-desc">Made it to the paywall screen</span>
+                </div>
+              </>
+            )}
             <div className="summary-card">
               <h3>Completion Rate</h3>
               <span className="value">{analytics ? `${analytics.completionRate}%` : '--'}</span>
@@ -1317,11 +1330,13 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
                 <div className="survey-section">
                   <h3>Funnel Outcomes</h3>
                   <div className="outcome-stats">
-                    <div className="outcome-row">
-                      <span className="outcome-label">Got past paywall</span>
-                      <span className="outcome-value">{surveyOverview.paywallPassed} ({surveyOverview.paywallPassRate}%)</span>
-                      <span className="outcome-desc">Saw paywall and continued onboarding</span>
-                    </div>
+                    {showsPaywallMetrics && (
+                      <div className="outcome-row">
+                        <span className="outcome-label">Got past paywall</span>
+                        <span className="outcome-value">{surveyOverview.paywallPassed} ({surveyOverview.paywallPassRate}%)</span>
+                        <span className="outcome-desc">Saw paywall and continued onboarding</span>
+                      </div>
+                    )}
                     <div className="outcome-row">
                       <span className="outcome-label">Completed onboarding</span>
                       <span className="outcome-value">{surveyOverview.converted} ({surveyOverview.conversionRate}%)</span>
@@ -1359,7 +1374,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
                 { id: 'v5', label: 'Spooli + Archetype (v5)', dates: 'Jul 6 – ~Jul 22 ’26', detail: 'app 4.20/4.21 · also unassigned legacy-resume fallback traffic after Jul 22' },
                 { id: 'v6', label: 'Reels Demo (v6/9)',      dates: '~Jul 22 – Aug 5 ’26', detail: 'reels demo + personalized plan · flow_version 6 & 9, identical flows' },
                 { id: 'v10', label: 'Current (v10)',         dates: 'Aug 5 ’26 → now',     detail: 'app 4.27 · flow_version 10 · post_purchase_journey_v10' },
-                { id: 'v14', label: 'New Carousel (v14)',    dates: '4.30 / unreleased',   detail: 'transformation-first carousel · flow_version 14 · prayer_lock_carousel_v14' },
+                { id: 'v14', label: 'New Carousel (v14)',    dates: '4.32 / main',         detail: 'flow_version 14 · prayer_lock_carousel_v14 + existing_account_setup_v14' },
               ].map(v => (
                 <button
                   key={v.id}
@@ -1375,6 +1390,23 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
                 </button>
               ))}
             </div>
+
+            {version === 'v14' && (
+              <div className="version-toggle" aria-label="v14 onboarding cohort">
+                {[
+                  { id: 'prayer_lock_carousel_v14', label: 'Fresh acquisition' },
+                  { id: 'existing_account_setup_v14', label: 'Existing account setup' },
+                ].map(cohort => (
+                  <button
+                    key={cohort.id}
+                    className={`version-btn ${v14Cohort === cohort.id ? 'active' : ''}`}
+                    onClick={() => setV14Cohort(cohort.id)}
+                  >
+                    {cohort.label}
+                  </button>
+                ))}
+              </div>
+            )}
 
             {showABControls && (
               <label className="ab-checkbox">
@@ -1413,7 +1445,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
                   <th>Sessions</th>
                   <th>Completion Rate</th>
                   <th>Avg Time (s)</th>
-                  <th>Paywall Rate</th>
+                  {showsPaywallMetrics && <th>Paywall Rate</th>}
                 </tr>
               </thead>
               <tbody>
@@ -1421,7 +1453,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
                   if (row.header) {
                     return (
                       <tr key={`h-${i}`} className="conversion-header-row">
-                        <td colSpan={5}>{row.header}</td>
+                        <td colSpan={showsPaywallMetrics ? 5 : 4}>{row.header}</td>
                       </tr>
                     );
                   }
@@ -1431,7 +1463,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
                       <td>{row.sessions}</td>
                       <td>{row.completionRate}%</td>
                       <td>{row.avgTime}</td>
-                      <td>{row.paywallRate}%</td>
+                      {showsPaywallMetrics && <td>{row.paywallRate}%</td>}
                     </tr>
                   );
                 })}

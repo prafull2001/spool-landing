@@ -24,13 +24,14 @@ function contrastWithWhite(hex) {
   return 1.05 / (luminance + 0.05);
 }
 
-test('4.30 is the newest merged-main snapshot, not the current live release', () => {
+test('4.32 is the newest merged-main snapshot, not the current live release', () => {
   const snapshot = dataModule.RELEASES[0];
-  assert.equal(snapshot.version, '4.30');
+  assert.equal(snapshot.version, '4.32');
   assert.equal(snapshot.stage, 'main');
-  assert.equal(snapshot.releaseDate, '2026-08-24');
-  assert.equal(snapshot.commitCount, 25);
+  assert.equal(snapshot.releaseDate, '2026-08-25');
+  assert.equal(snapshot.commitCount, 4);
   assert.match(snapshot.flowVersions, /14 \/ `prayer_lock_carousel_v14`/);
+  assert.match(snapshot.flowVersions, /`existing_account_setup_v14`/);
 
   const currentLive = dataModule.RELEASES.filter(
     release => !release.liveUntil && release.stage !== 'main',
@@ -43,20 +44,28 @@ test('copy payloads label the main snapshot without inventing a live window', ()
   const mapping = dataModule.mappingTableMarkdown();
   const notes = dataModule.releaseMarkdown(snapshot);
 
+  assert.match(mapping, /\| 4\.32 \| 2026-08-25 \(main snapshot\) \| not released \|/);
   assert.match(mapping, /\| 4\.30 \| 2026-08-24 \(main snapshot\) \| not released \|/);
   assert.match(mapping, /\| 4\.27 \| 2026-08-05 \| current \|/);
-  assert.match(notes, /Main snapshot: 2026-08-24 · Not yet released · 25 commits/);
+  assert.match(notes, /Main snapshot: 2026-08-25 · Not yet released · 4 commits/);
   assert.doesNotMatch(notes, /Live until: current/);
 });
 
 test('release context preserves assigned resumers and treats v5 as a fallback', () => {
   const currentLive = dataModule.RELEASES.find(release => release.version === '4.27');
-  const snapshot = dataModule.RELEASES.find(release => release.version === '4.30');
+  const snapshot = dataModule.RELEASES.find(release => release.version === '4.32');
 
   assert.match(currentLive.flowVersions, /persisted assignment on resume/);
   assert.match(snapshot.flowVersions, /only for unassigned legacy resumes/);
+  assert.match(snapshot.cohorts, /existing_account_setup_v14/);
   assert.match(dataModule.DATA_QUIRKS_MD, /only a resume without a valid stored assignment falls/);
   assert.doesNotMatch(dataModule.DATA_QUIRKS_MD, /currently-deployed App Store build stamps/);
+});
+
+test('release context distinguishes Firestore exit rows from PostHog entry events', () => {
+  assert.match(dataModule.DATA_QUIRKS_MD, /Firestore `onboarding_sessions\.screens_completed`/);
+  assert.match(dataModule.DATA_QUIRKS_MD, /PostHog `onboarding_step_viewed` instead fires on \*\*entry\*\*/);
+  assert.match(dataModule.DATA_QUIRKS_MD, /`time_on_previous_step_ms`/);
 });
 
 test('release UI renders MAIN separately from LIVE', () => {

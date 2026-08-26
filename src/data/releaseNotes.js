@@ -41,8 +41,11 @@ Read the mapping table and data quirks before drawing conclusions.
 // Known measurement traps. Shown on the page and included in every copy.
 // ---------------------------------------------------------------------------
 export const DATA_QUIRKS_MD = `### Known data quirks (read before analyzing)
-- The iOS app logs an onboarding screen event when the user **leaves** a
-  screen, not when they arrive on it.
+- Firestore \`onboarding_sessions.screens_completed\` adds a row when the user
+  **leaves** a screen; \`last_screen_name\` carries the current stopping screen.
+  Current PostHog \`onboarding_step_viewed\` instead fires on **entry** and its
+  \`time_on_previous_step_ms\` describes the screen just left. Do not apply
+  Firestore exit semantics to the PostHog event.
 - The onboarding screen named \`sky_paywall\` renders **JourneyPaywallView**
   (\`paywall_type: "journey"\`) in recent versions — the name is historical.
 - In the v5 build, \`flow_version\` is always 5 (the commitment-ritual branch
@@ -58,7 +61,9 @@ export const DATA_QUIRKS_MD = `### Known data quirks (read before analyzing)
   \`post_purchase_journey_v10\` (current live 4.27 release). A resume keeps its
   persisted assignment; only a resume without a valid stored assignment falls
   back to 5 / \`legacy_resume_pre_demo_v5\` and legitimately starts post-paywall.
-  14 = \`prayer_lock_carousel_v14\` in the unreleased 4.30 main snapshot.
+  14 = \`prayer_lock_carousel_v14\`, introduced in the 4.30 main snapshot and
+  retained by the current unreleased 4.32 main snapshot. Direct signed-in
+  device setup uses 14 / \`existing_account_setup_v14\`.
   **Prefer \`flow_cohort\` for cohorting.**
 - Two \`flow_version\` fields can disagree in PostHog: the super property is the
   app-build constant stamped on every event; the per-event onboarding field is
@@ -93,10 +98,12 @@ export const MAPPING_NOTES_MD = `### Cross-version joining notes
   current live 4.27 release (\`post_purchase_journey_v10\`). A resumed attempt
   keeps its persisted version/cohort; only a resume without a valid stored
   assignment falls back to \`5\` / \`legacy_resume_pre_demo_v5\`.
-- \`14\` — 4.30 merged-main snapshot (\`prayer_lock_carousel_v14\`), a new
-  transformation-first acquisition flow. It is not production traffic until
-  4.30 ships. Fresh attempts receive 14; resumes retain a valid persisted
-  assignment, with 5 reserved for the unassigned legacy fallback.
+- \`14\` — introduced in the 4.30 merged-main snapshot and retained by current
+  4.32 main. Fresh acquisition attempts use \`prayer_lock_carousel_v14\`; direct
+  signed-in device setup uses \`existing_account_setup_v14\`; assigned resumes
+  keep their persisted cohort, with 5 reserved for the unassigned legacy
+  fallback. Main snapshots are not production traffic until an App Store build
+  actually ships.
 - The only randomized A/B ever was \`ab_showVideoIntro\` (introduced 2026-03-17
   → removed in the 2026-04-05 Monster push; Group A won and the field is a
   constant \`true\` afterwards).
@@ -764,6 +771,54 @@ The headline changes are a shorter transformation-first onboarding for new insta
 - Main still has a Screen Time authorization routing gap to close before release: the compact v14 route does not request authorization, while the retained coordinator skips its legacy permission screens because it assumes permission already happened.
 - Physical-device QA remains necessary for Screen Time authorization, microphone/provider startup, paywall offerings, purchases, and the complete post-purchase handoff.
 - The paired iOS onboarding timing/identity changes on \`codex/new-onboarding-analytics\` are intentionally excluded from this main snapshot until that app branch is merged.`,
+      },
+    ],
+  },
+  {
+    version: '4.32',
+    stage: 'main',
+    releaseDate: '2026-08-25',
+    liveUntil: null,
+    commitCount: 4,
+    headline: 'Screen Time-gated onboarding, current funnel analytics, and Facebook Focus Web',
+    flowVersions: '14 / `prayer_lock_carousel_v14` for fresh attempts · 14 / `existing_account_setup_v14` for direct signed-in device setup · persisted assignment on resume · 5 / `legacy_resume_pre_demo_v5` only for unassigned legacy resumes',
+    cohorts: '`prayer_lock_carousel_v14` (fresh acquisition) · `existing_account_setup_v14` (signed-in device setup) · persisted prior cohort (assigned resumers) · `legacy_resume_pre_demo_v5` (unassigned legacy fallback)',
+    paywall: '`JourneyPaywallView` (hard): no-trial annual + weekly, no-trial annual offer on close, separate eligibility-gated trial route retained',
+    pricing: 'Unchanged from 4.27; use live RevenueCat/StoreKit product metadata as authoritative',
+    sections: [
+      {
+        title: 'Summary',
+        md: `4.32 is a **merged-main snapshot, not an App Store release**. It describes product main at \`688274c\` on 2026-08-25 and covers four non-merge product commits after the 4.30 snapshot: Facebook Focus Web navigation, safer internal onboarding diagnostics, the Screen Time authorization repair, and current v14 funnel analytics. Merge and task-documentation commits are excluded from the count. Keep 4.27 as the production boundary until App Store Connect or RevenueCat confirms a later build is live.
+
+Main's marketing version is 4.32 and its repository build number is 4.1. No iOS binary or TestFlight build is implied by this Git snapshot; distribution still requires a signed Xcode archive and App Store Connect upload.`,
+      },
+      {
+        title: 'Onboarding & Screen Time',
+        md: `- The canonical post-purchase route is now Notifications (14) → **Screen Time Permission (15)** → Schedule (16) → Choose Apps (17). The previous compact route collected self-reported hours but never requested FamilyControls authorization before the picker.
+- Approved access advances, not-determined and denied states can request/retry in place, persistent request failures show recovery copy, and the app reconciles authorization when it returns active.
+- Schedule Continue, screen appearance, and the picker action itself all recheck authorization. Revoked access fails closed to screen 15 instead of presenting an empty or unusable app picker.
+- Existing-account sign-in now starts the same device-local Screen Time, schedule, and app-selection setup under \`existing_account_setup_v14\`; it no longer marks onboarding complete with no local blockable-app tokens.
+- Setup Replay uses the same authorization boundary and resumes the protected app-selection action after approval. Internal previews remain prompt-free.`,
+      },
+      {
+        title: 'Onboarding analytics',
+        md: `- v14 now records fractional, foreground-only dwell time through both onboarding coordinators. The persisted attempt clock survives the acquisition/post-purchase handoff and records the final blocking-confirmation screen before completion.
+- Session and survey documents are reset once when a new device-keyed attempt takes ownership, preventing a later account from inheriting prior \`screens_completed\` history. Subsequent writes append only within that attempt.
+- Successful live sign-in links the current Firebase UID and device to the owned attempt; real authentication inside the internal debugger deliberately skips production session/survey linking.
+- The paired landing dashboard contract contains all **32 ordered v14 screen names**, including \`screen_time_permission\`, so the restored prerequisite is not misreported as a funnel skip.`,
+      },
+      {
+        title: 'Facebook Focus Web & diagnostics',
+        md: `- Facebook joins Spool's Focus Web app hub with an owned Home/Friends/Messenger/Reels/Notifications/Marketplace navigation row. Blocking can remove the Reels shortcut while preserving the other bounded Facebook routes.
+- The current-onboarding navigator is available in internal Xcode/TestFlight environments, can replace the active preview in place, and keeps purchases, account creation, OS permission prompts, analytics, persistence, and blocking activation behind explicit safety seams.
+- The Facebook navigation fallback no longer disappears when live document geometry is unavailable; authenticated physical-device visual and interaction QA remains the final gate for that surface.`,
+      },
+      {
+        title: 'Data quirks & release gates',
+        md: `- **Do not use 2026-08-25 as a production boundary.** It is a Git main snapshot; 4.27 remains the only confirmed live release in this table.
+- \`existing_account_setup_v14\` starts at post-purchase device setup and did not see the acquisition carousel or paywall. Analyze it separately from \`prayer_lock_carousel_v14\` rather than treating early-screen absence as dropoff.
+- FamilyControls remains a physical-device boundary. Before distribution, verify first grant, deny then retry, restricted/error copy, and revocation while Choose Apps is open or backgrounded.
+- A TestFlight upload still requires a usable Apple Distribution identity, enough archive disk space, an unused App Store Connect build number, and manual Xcode Organizer distribution.`,
       },
     ],
   },
