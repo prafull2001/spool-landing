@@ -1,4 +1,5 @@
 "use client";
+import { classifyPaidSubscription, dedupeCohortSurveys } from '../lib/analyticsMetrics.mjs';
 // Pure computation for the Age Cohort Funnel report (SPO-176).
 // No React, no Firebase, no side effects. Mirrors the helper pattern in excuseDataHelpers.js.
 
@@ -21,6 +22,7 @@ function makeRow(label) {
     reachedPaywall: 0,
     completedAccount: 0,
     activeSub: 0,
+    unverifiedActiveSub: 0,
   };
 }
 
@@ -37,7 +39,7 @@ function makeRow(label) {
  * @param {Map}    args.usersByUid          - Map: uid -> user doc (must include subscriptionActive)
  * @returns {{ rows: Array, noAgeRow: Object, totals: Object }}
  */
-export function computeAgeCohortFunnel({ surveys, sessionsByDeviceId, usersByUid }) {
+export function computeAgeCohortFunnel({ surveys, sessionsByDeviceId, usersByUid, asOf = Date.now() }) {
   const rows = {
     '13-17': makeRow('13-17'),
     '18-24': makeRow('18-24'),
@@ -46,7 +48,7 @@ export function computeAgeCohortFunnel({ surveys, sessionsByDeviceId, usersByUid
   };
   const noAgeRow = makeRow(NO_AGE_LABEL);
 
-  for (const survey of surveys) {
+  for (const survey of dedupeCohortSurveys(surveys)) {
     const bucketKey = getAgeBucket(survey.age);
     const row = bucketKey ? rows[bucketKey] : noAgeRow;
     row.surveys++;
@@ -58,8 +60,11 @@ export function computeAgeCohortFunnel({ surveys, sessionsByDeviceId, usersByUid
 
     if (survey.uid && survey.uid !== '') {
       row.completedAccount++;
-      const userDoc = usersByUid.get(survey.uid);
-      if (userDoc?.subscriptionActive === true) row.activeSub++;
+      const subscriptionState = classifyPaidSubscription(usersByUid.get(survey.uid), asOf);
+      if (subscriptionState === 'verified_active') row.activeSub++;
+      if (subscriptionState === 'unverified_active' || subscriptionState === 'stale_active') {
+        row.unverifiedActiveSub++;
+      }
     }
   }
 
@@ -71,6 +76,7 @@ export function computeAgeCohortFunnel({ surveys, sessionsByDeviceId, usersByUid
     reachedPaywall: all.reduce((s, r) => s + r.reachedPaywall, 0),
     completedAccount: all.reduce((s, r) => s + r.completedAccount, 0),
     activeSub: all.reduce((s, r) => s + r.activeSub, 0),
+    unverifiedActiveSub: all.reduce((s, r) => s + r.unverifiedActiveSub, 0),
   };
 
   return { rows: orderedRows, noAgeRow, totals };

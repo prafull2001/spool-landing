@@ -1,4 +1,5 @@
 "use client";
+import { summarizeMinutesBySubscription } from '../lib/analyticsMetrics.mjs';
 // Pure computation functions for Excuse Data dashboard.
 // No React, no side effects. Called from useMemo hooks.
 
@@ -682,22 +683,12 @@ export function computeMinutesDistribution(users, excludeTeam = true) {
 }
 
 /**
- * Average minutes/hours requested, paying (subscriptionActive) vs free.
- * @returns {{ paying: GroupStat, free: GroupStat }} where GroupStat = { count, avgMin, avgHrs, totalMin }
+ * Median minutes/hours requested per user, paying (subscriptionActive) vs free.
+ * @returns {{ paying: GroupStat, free: GroupStat }} where GroupStat = { count, medianMin, medianHrs, totalMin }
  */
 export function computeMinutesBySubscription(users, excludeTeam = true) {
   const pop = getMinutesUsers(users, excludeTeam);
-  const groups = { paying: [], free: [] };
-  pop.forEach(u => {
-    const m = Number(u.totalExtraMinutesRequested) || 0;
-    (u.subscriptionActive ? groups.paying : groups.free).push(m);
-  });
-  const stat = arr => {
-    if (arr.length === 0) return { count: 0, avgMin: 0, avgHrs: 0, totalMin: 0 };
-    const total = arr.reduce((s, v) => s + v, 0);
-    return { count: arr.length, avgMin: total / arr.length, avgHrs: total / arr.length / MIN_PER_HOUR, totalMin: total };
-  };
-  return { paying: stat(groups.paying), free: stat(groups.free) };
+  return summarizeMinutesBySubscription(pop);
 }
 
 /**

@@ -1,3 +1,5 @@
+import { ATTRIBUTION_LINKS } from '@/lib/attributionLinks.mjs';
+
 // App Configuration
 // Set IS_APP_LIVE to true when app is available on App Store
 // Set IS_APP_LIVE to false to show waitlist instead
@@ -12,20 +14,7 @@ export const APP_CONFIG = {
 
   // AppsFlyer OneLinks by ?src=. Unknown or missing sources intentionally fall
   // back to the raw App Store URL.
-  ATTRIBUTION_LINKS: {
-    manychat: "https://spool.onelink.me/c5xQ/99xx9vdy",
-    "instagram-bio": "https://spool.onelink.me/c5xQ/3uxzx1hc",
-    alexis_instantdm: "https://spool.onelink.me/c5xQ/q1d0gdb9",
-    spool_manychat: "https://spool.onelink.me/c5xQ/99xx9vdy",
-    sean_manychat: "https://spool.onelink.me/c5xQ/3yu1dta4",
-    spool_bio: "https://spool.onelink.me/c5xQ/3uxzx1hc",
-    sean_bio: "https://spool.onelink.me/c5xQ/tnykj47a",
-    alexis_bio: "https://spool.onelink.me/c5xQ/6ezr2f75",
-    peyton_bio: "https://spool.onelink.me/c5xQ/tom6a7gl",
-    peyton_dm: "https://spool.onelink.me/c5xQ/ponklr9l",
-    simon_bio: "https://spool.onelink.me/c5xQ/rcqriaq7",
-    simon_dm: "https://spool.onelink.me/c5xQ/rayxcnkh",
-  },
+  ATTRIBUTION_LINKS,
   
   // Waitlist link (when app is not live)
   WAITLIST_URL: "https://spool-app.vercel.app/",

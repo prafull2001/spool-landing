@@ -454,7 +454,7 @@ function ExcuseDataPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pr
     return () => { if (minutesHistInstance.current) { minutesHistInstance.current.destroy(); minutesHistInstance.current = null; } };
   }, [minutesDistribution, collapsed, activeTab]);
 
-  // Unlock Minutes — avg hours requested, paying vs free
+  // Unlock Minutes — median hours requested, paying vs free
   useEffect(() => {
     if (minutesSubInstance.current) { minutesSubInstance.current.destroy(); minutesSubInstance.current = null; }
     if (activeTab !== 'overview' || collapsed.minutes || !minutesBySub) return;
@@ -463,7 +463,7 @@ function ExcuseDataPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pr
         type: 'bar',
         data: {
           labels: ['Paying', 'Free'],
-          datasets: [{ data: [minutesBySub.paying.avgHrs, minutesBySub.free.avgHrs], backgroundColor: ['#58D68D', '#5499C7'], borderWidth: 0 }],
+          datasets: [{ data: [minutesBySub.paying.medianHrs, minutesBySub.free.medianHrs], backgroundColor: ['#58D68D', '#5499C7'], borderWidth: 0 }],
         },
         options: {
           responsive: true, maintainAspectRatio: false,
@@ -471,12 +471,12 @@ function ExcuseDataPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pr
             legend: { display: false },
             tooltip: { callbacks: { label: ctx => {
               const g = ctx.dataIndex === 0 ? minutesBySub.paying : minutesBySub.free;
-              return `${g.avgHrs.toFixed(1)}h avg · ${g.count} user${g.count === 1 ? '' : 's'}`;
+              return `${g.medianHrs.toFixed(1)}h median · ${g.count} user${g.count === 1 ? '' : 's'}`;
             } } },
           },
           scales: {
             x: { grid: { display: false } },
-            y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' }, title: { display: true, text: 'Avg hours / user' } },
+            y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' }, title: { display: true, text: 'Median hours / user' } },
           },
         },
       });

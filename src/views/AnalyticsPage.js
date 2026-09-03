@@ -11,6 +11,7 @@ import {
   findSessionUser,
   supportsABTesting,
 } from './analyticsModel.mjs';
+import { median, medianDurationsByScreen } from '../lib/analyticsMetrics.mjs';
 import './AnalyticsPage.css';
 
 Chart.register(...registerables);
@@ -541,20 +542,15 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
     if (total === 0) return null;
 
     const screenCounts = {};
-    const screenTimes = {};
-    const screenTimeCounts = {};
 
     order.forEach(s => {
       screenCounts[s.name] = 0;
-      screenTimes[s.name] = 0;
-      screenTimeCounts[s.name] = 0;
     });
 
     let paywallReached = 0;
     let droppedOff = 0;
     let prePaywallDropoff = 0;
-    let totalTimeSum = 0;
-    let totalTimeCount = 0;
+    const totalTimeValues = [];
 
     const firstScreen = order[0].name;
     const pw = version === 'v1' ? PAYWALL_SCREEN_V1 : PAYWALL_SCREEN_V2;
@@ -567,13 +563,6 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
       const seenScreens = new Set();
       seenScreens.add(firstScreen); // counted above; mark seen so it can't be recounted below
       completed.forEach(sc => {
-        // Track time for all occurrences
-        if (sc.time_spent_seconds !== undefined && sc.time_spent_seconds !== null) {
-          if (screenTimes[sc.screen_name] !== undefined) {
-            screenTimes[sc.screen_name] += sc.time_spent_seconds;
-            screenTimeCounts[sc.screen_name]++;
-          }
-        }
         // But only count each screen once per session for the funnel
         if (screenCounts[sc.screen_name] !== undefined && !seenScreens.has(sc.screen_name)) {
           seenScreens.add(sc.screen_name);
@@ -608,10 +597,11 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
         }
       }
       if (session.total_time_seconds > 0) {
-        totalTimeSum += session.total_time_seconds;
-        totalTimeCount++;
+        totalTimeValues.push(Number(session.total_time_seconds));
       }
     });
+
+    const medianScreenTimes = medianDurationsByScreen(sessionList, order.map(screen => screen.name));
 
     return {
       total,
@@ -622,10 +612,9 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
       prePaywallDropoff,
       prePaywallDropoffRate: ((prePaywallDropoff / total) * 100).toFixed(1),
       completionRate: (((total - droppedOff) / total) * 100).toFixed(1),
-      avgTotalTime: totalTimeCount > 0 ? (totalTimeSum / totalTimeCount).toFixed(0) : 0,
+      medianTotalTime: totalTimeValues.length > 0 ? median(totalTimeValues).toFixed(0) : 0,
       screenCounts,
-      screenTimes,
-      screenTimeCounts,
+      medianScreenTimes,
     };
   }, [version]);
 
@@ -665,14 +654,11 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
     return result;
   };
 
-  const buildAvgTimeData = useCallback((sessionList, order) => {
+  const buildMedianTimeData = useCallback((sessionList, order) => {
     const analytics = computeForSessions(sessionList, order);
     if (!analytics) return null;
     const screenNames = order.map(s => s.name);
-    return screenNames.map(name => {
-      const count = analytics.screenTimeCounts[name] || 0;
-      return count > 0 ? (analytics.screenTimes[name] / count).toFixed(1) : 0;
-    });
+    return screenNames.map(name => Number(analytics.medianScreenTimes[name] ?? 0).toFixed(1));
   }, [computeForSessions]);
 
   // Render charts whenever sessions/version/splitByAB change
@@ -694,8 +680,8 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
       const funnelB = buildFunnelData(abGroups.groupB, screenOrder) || screenNames.map(() => 0);
       const dropoffA = buildDropoffData(funnelA);
       const dropoffB = buildDropoffData(funnelB);
-      const timeA = buildAvgTimeData(abGroups.groupA, screenOrder) || screenNames.map(() => 0);
-      const timeB = buildAvgTimeData(abGroups.groupB, screenOrder) || screenNames.map(() => 0);
+      const timeA = buildMedianTimeData(abGroups.groupA, screenOrder) || screenNames.map(() => 0);
+      const timeB = buildMedianTimeData(abGroups.groupB, screenOrder) || screenNames.map(() => 0);
 
       // Funnel
       if (funnelChartRef.current) {
@@ -767,14 +753,14 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
             labels,
             datasets: [
               {
-                label: 'Group A Avg seconds',
+                label: 'Group A Median seconds',
                 data: timeA,
                 backgroundColor: 'rgba(84, 153, 199, 0.7)',
                 borderColor: 'rgba(84, 153, 199, 1)',
                 borderWidth: 1,
               },
               {
-                label: 'Group B Avg seconds',
+                label: 'Group B Median seconds',
                 data: timeB,
                 backgroundColor: 'rgba(243, 156, 18, 0.7)',
                 borderColor: 'rgba(243, 156, 18, 1)',
@@ -793,10 +779,8 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
       // Single dataset (original behavior)
       const funnelData = screenNames.map(name => analytics.screenCounts[name] || 0);
       const dropoffData = buildDropoffData(funnelData);
-      const avgTimeData = screenNames.map(name => {
-        const count = analytics.screenTimeCounts[name] || 0;
-        return count > 0 ? (analytics.screenTimes[name] / count).toFixed(1) : 0;
-      });
+      const medianTimeData = screenNames.map(name =>
+        Number(analytics.medianScreenTimes[name] ?? 0).toFixed(1));
 
       if (funnelChartRef.current) {
         funnelInstance.current = new Chart(funnelChartRef.current, {
@@ -846,8 +830,8 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
           data: {
             labels,
             datasets: [{
-              label: 'Avg seconds',
-              data: avgTimeData,
+              label: 'Median seconds',
+              data: medianTimeData,
               backgroundColor: 'rgba(46, 204, 113, 0.7)',
               borderColor: 'rgba(46, 204, 113, 1)',
               borderWidth: 1,
@@ -861,28 +845,21 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
         });
       }
     }
-  }, [sessions, computeAnalytics, splitByAB, showABControls, abGroups, screenOrder, buildFunnelData, buildAvgTimeData]);
+  }, [sessions, computeAnalytics, splitByAB, showABControls, abGroups, screenOrder, buildFunnelData, buildMedianTimeData]);
 
   // Conversion breakdown data
   const conversionData = useMemo(() => {
     const buildRow = (label, list) => {
       const total = list.length;
-      if (total === 0) return { label, sessions: 0, completionRate: '0.0', avgTime: 0, paywallRate: '0.0' };
+      if (total === 0) return { label, sessions: 0, completionRate: '0.0', medianTime: 0, paywallRate: '0.0' };
       const completed = list.filter(s => s.dropped_off === false).length;
       const paywall = list.filter(s => s.reached_paywall === true).length;
-      let timeSum = 0;
-      let timeCount = 0;
-      list.forEach(s => {
-        if (s.total_time_seconds > 0) {
-          timeSum += s.total_time_seconds;
-          timeCount++;
-        }
-      });
+      const times = list.map(s => Number(s.total_time_seconds)).filter(value => value > 0);
       return {
         label,
         sessions: total,
         completionRate: ((completed / total) * 100).toFixed(1),
-        avgTime: timeCount > 0 ? (timeSum / timeCount).toFixed(0) : 0,
+        medianTime: times.length > 0 ? median(times).toFixed(0) : 0,
         paywallRate: ((paywall / total) * 100).toFixed(1),
       };
     };
@@ -947,8 +924,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
     const reasonCounts = {};
     // Screen time distribution
     const screenTimeBuckets = { '0-2h': 0, '2-4h': 0, '4-6h': 0, '6-8h': 0, '8-10h': 0, '10h+': 0 };
-    let screenTimeTotal = 0;
-    let screenTimeCount = 0;
+    const screenTimeValues = [];
     // Paywall pass-through (reached paywall and didn't drop off there)
     let paywallPassed = 0;
     // Converted (has uid linked = created account, or dropped_off === false)
@@ -984,8 +960,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
       // Screen time
       const stHours = survey?.screenTimeHours;
       if (stHours != null && !isNaN(stHours)) {
-        screenTimeTotal += stHours;
-        screenTimeCount++;
+        screenTimeValues.push(Number(stHours));
         if (stHours < 2) screenTimeBuckets['0-2h']++;
         else if (stHours < 4) screenTimeBuckets['2-4h']++;
         else if (stHours < 6) screenTimeBuckets['4-6h']++;
@@ -1010,8 +985,8 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
       ageCounts,
       reasonCounts,
       screenTimeBuckets,
-      avgScreenTime: screenTimeCount > 0 ? (screenTimeTotal / screenTimeCount).toFixed(1) : null,
-      screenTimeCount,
+      medianScreenTime: screenTimeValues.length > 0 ? median(screenTimeValues).toFixed(1) : null,
+      screenTimeCount: screenTimeValues.length,
       paywallPassed,
       paywallPassRate: ((paywallPassed / total) * 100).toFixed(1),
       converted,
@@ -1215,9 +1190,9 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
               <span className="card-desc">Finished entire onboarding (account created + setup done)</span>
             </div>
             <div className="summary-card">
-              <h3>Avg Total Time</h3>
-              <span className="value">{analytics ? `${analytics.avgTotalTime}s` : '--'}</span>
-              <span className="card-desc">Average time from first screen to last screen seen</span>
+              <h3>Median Total Time</h3>
+              <span className="value">{analytics ? `${analytics.medianTotalTime}s` : '--'}</span>
+              <span className="card-desc">Median time from first screen to last screen seen</span>
             </div>
           </div>
 
@@ -1288,7 +1263,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
                 </div>
 
                 <div className="survey-section">
-                  <h3>Screen Time (Self-Reported){surveyOverview.avgScreenTime ? ` — Avg: ${surveyOverview.avgScreenTime}h` : ''}</h3>
+                  <h3>Screen Time (Self-Reported){surveyOverview.medianScreenTime ? ` — Median: ${surveyOverview.medianScreenTime}h` : ''}</h3>
                   <div className="survey-bars">
                     {Object.entries(surveyOverview.screenTimeBuckets).map(([bucket, count]) => (
                       <div key={bucket} className="survey-bar-row">
@@ -1431,7 +1406,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
           </div>
 
           <div className="chart-container">
-            <h2>Average Time per Screen (seconds)</h2>
+            <h2>Median Time per Screen (seconds)</h2>
             <canvas ref={timeChartRef}></canvas>
           </div>
 
@@ -1444,7 +1419,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
                   <th>Segment</th>
                   <th>Sessions</th>
                   <th>Completion Rate</th>
-                  <th>Avg Time (s)</th>
+                  <th>Median Time (s)</th>
                   {showsPaywallMetrics && <th>Paywall Rate</th>}
                 </tr>
               </thead>
@@ -1462,7 +1437,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
                       <td>{row.label}</td>
                       <td>{row.sessions}</td>
                       <td>{row.completionRate}%</td>
-                      <td>{row.avgTime}</td>
+                      <td>{row.medianTime}</td>
                       {showsPaywallMetrics && <td>{row.paywallRate}%</td>}
                     </tr>
                   );

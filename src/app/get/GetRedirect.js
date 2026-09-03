@@ -5,19 +5,10 @@ import { useEffect, useState } from 'react';
 import { APP_CONFIG } from '@/config/appConfig';
 import { DownloadLink } from '@/components/DownloadLink/DownloadLink';
 import { getInAppEscape, isAndroid, isIOS, isInstagramInApp } from '@/lib/inAppBrowser.mjs';
+import { resolveAttributionTarget } from '@/lib/attributionLinks.mjs';
 import styles from './page.module.css';
 
 const FALLBACK_DELAY_MS = 1800;
-
-function getAttributionTarget(source) {
-  const attributionUrl = source && Object.hasOwn(APP_CONFIG.ATTRIBUTION_LINKS, source)
-    ? APP_CONFIG.ATTRIBUTION_LINKS[source]
-    : null;
-  return {
-    url: attributionUrl || APP_CONFIG.APP_STORE_URL,
-    isAttributed: Boolean(attributionUrl),
-  };
-}
 
 export default function GetRedirect() {
   const [needsTap, setNeedsTap] = useState(false);
@@ -25,7 +16,7 @@ export default function GetRedirect() {
   useEffect(() => {
     const ua = navigator.userAgent;
     const source = new URLSearchParams(window.location.search).get('src')?.trim().toLowerCase();
-    const attribution = getAttributionTarget(source);
+    const attribution = resolveAttributionTarget(source, APP_CONFIG.APP_STORE_URL);
     const mobile = isIOS(ua, navigator.maxTouchPoints) || isAndroid(ua) || /Mobile|IEMobile|Opera Mini/i.test(ua);
 
     if (!mobile) {

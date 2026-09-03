@@ -769,14 +769,14 @@ function minutesBySubscriptionChart(users) {
     type: 'bar',
     data: {
       labels: [`Paying (n=${s.paying.count})`, `Free (n=${s.free.count})`],
-      datasets: [{ data: [s.paying.avgHrs, s.free.avgHrs], backgroundColor: [CHART_STYLE.colors[1], CHART_STYLE.colors[0]], borderWidth: 0 }],
+      datasets: [{ data: [s.paying.medianHrs, s.free.medianHrs], backgroundColor: [CHART_STYLE.colors[1], CHART_STYLE.colors[0]], borderWidth: 0 }],
     },
     options: {
       plugins: {
-        title: { display: true, text: 'Avg Unlock Hours Requested — Paying vs Free', font: { size: 16 } },
+        title: { display: true, text: 'Median Unlock Hours Requested — Paying vs Free', font: { size: 16 } },
         legend: { display: false },
       },
-      scales: { y: { beginAtZero: true, title: { display: true, text: 'Avg hours / user' } } },
+      scales: { y: { beginAtZero: true, title: { display: true, text: 'Median hours / user' } } },
     },
   };
 }

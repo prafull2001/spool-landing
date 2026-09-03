@@ -82,7 +82,7 @@ export default function AgeCohortPage({ panelMode = false, dateFrom: propsDateFr
           { label: 'Surveys (with age)', data: surveys, backgroundColor: STEP_COLORS.surveys, borderRadius: 4 },
           { label: 'Reached paywall',    data: paywall, backgroundColor: STEP_COLORS.paywall, borderRadius: 4 },
           { label: 'Completed account',  data: account, backgroundColor: STEP_COLORS.account, borderRadius: 4 },
-          { label: 'Currently Subscribed (in cohort)', data: sub, backgroundColor: STEP_COLORS.sub, borderRadius: 4 },
+          { label: 'Verified active paid subscriptions', data: sub, backgroundColor: STEP_COLORS.sub, borderRadius: 4 },
         ],
       },
       options: {
@@ -177,9 +177,14 @@ export default function AgeCohortPage({ panelMode = false, dateFrom: propsDateFr
                   <span className="card-desc">uid backfilled at finalization</span>
                 </div>
                 <div className="summary-card">
-                  <h3>Currently Subscribed (in cohort)</h3>
+                  <h3>Verified Active Paid</h3>
                   <span className="value">{funnel.totals.activeSub}</span>
-                  <span className="card-desc">Firestore subscriptionActive flag</span>
+                  <span className="card-desc">RevenueCat-sourced, production, unexpired</span>
+                </div>
+                <div className="summary-card">
+                  <h3>Legacy / Stale Active Flags</h3>
+                  <span className="value">{funnel.totals.unverifiedActiveSub}</span>
+                  <span className="card-desc">Excluded from verified active count</span>
                 </div>
               </div>
 
@@ -197,7 +202,8 @@ export default function AgeCohortPage({ panelMode = false, dateFrom: propsDateFr
                       <th>Surveys</th>
                       <th>Reached Paywall</th>
                       <th>Completed Account</th>
-                      <th>Currently Subscribed (in cohort)</th>
+                      <th>Verified Active Paid</th>
+                      <th>Legacy / Stale Active</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -217,6 +223,7 @@ export default function AgeCohortPage({ panelMode = false, dateFrom: propsDateFr
                           {row.activeSub}
                           <span className="rate-text"> ({fmtPct(row.activeSub, row.completedAccount)})</span>
                         </td>
+                        <td>{row.unverifiedActiveSub}</td>
                       </tr>
                     ))}
                     <tr className="no-age-row">
@@ -234,6 +241,7 @@ export default function AgeCohortPage({ panelMode = false, dateFrom: propsDateFr
                         {funnel.noAgeRow.activeSub}
                         <span className="rate-text"> ({fmtPct(funnel.noAgeRow.activeSub, funnel.noAgeRow.completedAccount)})</span>
                       </td>
+                      <td>{funnel.noAgeRow.unverifiedActiveSub}</td>
                     </tr>
                   </tbody>
                   <tfoot>
@@ -252,12 +260,13 @@ export default function AgeCohortPage({ panelMode = false, dateFrom: propsDateFr
                         <strong>{funnel.totals.activeSub}</strong>
                         <span className="rate-text"> ({fmtPct(funnel.totals.activeSub, funnel.totals.completedAccount)})</span>
                       </td>
+                      <td><strong>{funnel.totals.unverifiedActiveSub}</strong></td>
                     </tr>
                   </tfoot>
                 </table>
 
                 <p className="cohort-footnote">
-                  <strong>Currently Subscribed</strong> counts users who onboarded in the selected window AND have Firestore <code>subscriptionActive = true</code>. Widening the date range increases this count as more historical onboarders are included, plateauing around 42 — the total survey-era onboarders still subscribed. RevenueCat&apos;s current total (47) is higher because it includes ~5 pre-survey-schema users not visible to this report.
+                  <strong>Verified Active Paid</strong> counts unique linked people in the selected onboarding cohort whose latest Firestore subscription snapshot came from RevenueCat, is production/paid, and has an expiration after the current time. Legacy booleans, expired snapshots, trials, promotional access, free codes, dev bypass, and sandbox purchases are excluded. RevenueCat&apos;s account-wide Active Subscriptions chart uses a different denominator: all unexpired paid subscriptions, including people outside the selected onboarding cohort and cancelled subscriptions that have not expired yet.
                 </p>
               </div>
             </>

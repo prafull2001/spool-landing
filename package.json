@@ -25,13 +25,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "node --test",
-    "lint": "next lint"
-  },
-  "eslintConfig": {
-    "extends": [
-      "next/core-web-vitals"
-    ]
+    "lint": "eslint .",
+    "test": "node --test"
   },
   "browserslist": {
     "production": [
