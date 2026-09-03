@@ -2,6 +2,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Chart, registerables } from 'chart.js';
 import useFirebaseAuth from '../hooks/useFirebaseAuth';
+import useRevenueCatOverview from '../hooks/useRevenueCatOverview';
+import { formatRevenueCatTimestamp } from '../lib/revenueCatMetrics.mjs';
 import useAgeCohortData from './useAgeCohortData';
 import './AnalyticsPage.css';
 import './AgeCohortPage.css';
@@ -51,6 +53,12 @@ export default function AgeCohortPage({ panelMode = false, dateFrom: propsDateFr
   const effectiveTo = panelMode ? propsDateTo : appliedTo;
 
   const { funnel, loading, error } = useAgeCohortData(user, effectiveFrom, effectiveTo);
+  const {
+    overview: revenueCatOverview,
+    loading: revenueCatLoading,
+    error: revenueCatError,
+    refetch: refetchRevenueCat,
+  } = useRevenueCatOverview(user);
 
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
@@ -58,6 +66,7 @@ export default function AgeCohortPage({ panelMode = false, dateFrom: propsDateFr
   const handleApply = () => {
     setAppliedFrom(startOfDay(dateFromStr));
     setAppliedTo(endOfDay(dateToStr));
+    refetchRevenueCat();
   };
 
   useEffect(() => {
@@ -82,7 +91,7 @@ export default function AgeCohortPage({ panelMode = false, dateFrom: propsDateFr
           { label: 'Surveys (with age)', data: surveys, backgroundColor: STEP_COLORS.surveys, borderRadius: 4 },
           { label: 'Reached paywall',    data: paywall, backgroundColor: STEP_COLORS.paywall, borderRadius: 4 },
           { label: 'Completed account',  data: account, backgroundColor: STEP_COLORS.account, borderRadius: 4 },
-          { label: 'Verified active paid subscriptions', data: sub, backgroundColor: STEP_COLORS.sub, borderRadius: 4 },
+          { label: 'RevenueCat-sourced active Firebase identities', data: sub, backgroundColor: STEP_COLORS.sub, borderRadius: 4 },
         ],
       },
       options: {
@@ -111,6 +120,7 @@ export default function AgeCohortPage({ panelMode = false, dateFrom: propsDateFr
   }, [funnel]);
 
   const surveysWithAge = funnel ? funnel.totals.surveys - funnel.noAgeRow.surveys : 0;
+  const revenueCatTimestamp = formatRevenueCatTimestamp(revenueCatOverview);
 
   return (
     <div className={panelMode ? 'cohort-panel' : 'analytics-page'}>
@@ -152,6 +162,24 @@ export default function AgeCohortPage({ panelMode = false, dateFrom: propsDateFr
             </div>
           )}
 
+          <div className="summary-cards">
+            <div className="summary-card">
+              <h3>RevenueCat Active Subscriptions</h3>
+              <span className="value">
+                {revenueCatOverview
+                  ? revenueCatOverview.activeSubscriptions.toLocaleString()
+                  : revenueCatLoading ? '…' : 'Unavailable'}
+              </span>
+              <span className="card-desc">
+                {revenueCatOverview
+                  ? `Account-wide paid and unexpired · ${revenueCatOverview.activeTrials} active trials excluded${revenueCatTimestamp ? ` · fetched ${revenueCatTimestamp}` : ''}`
+                  : revenueCatError
+                    ? 'Could not reach RevenueCat; no Firestore fallback is shown'
+                    : 'Loading directly from RevenueCat…'}
+              </span>
+            </div>
+          </div>
+
           {loading ? (
             <div className="loading">Loading cohort data…</div>
           ) : error ? (
@@ -177,9 +205,9 @@ export default function AgeCohortPage({ panelMode = false, dateFrom: propsDateFr
                   <span className="card-desc">uid backfilled at finalization</span>
                 </div>
                 <div className="summary-card">
-                  <h3>Verified Active Paid</h3>
+                  <h3>Active Firebase Identities</h3>
                   <span className="value">{funnel.totals.activeSub}</span>
-                  <span className="card-desc">RevenueCat-sourced, production, unexpired</span>
+                  <span className="card-desc">Cohort diagnostic only — not a subscription total</span>
                 </div>
                 <div className="summary-card">
                   <h3>Legacy / Stale Active Flags</h3>
@@ -202,7 +230,7 @@ export default function AgeCohortPage({ panelMode = false, dateFrom: propsDateFr
                       <th>Surveys</th>
                       <th>Reached Paywall</th>
                       <th>Completed Account</th>
-                      <th>Verified Active Paid</th>
+                      <th>Active Firebase Identities</th>
                       <th>Legacy / Stale Active</th>
                     </tr>
                   </thead>
@@ -266,7 +294,7 @@ export default function AgeCohortPage({ panelMode = false, dateFrom: propsDateFr
                 </table>
 
                 <p className="cohort-footnote">
-                  <strong>Verified Active Paid</strong> counts unique linked people in the selected onboarding cohort whose latest Firestore subscription snapshot came from RevenueCat, is production/paid, and has an expiration after the current time. Legacy booleans, expired snapshots, trials, promotional access, free codes, dev bypass, and sandbox purchases are excluded. RevenueCat&apos;s account-wide Active Subscriptions chart uses a different denominator: all unexpired paid subscriptions, including people outside the selected onboarding cohort and cancelled subscriptions that have not expired yet.
+                  <strong>RevenueCat Active Subscriptions</strong> is the authoritative account-wide count of paid, unexpired subscriptions and refreshes automatically every five minutes. <strong>Active Firebase Identities</strong> is a cohort diagnostic: it counts linked Firebase identities whose latest Firestore snapshot is RevenueCat-sourced, production/paid, and unexpired. It can differ because one store subscription may be associated with multiple historical app identities, so it must not be used as the company&apos;s current subscriber total. Legacy booleans, expired snapshots, trials, promotional access, free codes, dev bypass, and sandbox purchases are excluded from both displayed paid counts.
                 </p>
               </div>
             </>
