@@ -4,13 +4,15 @@ import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import useFirebaseAuth from '../hooks/useFirebaseAuth';
 import AgeCohortPage from './AgeCohortPage';
 import AnalyticsPage from './AnalyticsPage';
+import ChurnReportPage from './ChurnReportPage';
 import ExcuseDataPage from './ExcuseDataPage';
 import ReleasesPage from './ReleasesPage';
 import './AnalyticsPage.css';
 import './UnifiedAnalyticsPage.css';
 
 const TABS = [
-  { id: 'age-cohort',  label: 'Age Cohort' },
+  { id: 'age-cohort',  label: 'Customer Info' },
+  { id: 'churn',       label: 'Churn Report' },
   { id: 'excuse-data', label: 'Excuse Data' },
   { id: 'analytics',   label: 'Onboarding Funnel' },
   { id: 'releases',    label: 'Releases' },
@@ -114,6 +116,9 @@ function UnifiedAnalyticsInner() {
           <div className="unified-panel">
             {activeTab === 'age-cohort' && (
               <AgeCohortPage panelMode dateFrom={appliedFrom} dateTo={appliedTo} />
+            )}
+            {activeTab === 'churn' && (
+              <ChurnReportPage panelMode dateFrom={appliedFrom} dateTo={appliedTo} />
             )}
             {activeTab === 'excuse-data' && (
               <ExcuseDataPage panelMode dateFrom={appliedFrom} dateTo={appliedTo} />

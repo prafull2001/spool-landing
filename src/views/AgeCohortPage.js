@@ -126,7 +126,7 @@ export default function AgeCohortPage({ panelMode = false, dateFrom: propsDateFr
     <div className={panelMode ? 'cohort-panel' : 'analytics-page'}>
       {!panelMode && (
         <header className="analytics-header">
-          <h1>Age Cohort Funnel</h1>
+          <h1>Customer Info</h1>
           <div className="auth-section">
             {user ? (
               <>
@@ -143,7 +143,7 @@ export default function AgeCohortPage({ panelMode = false, dateFrom: propsDateFr
       {!user ? (
         !panelMode && (
           <div className="login-prompt">
-            <p>Sign in with an authorized Google account to view age-cohort analytics.</p>
+            <p>Sign in with an authorized Google account to view customer analytics.</p>
           </div>
         )
       ) : (
