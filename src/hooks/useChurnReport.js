@@ -9,13 +9,13 @@ export default function useChurnReport(user) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const refetch = useCallback(async () => {
+  const fetchReport = useCallback(async (refresh = false) => {
     if (!user) return;
     setLoading(true);
     setError(null);
     try {
       const getReport = httpsCallable(cloudFunctions, 'get_revenuecat_churn_report', { timeout: 300000 });
-      const result = await getReport();
+      const result = await getReport({ refresh });
       setReport(normalizeChurnReport(result.data));
     } catch (err) {
       console.error('RevenueCat churn report fetch failed:', err);
@@ -25,14 +25,16 @@ export default function useChurnReport(user) {
     }
   }, [user]);
 
+  const refetch = useCallback(() => fetchReport(true), [fetchReport]);
+
   useEffect(() => {
     if (!user) {
       setReport(null);
       setError(null);
       return;
     }
-    refetch();
-  }, [user, refetch]);
+    fetchReport();
+  }, [user, fetchReport]);
 
   return { report, loading, error, refetch };
 }
