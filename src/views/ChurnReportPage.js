@@ -1,5 +1,6 @@
 "use client";
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Chart, registerables } from 'chart.js';
 import useFirebaseAuth from '../hooks/useFirebaseAuth';
 import useChurnReport from '../hooks/useChurnReport';
 import {
@@ -7,16 +8,27 @@ import {
   filterChurnRows,
   formatPlan,
   formatRevenueCatReason,
+  summarizeChurnReasons,
   summarizeChurnRows,
 } from '../lib/churnReport.mjs';
 import './AnalyticsPage.css';
 import './ChurnReportPage.css';
+
+Chart.register(...registerables);
 
 const STATUS_LABELS = {
   churned: 'Churned',
   scheduled: 'Scheduled',
   recovered: 'Recovered',
 };
+
+const STATUS_COLORS = {
+  churned: '#ed7a6f',
+  scheduled: '#efb85d',
+  recovered: '#69b98a',
+};
+
+const REASON_COLORS = ['#8ac9e1', '#e8a87c', '#ed7a6f', '#69b98a', '#b79ad8', '#e4c45c', '#79a5d2'];
 
 function formatDate(value, includeTime = false) {
   if (!value) return '—';
@@ -41,15 +53,114 @@ export default function ChurnReportPage({ panelMode = false, dateFrom, dateTo } 
   const { report, loading, error, refetch } = useChurnReport(user);
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('all');
+  const [reason, setReason] = useState('all');
   const [expandedId, setExpandedId] = useState(null);
+  const statusChartRef = useRef(null);
+  const statusChartInstance = useRef(null);
+  const reasonChartRef = useRef(null);
+  const reasonChartInstance = useRef(null);
 
-  const rows = useMemo(() => filterChurnRows(report?.rows || [], {
+  const populationRows = useMemo(() => filterChurnRows(report?.rows || [], {
     dateFrom,
     dateTo,
-    status,
-    search,
-  }), [report, dateFrom, dateTo, status, search]);
-  const summary = useMemo(() => summarizeChurnRows(rows), [rows]);
+  }), [report, dateFrom, dateTo]);
+  const rows = useMemo(
+    () => filterChurnRows(populationRows, { status, reason, search }),
+    [populationRows, status, reason, search],
+  );
+  const summary = useMemo(() => summarizeChurnRows(populationRows), [populationRows]);
+  const reasons = useMemo(() => summarizeChurnReasons(populationRows), [populationRows]);
+  const activeReasonLabel = reason === 'in-app'
+    ? 'Has an in-app reason'
+    : reasons.find(item => item.key === reason)?.label;
+
+  useEffect(() => {
+    statusChartInstance.current?.destroy();
+    statusChartInstance.current = null;
+    if (!statusChartRef.current || !report) return;
+    const keys = ['churned', 'scheduled', 'recovered'];
+    statusChartInstance.current = new Chart(statusChartRef.current, {
+      type: 'doughnut',
+      data: {
+        labels: keys.map(key => STATUS_LABELS[key]),
+        datasets: [{
+          data: keys.map(key => summary[key]),
+          backgroundColor: keys.map(key => status === 'all' || status === key ? STATUS_COLORS[key] : `${STATUS_COLORS[key]}55`),
+          borderColor: '#fffaf3',
+          borderWidth: 3,
+          hoverOffset: 6,
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '62%',
+        onClick: (_, elements) => {
+          if (!elements.length) return;
+          const selected = keys[elements[0].index];
+          setStatus(current => current === selected ? 'all' : selected);
+          setExpandedId(null);
+        },
+        onHover: (event, elements) => {
+          if (event.native?.target) event.native.target.style.cursor = elements.length ? 'pointer' : 'default';
+        },
+        plugins: {
+          legend: { position: 'bottom', labels: { color: '#7f6100', usePointStyle: true, padding: 16 } },
+          tooltip: { callbacks: { label: context => `${context.label}: ${context.parsed} customers` } },
+        },
+      },
+    });
+    return () => {
+      statusChartInstance.current?.destroy();
+      statusChartInstance.current = null;
+    };
+  }, [report, status, summary]);
+
+  useEffect(() => {
+    reasonChartInstance.current?.destroy();
+    reasonChartInstance.current = null;
+    if (!reasonChartRef.current || !report || reasons.length === 0) return;
+    reasonChartInstance.current = new Chart(reasonChartRef.current, {
+      type: 'bar',
+      data: {
+        labels: reasons.map(item => item.label),
+        datasets: [{
+          data: reasons.map(item => item.count),
+          backgroundColor: reasons.map((item, index) => (
+            reason === 'all' || reason === item.key ? REASON_COLORS[index % REASON_COLORS.length] : '#dfd5c455'
+          )),
+          borderRadius: 6,
+          borderSkipped: false,
+        }],
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        onClick: (_, elements) => {
+          if (!elements.length) return;
+          const selected = reasons[elements[0].index].key;
+          setReason(current => current === selected ? 'all' : selected);
+          setExpandedId(null);
+        },
+        onHover: (event, elements) => {
+          if (event.native?.target) event.native.target.style.cursor = elements.length ? 'pointer' : 'default';
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: context => `${context.parsed.x} customers` } },
+        },
+        scales: {
+          x: { beginAtZero: true, ticks: { color: '#7f6100', precision: 0 }, grid: { color: '#f0e8d8' } },
+          y: { ticks: { color: '#7f6100' }, grid: { display: false } },
+        },
+      },
+    });
+    return () => {
+      reasonChartInstance.current?.destroy();
+      reasonChartInstance.current = null;
+    };
+  }, [report, reason, reasons]);
 
   const exportCsv = () => {
     const blob = new Blob([churnRowsToCsv(rows)], { type: 'text/csv;charset=utf-8' });
@@ -88,32 +199,50 @@ export default function ChurnReportPage({ panelMode = false, dateFrom, dateTo } 
         </div>
       ) : report && (
         <>
-          <div className="summary-cards">
-            <div className="summary-card">
+          <div className="summary-cards churn-summary-cards">
+            <button type="button" aria-pressed={status === 'all' && reason === 'all'} className={`summary-card churn-summary-card ${status === 'all' && reason === 'all' ? 'active' : ''}`} onClick={() => { setStatus('all'); setReason('all'); }}>
               <h3>Churn History</h3>
               <span className="value">{summary.all}</span>
               <span className="card-desc">All users with a RevenueCat cancellation or expiration in this window</span>
-            </div>
-            <div className="summary-card">
+            </button>
+            <button type="button" aria-pressed={status === 'churned'} className={`summary-card churn-summary-card ${status === 'churned' ? 'active' : ''}`} onClick={() => setStatus(status === 'churned' ? 'all' : 'churned')}>
               <h3>Churned</h3>
               <span className="value">{summary.churned}</span>
               <span className="card-desc">Access ended without a later recovery</span>
-            </div>
-            <div className="summary-card">
+            </button>
+            <button type="button" aria-pressed={status === 'scheduled'} className={`summary-card churn-summary-card ${status === 'scheduled' ? 'active' : ''}`} onClick={() => setStatus(status === 'scheduled' ? 'all' : 'scheduled')}>
               <h3>Scheduled</h3>
               <span className="value">{summary.scheduled}</span>
               <span className="card-desc">Auto-renew off; access has not ended yet</span>
-            </div>
-            <div className="summary-card">
+            </button>
+            <button type="button" aria-pressed={status === 'recovered'} className={`summary-card churn-summary-card ${status === 'recovered' ? 'active' : ''}`} onClick={() => setStatus(status === 'recovered' ? 'all' : 'recovered')}>
               <h3>Recovered</h3>
               <span className="value">{summary.recovered}</span>
               <span className="card-desc">Churned or cancelled, then renewed or repurchased</span>
-            </div>
-            <div className="summary-card">
+            </button>
+            <button type="button" aria-pressed={reason === 'in-app'} className={`summary-card churn-summary-card ${reason === 'in-app' ? 'active' : ''}`} onClick={() => setReason(reason === 'in-app' ? 'all' : 'in-app')}>
               <h3>In-App Reasons</h3>
               <span className="value">{summary.withInAppReason}</span>
               <span className="card-desc">Matched a response from Spool&apos;s cancellation flow</span>
-            </div>
+            </button>
+          </div>
+
+          <div className="churn-chart-grid">
+            <section className="chart-container churn-chart-card">
+              <div className="churn-chart-heading">
+                <div><h2>Current churn state</h2><p>Click a segment to filter the customers below.</p></div>
+                {status !== 'all' && <span className={`churn-status ${status}`}>{STATUS_LABELS[status]}</span>}
+              </div>
+              <div className="churn-status-chart"><canvas ref={statusChartRef} role="img" aria-label="Churned, scheduled, and recovered customers" /></div>
+            </section>
+            <section className="chart-container churn-chart-card">
+              <div className="churn-chart-heading">
+                <div><h2>Why people left</h2><p>In-app answers when available; RevenueCat reasons otherwise. Click a bar to drill down.</p></div>
+              </div>
+              {reasons.length > 0
+                ? <div className="churn-reason-chart" style={{ height: Math.max(250, reasons.length * 42) }}><canvas ref={reasonChartRef} role="img" aria-label="Customers grouped by churn reason" /></div>
+                : <p className="churn-no-data">No churn reasons in this date range.</p>}
+            </section>
           </div>
 
           <div className="churn-toolbar">
@@ -130,17 +259,30 @@ export default function ChurnReportPage({ panelMode = false, dateFrom, dateTo } 
               <option value="scheduled">Scheduled</option>
               <option value="recovered">Recovered</option>
             </select>
+            <select value={reason} onChange={event => setReason(event.target.value)} aria-label="Filter churn reason">
+              <option value="all">All reasons</option>
+              <option value="in-app">Has an in-app reason</option>
+              {reasons.map(item => <option key={item.key} value={item.key}>{item.label} ({item.count})</option>)}
+            </select>
             <button className="btn-refresh" onClick={refetch} disabled={loading}>
               {loading ? 'Refreshing…' : 'Refresh RevenueCat'}
             </button>
             <button className="churn-export" onClick={exportCsv} disabled={rows.length === 0}>Export CSV</button>
           </div>
 
+          {(status !== 'all' || reason !== 'all') && (
+            <div className="churn-active-filter" role="status">
+              <span>Showing {status === 'all' ? 'all statuses' : STATUS_LABELS[status]}{reason !== 'all' ? ` · ${activeReasonLabel || 'Selected reason'}` : ''}</span>
+              <strong>{rows.length} customers</strong>
+              <button onClick={() => { setStatus('all'); setReason('all'); setExpandedId(null); }}>Clear drill-down</button>
+            </div>
+          )}
+
           <div className="chart-container churn-table-card">
             <div className="churn-heading">
               <div>
-                <h2>Customers who churned</h2>
-                <p>Lifetime RevenueCat history, enriched with Firebase contact and cancellation-flow data.</p>
+                <h2>Customer drill-down</h2>
+                <p>Click Details for contact, subscription, cancellation-flow, and customer context.</p>
               </div>
               <span>{rows.length} shown · fetched {formatDate(report.fetchedAt, true)}</span>
             </div>

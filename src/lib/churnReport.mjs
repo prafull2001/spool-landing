@@ -55,7 +55,25 @@ export function normalizeChurnReport(payload) {
   };
 }
 
-export function filterChurnRows(rows, { dateFrom, dateTo, status = 'all', search = '' }) {
+export function churnReasonKey(row) {
+  const inAppReason = row?.cancellationFlow?.reason?.trim();
+  return inAppReason
+    ? `in-app:${inAppReason.toLowerCase()}`
+    : `revenuecat:${row?.revenueCatReason || 'UNKNOWN'}`;
+}
+
+export function churnReasonLabel(row) {
+  const inAppReason = row?.cancellationFlow?.reason?.trim();
+  return inAppReason || `RevenueCat · ${formatRevenueCatReason(row?.revenueCatReason)}`;
+}
+
+export function filterChurnRows(rows, {
+  dateFrom,
+  dateTo,
+  status = 'all',
+  reason = 'all',
+  search = '',
+}) {
   const fromMs = dateFrom instanceof Date ? dateFrom.getTime() : Number.NEGATIVE_INFINITY;
   const toMs = dateTo instanceof Date ? dateTo.getTime() : Number.POSITIVE_INFINITY;
   const query = search.trim().toLowerCase();
@@ -64,6 +82,8 @@ export function filterChurnRows(rows, { dateFrom, dateTo, status = 'all', search
     const churnMs = Date.parse(row.churnedAt);
     if (churnMs < fromMs || churnMs > toMs) return false;
     if (status !== 'all' && row.status !== status) return false;
+    if (reason === 'in-app' && !row.cancellationFlow?.reason) return false;
+    if (reason !== 'all' && reason !== 'in-app' && churnReasonKey(row) !== reason) return false;
     if (!query) return true;
     return [
       row.displayName,
@@ -88,6 +108,17 @@ export function summarizeChurnRows(rows) {
     recovered: rows.filter(row => row.status === 'recovered').length,
     withInAppReason: rows.filter(row => row.cancellationFlow?.reason).length,
   };
+}
+
+export function summarizeChurnReasons(rows) {
+  const groups = new Map();
+  rows.forEach(row => {
+    const key = churnReasonKey(row);
+    const current = groups.get(key) || { key, label: churnReasonLabel(row), count: 0 };
+    current.count += 1;
+    groups.set(key, current);
+  });
+  return [...groups.values()].sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
 }
 
 export function formatPlan(row) {

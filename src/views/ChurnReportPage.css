@@ -1,9 +1,97 @@
+.churn-summary-card {
+  width: 100%;
+  border: 2px solid transparent;
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 140ms ease, transform 140ms ease, box-shadow 140ms ease;
+}
+
+.churn-summary-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(127, 97, 0, 0.1);
+}
+
+.churn-summary-card:focus-visible {
+  outline: 3px solid rgba(138, 201, 225, 0.55);
+  outline-offset: 2px;
+}
+
+.churn-summary-card.active {
+  border-color: #8ac9e1;
+  background: #f7fcfe;
+}
+
+.churn-chart-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.8fr) minmax(420px, 1.2fr);
+  gap: 20px;
+}
+
+.churn-chart-card {
+  min-width: 0;
+}
+
+.churn-chart-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.churn-chart-heading h2 {
+  margin-bottom: 4px;
+}
+
+.churn-chart-heading p {
+  max-width: 560px;
+  margin: 0;
+  color: #9b8762;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.churn-status-chart {
+  height: 300px;
+}
+
+.churn-reason-chart {
+  min-height: 250px;
+  max-height: 520px;
+}
+
 .churn-toolbar {
   display: flex;
   gap: 10px;
   align-items: center;
   flex-wrap: wrap;
   margin-bottom: 20px;
+}
+
+.churn-active-filter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: -8px 0 20px;
+  padding: 10px 14px;
+  border: 1px solid #ead9bd;
+  border-radius: 10px;
+  background: #fffaf3;
+  color: #7f6100;
+  font-size: 13px;
+}
+
+.churn-active-filter strong {
+  margin-left: auto;
+}
+
+.churn-active-filter button {
+  border: 0;
+  background: transparent;
+  color: #2178a0;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 .churn-toolbar input,
@@ -200,6 +288,10 @@
 }
 
 @media (max-width: 768px) {
+  .churn-chart-grid {
+    grid-template-columns: 1fr;
+  }
+
   .churn-toolbar {
     align-items: stretch;
   }
@@ -212,5 +304,14 @@
 
   .churn-heading {
     flex-direction: column;
+  }
+
+  .churn-active-filter {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .churn-active-filter strong {
+    margin-left: 0;
   }
 }

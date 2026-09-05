@@ -2,9 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   churnRowsToCsv,
+  churnReasonKey,
   filterChurnRows,
   formatPlan,
   normalizeChurnReport,
+  summarizeChurnReasons,
   summarizeChurnRows,
 } from './churnReport.mjs';
 
@@ -74,6 +76,8 @@ test('filters lifetime rows by decision date, status, and any customer detail', 
   });
   assert.deepEqual(dateFiltered.map(row => row.revenueCatCustomerId), ['rc-1']);
   assert.deepEqual(filterChurnRows(rows, { status: 'recovered' }), [rows[1]]);
+  assert.deepEqual(filterChurnRows(rows, { reason: 'in-app' }), [rows[0]]);
+  assert.deepEqual(filterChurnRows(rows, { reason: churnReasonKey(rows[1]) }), [rows[1]]);
   assert.deepEqual(filterChurnRows(rows, { search: 'too expensive' }), [rows[0]]);
   assert.deepEqual(filterChurnRows(rows, { search: 'alex@example.com' }), [rows[0]]);
 });
@@ -88,6 +92,10 @@ test('summarizes the currently filtered rows and presents plan labels', () => {
   });
   assert.equal(formatPlan(rows[0]), 'Weekly');
   assert.equal(formatPlan(rows[1]), 'Annual · no trial');
+  assert.deepEqual(summarizeChurnReasons(rows), [
+    { key: 'revenuecat:UNKNOWN', label: 'RevenueCat · No reason recorded', count: 1 },
+    { key: 'in-app:too expensive', label: 'Too expensive', count: 1 },
+  ]);
 });
 
 test('CSV export includes hidden detail and neutralizes spreadsheet formulas', () => {
