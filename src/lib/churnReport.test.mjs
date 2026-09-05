@@ -8,6 +8,7 @@ import {
   normalizeChurnReport,
   summarizeChurnReasons,
   summarizeChurnRows,
+  summarizeSubscriptionTypes,
 } from './churnReport.mjs';
 
 const rows = [
@@ -78,6 +79,8 @@ test('filters lifetime rows by decision date, status, and any customer detail', 
   assert.deepEqual(filterChurnRows(rows, { status: 'recovered' }), [rows[1]]);
   assert.deepEqual(filterChurnRows(rows, { reason: 'in-app' }), [rows[0]]);
   assert.deepEqual(filterChurnRows(rows, { reason: churnReasonKey(rows[1]) }), [rows[1]]);
+  assert.deepEqual(filterChurnRows(rows, { plan: 'weekly' }), [rows[0]]);
+  assert.deepEqual(filterChurnRows(rows, { plan: 'annual' }), [rows[1]]);
   assert.deepEqual(filterChurnRows(rows, { search: 'too expensive' }), [rows[0]]);
   assert.deepEqual(filterChurnRows(rows, { search: 'alex@example.com' }), [rows[0]]);
 });
@@ -95,6 +98,15 @@ test('summarizes the currently filtered rows and presents plan labels', () => {
   assert.deepEqual(summarizeChurnReasons(rows), [
     { key: 'revenuecat:UNKNOWN', label: 'RevenueCat · No reason recorded', count: 1 },
     { key: 'in-app:too expensive', label: 'Too expensive', count: 1 },
+  ]);
+  assert.deepEqual(summarizeSubscriptionTypes([
+    ...rows,
+    { productId: 'com.stopscrollingwith.Spool.Month' },
+    { productId: 'com.stopscrollingwith.Spool.LimitedTimeOffer' },
+  ]), [
+    { key: 'annual', label: 'Annual', count: 2 },
+    { key: 'monthly', label: 'Monthly', count: 1 },
+    { key: 'weekly', label: 'Weekly', count: 1 },
   ]);
 });
 

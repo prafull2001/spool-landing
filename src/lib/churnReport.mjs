@@ -72,6 +72,7 @@ export function filterChurnRows(rows, {
   dateTo,
   status = 'all',
   reason = 'all',
+  plan = 'all',
   search = '',
 }) {
   const fromMs = dateFrom instanceof Date ? dateFrom.getTime() : Number.NEGATIVE_INFINITY;
@@ -84,6 +85,7 @@ export function filterChurnRows(rows, {
     if (status !== 'all' && row.status !== status) return false;
     if (reason === 'in-app' && !row.cancellationFlow?.reason) return false;
     if (reason !== 'all' && reason !== 'in-app' && churnReasonKey(row) !== reason) return false;
+    if (plan !== 'all' && subscriptionType(row).toLowerCase() !== plan) return false;
     if (!query) return true;
     return [
       row.displayName,
@@ -117,6 +119,25 @@ export function summarizeChurnReasons(rows) {
     const current = groups.get(key) || { key, label: churnReasonLabel(row), count: 0 };
     current.count += 1;
     groups.set(key, current);
+  });
+  return [...groups.values()].sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
+}
+
+export function subscriptionType(row) {
+  const plan = formatPlan(row);
+  const normalized = plan.toLowerCase();
+  if (normalized.includes('week')) return 'Weekly';
+  if (normalized.includes('month')) return 'Monthly';
+  if (normalized.includes('annual') || normalized.includes('year') || normalized.includes('limited')) return 'Annual';
+  return plan;
+}
+
+export function summarizeSubscriptionTypes(rows) {
+  const groups = new Map();
+  rows.forEach(row => {
+    const label = subscriptionType(row);
+    const key = label.toLowerCase();
+    groups.set(key, { key, label, count: (groups.get(key)?.count || 0) + 1 });
   });
   return [...groups.values()].sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
 }

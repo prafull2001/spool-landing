@@ -23,7 +23,7 @@
 
 .churn-chart-grid {
   display: grid;
-  grid-template-columns: minmax(280px, 0.8fr) minmax(420px, 1.2fr);
+  grid-template-columns: repeat(2, minmax(280px, 1fr));
   gap: 20px;
 }
 
@@ -58,6 +58,20 @@
 .churn-reason-chart {
   min-height: 250px;
   max-height: 520px;
+}
+
+.churn-reason-card {
+  grid-column: 1 / -1;
+}
+
+.churn-plan-badge {
+  display: inline-flex;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: #e7f5fb;
+  color: #2178a0;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .churn-toolbar {
