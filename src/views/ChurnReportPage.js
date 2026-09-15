@@ -353,6 +353,15 @@ export default function ChurnReportPage({ panelMode = false, dateFrom, dateTo } 
             <button className="churn-export" onClick={exportCsv} disabled={rows.length === 0}>Export CSV</button>
           </div>
 
+          {error && (
+            <div className="churn-refresh-error" role="alert">
+              <span>
+                Refresh failed. Showing the last successful report from {formatDate(report.fetchedAt, true)}.
+              </span>
+              <button type="button" onClick={refetch} disabled={loading}>Try again</button>
+            </div>
+          )}
+
           {activeFilters.length > 0 && (
             <div className="churn-active-filter" role="status">
               <span>Showing {activeFilters.join(' · ')}</span>

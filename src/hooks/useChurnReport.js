@@ -14,7 +14,12 @@ export default function useChurnReport(user) {
     setLoading(true);
     setError(null);
     try {
-      const getReport = httpsCallable(cloudFunctions, 'get_revenuecat_churn_report', { timeout: 300000 });
+      const getReport = httpsCallable(cloudFunctions, 'get_revenuecat_churn_report', {
+        // An existing lifetime snapshot refresh is incremental. Do not leave
+        // the dashboard disabled for the callable's full five-minute ceiling
+        // if that bounded path fails; initial bootstrap retains the longer cap.
+        timeout: refresh ? 90000 : 300000,
+      });
       const result = await getReport({ refresh });
       setReport(normalizeChurnReport(result.data));
     } catch (err) {
