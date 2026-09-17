@@ -96,7 +96,7 @@ const PrivacyPolicyPage = () => {
           </ul>
 
           <h3>Refund requests and sharing with Apple</h3>
-          <p>If you request a refund for an in-app purchase, you agree that Spool may share information about your purchase and your use of the app with Apple to help Apple decide on your request. We share this only when a refund is requested and only as permitted by Apple’s policies.</p>
+          <p>If you request a refund for an in-app purchase, you agree that Spool may share information about your purchase and your use of the app with Apple to help Apple decide on your request. We share this only when a refund is requested and only as permitted by Apple’s policies. You can withdraw your consent at any time by emailing <a href="mailto:team@thespoolapp.com">team@thespoolapp.com</a>.</p>
         </section>
 
         <section>
