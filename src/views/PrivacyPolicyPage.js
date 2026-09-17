@@ -13,7 +13,7 @@ const PrivacyPolicyPage = () => {
 
         <p className="privacy-intro">At Spool, we believe your privacy is fundamental. This Privacy Policy explains how we collect, use, and protect your information when you use our app and services.</p>
 
-        <p className="privacy-effective-date">Last Updated: July 1, 2026</p>
+        <p className="privacy-effective-date">Last Updated: September 17, 2026</p>
 
         <section>
           <h2>1. Information We Collect</h2>
@@ -94,6 +94,9 @@ const PrivacyPolicyPage = () => {
             <li><strong>Legal Requirements:</strong> When required by law or to protect our users' safety.</li>
             <li><strong>Business Transfers:</strong> In the unlikely event of a merger or acquisition.</li>
           </ul>
+
+          <h3>Refund requests and sharing with Apple</h3>
+          <p>If you request a refund for an in-app purchase, you agree that Spool may share information about your purchase and your use of the app with Apple to help Apple decide on your request. We share this only when a refund is requested and only as permitted by Apple’s policies.</p>
         </section>
 
         <section>

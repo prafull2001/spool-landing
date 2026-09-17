@@ -11,7 +11,7 @@ const TermsOfServicePage = () => {
       <div className="terms-container">
         <h1>Terms of Service</h1>
         
-        <p className="terms-intro">Effective Date: July 1, 2026</p>
+        <p className="terms-intro">Effective Date: September 17, 2026</p>
 
         <section>
           <h2>1. Introduction</h2>
@@ -39,6 +39,9 @@ const TermsOfServicePage = () => {
           <p>For annual subscriptions, the 2-week trial period begins when you confirm your subscription. No charge will be applied during the trial period. Payment will be charged to your iTunes account at confirmation of purchase or after the trial period ends.</p>
           <p>The subscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel subscriptions in your iTunes account settings.</p>
           <p>If you cancel during the trial period, access to App features will end immediately. No refunds will be issued for any unused portion of a subscription period.</p>
+
+          <h3>Refund requests and sharing with Apple</h3>
+          <p>If you request a refund for an in-app purchase, you agree that Spool may share information about your purchase and your use of the app with Apple to help Apple decide on your request. We share this only when a refund is requested and only as permitted by Apple’s policies.</p>
 
           <h3>2.3 App Blocking Functionality</h3>
           <p>The App uses iOS Family Controls APIs to restrict access to selected applications. Blocked apps remain inaccessible according to your settings and schedules. You can configure different blocking durations and schedules within the App.</p>
