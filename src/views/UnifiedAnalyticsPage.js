@@ -7,6 +7,7 @@ import AnalyticsPage from './AnalyticsPage';
 import ChurnReportPage from './ChurnReportPage';
 import ExcuseDataPage from './ExcuseDataPage';
 import ReleasesPage from './ReleasesPage';
+import { endOfLocalDay, formatLocalDate, startOfLocalDay } from '../lib/dateRange.mjs';
 import './AnalyticsPage.css';
 import './UnifiedAnalyticsPage.css';
 
@@ -29,10 +30,6 @@ const ALLOWED_EMAILS = [
 
 const LIFETIME_START = '2024-01-01';
 
-function isoDate(d) { return d.toISOString().slice(0, 10); }
-function startOfDay(s) { const d = new Date(s); d.setHours(0, 0, 0, 0); return d; }
-function endOfDay(s)   { const d = new Date(s); d.setHours(23, 59, 59, 999); return d; }
-
 function UnifiedAnalyticsInner() {
   const { user, handleSignIn, handleSignOut } = useFirebaseAuth();
   const searchParams = useSearchParams();
@@ -45,13 +42,13 @@ function UnifiedAnalyticsInner() {
   );
 
   const [dateFromStr, setDateFromStr] = useState(LIFETIME_START);
-  const [dateToStr, setDateToStr] = useState(() => isoDate(new Date()));
-  const [appliedFrom, setAppliedFrom] = useState(() => startOfDay(LIFETIME_START));
-  const [appliedTo, setAppliedTo] = useState(() => endOfDay(new Date()));
+  const [dateToStr, setDateToStr] = useState(() => formatLocalDate(new Date()));
+  const [appliedFrom, setAppliedFrom] = useState(() => startOfLocalDay(LIFETIME_START));
+  const [appliedTo, setAppliedTo] = useState(() => endOfLocalDay(new Date()));
 
   const handleApply = () => {
-    setAppliedFrom(startOfDay(dateFromStr));
-    setAppliedTo(endOfDay(dateToStr));
+    setAppliedFrom(startOfLocalDay(dateFromStr));
+    setAppliedTo(endOfLocalDay(dateToStr));
   };
 
   const handleTabChange = (id) => {

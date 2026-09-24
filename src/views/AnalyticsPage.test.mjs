@@ -6,6 +6,7 @@ import {
   classifyABGroup,
   filterSessionsByVersion,
   findSessionUser,
+  paywallScreenForVersion,
 } from './analyticsModel.mjs';
 
 const source = readFileSync(new URL('./AnalyticsPage.js', import.meta.url), 'utf8');
@@ -105,7 +106,57 @@ test('v10 dashboard catalog matches the current 4.27 Firestore contract', () => 
   ]);
 });
 
-test('current v10 traffic is the default while v14 remains independently selectable', () => {
+test('v17 dashboard catalog matches the current fresh-flow Firestore contract', () => {
+  assert.deepEqual(catalogNames('SCREEN_ORDER_V17'), [
+    'welcome',
+    'meet_spooli',
+    'thread_unravel',
+    'see_for_yourself',
+    'modern_apps',
+    'focus_web_intro',
+    'instagram_reels_demo',
+    'focus_web_apps',
+    'how_did_you_hear',
+    'chat_onboarding',
+    'goal',
+    'screen_time_affect',
+    'profession',
+    'when_rot',
+    'tried_before',
+    'age_selection',
+    'screen_time_slider',
+    'screen_time_connect',
+    'screen_time_dialog',
+    'notification_priming',
+    'progress_bar',
+    'grounding_breath',
+    'archetype_reveal',
+    'top_app_demon',
+    'phone_usage_stats',
+    'lifetime_stats',
+    'average_lifespan',
+    'academic_studies',
+    'weekly_benefits',
+    'commitment_reason',
+    'commitment_hold',
+    'before_after',
+    'personalized_plan',
+    'journey_paywall',
+    'welcome_to_spool',
+    'create_account',
+    'notification_permission',
+    'schedule_selection',
+    'choose_apps',
+    'daily_limit_explanation',
+    'daily_request_pool',
+    'excuse_explanation',
+    'pattern_explanation',
+    'focus_hub_alternative',
+    'blocking_confirmation',
+  ]);
+});
+
+test('current v17 traffic is the default while historical versions remain selectable', () => {
   const sessions = [
     { id: 'legacy' },
     { id: 'v6', flow_version: 6 },
@@ -113,15 +164,27 @@ test('current v10 traffic is the default while v14 remains independently selecta
     { id: 'v10', flow_version: 10 },
     { id: 'v14-fresh', flow_version: 14, flow_cohort: 'prayer_lock_carousel_v14' },
     { id: 'v14-existing', flow_version: 14, flow_cohort: 'existing_account_setup_v14' },
+    { id: 'v17', flow_version: 17, flow_cohort: 'welcome_name_optional_chat_v17' },
   ];
 
   assert.deepEqual(filterSessionsByVersion(sessions, 'v6').map(s => s.id), ['v6', 'v9']);
   assert.deepEqual(filterSessionsByVersion(sessions, 'v10').map(s => s.id), ['v10']);
   assert.deepEqual(filterSessionsByVersion(sessions, 'v14').map(s => s.id), ['v14-fresh', 'v14-existing']);
-  assert.match(source, /useState\('v10'\)/);
-  assert.match(source, /\{ id: 'v10', label: 'Current \(v10\)'/);
+  assert.deepEqual(filterSessionsByVersion(sessions, 'v17').map(s => s.id), ['v17']);
+  assert.match(source, /useState\('v17'\)/);
+  assert.match(source, /\{ id: 'v10', label: 'App 4\.27 \(v10\)'/);
   assert.match(source, /\{ id: 'v14', label: 'New Carousel \(v14\)'/);
+  assert.match(source, /\{ id: 'v17', label: 'Current \(v17\)'/);
+  assert.match(source, /welcome_name_optional_chat_v17/);
   assert.match(source, /prayer_lock_carousel_v14 \+ existing_account_setup_v14/);
+});
+
+test('paywall reach uses the screen name emitted by each flow version', () => {
+  assert.equal(paywallScreenForVersion('v1'), 'paywall');
+  assert.equal(paywallScreenForVersion('v10'), 'sky_paywall');
+  assert.equal(paywallScreenForVersion('v14'), 'sky_paywall');
+  assert.equal(paywallScreenForVersion('v17'), 'journey_paywall');
+  assert.match(source, /const pw = paywallScreenForVersion\(version\)/);
 });
 
 test('v14 cohorts are filtered before their distinct funnel entry screens are calculated', () => {
@@ -200,4 +263,10 @@ test('the active cohort is revealed inside the horizontal selector', () => {
 
 test('session explorer reports the persisted stop screen when available', () => {
   assert.match(source, /let lastScreen = s\.last_screen_name \|\| '--'/);
+});
+
+test('date-filtered funnels distinguish RevenueCat acquisition from Firestore sessions', () => {
+  assert.match(source, /RevenueCat New Customers/);
+  assert.match(source, /Authoritative selected-window first-open\/customer denominator/);
+  assert.match(source, /Firestore devices in this flow version — not downloads/);
 });

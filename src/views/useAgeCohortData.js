@@ -24,8 +24,8 @@ export default function useAgeCohortData(user, dateFrom, dateTo) {
 
       const surveysSnap = await getDocs(query(
         collection(db, 'onboarding_surveys'),
-        where('updatedAt', '>=', fromTs),
-        where('updatedAt', '<=', toTs),
+        where('createdAt', '>=', fromTs),
+        where('createdAt', '<=', toTs),
       ));
       const surveys = surveysSnap.docs.map(d => ({ id: d.id, ...d.data() }));
 

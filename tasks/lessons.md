@@ -1,5 +1,6 @@
 # Project Lessons
 
+- Date-filtered acquisition dashboards need an authoritative date-scoped denominator. RevenueCat `customers_new` is comparable to first opens/new customers; Firestore onboarding surveys and device-keyed sessions are downstream, mutable, and must never be presented as downloads. Parse HTML date inputs as local calendar dates (not UTC `YYYY-MM-DD` strings), use stable cohort timestamps such as `createdAt`/`started_at`, and label source-specific gaps explicitly.
 - A persistent lifetime snapshot also needs a bounded incremental refresh. Do not make the manual refresh repeat the account-wide per-customer backfill; advance the baseline from the durable webhook ledger, retain the last good report on failure, and show that failure beside its stale timestamp.
 - In zsh verification scripts, avoid reserved task variables such as `status` (read-only) and `path` (tied to `PATH`); use specific names such as `http_status` and `asset_url` so the audit fails only for the deployed state being checked.
 - Analytics timing semantics must name the data source and event, not say “the app” does one thing. In current v14, Firestore `screens_completed` is written when a screen is left, while PostHog `onboarding_step_viewed` fires on entry; context packs must preserve that distinction before anyone interprets missing rows or dwell.

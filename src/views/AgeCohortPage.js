@@ -4,27 +4,12 @@ import { Chart, registerables } from 'chart.js';
 import useFirebaseAuth from '../hooks/useFirebaseAuth';
 import useRevenueCatOverview from '../hooks/useRevenueCatOverview';
 import { formatRevenueCatTimestamp } from '../lib/revenueCatMetrics.mjs';
+import { endOfLocalDay, formatLocalDate, startOfLocalDay } from '../lib/dateRange.mjs';
 import useAgeCohortData from './useAgeCohortData';
 import './AnalyticsPage.css';
 import './AgeCohortPage.css';
 
 Chart.register(...registerables);
-
-function isoDate(d) {
-  return d.toISOString().slice(0, 10);
-}
-
-function startOfDay(s) {
-  const d = new Date(s);
-  d.setHours(0, 0, 0, 0);
-  return d;
-}
-
-function endOfDay(s) {
-  const d = new Date(s);
-  d.setHours(23, 59, 59, 999);
-  return d;
-}
 
 function fmtPct(num, den) {
   if (!den) return '0%';
@@ -45,9 +30,9 @@ export default function AgeCohortPage({ panelMode = false, dateFrom: propsDateFr
 
   // Standalone-only date state. In panel mode the parent owns the window.
   const [dateFromStr, setDateFromStr] = useState(LIFETIME_START);
-  const [dateToStr, setDateToStr] = useState(() => isoDate(new Date()));
-  const [appliedFrom, setAppliedFrom] = useState(() => startOfDay(LIFETIME_START));
-  const [appliedTo, setAppliedTo] = useState(() => endOfDay(new Date()));
+  const [dateToStr, setDateToStr] = useState(() => formatLocalDate(new Date()));
+  const [appliedFrom, setAppliedFrom] = useState(() => startOfLocalDay(LIFETIME_START));
+  const [appliedTo, setAppliedTo] = useState(() => endOfLocalDay(new Date()));
 
   const effectiveFrom = panelMode ? propsDateFrom : appliedFrom;
   const effectiveTo = panelMode ? propsDateTo : appliedTo;
@@ -58,14 +43,14 @@ export default function AgeCohortPage({ panelMode = false, dateFrom: propsDateFr
     loading: revenueCatLoading,
     error: revenueCatError,
     refetch: refetchRevenueCat,
-  } = useRevenueCatOverview(user);
+  } = useRevenueCatOverview(user, effectiveFrom, effectiveTo);
 
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
 
   const handleApply = () => {
-    setAppliedFrom(startOfDay(dateFromStr));
-    setAppliedTo(endOfDay(dateToStr));
+    setAppliedFrom(startOfLocalDay(dateFromStr));
+    setAppliedTo(endOfLocalDay(dateToStr));
     refetchRevenueCat();
   };
 
@@ -164,6 +149,21 @@ export default function AgeCohortPage({ panelMode = false, dateFrom: propsDateFr
 
           <div className="summary-cards">
             <div className="summary-card">
+              <h3>RevenueCat New Customers</h3>
+              <span className="value">
+                {revenueCatOverview?.newCustomers != null
+                  ? revenueCatOverview.newCustomers.toLocaleString()
+                  : revenueCatLoading ? '…' : 'Unavailable'}
+              </span>
+              <span className="card-desc">
+                {revenueCatOverview?.newCustomers != null
+                  ? `${revenueCatOverview.rangeStart} through ${revenueCatOverview.rangeEnd} · inclusive`
+                  : revenueCatError
+                    ? 'Could not reach RevenueCat for this date range'
+                    : 'Loading the selected range from RevenueCat…'}
+              </span>
+            </div>
+            <div className="summary-card">
               <h3>RevenueCat Active Subscriptions</h3>
               <span className="value">
                 {revenueCatOverview
@@ -190,9 +190,13 @@ export default function AgeCohortPage({ panelMode = false, dateFrom: propsDateFr
             <>
               <div className="summary-cards">
                 <div className="summary-card">
-                  <h3>Surveys (with age)</h3>
+                  <h3>Tracked Surveys (with age)</h3>
                   <span className="value">{surveysWithAge}</span>
-                  <span className="card-desc">In selected window — denominator</span>
+                  <span className="card-desc">
+                    {revenueCatOverview?.newCustomers
+                      ? `${fmtPct(surveysWithAge, revenueCatOverview.newCustomers)} of RevenueCat new customers`
+                      : 'Downstream Firestore responses in selected window'}
+                  </span>
                 </div>
                 <div className="summary-card">
                   <h3>Reached Paywall</h3>
@@ -294,7 +298,7 @@ export default function AgeCohortPage({ panelMode = false, dateFrom: propsDateFr
                 </table>
 
                 <p className="cohort-footnote">
-                  <strong>RevenueCat Active Subscriptions</strong> is the authoritative account-wide count of paid, unexpired subscriptions and refreshes automatically every five minutes. <strong>Active Firebase Identities</strong> is a cohort diagnostic: it counts linked Firebase identities whose latest Firestore snapshot is RevenueCat-sourced, production/paid, and unexpired. It can differ because one store subscription may be associated with multiple historical app identities, so it must not be used as the company&apos;s current subscriber total. Legacy booleans, expired snapshots, trials, promotional access, free codes, dev bypass, and sandbox purchases are excluded from both displayed paid counts.
+                  <strong>RevenueCat New Customers</strong> is the authoritative selected-window denominator and is usually comparable to first opens, though it is not a literal App Store download count. <strong>Tracked Surveys</strong> are downstream Firestore responses created after onboarding begins, so users who never reach that step are intentionally absent. <strong>RevenueCat Active Subscriptions</strong> is the authoritative account-wide count of paid, unexpired subscriptions and does not change with the date filter. <strong>Active Firebase Identities</strong> is a cohort diagnostic and must not be used as the company&apos;s current subscriber total. Legacy booleans, expired snapshots, trials, promotional access, free codes, dev bypass, and sandbox purchases are excluded from both displayed paid counts.
                 </p>
               </div>
             </>

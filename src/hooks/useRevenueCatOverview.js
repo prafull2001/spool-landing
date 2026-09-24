@@ -3,13 +3,16 @@ import { useCallback, useEffect, useState } from 'react';
 import { httpsCallable } from 'firebase/functions';
 import { cloudFunctions } from '../config/firebase';
 import { normalizeRevenueCatOverview } from '../lib/revenueCatMetrics.mjs';
+import { formatLocalDate } from '../lib/dateRange.mjs';
 
 const REFRESH_INTERVAL_MS = 5 * 60 * 1000;
 
-export default function useRevenueCatOverview(user) {
+export default function useRevenueCatOverview(user, dateFrom, dateTo) {
   const [overview, setOverview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const startDate = dateFrom instanceof Date ? formatLocalDate(dateFrom) : null;
+  const endDate = dateTo instanceof Date ? formatLocalDate(dateTo) : null;
 
   const refetch = useCallback(async () => {
     if (!user) return;
@@ -20,7 +23,9 @@ export default function useRevenueCatOverview(user) {
         cloudFunctions,
         'get_revenuecat_overview_metrics',
       );
-      const result = await getOverview();
+      const result = await getOverview(
+        startDate && endDate ? { startDate, endDate } : {},
+      );
       setOverview(normalizeRevenueCatOverview(result.data));
     } catch (err) {
       console.error('RevenueCat overview fetch failed:', err);
@@ -28,7 +33,7 @@ export default function useRevenueCatOverview(user) {
     } finally {
       setLoading(false);
     }
-  }, [user]);
+  }, [user, startDate, endDate]);
 
   useEffect(() => {
     if (!user) {

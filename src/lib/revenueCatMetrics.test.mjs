@@ -8,6 +8,9 @@ import {
 const validPayload = {
   activeSubscriptions: 250,
   activeTrials: 2,
+  newCustomers: 3643,
+  rangeStart: '2026-08-27',
+  rangeEnd: '2026-09-24',
   revenueCatUpdatedAt: null,
   fetchedAt: '2026-09-03T16:00:00+00:00',
   source: 'revenuecat_overview',
@@ -17,6 +20,9 @@ test('normalizes the server-authorized RevenueCat overview response', () => {
   assert.deepEqual(normalizeRevenueCatOverview(validPayload), {
     activeSubscriptions: 250,
     activeTrials: 2,
+    newCustomers: 3643,
+    rangeStart: '2026-08-27',
+    rangeEnd: '2026-09-24',
     revenueCatUpdatedAt: null,
     fetchedAt: '2026-09-03T16:00:00+00:00',
   });
@@ -29,6 +35,9 @@ test('rejects malformed, negative, fractional, and mislabeled counts', () => {
     { ...validPayload, activeSubscriptions: -1 },
     { ...validPayload, activeSubscriptions: 1.5 },
     { ...validPayload, activeSubscriptions: '250' },
+    { ...validPayload, newCustomers: -1 },
+    { ...validPayload, rangeStart: '08/27/2026' },
+    { ...validPayload, rangeEnd: null },
     { ...validPayload, fetchedAt: 'not-a-date' },
   ]) {
     assert.throws(() => normalizeRevenueCatOverview(payload));

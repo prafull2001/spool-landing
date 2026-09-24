@@ -4,14 +4,17 @@ import { db } from '../config/firebase';
 import { collection, query, orderBy, where, getDocs, Timestamp, limit } from 'firebase/firestore';
 import { Chart, registerables } from 'chart.js';
 import useFirebaseAuth from '../hooks/useFirebaseAuth';
+import useRevenueCatOverview from '../hooks/useRevenueCatOverview';
 import {
   addUserToLookup,
   classifyABGroup,
   filterSessionsByVersion,
   findSessionUser,
+  paywallScreenForVersion,
   supportsABTesting,
 } from './analyticsModel.mjs';
 import { median, medianDurationsByScreen } from '../lib/analyticsMetrics.mjs';
+import { endOfLocalDay, startOfLocalDay } from '../lib/dateRange.mjs';
 import './AnalyticsPage.css';
 
 Chart.register(...registerables);
@@ -359,6 +362,58 @@ const SCREEN_ORDER_V14_EXISTING_ACCOUNT = SCREEN_ORDER_V14.slice(
   SCREEN_ORDER_V14.findIndex(screen => screen.name === 'screen_time_permission')
 );
 
+// v17 = the fresh acquisition flow shipped around Sep 21, 2026. This contract
+// matches iOS main at 190ff0e (flow_cohort welcome_name_optional_chat_v17).
+// Name and Screen Time permission are collected earlier in the normal fresh
+// route, so their recovery-only post-purchase screens are intentionally omitted.
+const SCREEN_ORDER_V17 = [
+  { number: 0, name: 'welcome', label: 'Welcome' },
+  { number: 0.1, name: 'meet_spooli', label: 'Meet Spooli' },
+  { number: 0.2, name: 'thread_unravel', label: 'Thread Unravel' },
+  { number: 0.3, name: 'see_for_yourself', label: 'See For Yourself' },
+  { number: 0.4, name: 'modern_apps', label: 'Modern Apps' },
+  { number: 0.425, name: 'focus_web_intro', label: 'Focus Web Intro' },
+  { number: 0.45, name: 'instagram_reels_demo', label: 'Reels Demo' },
+  { number: 0.475, name: 'focus_web_apps', label: 'Focus Web Apps' },
+  { number: 0.5, name: 'how_did_you_hear', label: 'How Heard' },
+  { number: 0.75, name: 'chat_onboarding', label: 'Chat (Spooli)' },
+  { number: 1.25, name: 'goal', label: 'Goal' },
+  { number: 1.3, name: 'screen_time_affect', label: 'ST Affect' },
+  { number: 1.35, name: 'profession', label: 'Profession' },
+  { number: 1.4, name: 'when_rot', label: 'When Rot' },
+  { number: 1.45, name: 'tried_before', label: 'Tried Before' },
+  { number: 3, name: 'age_selection', label: 'Age' },
+  { number: 4, name: 'screen_time_slider', label: 'Screen Time' },
+  { number: 4.5, name: 'screen_time_connect', label: 'ST Connect' },
+  { number: 4.75, name: 'screen_time_dialog', label: 'ST Dialog' },
+  { number: 4.85, name: 'notification_priming', label: 'Notif Priming' },
+  { number: 5, name: 'progress_bar', label: 'Loading' },
+  { number: 5.2, name: 'grounding_breath', label: 'Breathing' },
+  { number: 5.4, name: 'archetype_reveal', label: 'Archetype' },
+  { number: 5.6, name: 'top_app_demon', label: 'App Demon' },
+  { number: 6, name: 'phone_usage_stats', label: 'Usage Stats' },
+  { number: 7, name: 'lifetime_stats', label: 'Lifetime Stats' },
+  { number: 8, name: 'average_lifespan', label: 'Avg Lifespan' },
+  { number: 8.75, name: 'academic_studies', label: 'Studies' },
+  { number: 9, name: 'weekly_benefits', label: 'Benefits' },
+  { number: 9.5, name: 'commitment_reason', label: 'Commit Reason' },
+  { number: 9.6, name: 'commitment_hold', label: 'Commit Hold' },
+  { number: 9.75, name: 'before_after', label: 'Before/After' },
+  { number: 9.85, name: 'personalized_plan', label: 'Personalized Plan' },
+  { number: 10.5, name: 'journey_paywall', label: 'Paywall' },
+  { number: 11, name: 'welcome_to_spool', label: 'Welcome to Spool' },
+  { number: 13, name: 'create_account', label: 'Account' },
+  { number: 14, name: 'notification_permission', label: 'Notifications' },
+  { number: 16, name: 'schedule_selection', label: 'Schedule' },
+  { number: 17, name: 'choose_apps', label: 'Choose Apps' },
+  { number: 18, name: 'daily_limit_explanation', label: 'Thread Explain' },
+  { number: 19, name: 'daily_request_pool', label: 'Daily Pool' },
+  { number: 20, name: 'excuse_explanation', label: 'Request Flow' },
+  { number: 21, name: 'pattern_explanation', label: 'Pattern' },
+  { number: 21.5, name: 'focus_hub_alternative', label: 'Apps Alternative' },
+  { number: 22, name: 'blocking_confirmation', label: 'Confirm' },
+];
+
 // v5 survey/personalization answers (onboarding_surveys) shown as per-answer breakdowns.
 // archetypeId backs up archetypeName so computed archetypes still chart if the name is missing.
 const V5_SURVEY_FIELDS = [
@@ -383,26 +438,20 @@ function bucketZeroToOne(v) {
   return '0.8–1.0';
 }
 
-// Paywall screen names per version
-const PAYWALL_SCREEN_V1 = 'paywall';
-const PAYWALL_SCREEN_V2 = 'sky_paywall';
-
-function dateToIsoOrNull(d) {
-  if (!d) return null;
-  const dt = d instanceof Date ? d : new Date(d);
-  if (isNaN(dt.getTime())) return null;
-  return dt.toISOString().slice(0, 10);
-}
-
 function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: propsDateTo } = {}) {
   const { user, handleSignIn, handleSignOut: signOutBase } = useFirebaseAuth();
+  const { overview: revenueCatOverview } = useRevenueCatOverview(
+    user,
+    panelMode ? propsDateFrom : null,
+    panelMode ? propsDateTo : null,
+  );
   const [allSessions, setAllSessions] = useState([]);
   const [surveys, setSurveys] = useState(new Map());
   const [usersMap, setUsersMap] = useState(new Map());
   const [loading, setLoading] = useState(false);
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
-  const [version, setVersion] = useState('v10');
+  const [version, setVersion] = useState('v17');
   const [v14Cohort, setV14Cohort] = useState('prayer_lock_carousel_v14');
   const [splitByAB, setSplitByAB] = useState(false);
   const [expandedSessionIdx, setExpandedSessionIdx] = useState(null);
@@ -419,6 +468,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
 
   const screenOrder =
     version === 'v1' ? SCREEN_ORDER_V1 :
+    version === 'v17' ? SCREEN_ORDER_V17 :
     version === 'v14' && v14Cohort === 'existing_account_setup_v14'
       ? SCREEN_ORDER_V14_EXISTING_ACCOUNT :
     version === 'v14' ? SCREEN_ORDER_V14 :
@@ -440,7 +490,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
   useEffect(() => {
     if (!user) return;
     if (panelMode) {
-      fetchSessions(dateToIsoOrNull(propsDateFrom), dateToIsoOrNull(propsDateTo));
+      fetchSessions(propsDateFrom, propsDateTo);
     } else {
       fetchSessions();
     }
@@ -459,32 +509,23 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
   const fetchSessions = async (startDate, endDate) => {
     setLoading(true);
     try {
-      let q = query(
-        collection(db, 'onboarding_sessions'),
-        orderBy('started_at', 'desc'),
-        limit(5000)
-      );
-
+      const constraints = [orderBy('started_at', 'desc')];
       if (startDate) {
-        q = query(
-          collection(db, 'onboarding_sessions'),
-          orderBy('started_at', 'desc'),
-          where('started_at', '>=', Timestamp.fromDate(new Date(startDate))),
-          limit(5000)
-        );
+        constraints.push(where(
+          'started_at',
+          '>=',
+          Timestamp.fromDate(startOfLocalDay(startDate)),
+        ));
       }
-
-      if (startDate && endDate) {
-        const end = new Date(endDate);
-        end.setHours(23, 59, 59);
-        q = query(
-          collection(db, 'onboarding_sessions'),
-          orderBy('started_at', 'desc'),
-          where('started_at', '>=', Timestamp.fromDate(new Date(startDate))),
-          where('started_at', '<=', Timestamp.fromDate(end)),
-          limit(5000)
-        );
+      if (endDate) {
+        constraints.push(where(
+          'started_at',
+          '<=',
+          Timestamp.fromDate(endOfLocalDay(endDate)),
+        ));
       }
+      constraints.push(limit(5000));
+      const q = query(collection(db, 'onboarding_sessions'), ...constraints);
 
       const snapshot = await getDocs(q);
       const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -553,7 +594,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
     const totalTimeValues = [];
 
     const firstScreen = order[0].name;
-    const pw = version === 'v1' ? PAYWALL_SCREEN_V1 : PAYWALL_SCREEN_V2;
+    const pw = paywallScreenForVersion(version);
 
     sessionList.forEach(session => {
       // Every session starts at the first screen
@@ -1165,10 +1206,23 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
       ) : (
         <>
           <div className="summary-cards">
+            {panelMode && (
+              <div className="summary-card">
+                <h3>RevenueCat New Customers</h3>
+                <span className="value">
+                  {revenueCatOverview?.newCustomers != null
+                    ? revenueCatOverview.newCustomers.toLocaleString()
+                    : '--'}
+                </span>
+                <span className="card-desc">
+                  Authoritative selected-window first-open/customer denominator
+                </span>
+              </div>
+            )}
             <div className="summary-card">
               <h3>Total Sessions</h3>
               <span className="value">{analytics ? analytics.total : '--'}</span>
-              <span className="card-desc">Unique devices that started onboarding</span>
+              <span className="card-desc">Firestore devices in this flow version — not downloads</span>
             </div>
             {showsPaywallMetrics && (
               <>
@@ -1348,8 +1402,9 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
                 { id: 'v4', label: 'Chat + Journey (v4)',    dates: 'May 17 – Jul 6 ’26',  detail: 'app 4.18' },
                 { id: 'v5', label: 'Spooli + Archetype (v5)', dates: 'Jul 6 – ~Jul 22 ’26', detail: 'app 4.20/4.21 · also unassigned legacy-resume fallback traffic after Jul 22' },
                 { id: 'v6', label: 'Reels Demo (v6/9)',      dates: '~Jul 22 – Aug 5 ’26', detail: 'reels demo + personalized plan · flow_version 6 & 9, identical flows' },
-                { id: 'v10', label: 'Current (v10)',         dates: 'Aug 5 ’26 → now',     detail: 'app 4.27 · flow_version 10 · post_purchase_journey_v10' },
+                { id: 'v10', label: 'App 4.27 (v10)',        dates: 'Aug 5 ’26 → Sep ’26', detail: 'app 4.27 · flow_version 10 · post_purchase_journey_v10' },
                 { id: 'v14', label: 'New Carousel (v14)',    dates: '4.32 / main',         detail: 'flow_version 14 · prayer_lock_carousel_v14 + existing_account_setup_v14' },
+                { id: 'v17', label: 'Current (v17)',         dates: 'Sep 21 ’26 → now',    detail: 'app 4.39 · flow_version 17 · welcome_name_optional_chat_v17' },
               ].map(v => (
                 <button
                   key={v.id}

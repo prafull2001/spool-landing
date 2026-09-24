@@ -6,6 +6,7 @@ const FLOW_VERSIONS = {
   v6: [6, 9],
   v10: [10],
   v14: [14],
+  v17: [17],
 };
 
 const AB_EXPERIMENT_START_MS = Date.parse('2026-03-17T00:00:00-07:00');
@@ -32,6 +33,12 @@ export function filterSessionsByVersion(sessions, version, cohort) {
 
 export function supportsABTesting(version) {
   return version === 'v2';
+}
+
+export function paywallScreenForVersion(version) {
+  if (version === 'v1') return 'paywall';
+  if (version === 'v17') return 'journey_paywall';
+  return 'sky_paywall';
 }
 
 export function classifyABGroup(session, surveys, version) {
