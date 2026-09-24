@@ -36,3 +36,11 @@ export function endOfLocalDay(value) {
   const [year, monthIndex, day] = dateParts(value);
   return new Date(year, monthIndex, day, 23, 59, 59, 999);
 }
+
+export function normalizeDateInput(value, fallback) {
+  try {
+    return formatLocalDate(value);
+  } catch {
+    return formatLocalDate(fallback);
+  }
+}

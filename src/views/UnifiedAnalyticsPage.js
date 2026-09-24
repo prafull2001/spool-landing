@@ -7,7 +7,12 @@ import AnalyticsPage from './AnalyticsPage';
 import ChurnReportPage from './ChurnReportPage';
 import ExcuseDataPage from './ExcuseDataPage';
 import ReleasesPage from './ReleasesPage';
-import { endOfLocalDay, formatLocalDate, startOfLocalDay } from '../lib/dateRange.mjs';
+import {
+  endOfLocalDay,
+  formatLocalDate,
+  normalizeDateInput,
+  startOfLocalDay,
+} from '../lib/dateRange.mjs';
 import './AnalyticsPage.css';
 import './UnifiedAnalyticsPage.css';
 
@@ -37,24 +42,33 @@ function UnifiedAnalyticsInner() {
   const pathname = usePathname();
 
   const requestedTab = searchParams?.get('tab');
+  const today = formatLocalDate(new Date());
+  const initialFrom = normalizeDateInput(searchParams?.get('from'), LIFETIME_START);
+  const initialTo = normalizeDateInput(searchParams?.get('to'), today);
   const [activeTab, setActiveTab] = useState(
     TABS.some(t => t.id === requestedTab) ? requestedTab : 'age-cohort'
   );
 
-  const [dateFromStr, setDateFromStr] = useState(LIFETIME_START);
-  const [dateToStr, setDateToStr] = useState(() => formatLocalDate(new Date()));
-  const [appliedFrom, setAppliedFrom] = useState(() => startOfLocalDay(LIFETIME_START));
-  const [appliedTo, setAppliedTo] = useState(() => endOfLocalDay(new Date()));
+  const [dateFromStr, setDateFromStr] = useState(initialFrom);
+  const [dateToStr, setDateToStr] = useState(initialTo);
+  const [appliedFrom, setAppliedFrom] = useState(() => startOfLocalDay(initialFrom));
+  const [appliedTo, setAppliedTo] = useState(() => endOfLocalDay(initialTo));
 
   const handleApply = () => {
     setAppliedFrom(startOfLocalDay(dateFromStr));
     setAppliedTo(endOfLocalDay(dateToStr));
+    const params = new URLSearchParams(searchParams?.toString() || '');
+    params.set('from', dateFromStr);
+    params.set('to', dateToStr);
+    router.replace(`${pathname}?${params.toString()}`);
   };
 
   const handleTabChange = (id) => {
     setActiveTab(id);
     const params = new URLSearchParams(searchParams?.toString() || '');
     params.set('tab', id);
+    params.set('from', formatLocalDate(appliedFrom));
+    params.set('to', formatLocalDate(appliedTo));
     router.replace(`${pathname}?${params.toString()}`);
   };
 

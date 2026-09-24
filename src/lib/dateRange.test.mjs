@@ -3,6 +3,7 @@ import test from 'node:test';
 import {
   endOfLocalDay,
   formatLocalDate,
+  normalizeDateInput,
   startOfLocalDay,
 } from './dateRange.mjs';
 
@@ -26,4 +27,10 @@ test('calendar helpers reject rolled-over or ambiguous dates', () => {
   for (const value of ['2026-09-31', '09/24/2026', '2026-9-24', '', null]) {
     assert.throws(() => startOfLocalDay(value));
   }
+});
+
+test('URL date inputs retain valid ranges and safely fall back', () => {
+  assert.equal(normalizeDateInput('2026-08-27', '2024-01-01'), '2026-08-27');
+  assert.equal(normalizeDateInput('not-a-date', '2024-01-01'), '2024-01-01');
+  assert.equal(normalizeDateInput(null, new Date(2026, 8, 24)), '2026-09-24');
 });
