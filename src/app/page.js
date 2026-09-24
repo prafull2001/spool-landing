@@ -10,6 +10,7 @@ export const metadata = {
 export default function Page() {
   return (
     <>
+      <script dangerouslySetInnerHTML={{ __html: `if (location.hash === '#/terms' || location.hash === '#/privacy') location.replace(location.hash.slice(1));` }} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

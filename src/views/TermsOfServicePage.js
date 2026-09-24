@@ -11,7 +11,7 @@ const TermsOfServicePage = () => {
       <div className="terms-container">
         <h1>Terms of Service</h1>
         
-        <p className="terms-intro">Effective Date: September 17, 2026</p>
+        <p className="terms-intro">Effective Date: September 24, 2026</p>
 
         <section>
           <h2>1. Introduction</h2>
@@ -27,6 +27,7 @@ const TermsOfServicePage = () => {
             <li>Track and monitor screen time statistics</li>
             <li>Access to historical screen time data</li>
             <li>Block entire app categories</li>
+            <li>Filter selected social-media features inside Spool's Focus Web browser</li>
           </ul>
 
           <h3>2.2 Pricing and Payments</h3>
@@ -38,13 +39,22 @@ const TermsOfServicePage = () => {
           <p>All prices are shown in your local currency within the App. Prices may vary by region and are subject to change.</p>
           <p>For annual subscriptions, the 2-week trial period begins when you confirm your subscription. No charge will be applied during the trial period. Payment will be charged to your iTunes account at confirmation of purchase or after the trial period ends.</p>
           <p>The subscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel subscriptions in your iTunes account settings.</p>
-          <p>If you cancel during the trial period, access to App features will end immediately. No refunds will be issued for any unused portion of a subscription period.</p>
+          <p>If you cancel during the trial period, access to App features will end immediately. Canceling does not automatically issue a refund for any paid subscription period; refund requests are handled by Apple under applicable law and App Store policies.</p>
 
           <h3>Refund requests and sharing with Apple</h3>
           <p>If you request a refund for an in-app purchase, you agree that Spool may share information about your purchase and your use of the app with Apple to help Apple decide on your request. We share this only when a refund is requested and only as permitted by Apple’s policies. You can withdraw your consent at any time by emailing <a href="mailto:team@thespoolapp.com">team@thespoolapp.com</a>.</p>
+          <p>Apple handles App Store refund requests and makes the final decision, subject to applicable law and App Store policies. Opening the native Instagram, YouTube, X, Snapchat, or Facebook app instead of its filtered web version inside Spool, or leaving separate native-app blocking unconfigured, does not by itself mean Focus Web failed to work. We consider the specific purchase, setup, use, and any reported failure when reviewing a request and sharing information with Apple. This does not exclude refunds for an actual failure or any rights you have under applicable law.</p>
 
-          <h3>2.3 App Blocking Functionality</h3>
-          <p>The App uses iOS Family Controls APIs to restrict access to selected applications. Blocked apps remain inaccessible according to your settings and schedules. You can configure different blocking durations and schedules within the App.</p>
+          <h3>2.3 Focus Web and App Blocking</h3>
+          <p>Focus Web filters selected feeds and features only when you open a supported social-media website inside Spool. Depending on the settings you enable and the supported web interface, its controls include:</p>
+          <ul>
+            <li><strong>Instagram:</strong> a Following-only feed and controls for Reels, Explore, Stories, Messages, and suggested or sponsored posts. Shared Reel links may still open.</li>
+            <li><strong>YouTube:</strong> hiding Shorts tabs and shelves; a Shorts link can open as a regular video instead of the Shorts swipe feed.</li>
+            <li><strong>X:</strong> hiding Explore and Trends, with a separate optional Grok control. The For You timeline is not currently filtered.</li>
+            <li><strong>Snapchat:</strong> hiding Spotlight and Stories/Discover, including Friend Stories. Chat remains available.</li>
+            <li><strong>Facebook:</strong> hiding dedicated Reels and video hubs. Individual or shared video links may still open.</li>
+          </ul>
+          <p>These filters do not change the separate native Instagram, YouTube, X, Snapchat, or Facebook apps. To restrict a native app, you must separately select it in Spool's app-blocking setup, grant the required iOS Screen Time access, and enable the applicable blocking settings or schedule. Native-app blocking and Focus Web filtering are different features. See <a href="/focus-web">how Focus Web works</a>.</p>
 
           <h3>2.4 Advertising, Analytics, and Data Processing</h3>
           <p>The App uses third-party service providers to authenticate accounts, process subscriptions, analyze product usage, and measure and optimize our advertising. These include AppsFlyer, Meta (Facebook), Firebase (Google), RevenueCat, and PostHog. With your permission through Apple's App Tracking Transparency prompt, we access your device advertising identifier (IDFA) and share product-interaction and purchase events with our advertising and measurement partners, which may involve tracking across apps and websites owned by other companies. You can decline or withdraw this permission at any time through the App Tracking Transparency prompt or in iOS Settings. How we collect, use, and share this data — and how to opt out — is described in our <a href="/privacy">Privacy Policy</a>, which is incorporated into these Terms by reference. By using the App, you acknowledge the data practices described in the Privacy Policy.</p>

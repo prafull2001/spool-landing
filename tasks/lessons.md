@@ -1,5 +1,9 @@
 # Project Lessons
 
+- When legal wording describes Focus Web, inventory the current enabled filters for Instagram, YouTube, X, Snapchat and Facebook in app source. Platform examples and refund guidance must cover all five without implying that web filters affect native apps or that every setting is enabled by default.
+
+- Legal links in old Spool builds use `/#/terms` and `/#/privacy`; Next.js treats these as homepage fragments. Keep a homepage hash redirect for installed builds and use canonical `/terms` and `/privacy` URLs in future app releases. Check the live legal page, not just an older local checkout, before editing or asserting what customers saw.
+
 - Date-filtered acquisition dashboards need an authoritative date-scoped denominator. RevenueCat `customers_new` is comparable to first opens/new customers; Firestore onboarding surveys and device-keyed sessions are downstream, mutable, and must never be presented as downloads. Parse HTML date inputs as local calendar dates (not UTC `YYYY-MM-DD` strings), use stable cohort timestamps such as `createdAt`/`started_at`, and label source-specific gaps explicitly.
 - A persistent lifetime snapshot also needs a bounded incremental refresh. Do not make the manual refresh repeat the account-wide per-customer backfill; advance the baseline from the durable webhook ledger, retain the last good report on failure, and show that failure beside its stale timestamp.
 - In zsh verification scripts, avoid reserved task variables such as `status` (read-only) and `path` (tied to `PATH`); use specific names such as `http_status` and `asset_url` so the audit fails only for the deployed state being checked.

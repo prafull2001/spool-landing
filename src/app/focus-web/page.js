@@ -43,7 +43,7 @@ export default function FocusWebPage() {
           <h1>A social media feed blocker for Reels, Shorts, Spotlight, and Explore</h1>
           <p className={styles.lede}>
             Focus Web is Spool&apos;s distraction-free social media browser. It removes
-            selected features inside Instagram, YouTube, X, and Snapchat, so you can
+            selected features inside Instagram, YouTube, X, Snapchat, and Facebook, so you can
             block the scroll surface instead of losing the whole platform.
           </p>
           <DownloadLink
@@ -59,8 +59,9 @@ export default function FocusWebPage() {
           <h2 id="focus-web-answer">What can Spool remove?</h2>
           <p>
             Spool can hide <strong>Instagram Reels, Stories, Explore, and DMs</strong>;{' '}
-            <strong>YouTube Shorts</strong>; <strong>X Explore</strong>; and{' '}
-            <strong>Snapchat Spotlight, Stories, and Discover</strong>. Each platform runs
+            <strong>YouTube Shorts</strong>; <strong>X Explore and optional Grok</strong>;{' '}
+            <strong>Snapchat Spotlight, Stories, and Discover</strong>; and{' '}
+            <strong>Facebook&apos;s dedicated Reels and video hubs</strong>. Each platform runs
             inside Focus Web, and its filters apply there—not to the native social app.
           </p>
         </section>
@@ -86,6 +87,11 @@ export default function FocusWebPage() {
                     </td>
                   </tr>
                 ))}
+                <tr>
+                  <th scope="row">Facebook</th>
+                  <td>Dedicated Reels and video hubs; individual and shared video links can still open</td>
+                  <td>—</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -111,7 +117,7 @@ export default function FocusWebPage() {
             also add a voice check-in before a distracting native app opens, so filtering and
             self-awareness can work together.
           </p>
-          <h2>Does Spool modify Instagram, YouTube, X, or Snapchat?</h2>
+          <h2>Does Spool modify the native social apps?</h2>
           <p>
             No. Focus Web is a browser inside Spool. It filters the web interfaces shown inside
             Spool and does not modify or claim affiliation with the native social-media apps.
