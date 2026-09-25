@@ -1038,8 +1038,8 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
   // Per-answer counts for personalization fields on flows that collect them. Survey docs
   // are per-device latest-state, so without the
   // version gate a re-onboarded device would attribute its answers to old v1-v4 sessions
-  const v5SurveyBreakdowns = useMemo(() => {
-    if (version !== 'v5' && version !== 'v6' && version !== 'v10' && version !== 'v14') return [];
+  const personalizationSurveyBreakdowns = useMemo(() => {
+    if (!['v5', 'v6', 'v10', 'v14', 'v17'].includes(version)) return [];
     return V5_SURVEY_FIELDS.map(field => {
       const counts = {};
       let answered = 0;
@@ -1334,7 +1334,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
                   </div>
                 </div>
 
-                {v5SurveyBreakdowns.map((field, fi) => (
+                {personalizationSurveyBreakdowns.map((field, fi) => (
                   <div key={field.key} className="survey-section">
                     <h3>{field.label} — {field.answered} answered</h3>
                     <div className="survey-bars">

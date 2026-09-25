@@ -270,3 +270,22 @@ test('date-filtered funnels distinguish RevenueCat acquisition from Firestore se
   assert.match(source, /Authoritative selected-window first-open\/customer denominator/);
   assert.match(source, /Firestore devices in this flow version — not downloads/);
 });
+
+test('current v17 exposes all personalization question breakdowns', () => {
+  assert.match(
+    source,
+    /\['v5', 'v6', 'v10', 'v14', 'v17'\]\.includes\(version\)/,
+  );
+  for (const field of [
+    'goal',
+    'screenTimeAffect',
+    'profession',
+    'whenRot',
+    'triedBefore',
+    'archetypeName',
+    'stimulationExposure',
+    'daytimeVulnerability',
+  ]) {
+    assert.match(source, new RegExp(`key: '${field}'`));
+  }
+});
