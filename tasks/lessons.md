@@ -28,3 +28,5 @@
 - When a dashboard release depends on a new Firebase callable, pushing its backend source to `main` is not a complete release. Deploy the callable first, verify it exists in the intended project and region, then publish the dashboard that calls it.
 - When handing off AppsFlyer attribution, clearly distinguish the raw OneLinks from the public `/get?src=` wrapper URLs. Creators and ManyChat use the wrapper URLs; the site uses the mapped OneLinks for attribution and opens the raw Spool App Store listing.
 - Public `/get?src=` links must never send visitors to the Spool homepage. Every platform, including desktop tests, must continue toward the App Store listing; only the handoff mechanism varies by browser.
+
+- Completion requires an explicit `dropped_off === false`; missing state must remain unknown. Show numerator and denominator, weight daily totals by session count, distinguish Firebase setup from RevenueCat conversion, and paginate full selected windows rather than silently truncating to 5,000.

@@ -59,3 +59,12 @@ test('uses RevenueCat update time when available and fetch time otherwise', () =
     else process.env.TZ = previousDefault;
   }
 });
+
+test('conversion uses the RevenueCat chart cohort and counts, never the Firestore denominator or rounded daily rates', () => {
+  const data={...validPayload,initialConversionCustomers:598,initialConversions:81,initialConversionTimeframe:'7_days'};
+  assert.equal(normalizeRevenueCatOverview(data).initialConversionRate,81/598*100);
+  assert.equal(normalizeRevenueCatOverview({...data,initialConversionCustomers:0,initialConversions:0}).initialConversionRate,null);
+  for(const extra of [{initialConversions:599},{initialConversionTimeframe:'unbounded'},{initialConversionCustomers:'598'},{initialConversions:-1}]) {
+    assert.throws(()=>normalizeRevenueCatOverview({...data,...extra}));
+  }
+});

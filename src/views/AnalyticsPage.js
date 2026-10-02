@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { db } from '../config/firebase';
-import { collection, query, orderBy, where, getDocs, Timestamp, limit } from 'firebase/firestore';
+import { collection, query, orderBy, where, getDocs, Timestamp, limit, startAfter } from 'firebase/firestore';
 import { Chart, registerables } from 'chart.js';
 import useFirebaseAuth from '../hooks/useFirebaseAuth';
 import useRevenueCatOverview from '../hooks/useRevenueCatOverview';
@@ -15,6 +15,7 @@ import {
 } from './analyticsModel.mjs';
 import { median, medianDurationsByScreen } from '../lib/analyticsMetrics.mjs';
 import { endOfLocalDay, startOfLocalDay } from '../lib/dateRange.mjs';
+import { completionSummary, dailyCompletion, passedPaywall, fetchAllSessionPages } from '../lib/onboardingMetrics.mjs';
 import './AnalyticsPage.css';
 
 Chart.register(...registerables);
@@ -440,15 +441,18 @@ function bucketZeroToOne(v) {
 
 function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: propsDateTo } = {}) {
   const { user, handleSignIn, handleSignOut: signOutBase } = useFirebaseAuth();
-  const { overview: revenueCatOverview } = useRevenueCatOverview(
+  const { overview: revenueCatOverview, error: revenueCatError, loading: revenueCatLoading } = useRevenueCatOverview(
     user,
     panelMode ? propsDateFrom : null,
     panelMode ? propsDateTo : null,
+    true,
   );
   const [allSessions, setAllSessions] = useState([]);
   const [surveys, setSurveys] = useState(new Map());
   const [usersMap, setUsersMap] = useState(new Map());
   const [loading, setLoading] = useState(false);
+  const [sessionError, setSessionError] = useState(null);
+  const sessionRequest = useRef(0);
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
   const [version, setVersion] = useState('v17');
@@ -496,18 +500,23 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
     }
     fetchSurveys();
     fetchUsers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => { sessionRequest.current += 1; };
   }, [user, panelMode, propsDateFrom, propsDateTo]);
 
   const handleSignOut = async () => {
     await signOutBase();
+    sessionRequest.current += 1;
     setAllSessions([]);
     setSurveys(new Map());
     setUsersMap(new Map());
   };
 
   const fetchSessions = async (startDate, endDate) => {
+    const request = ++sessionRequest.current;
+    const isCurrent = () => request === sessionRequest.current;
     setLoading(true);
+    setSessionError(null);
+    setAllSessions([]);
     try {
       const constraints = [orderBy('started_at', 'desc')];
       if (startDate) {
@@ -524,16 +533,19 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
           Timestamp.fromDate(endOfLocalDay(endDate)),
         ));
       }
-      constraints.push(limit(5000));
-      const q = query(collection(db, 'onboarding_sessions'), ...constraints);
-
-      const snapshot = await getDocs(q);
-      const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setAllSessions(data);
+      const data = await fetchAllSessionPages(async (cursor, pageSize) => {
+        const pageConstraints = [...constraints, limit(pageSize)];
+        if (cursor) pageConstraints.push(startAfter(cursor));
+        const snapshot = await getDocs(query(collection(db, 'onboarding_sessions'), ...pageConstraints));
+        return snapshot.docs;
+      }, isCurrent);
+      if (data && isCurrent()) setAllSessions(data);
     } catch (err) {
       console.error('Fetch error:', err);
+      if (isCurrent()) setSessionError('Could not load the complete date range. Retry before using these metrics.');
+    } finally {
+      if (isCurrent()) setLoading(false);
     }
-    setLoading(false);
   };
 
   const fetchSurveys = async () => {
@@ -631,7 +643,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
         seenScreens.add(lastScreen);
         screenCounts[lastScreen]++;
       }
-      if (session.dropped_off) {
+      if (session.dropped_off === true) {
         droppedOff++;
         if (!session.reached_paywall) {
           prePaywallDropoff++;
@@ -652,7 +664,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
       dropoffRate: ((droppedOff / total) * 100).toFixed(1),
       prePaywallDropoff,
       prePaywallDropoffRate: ((prePaywallDropoff / total) * 100).toFixed(1),
-      completionRate: (((total - droppedOff) / total) * 100).toFixed(1),
+      ...completionSummary(sessionList),
       medianTotalTime: totalTimeValues.length > 0 ? median(totalTimeValues).toFixed(0) : 0,
       screenCounts,
       medianScreenTimes,
@@ -892,14 +904,15 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
   const conversionData = useMemo(() => {
     const buildRow = (label, list) => {
       const total = list.length;
-      if (total === 0) return { label, sessions: 0, completionRate: '0.0', medianTime: 0, paywallRate: '0.0' };
-      const completed = list.filter(s => s.dropped_off === false).length;
+      if (total === 0) return { label, sessions: 0, completed: 0, completionRate: null, medianTime: 0, paywallRate: '0.0' };
+      const { completed, completionRate } = completionSummary(list);
       const paywall = list.filter(s => s.reached_paywall === true).length;
       const times = list.map(s => Number(s.total_time_seconds)).filter(value => value > 0);
       return {
         label,
         sessions: total,
-        completionRate: ((completed / total) * 100).toFixed(1),
+        completed,
+        completionRate,
         medianTime: times.length > 0 ? median(times).toFixed(0) : 0,
         paywallRate: ((paywall / total) * 100).toFixed(1),
       };
@@ -968,7 +981,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
     const screenTimeValues = [];
     // Paywall pass-through (reached paywall and didn't drop off there)
     let paywallPassed = 0;
-    // Converted (has uid linked = created account, or dropped_off === false)
+    // Explicitly completed setup; this is not a RevenueCat purchase conversion.
     let converted = 0;
 
     sessions.forEach(s => {
@@ -1010,8 +1023,8 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
         else screenTimeBuckets['10h+']++;
       }
 
-      // Paywall pass-through: reached paywall AND didn't drop off
-      if (s.reached_paywall && s.dropped_off === false) {
+      // Continuing into a post-paywall screen is distinct from finishing setup.
+      if (passedPaywall(s, screenOrder, paywallScreenForVersion(version))) {
         paywallPassed++;
       }
 
@@ -1033,7 +1046,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
       converted,
       conversionRate: ((converted / total) * 100).toFixed(1),
     };
-  }, [sessions, surveys]);
+  }, [sessions, surveys, screenOrder, version]);
 
   // Per-answer counts for personalization fields on flows that collect them. Survey docs
   // are per-device latest-state, so without the
@@ -1093,7 +1106,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
         userLabel: displayName || email || 'Anonymous',
         lastScreen,
         totalTime: s.total_time_seconds || 0,
-        droppedOff: s.dropped_off === true,
+        droppedOff: s.dropped_off,
         abGroup: abGroup || '--',
         survey,
         userData,
@@ -1201,6 +1214,8 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
             <p>Sign in with an authorized Google account to view analytics.</p>
           </div>
         )
+      ) : sessionError ? (
+        <p role="alert">{sessionError}</p>
       ) : loading ? (
         <div className="loading">Loading sessions...</div>
       ) : (
@@ -1215,21 +1230,33 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
                     : '--'}
                 </span>
                 <span className="card-desc">
-                  Authoritative selected-window first-open/customer denominator
+                  All flow versions · RevenueCat acquisition count for the selected dates (UTC)
                 </span>
               </div>
             )}
+            {panelMode && (
+              <div className="summary-card">
+                <h3>RevenueCat Initial Conversion (7 days)</h3>
+                <span className="value">{revenueCatOverview?.initialConversionRate != null
+                  ? `${revenueCatOverview.initialConversionRate.toFixed(1)}%` : '--'}</span>
+                <span className="card-desc">{revenueCatError ? 'RevenueCat unavailable — retry shortly'
+                  : revenueCatLoading ? 'Loading selected dates…'
+                  : revenueCatOverview?.initialConversionCustomers != null
+                    ? `${revenueCatOverview.initialConversions} converted / ${revenueCatOverview.initialConversionCustomers} new customers · all flows, includes trials`
+                    : 'No conversion data for this range'}</span>
+              </div>
+            )}
             <div className="summary-card">
-              <h3>Total Sessions</h3>
+              <h3>Tracked Sessions</h3>
               <span className="value">{analytics ? analytics.total : '--'}</span>
-              <span className="card-desc">Firestore devices in this flow version — not downloads</span>
+              <span className="card-desc">Selected flow only · latest record per device</span>
             </div>
             {showsPaywallMetrics && (
               <>
                 <div className="summary-card">
                   <h3>Pre-Paywall Dropoff</h3>
                   <span className="value">{analytics ? `${analytics.prePaywallDropoffRate}%` : '--'}</span>
-                  <span className="card-desc">Left before ever seeing the paywall</span>
+                  <span className="card-desc">Saved as unfinished before the paywall</span>
                 </div>
                 <div className="summary-card">
                   <h3>Paywall Reach Rate</h3>
@@ -1239,15 +1266,39 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
               </>
             )}
             <div className="summary-card">
-              <h3>Completion Rate</h3>
+              <h3>Tracked Setup Completion</h3>
               <span className="value">{analytics ? `${analytics.completionRate}%` : '--'}</span>
-              <span className="card-desc">Finished entire onboarding (account created + setup done)</span>
+              <span className="card-desc">
+                {analytics ? `${analytics.completed} completed / ${analytics.total} tracked sessions` : 'No tracked sessions'}
+                {analytics?.unknown > 0 ? ` · ${analytics.unknown} unknown` : ''}
+              </span>
             </div>
             <div className="summary-card">
               <h3>Median Total Time</h3>
               <span className="value">{analytics ? `${analytics.medianTotalTime}s` : '--'}</span>
               <span className="card-desc">Median time from first screen to last screen seen</span>
             </div>
+          </div>
+
+          <p className="metric-definition">
+            Setup completion = explicitly completed sessions ÷ all tracked sessions in the selected flow.
+            The period rate is weighted by session count; it is not an average of daily percentages.
+            Firebase days use your local timezone. Records show the latest saved state, so later completions
+            can change an older start-date cohort. RevenueCat uses UTC customer cohorts across all flows
+            and measures purchases or trial starts within 7 days; recent cohorts are still maturing.
+          </p>
+
+          <div className="chart-container conversion-section">
+            <h2>Daily Tracked Setup Completion</h2>
+            <table className="conversion-table">
+              <thead><tr><th>Start date (local)</th><th>Sessions</th><th>Completed</th><th>Unfinished</th><th>Unknown</th><th>Rate</th></tr></thead>
+              <tbody>{dailyCompletion(sessions).map(row => (
+                <tr key={row.date}><td>{row.date}</td><td>{row.total}</td><td>{row.completed}</td>
+                  <td>{row.unfinished}</td><td>{row.unknown}</td><td>{row.completionRate}%</td></tr>
+              ))}</tbody>
+              {analytics && <tfoot><tr><th>Total</th><td>{analytics.total}</td><td>{analytics.completed}</td>
+                <td>{analytics.unfinished}</td><td>{analytics.unknown}</td><td>{analytics.completionRate}%</td></tr></tfoot>}
+            </table>
           </div>
 
           {/* Survey Overview */}
@@ -1369,7 +1420,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
                     <div className="outcome-row">
                       <span className="outcome-label">Completed onboarding</span>
                       <span className="outcome-value">{surveyOverview.converted} ({surveyOverview.conversionRate}%)</span>
-                      <span className="outcome-desc">Finished all screens and created account</span>
+                      <span className="outcome-desc">Explicit setup completion recorded by the app</span>
                     </div>
                   </div>
                 </div>
@@ -1467,13 +1518,13 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
 
           {/* Conversion Breakdown Table */}
           <div className="chart-container conversion-section">
-            <h2>Conversion Breakdown</h2>
+            <h2>Tracked Setup Breakdown</h2>
             <table className="conversion-table">
               <thead>
                 <tr>
                   <th>Segment</th>
                   <th>Sessions</th>
-                  <th>Completion Rate</th>
+                  <th>Setup Completion</th>
                   <th>Median Time (s)</th>
                   {showsPaywallMetrics && <th>Paywall Rate</th>}
                 </tr>
@@ -1491,7 +1542,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
                     <tr key={`r-${i}`}>
                       <td>{row.label}</td>
                       <td>{row.sessions}</td>
-                      <td>{row.completionRate}%</td>
+                      <td>{row.completionRate == null ? '--' : `${row.completed} / ${row.sessions} (${row.completionRate}%)`}</td>
                       <td>{row.medianTime}</td>
                       {showsPaywallMetrics && <td>{row.paywallRate}%</td>}
                     </tr>
@@ -1529,7 +1580,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
                       Total Time (s){sortIndicator('totalTime')}
                     </th>
                     <th onClick={() => handleSort('dropoff')} className="sortable">
-                      Drop-off{sortIndicator('dropoff')}
+                      Setup status{sortIndicator('dropoff')}
                     </th>
                     {showABControls && (
                       <th onClick={() => handleSort('abGroup')} className="sortable">
@@ -1551,7 +1602,7 @@ function AnalyticsPage({ panelMode = false, dateFrom: propsDateFrom, dateTo: pro
                           <td>{row.userLabel}</td>
                           <td>{row.lastScreen}</td>
                           <td>{row.totalTime > 0 ? row.totalTime : '--'}</td>
-                          <td>{row.droppedOff ? 'Yes' : 'No'}</td>
+                          <td>{row.droppedOff === true ? 'Unfinished' : row.droppedOff === false ? 'Completed' : 'Unknown'}</td>
                           {showABControls && <td>{row.abGroup}</td>}
                         </tr>
                         {isExpanded && (

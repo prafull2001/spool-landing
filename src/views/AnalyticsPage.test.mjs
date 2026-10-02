@@ -267,8 +267,8 @@ test('session explorer reports the persisted stop screen when available', () => 
 
 test('date-filtered funnels distinguish RevenueCat acquisition from Firestore sessions', () => {
   assert.match(source, /RevenueCat New Customers/);
-  assert.match(source, /Authoritative selected-window first-open\/customer denominator/);
-  assert.match(source, /Firestore devices in this flow version — not downloads/);
+  assert.match(source, /All flow versions · RevenueCat acquisition count/);
+  assert.match(source, /Selected flow only · latest record per device/);
 });
 
 test('current v17 exposes all personalization question breakdowns', () => {

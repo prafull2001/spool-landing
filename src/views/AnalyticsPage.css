@@ -580,3 +580,10 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+.metric-definition {
+  margin: 16px 0 24px;
+  line-height: 1.6;
+  color: #665947;
+  font-size: 14px;
+}

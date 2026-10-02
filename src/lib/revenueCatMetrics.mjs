@@ -32,7 +32,25 @@ export function normalizeRevenueCatOverview(payload) {
   const hasRange = [payload.newCustomers, payload.rangeStart, payload.rangeEnd]
     .some(value => value != null);
 
+  const hasConversion = payload.initialConversionCustomers != null || payload.initialConversions != null;
+  let conversion = {};
+  if (hasConversion) {
+    if (!hasRange || payload.initialConversionTimeframe !== '7_days') {
+      throw new TypeError('Initial conversion requires a date range and 7-day window');
+    }
+    const customers = count(payload.initialConversionCustomers, 'initialConversionCustomers');
+    const converted = count(payload.initialConversions, 'initialConversions');
+    if (converted > customers) throw new TypeError('Conversions exceed their customer cohort');
+    conversion = {
+      initialConversionCustomers: customers,
+      initialConversions: converted,
+      initialConversionTimeframe: '7_days',
+      initialConversionRate: customers ? converted / customers * 100 : null,
+    };
+  }
+
   return {
+    ...conversion,
     activeSubscriptions: count(payload.activeSubscriptions, 'activeSubscriptions'),
     activeTrials: count(payload.activeTrials, 'activeTrials'),
     newCustomers: hasRange ? count(payload.newCustomers, 'newCustomers') : null,
