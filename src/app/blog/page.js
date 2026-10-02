@@ -40,7 +40,7 @@ const FAQS = [
   },
   {
     q: 'How much does Spool cost?',
-    a: '$7.99/month or $39.99/year. All features included — voice check-ins, AI pattern insights, friend accountability.',
+    a: '$4.99/week or $44.99/year. All features included — voice check-ins, AI pattern insights, friend accountability.',
   },
 ];
 

@@ -28,7 +28,7 @@ const categories = [
       },
       {
         q: "Is Spool free?",
-        a: "Spool is free to download on iPhone with core voice check-in features included. Premium features like AI-powered insights, full excuse history, and friend accountability are available for $7.99/month or $39.99/year -- significantly cheaper than alternatives like Opal ($99.99/year) or Monk ($20/month)."
+        a: "Spool is free to download on iPhone. A subscription costs $4.99 per week or $44.99 per year."
       },
       {
         q: "Does Spool actually reduce screen time?",
@@ -98,7 +98,7 @@ const categories = [
       },
       {
         q: "Spool vs Opal -- which is better?",
-        a: "Opal uses hard blocking with scheduled \"Focus Sessions\" at $9.99/month or $99.99/year. Spool uses voice check-ins at $7.99/month or $39.99/year. Opal is better if you need absolute distraction-free periods. Spool is better for building lasting awareness about why you scroll."
+        a: "Opal uses hard blocking with scheduled \"Focus Sessions\" at $9.99/month or $99.99/year. Spool uses voice check-ins at $4.99/week or $44.99/year. Opal is better if you need absolute distraction-free periods. Spool is better for building lasting awareness about why you scroll."
       },
       {
         q: "Spool vs One Sec -- which is better?",
@@ -110,7 +110,7 @@ const categories = [
       },
       {
         q: "Spool vs Monk app -- which is better?",
-        a: "Monk requires completing a real-world task before unlocking apps at $20/month. Spool uses 5-second voice check-ins at $7.99/month. Monk is for users who want total discipline. Spool is for users who want to understand their patterns and build lasting awareness at a lower price."
+        a: "Monk requires completing a real-world task before unlocking apps at $20/month. Spool uses 5-second voice check-ins at $4.99/week or $44.99/year. Monk is for users who want total discipline. Spool is for users who want to understand their patterns and build lasting awareness."
       }
     ]
   }

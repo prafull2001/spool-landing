@@ -66,17 +66,30 @@ export default async function Page({ params }) {
             name: 'Spool',
             applicationCategory: 'HealthApplication',
             operatingSystem: 'iOS',
-            offers: {
-              '@type': 'Offer',
-              price: '7.99',
-              priceCurrency: 'USD',
-              priceSpecification: {
-                '@type': 'UnitPriceSpecification',
-                price: '7.99',
+            offers: [
+              {
+                '@type': 'Offer',
+                price: '4.99',
                 priceCurrency: 'USD',
-                unitText: 'MONTH',
+                priceSpecification: {
+                  '@type': 'UnitPriceSpecification',
+                  price: '4.99',
+                  priceCurrency: 'USD',
+                  unitText: 'WEEK',
+                },
               },
-            },
+              {
+                '@type': 'Offer',
+                price: '44.99',
+                priceCurrency: 'USD',
+                priceSpecification: {
+                  '@type': 'UnitPriceSpecification',
+                  price: '44.99',
+                  priceCurrency: 'USD',
+                  unitText: 'YEAR',
+                },
+              },
+            ],
           },
           {
             '@type': 'SoftwareApplication',
