@@ -80,7 +80,7 @@
 
 @media (max-width: 768px) {
   .terms-container {
-    padding: 20px 15px;
+    padding: 80px 15px 20px;
   }
   
   .terms-container h1 {
