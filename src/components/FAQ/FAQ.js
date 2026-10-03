@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import './FAQ.css';
+import { STANDARD_PRICING, TRIAL_TERMS } from '../PolicyCopy';
 
 const categories = [
   {
@@ -8,27 +9,31 @@ const categories = [
     items: [
       {
         q: "What is Spool and how does it work?",
-        a: "Spool is an AI-powered screen time app for iPhone. Its 5-second voice check-in interrupts autopilot before a distracting app opens, while Focus Web—Spool's social media feed blocker and distraction-free browser—removes selected feeds and features inside Instagram, YouTube, X, and Snapchat. Over time, Spool's AI analyzes your spoken reasons to reveal personal triggers, peak distraction times, and emotional patterns."
+        a: "Spool is an AI-powered screen time app for iPhone. Its 5-second voice check-in interrupts autopilot before a distracting app opens, while Focus Web—Spool's social media feed blocker and distraction-free browser—filters selected website feeds and features inside Spool; it does not modify the separate native social apps. Over time, Spool's AI analyzes your spoken reasons to reveal personal triggers, peak distraction times, and emotional patterns."
       },
       {
         q: "Is Focus Web a social media feed blocker?",
-        a: "Yes. Focus Web is Spool's product name for its social media feed blocker and distraction-free in-app browser. It can remove specific feeds and tabs without blocking the whole platform. The filters apply to the web experience inside Spool, not the native social apps."
+        a: "Focus Web filters supported website features inside Spool. It does not remove Reels, Shorts, or other features from separate native social apps. Native-app blocking requires separate Screen Time permission and configuration."
       },
       {
         q: "Can Spool remove Instagram Reels without blocking Instagram?",
-        a: "Yes. Open Instagram inside Spool's Focus Web browser and switch off the surfaces you do not want. Spool can hide Reels, Stories, Explore, and direct messages (DMs) separately, so you choose what disappears instead of blocking Instagram as one all-or-nothing app."
+        a: "Yes. Open Instagram inside Spool's Focus Web browser and switch off the surfaces you do not want. Spool can hide Reels, Stories, Explore, and direct messages (DMs) separately, subject to the supported web interface. Shared Reel links may still open. This does not change the native Instagram app."
       },
       {
         q: "Can Spool block YouTube Shorts without blocking YouTube?",
-        a: "Yes. Spool Focus Web removes YouTube Shorts from its filtered browser experience while keeping intentional long-form viewing available. It does not modify the native YouTube app."
+        a: "Yes. Spool Focus Web hides Shorts tabs and shelves inside its browser. A direct Shorts link may open as a regular video instead of the swipe feed. It does not modify the native YouTube app."
       },
       {
         q: "Which X and Snapchat feeds can Spool remove?",
-        a: "Spool can remove X's Explore surface and Snapchat Spotlight, Stories, and Discover inside Focus Web. Snapchat calls the recommendation surface Discover, not Explorer. On X, Explore is separate from the For You home timeline."
+        a: "Spool can remove X's Explore surface and Snapchat Spotlight, Stories, and Discover inside Focus Web. Snapchat calls the recommendation surface Discover, not Explorer. On X, the For You home timeline is not filtered. Snapchat Stories filtering includes Friend Stories; chat remains available."
       },
       {
         q: "Is Spool free?",
-        a: "Spool is free to download on iPhone. A subscription costs $4.99 per week or $44.99 per year."
+        a: `Spool is free to download on iPhone. ${STANDARD_PRICING} ${TRIAL_TERMS}`
+      },
+      {
+        q: "How do I cancel or request a refund?",
+        a: "Apple processes App Store payments. Subscriptions automatically renew unless canceled under Apple’s terms. Manage or cancel through iPhone Settings → your name → Subscriptions → Spool. Deleting the app does not cancel. Cancellation stops future renewal, not an existing charge; paid access ordinarily lasts through the purchased period unless refunded, revoked, or otherwise ended under applicable terms. Trial access may end differently. Apple decides refund requests under its policies and applicable law; see our Terms for Apple’s management and refund links."
       },
       {
         q: "Does Spool actually reduce screen time?",
@@ -40,7 +45,7 @@ const categories = [
       },
       {
         q: "Is my data safe with Spool?",
-        a: "Yes. Spool uses Apple's Screen Time API for app monitoring and processes voice check-ins securely. Your excuse data is used solely to generate your personal AI insights. Spool does not sell user data to third parties."
+        a: "Yes. Spool uses Apple's Screen Time API for app monitoring and processes voice check-ins securely. Check-in data supports personal insights; usage analytics and relevant feature-use information may also support product improvement and refund assessment, as described in the Privacy Policy. Spool does not sell user data to third parties."
       },
       {
         q: "What if I need to use a blocked app for work?",
@@ -86,7 +91,7 @@ const categories = [
     items: [
       {
         q: "What makes Spool different from other screen time apps?",
-        a: "Spool combines feature-level filtering with active reflection. Focus Web is a social media feed blocker that removes selected feeds inside Instagram, YouTube, X, and Snapchat, while a voice check-in captures WHY you tried to open the full native app. Spool's AI analyzes that spoken record to reveal patterns that timers and block counts cannot show."
+        a: "Spool combines feature-level filtering with active reflection. Focus Web filters supported social websites inside Spool without changing the native social apps, while a voice check-in captures WHY you tried to open the full native app. Spool's AI analyzes that spoken record to reveal patterns that timers and block counts cannot show."
       },
       {
         q: "How is Spool different from Apple Screen Time?",
@@ -98,7 +103,7 @@ const categories = [
       },
       {
         q: "Spool vs Opal -- which is better?",
-        a: "Opal uses hard blocking with scheduled \"Focus Sessions\" at $9.99/month or $99.99/year. Spool uses voice check-ins at $4.99/week or $44.99/year. Opal is better if you need absolute distraction-free periods. Spool is better for building lasting awareness about why you scroll."
+        a: "Opal uses hard blocking with scheduled \"Focus Sessions\" at $9.99/month or $99.99/year. Spool uses voice check-ins at US$4.99 billed every week or US$44.99 billed once per year. Opal is better if you need absolute distraction-free periods. Spool is better for building lasting awareness about why you scroll."
       },
       {
         q: "Spool vs One Sec -- which is better?",
@@ -110,7 +115,7 @@ const categories = [
       },
       {
         q: "Spool vs Monk app -- which is better?",
-        a: "Monk requires completing a real-world task before unlocking apps at $20/month. Spool uses 5-second voice check-ins at $4.99/week or $44.99/year. Monk is for users who want total discipline. Spool is for users who want to understand their patterns and build lasting awareness."
+        a: "Monk requires completing a real-world task before unlocking apps at $20/month. Spool uses 5-second voice check-ins at US$4.99 billed every week or US$44.99 billed once per year. Monk is for users who want total discipline. Spool is for users who want to understand their patterns and build lasting awareness."
       }
     ]
   }

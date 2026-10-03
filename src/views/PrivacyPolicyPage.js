@@ -1,5 +1,6 @@
 "use client";
 import React from 'react';
+import { RefundDataSharing } from '../components/PolicyCopy';
 import Logo from '../components/Logo/Logo.js';
 import Footer from '../components/Footer/Footer.js';
 import './PrivacyPolicyPage.css';
@@ -13,14 +14,14 @@ const PrivacyPolicyPage = () => {
 
         <p className="privacy-intro">At Spool, we believe your privacy is fundamental. This Privacy Policy explains how we collect, use, and protect your information when you use our app and services.</p>
 
-        <p className="privacy-effective-date">Last Updated: September 17, 2026</p>
+        <p className="privacy-effective-date">Last Updated: October 2, 2026</p>
 
         <section>
           <h2>1. Information We Collect</h2>
 
           <h3>Information You Provide</h3>
           <ul>
-            <li><strong>Account Information:</strong> Name, email address, and phone number when you create an account or download our app</li>
+            <li><strong>Account Information:</strong> Information you provide when creating or using an account, such as your name and email address, or your phone number if you choose phone sign-in. Downloading the app alone does not supply us with your email address or phone number</li>
             <li><strong>App Usage Data:</strong> Screen time metrics and app usage patterns to help you reduce screen time</li>
             <li><strong>Settings & Preferences:</strong> Your app settings, notifications preferences, and goals</li>
           </ul>
@@ -29,6 +30,7 @@ const PrivacyPolicyPage = () => {
           <ul>
             <li><strong>Device Information:</strong> Device type, operating system, and app version</li>
             <li><strong>Usage Analytics:</strong> How you interact with Spool to improve our services</li>
+            <li><strong>Purchase and Refund Information:</strong> Subscription and transaction identifiers, purchase and access status, consent records, and relevant feature-use or support information used for purchase management and refund assessment (see Section 5)</li>
             <li><strong>Performance Data:</strong> Crash reports and performance metrics to ensure app reliability</li>
           </ul>
 
@@ -78,7 +80,7 @@ const PrivacyPolicyPage = () => {
           <ul>
             <li><strong>AppsFlyer</strong> — mobile measurement and attribution (device identifiers, install and in-app events). <a href="https://www.appsflyer.com/legal/services-privacy-policy/" target="_blank" rel="noopener noreferrer">Privacy Policy</a></li>
             <li><strong>Meta (Facebook)</strong> — advertising attribution and optimization (product-interaction and purchase events). <a href="https://www.facebook.com/privacy/policy/" target="_blank" rel="noopener noreferrer">Privacy Policy</a></li>
-            <li><strong>Firebase (Google)</strong> — authentication (email, name, phone) and database. <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener noreferrer">Firebase Privacy</a> · <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a></li>
+            <li><strong>Firebase (Google)</strong> — authentication (information provided through your chosen sign-in method) and database. <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener noreferrer">Firebase Privacy</a> · <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a></li>
             <li><strong>RevenueCat</strong> — subscription and purchase management. <a href="https://www.revenuecat.com/privacy/" target="_blank" rel="noopener noreferrer">Privacy Policy</a></li>
             <li><strong>PostHog</strong> — product analytics and session replay. <a href="https://posthog.com/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a></li>
           </ul>
@@ -96,7 +98,7 @@ const PrivacyPolicyPage = () => {
           </ul>
 
           <h3>Refund requests and sharing with Apple</h3>
-          <p>If you request a refund for an in-app purchase, you agree that Spool may share information about your purchase and your use of the app with Apple to help Apple decide on your request. We share this only when a refund is requested and only as permitted by Apple’s policies. You can withdraw your consent at any time by emailing <a href="mailto:team@thespoolapp.com">team@thespoolapp.com</a>.</p>
+          <RefundDataSharing />
         </section>
 
         <section>
@@ -113,7 +115,7 @@ const PrivacyPolicyPage = () => {
 
         <section>
           <h2>7. Data Retention</h2>
-          <p>We retain your information only as long as necessary to provide our services and comply with legal obligations. When you delete your account, we remove your personal information within 30 days, though some anonymized data may be retained for analytics purposes.</p>
+          <p>We retain information only as long as necessary for its purpose and applicable legal obligations. Account deletion removes the authentication account and selected account data; additional cleanup can require manual processing. Deleting an account or analytics data does not automatically delete separately held subscription, purchase, refund, consent, or support records, including records held by Apple or our service providers. Retention and deletion of those records depend on their purpose and applicable legal requirements. Contact <a href="mailto:team@thespoolapp.com">team@thespoolapp.com</a> to request deletion or information about records that remain. Account deletion does not cancel an App Store subscription.</p>
         </section>
 
         <section>
@@ -123,7 +125,7 @@ const PrivacyPolicyPage = () => {
 
         <section>
           <h2>9. Changes to This Policy</h2>
-          <p>We may update this Privacy Policy occasionally. We'll notify you of any material changes via email or through the app. Your continued use of Spool after such changes constitutes acceptance of the new policy.</p>
+          <p>We may update this Privacy Policy occasionally. We will provide notice of material changes as required by applicable law. The revision date identifies this version; it does not establish that earlier customers accepted new wording or gave any required data-sharing consent.</p>
         </section>
 
         <section>

@@ -1,3 +1,4 @@
+import { FOCUS_WEB_LIMITS } from '@/components/PolicyCopy';
 import Link from 'next/link';
 import styles from './page.module.css';
 
@@ -163,6 +164,7 @@ export default function ComparePage() {
           Focus Web removes the feeds that trap you, and a 5-second voice check-in
           interrupts the impulse that brought you there.
         </p>
+        <p>{FOCUS_WEB_LIMITS}</p>
       </section>
 
       <section className={styles.summary} aria-labelledby="compare-summary-heading">

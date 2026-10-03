@@ -8,6 +8,7 @@ import { DownloadLink } from '../components/DownloadLink/DownloadLink';
 import { PRAFULL } from '../data/authors';
 import { getBlogContentMap } from '../data/content';
 import './BlogPost.css';
+import { STANDARD_PRICING, TRIAL_TERMS, FOCUS_WEB_LIMITS } from '../components/PolicyCopy';
 
 const blogContent = getBlogContentMap();
 
@@ -67,6 +68,13 @@ const BlogPost = () => {
               </>
             )}
           </div>
+        </div>
+
+        <div className="blog-post-content">
+          {(isComparison || /Focus Web|feed block/i.test(post.content)) && <p>{FOCUS_WEB_LIMITS} <Link href="/focus-web">See platform-specific limitations</Link>.</p>}
+          {(isComparison || /\$4\.99|\$44\.99/.test(post.content)) && (
+            <p><strong>Subscription information updated October 2, 2026.</strong> {STANDARD_PRICING} {TRIAL_TERMS} <Link href="/terms">Subscription and refund terms</Link>.</p>
+          )}
         </div>
 
         <div className="blog-post-content" dangerouslySetInnerHTML={{ __html: post.content }} />

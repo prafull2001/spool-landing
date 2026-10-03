@@ -40,7 +40,7 @@ const FAQS = [
   },
   {
     q: 'How much does Spool cost?',
-    a: '$4.99/week or $44.99/year. All features included — voice check-ins, AI pattern insights, friend accountability.',
+    a: 'Standard US prices in USD: US$4.99 billed every week or US$44.99 billed once per year. Standard subscriptions have no free trial. Prices and taxes may vary by country or offer; exact terms appear before App Store purchase confirmation.',
   },
 ];
 

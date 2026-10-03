@@ -8,7 +8,7 @@ const features = [
   { 
     icon: '/images/spooli_block.png',
     title: 'Block addictive social feeds',
-    description: 'Focus Web is a social media feed blocker that hides Instagram Reels, Stories, Explore or DMs; YouTube Shorts; X Explore; and Snapchat Spotlight, Stories or Discover.',
+    description: 'Focus Web filters supported social websites inside Spool, including Reels, Shorts, and Spotlight surfaces. It does not change native social apps. Native-app blocking requires separate Screen Time permission and setup.',
     href: '/focus-web'
   },
   {

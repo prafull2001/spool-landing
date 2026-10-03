@@ -50,7 +50,7 @@ const Footer = () => {
         </div>
         
         <div className="footer-bottom">
-          <p>&copy; 2025 Spool. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Spool. All rights reserved.</p>
         </div>
       </div>
     </footer>

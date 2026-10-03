@@ -1,5 +1,7 @@
 "use client";
 import React from 'react';
+import Link from 'next/link';
+import { STANDARD_PRICING, TRIAL_TERMS, RefundDataSharing } from '../components/PolicyCopy';
 import Logo from '../components/Logo/Logo.js';
 import Footer from '../components/Footer/Footer.js';
 import './TermsOfServicePage.css';
@@ -11,7 +13,7 @@ const TermsOfServicePage = () => {
       <div className="terms-container">
         <h1>Terms of Service</h1>
         
-        <p className="terms-intro">Effective Date: September 24, 2026</p>
+        <p className="terms-intro">Last updated: October 2, 2026</p>
 
         <section>
           <h2>1. Introduction</h2>
@@ -31,19 +33,25 @@ const TermsOfServicePage = () => {
           </ul>
 
           <h3>2.2 Pricing and Payments</h3>
-          <p>The App is available through in-app purchase with two subscription options:</p>
+          <p>The standard subscription options are:</p>
           <ul>
-            <li>Monthly Subscription</li>
-            <li>Annual Subscription (includes a 2-week free trial)</li>
+            <li><strong>Weekly: US$4.99, billed every week.</strong></li>
+            <li><strong>Annual: US$44.99, billed once per year.</strong> The full annual charge is paid at once, not in monthly installments.</li>
           </ul>
-          <p>All prices are shown in your local currency within the App. Prices may vary by region and are subject to change.</p>
-          <p>For annual subscriptions, the 2-week trial period begins when you confirm your subscription. No charge will be applied during the trial period. Payment will be charged to your iTunes account at confirmation of purchase or after the trial period ends.</p>
-          <p>The subscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel subscriptions in your iTunes account settings.</p>
-          <p>If you cancel during the trial period, access to App features will end immediately. Canceling does not automatically issue a refund for any paid subscription period; refund requests are handled by Apple under applicable law and App Store policies.</p>
+          <p>{STANDARD_PRICING}</p>
+          <p>{TRIAL_TERMS}</p>
+          <p>Apple processes App Store subscription payments through your Apple Account.</p>
 
-          <h3>Refund requests and sharing with Apple</h3>
-          <p>If you request a refund for an in-app purchase, you agree that Spool may share information about your purchase and your use of the app with Apple to help Apple decide on your request. We share this only when a refund is requested and only as permitted by Apple’s policies. You can withdraw your consent at any time by emailing <a href="mailto:team@thespoolapp.com">team@thespoolapp.com</a>.</p>
-          <p>Apple handles App Store refund requests and makes the final decision, subject to applicable law and App Store policies. Opening the native Instagram, YouTube, X, Snapchat, or Facebook app instead of its filtered web version inside Spool, or leaving separate native-app blocking unconfigured, does not by itself mean Focus Web failed to work. We consider the specific purchase, setup, use, and any reported failure when reviewing a request and sharing information with Apple. This does not exclude refunds for an actual failure or any rights you have under applicable law.</p>
+          <h3>Renewal and cancellation</h3>
+          <p>Subscriptions automatically renew unless canceled under Apple’s applicable subscription terms. To manage or cancel, open <strong>iPhone Settings → your name → Subscriptions → Spool</strong> and follow the options shown. Deleting Spool does not cancel your subscription. See <a href="https://support.apple.com/en-us/118428">Apple’s subscription-management instructions</a>.</p>
+          <p>Canceling stops future renewal; it does not automatically refund an existing charge. Paid access ordinarily continues through the purchased period unless the purchase is refunded, revoked, or otherwise ends under applicable terms. Trial cancellation can affect access differently: you may lose trial access when you cancel. If an eligible trial is offered and you do not want it to renew, Apple advises canceling at least 24 hours before it ends. Follow the terms displayed with your offer and Apple’s guidance for your country or region.</p>
+
+          <h3>Refund requests</h3>
+          <p>Request an App Store refund through <a href="https://reportaproblem.apple.com/">reportaproblem.apple.com</a>; see <a href="https://support.apple.com/en-us/118223">Apple’s refund instructions</a>. Apple decides requests under its policies and applicable law. Eligibility varies by purchase and country or region. Nothing in these Terms limits mandatory consumer rights.</p>
+          <p>An expectation that Focus Web changes a separate native social app does not, by itself, establish a product defect. This distinction does not dismiss misleading advertising, actual failures, or applicable refund rights. Please report a problem to <a href="mailto:team@thespoolapp.com">team@thespoolapp.com</a> so the specific circumstances can be reviewed.</p>
+
+          <h3>Refund-data sharing and consent</h3>
+          <RefundDataSharing />
 
           <h3>2.3 Focus Web and App Blocking</h3>
           <p>Focus Web filters selected feeds and features only when you open a supported social-media website inside Spool. Depending on the settings you enable and the supported web interface, its controls include:</p>
@@ -54,17 +62,17 @@ const TermsOfServicePage = () => {
             <li><strong>Snapchat:</strong> hiding Spotlight and Stories/Discover, including Friend Stories. Chat remains available.</li>
             <li><strong>Facebook:</strong> hiding dedicated Reels and video hubs. Individual or shared video links may still open.</li>
           </ul>
-          <p>These filters do not change the separate native Instagram, YouTube, X, Snapchat, or Facebook apps. To restrict a native app, you must separately select it in Spool's app-blocking setup, grant the required iOS Screen Time access, and enable the applicable blocking settings or schedule. Native-app blocking and Focus Web filtering are different features. See <a href="/focus-web">how Focus Web works</a>.</p>
+          <p>These filters do not change the separate native Instagram, YouTube, X, Snapchat, or Facebook apps. To restrict a native app, you must separately select it in Spool's app-blocking setup, grant the required iOS Screen Time access, and enable the applicable blocking settings or schedule. Native-app blocking and Focus Web filtering are different features. See <Link href="/focus-web">how Focus Web works</Link>.</p>
 
           <h3>2.4 Advertising, Analytics, and Data Processing</h3>
-          <p>The App uses third-party service providers to authenticate accounts, process subscriptions, analyze product usage, and measure and optimize our advertising. These include AppsFlyer, Meta (Facebook), Firebase (Google), RevenueCat, and PostHog. With your permission through Apple's App Tracking Transparency prompt, we access your device advertising identifier (IDFA) and share product-interaction and purchase events with our advertising and measurement partners, which may involve tracking across apps and websites owned by other companies. You can decline or withdraw this permission at any time through the App Tracking Transparency prompt or in iOS Settings. How we collect, use, and share this data — and how to opt out — is described in our <a href="/privacy">Privacy Policy</a>, which is incorporated into these Terms by reference. By using the App, you acknowledge the data practices described in the Privacy Policy.</p>
+          <p>The App uses third-party service providers to authenticate accounts, process subscriptions, analyze product usage, and measure and optimize our advertising. These include AppsFlyer, Meta (Facebook), Firebase (Google), RevenueCat, and PostHog. With your permission through Apple's App Tracking Transparency prompt, we access your device advertising identifier (IDFA) and share product-interaction and purchase events with our advertising and measurement partners, which may involve tracking across apps and websites owned by other companies. You can decline or withdraw this permission at any time through the App Tracking Transparency prompt or in iOS Settings. How we collect, use, and share this data — and how to opt out — is described in our <Link href="/privacy">Privacy Policy</Link>, which is incorporated into these Terms by reference. Acknowledging these Terms or the Privacy Policy is not a substitute for any separately required permission or affirmative consent.</p>
         </section>
 
         <section>
           <h2>3. User Rights and Obligations</h2>
           
           <h3>3.1 Age and Consent</h3>
-          <p>The App is available for users of all ages. Users under 13 must have parent or guardian consent. You are responsible for maintaining the confidentiality of your account.</p>
+          <p>Spool is not intended for children under 13. If you are 13 or older but have not reached the age required to enter into these Terms where you live, a parent or guardian must agree to these Terms for you. You are responsible for maintaining the confidentiality of your account.</p>
 
           <h3>3.2 Acceptable Use</h3>
           <p>You agree not to:</p>
@@ -83,13 +91,14 @@ const TermsOfServicePage = () => {
           <ul>
             <li>Modify or discontinue any part of the service.</li>
             <li>Change subscription prices or availability.</li>
-            <li>Update these Terms with reasonable notice.</li>
+            <li>Update these Terms with reasonable notice where required. This revision does not establish that earlier customers accepted new wording or gave new data-sharing consent.</li>
           </ul>
         </section>
 
         <section>
           <h2>5. Limitation of Liability</h2>
-          <p>The App is provided "as is" without warranties. We are not responsible for:</p>
+          <p>Nothing in these Terms excludes or limits any statutory warranty, remedy, liability, or consumer right that cannot lawfully be excluded or limited.</p>
+          <p>To the extent permitted by applicable law, the App is provided "as is" without additional warranties, and our responsibility is limited for:</p>
           <ul>
             <li>Inability to access blocked apps.</li>
             <li>Any consequences of app blocking or unblocking.</li>
@@ -101,7 +110,7 @@ const TermsOfServicePage = () => {
 
         <section>
           <h2>6. Termination</h2>
-          <p>We reserve the right to terminate or suspend access to the App for violations of these Terms or for any other reason at our discretion.</p>
+          <p>We reserve the right to terminate or suspend access to the App for violations of these Terms or other lawful reasons, subject to applicable notice, refund, and consumer-rights requirements.</p>
         </section>
 
         <section>
@@ -110,7 +119,7 @@ const TermsOfServicePage = () => {
         </section>
 
         <div className="terms-footer">
-          <p>© 2025 Spool. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Spool. All rights reserved.</p>
         </div>
       </div>
       <Footer />

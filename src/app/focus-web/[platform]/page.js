@@ -1,3 +1,4 @@
+import { FOCUS_WEB_LIMITS } from '@/components/PolicyCopy';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Footer from '@/components/Footer/Footer';
@@ -88,6 +89,7 @@ export default async function FocusWebPlatformPage({ params }) {
           <p className={styles.eyebrow}>Spool Focus Web for {item.platform}</p>
           <h1>{item.title}</h1>
           <p className={styles.lede}>{item.description}</p>
+          <p>{FOCUS_WEB_LIMITS}</p>
           <DownloadLink
             className={styles.primaryLink}
             target="_blank"

@@ -4,16 +4,17 @@ import Logo from '@/components/Logo/Logo';
 import { DownloadLink } from '@/components/DownloadLink/DownloadLink';
 import { FOCUS_WEB_PLATFORMS } from '@/data/focusWeb';
 import styles from './focus-web.module.css';
+import { FOCUS_WEB_LIMITS } from '@/components/PolicyCopy';
 
 export const metadata = {
   title: 'Social Media Feed Blocker for Reels, Shorts & Spotlight',
   description:
-    'Focus Web is Spool’s social media feed blocker and distraction-free browser. Remove Reels, Shorts, Spotlight, Stories, Discover, Explore, and DMs on iPhone.',
+    'Focus Web is Spool’s social media feed blocker and distraction-free browser. Filter supported website features inside Spool on iPhone; native social apps are unchanged.',
   alternates: { canonical: 'https://www.thespoolapp.com/focus-web' },
   openGraph: {
     title: 'Focus Web: Social Media Feed Blocker for iPhone',
     description:
-      'Remove Reels, Shorts, Spotlight, Stories, Discover, Explore, and DMs without blocking every social platform.',
+      'Filter selected Reels, Shorts, and Spotlight surfaces on websites inside Spool, not in native social apps.',
     url: 'https://www.thespoolapp.com/focus-web',
     images: [{ url: 'https://www.thespoolapp.com/og-homepage-20k.jpg', width: 1200, height: 630 }],
   },
@@ -43,9 +44,10 @@ export default function FocusWebPage() {
           <h1>A social media feed blocker for Reels, Shorts, Spotlight, and Explore</h1>
           <p className={styles.lede}>
             Focus Web is Spool&apos;s distraction-free social media browser. It removes
-            selected features inside Instagram, YouTube, X, Snapchat, and Facebook, so you can
+            selected features on supported social websites inside Spool, so you can
             block the scroll surface instead of losing the whole platform.
           </p>
+          <p>{FOCUS_WEB_LIMITS}</p>
           <DownloadLink
             className={styles.primaryLink}
             target="_blank"
@@ -117,6 +119,7 @@ export default function FocusWebPage() {
             also add a voice check-in before a distracting native app opens, so filtering and
             self-awareness can work together.
           </p>
+          <p>Filters depend on enabled settings and the supported web interface. Shared Instagram Reel links may still open; direct YouTube Shorts links can open as regular videos. X’s For You timeline is not filtered. Snapchat Stories filtering includes Friend Stories, while chat remains available.</p>
           <h2>Does Spool modify the native social apps?</h2>
           <p>
             No. Focus Web is a browser inside Spool. It filters the web interfaces shown inside

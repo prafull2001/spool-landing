@@ -1,3 +1,4 @@
+import { FOCUS_WEB_LIMITS } from '@/components/PolicyCopy';
 import Link from 'next/link';
 import { DownloadLink } from '@/components/DownloadLink/DownloadLink';
 import Logo from '@/components/Logo/Logo';
@@ -157,6 +158,8 @@ export default function AboutPage() {
             back to them as AI-generated insights. Some have dropped from 6 hours of daily use to
             4; others describe cutting their use to roughly a quarter of what it was.
           </p>
+
+          <p>{FOCUS_WEB_LIMITS}</p>
 
           <h2>Research foundation</h2>
           <p>

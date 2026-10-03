@@ -92,3 +92,9 @@ Twitter/X: @the_spool_app
 - About Spool: https://www.thespoolapp.com/about
 - Press coverage: https://www.thespoolapp.com/press
 - Support & FAQ: https://www.thespoolapp.com/support
+
+## Subscription and product terms (updated October 2, 2026)
+
+Standard US prices in USD: US$4.99 billed every week or US$44.99 billed once per year. Prices and applicable taxes may vary by country or offer; exact terms appear before App Store purchase confirmation. Standard subscriptions are charged upon confirmation and do not include a free trial. Eligible introductory or promotional offers apply only when expressly displayed before purchase. Apple processes payments and decides refund requests under its policies and applicable law. Cancel through iPhone Settings → your name → Subscriptions → Spool. Deleting the app does not cancel; cancellation stops future renewal and does not automatically refund a charge. See https://www.thespoolapp.com/terms.
+
+Focus Web filters supported website features inside Spool, not separate native social apps. Native-app blocking requires separate Screen Time permission and setup. Shared Instagram Reel and Facebook video links may still open. Direct YouTube Shorts links may open as regular videos. X’s For You timeline is not filtered. Snapchat Stories filtering includes Friend Stories; chat remains available. See https://www.thespoolapp.com/focus-web.

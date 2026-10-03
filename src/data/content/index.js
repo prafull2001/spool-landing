@@ -78,6 +78,7 @@ export function getCompareMetaMap() {
       title: entry.meta.title,
       description: entry.meta.description,
       date: entry.meta.dateModified,
+      datePublished: entry.meta.datePublished,
       competitor: entry.meta.competitor,
       competitorOperatingSystem: entry.meta.competitorOperatingSystem,
       faq: entry.meta.faq,

@@ -4,7 +4,7 @@ export const metadata = {
   // `absolute` opts out of the root layout's `%s | Spool` template so the
   // homepage title isn't rendered as "…Screen Time App | Spool" (duplicate brand).
   title: { absolute: 'Spool — Stop Doomscrolling | iPhone Screen Time App' },
-  description: 'Spool pairs AI voice check-ins with Focus Web, a social media feed blocker for Instagram Reels, YouTube Shorts, X Explore, and Snapchat Spotlight on iPhone.',
+  description: 'Spool pairs AI voice check-ins with Focus Web, a browser that filters supported social website features inside Spool on iPhone. Native social apps are unchanged.',
 };
 
 export default function Page() {

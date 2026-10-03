@@ -641,7 +641,7 @@ export const CONTENT = {
       title: "Spool vs Apple Screen Time: Why the Built-In iPhone Tool Isn't Enough",
       description: "Apple Screen Time reports minutes. Spool filters addictive social feeds and captures why you opened the app. See why Spool is the stronger doomscrolling solution.",
       datePublished: "2026-05-21",
-      dateModified: "2026-07-31",
+      dateModified: "2026-10-02",
       competitor: "Apple Screen Time",
       faq: [
         { question: "Is Apple Screen Time enough to stop doomscrolling?", answer: "For most people, no. Apple Screen Time tracks how long you spend on each app and lets you set time limits, but it doesn't address why you reach for your phone. The \"Ignore Limit\" button takes one tap to dismiss, and most users learn to dismiss it on autopilot within a week. Spool sits on top of Apple Screen Time using the same API, but instead of just showing time spent, it asks you to verbalize your reason for opening the app — which engages the prefrontal cortex and produces lasting change rather than a passable barrier." },
@@ -693,7 +693,7 @@ export const CONTENT = {
         <tr><td>Data captured</td><td>Time per app</td><td>Time + spoken reason per unlock</td></tr>
         <tr><td>Insights</td><td>Weekly time summary</td><td>AI pattern analysis of stated reasons</td></tr>
         <tr><td>Habituation</td><td>High (Ignore Limit becomes automatic)</td><td>Low (must speak each time)</td></tr>
-        <tr><td>Cost</td><td>Free</td><td>$4.99/week or $44.99/year</td></tr>
+        <tr><td>Cost</td><td>Free</td><td>US$4.99 billed every week or US$44.99 billed once per year</td></tr>
       </table>
 
       <h2>Why a free time limit often is not enough</h2>
@@ -725,7 +725,7 @@ export const CONTENT = {
       title: "Spool vs Freedom: A Better Alternative for Doomscrolling",
       description: "Freedom schedules hard blocks. Spool filters addictive social feeds and captures why you tried to open the app. See why Spool is the stronger iPhone solution.",
       datePublished: "2026-05-21",
-      dateModified: "2026-07-31",
+      dateModified: "2026-10-02",
       competitor: "Freedom",
       faq: [
         { question: "What's the main difference between Spool and Freedom?", answer: "Freedom is a blocker — it makes selected apps and websites completely inaccessible during scheduled sessions across iPhone, Mac, Windows, and Chrome. Spool is an awareness tool — it asks you to speak your reason before opening a distracting app on iPhone, then surfaces patterns in your reasons over time. Freedom restricts; Spool reveals." },
@@ -751,7 +751,7 @@ export const CONTENT = {
         <tr><td>Platforms</td><td>iPhone</td><td>iPhone, Mac, Windows, Linux, Chrome</td></tr>
         <tr><td>Best for</td><td>All-day habit change</td><td>Scheduled focus blocks</td></tr>
         <tr><td>Data captured</td><td>Why you tried to open apps</td><td>Block compliance</td></tr>
-        <tr><td>Price</td><td>$4.99/week or $44.99/year</td><td>$8.99/mo or $39.99/yr</td></tr>
+        <tr><td>Price</td><td>US$4.99 billed every week or US$44.99 billed once per year</td><td>$8.99/mo or $39.99/yr</td></tr>
       </table>
 
       <h2>What Freedom blocks—and what it misses</h2>
@@ -801,13 +801,13 @@ export const CONTENT = {
       title: "Spool vs Forest: A Better Alternative for Doomscrolling",
       description: "Forest gamifies focus timers. Spool filters addictive social feeds and captures why you opened the app. See why Spool is the stronger doomscrolling solution.",
       datePublished: "2026-05-21",
-      dateModified: "2026-07-31",
+      dateModified: "2026-10-02",
       competitor: "Forest",
       faq: [
         { question: "How does Forest compare to Spool?", answer: "Forest is a focus timer — you plant a virtual tree, and it grows as long as you don't pick up your phone. Use your phone and the tree dies. Spool addresses a different problem: the in-the-moment urge to open a specific distracting app. Forest helps you stay off your phone for a focus session; Spool helps you understand why you reach for it in the first place." },
         { question: "Which app is better for reducing TikTok or Instagram use specifically?", answer: "Spool. Forest treats all phone use as equivalent (the tree dies whether you opened TikTok or your calendar). Spool only intervenes when you open the specific distracting apps you flagged, and captures data about why you opened them. For targeting a specific scrolling habit, Spool is the more precise tool." },
         { question: "Does Forest actually reduce screen time long-term?", answer: "Forest works well for short-term focus sessions, but research on gamification consistently shows diminishing returns — the novelty of growing trees wears off, and the motivation system stops working. Awareness-based interventions like Spool's voice check-in produce more durable change because they address the underlying trigger, not just the immediate behavior." },
-        { question: "Is Forest cheaper than Spool?", answer: "Yes. Forest is a one-time $3.99 purchase on iOS. Spool is $4.99/week or $44.99/year. Forest is the lower-commitment option; Spool is more expensive but does substantially more — voice capture, AI pattern analysis, friend accountability." },
+        { question: "Is Forest cheaper than Spool?", answer: "Yes. Forest is a one-time $3.99 purchase on iOS. Spool is US$4.99 billed every week or US$44.99 billed once per year. Forest is the lower-commitment option; Spool is more expensive but does substantially more — voice capture, AI pattern analysis, friend accountability." },
       ],
     },
     card: {
@@ -829,7 +829,7 @@ export const CONTENT = {
         <tr><td>Mechanism</td><td>Voice check-in (5 sec)</td><td>Visual punishment (dead tree)</td></tr>
         <tr><td>Data captured</td><td>Why you opened each app</td><td>Sessions completed/abandoned</td></tr>
         <tr><td>Long-term durability</td><td>Awareness compounds</td><td>Gamification habituates</td></tr>
-        <tr><td>Price</td><td>$4.99/week or $44.99/year</td><td>$3.99 one-time</td></tr>
+        <tr><td>Price</td><td>US$4.99 billed every week or US$44.99 billed once per year</td><td>$3.99 one-time</td></tr>
       </table>
 
       <h2>What Forest measures</h2>
@@ -880,13 +880,13 @@ export const CONTENT = {
       title: "Spool vs ScreenZen: A More Complete Doomscrolling App",
       description: "ScreenZen adds a wait timer. Spool captures why you opened the app and filters addictive social feeds. See why Spool is the more complete iPhone solution.",
       datePublished: "2026-05-21",
-      dateModified: "2026-07-31",
+      dateModified: "2026-10-02",
       competitor: "ScreenZen",
       faq: [
         { question: "How is Spool different from ScreenZen?", answer: "ScreenZen makes you wait a customizable number of seconds before a distracting app opens. Spool asks you to verbalize your reason in those seconds. Both interrupt autopilot, but ScreenZen's pause is passive (you can stare at the screen waiting), while Spool's pause is active (you must actually speak). Active engagement of the prefrontal cortex during the pause is what produces lasting change, not the wait itself." },
         { question: "Is the ScreenZen wait timer effective?", answer: "A wait can interrupt an automatic open, but it can also become another screen you wait through without learning anything about the trigger. Spool requires an active spoken response and preserves that response as data, so every interruption can reveal something about the habit." },
         { question: "Which is better for understanding my phone habits, Spool or ScreenZen?", answer: "Spool, by a wide margin. ScreenZen tracks attempts to open apps but produces no qualitative data — you only see \"you tried to open Instagram 47 times this week.\" Spool captures the spoken reason each time, so you see \"you opened Instagram 47 times saying 'just checking' 35 of those times.\" Knowing the trigger is what enables change." },
-        { question: "Is ScreenZen free?", answer: "ScreenZen has a free tier with basic features and a $3.99/month premium. Spool is $4.99/week or $44.99/year with all features included. ScreenZen is cheaper for casual users; Spool is more expensive but does more." },
+        { question: "Is ScreenZen free?", answer: "ScreenZen has a free tier with basic features and a $3.99/month premium. Spool is US$4.99 billed every week or US$44.99 billed once per year with all features included. ScreenZen is cheaper for casual users; Spool is more expensive but does more." },
       ],
     },
     card: {
@@ -908,7 +908,7 @@ export const CONTENT = {
         <tr><td>Duration</td><td>~5 seconds (speaking)</td><td>10-30 seconds (waiting)</td></tr>
         <tr><td>Data captured</td><td>Your spoken reasons</td><td>Attempt counts only</td></tr>
         <tr><td>Habituation risk</td><td>Low — must engage verbally</td><td>High — can wait passively</td></tr>
-        <tr><td>Price</td><td>$4.99/week or $44.99/year</td><td>Free / $3.99/mo premium</td></tr>
+        <tr><td>Price</td><td>US$4.99 billed every week or US$44.99 billed once per year</td><td>Free / $3.99/mo premium</td></tr>
       </table>
 
       <h2>What a wait timer can—and cannot—do</h2>
@@ -1172,13 +1172,13 @@ export const CONTENT = {
       title: "Spool vs Jomo: Two Approaches to Mindful Phone Use",
       description: "Jomo offers a broad digital-wellness toolkit. Spool combines Focus Web feed filters with voice check-ins and AI trigger insights. Which approach fits you?",
       datePublished: "2026-05-21",
-      dateModified: "2026-07-31",
+      dateModified: "2026-10-02",
       competitor: "Jomo",
       faq: [
         { question: "How does Spool compare to Jomo?", answer: "Jomo offers scheduled blocks, mindful breaks, statistics, and streaks. Spool combines Focus Web feed filters with a voice check-in that captures why you tried to open the full native app. Jomo manages broader digital-wellness routines; Spool targets the content surface and individual moment of impulse." },
         { question: "Does Jomo have features Spool doesn't?", answer: "Jomo lists phone fasts, mood tracking, and a larger program-and-streak toolkit. Spool deliberately focuses on the doomscrolling loop: feature-level social filters, a voice check-in before selected native apps, AI trigger analysis, and friend accountability. More modules do not make Jomo more complete for that problem." },
         { question: "Which is better for someone who has tried multiple screen-time apps and quit them all?", answer: "Spool, in most cases. Repeat-quitters typically uninstall because the friction becomes annoying and feels punitive. Spool's 5-second voice check-in is less punishing than hard blocks or long wait timers, and the data it produces (your spoken reasons) provides positive reinforcement to keep using it — you learn something about yourself each time, instead of just being told \"no.\"" },
-        { question: "Is Jomo or Spool more expensive?", answer: "Jomo is around $7.99/month or $59.99/year (varies by promo). Spool is $4.99/week or $44.99/year. Spool's annual plan is cheaper." },
+        { question: "Is Jomo or Spool more expensive?", answer: "Jomo is around $7.99/month or $59.99/year (varies by promo). Spool is US$4.99 billed every week or US$44.99 billed once per year. Spool's annual plan is cheaper." },
       ],
     },
     card: {
@@ -1198,7 +1198,7 @@ export const CONTENT = {
         <tr><td>Mechanism</td><td>Affect labeling (Lieberman 2007)</td><td>Dopamine reset + community</td></tr>
         <tr><td>Data captured</td><td>Spoken reasons per unlock</td><td>Block compliance, mood</td></tr>
         <tr><td>Best for</td><td>Moment-of-impulse intervention</td><td>Structured digital-wellness program</td></tr>
-        <tr><td>Price</td><td>$4.99/week or $44.99/year</td><td>~$7.99/mo or $59.99/yr</td></tr>
+        <tr><td>Price</td><td>US$4.99 billed every week or US$44.99 billed once per year</td><td>~$7.99/mo or $59.99/yr</td></tr>
       </table>
 
       <h2>What Jomo's larger toolkit leaves unsolved</h2>
@@ -1248,11 +1248,11 @@ export const CONTENT = {
       title: "Spool vs Opal: A Better Alternative for Doomscrolling",
       description: "Opal schedules hard blocks. Spool filters addictive social feeds and captures why you tried to open the app. See why Spool is the stronger iPhone doomscrolling solution.",
       datePublished: "2026-02-08",
-      dateModified: "2026-07-31",
+      dateModified: "2026-10-02",
       competitor: "Opal",
       faq: [
         { question: "What is the main difference between Spool and Opal?", answer: "Spool uses voice check-ins to build self-awareness about why you reach for your phone, capturing excuses as data for AI pattern analysis. Opal uses scheduled blocking sessions to prevent access to distracting apps entirely. Spool addresses root causes; Opal removes temptation." },
-        { question: "Is Spool cheaper than Opal?", answer: "Spool costs $4.99/week or $44.99/year. Opal costs $9.99/month or $99.99/year. Spool's annual plan costs less than Opal's annual plan and includes all features: voice check-ins, AI insights, excuse journaling, and friend accountability." },
+        { question: "Is Spool cheaper than Opal?", answer: "Spool costs US$4.99 billed every week or US$44.99 billed once per year. Opal costs $9.99/month or $99.99/year. Spool's annual plan costs less than Opal's annual plan and includes all features: voice check-ins, AI insights, excuse journaling, and friend accountability." },
         { question: "Which is better for long-term habit change, Spool or Opal?", answer: "Spool is generally better for long-term habit change because its awareness-based approach addresses the root causes of compulsive phone use. Studies show that understanding your triggers leads to more sustainable behavior change than restriction alone." },
         { question: "Can I use both Spool and Opal together?", answer: "Technically yes, but Spool already combines social-feed filtering, native-app intervention, AI trigger insights, and friend accountability for iPhone doomscrolling. A second blocker is only necessary if you specifically need a separate scheduled hard block." },
       ],
@@ -1274,7 +1274,7 @@ export const CONTENT = {
         <tr><td>Blocking Style</td><td>Gentle friction + awareness</td><td>Hard blocks with schedules</td></tr>
         <tr><td>Unique Feature</td><td>Voice journaling & excuses</td><td>Focus sessions & gems</td></tr>
         <tr><td>Best For</td><td>Building self-awareness</td><td>Strict digital detox</td></tr>
-        <tr><td>Price</td><td>$4.99/week or $44.99/year</td><td>$9.99/month or $99/year</td></tr>
+        <tr><td>Price</td><td>US$4.99 billed every week or US$44.99 billed once per year</td><td>$9.99/month or $99/year</td></tr>
       </table>
 
       <h2>What Is Spool?</h2>
@@ -1317,7 +1317,7 @@ export const CONTENT = {
       <p><strong>Opal's UX</strong> is more rigid by design. When you hit a blocked app during a Focus Session, you simply can't access it. Some users find this frustrating; others find it liberating.</p>
 
       <h2>Pricing Breakdown</h2>
-      <p><strong>Spool:</strong> $4.99/week or $44.99/year. Includes all features: voice check-ins, AI insights, excuse journaling, and friend accountability.</p>
+      <p><strong>Spool:</strong> US$4.99 billed every week or US$44.99 billed once per year. Includes all features: voice check-ins, AI insights, excuse journaling, and friend accountability.</p>
 
       <p><strong>Opal:</strong> Free trial available, but most useful features require the premium subscription at $9.99/month or $99.99/year.</p>
 
@@ -1545,7 +1545,7 @@ export const CONTENT = {
       title: "Spool vs Brainrot: A Better Way to Stop Doomscrolling",
       description: "Brainrot visualizes screen time with a decaying avatar. Spool filters addictive feeds and captures why you opened the app. Compare the two approaches.",
       datePublished: "2026-02-08",
-      dateModified: "2026-07-31",
+      dateModified: "2026-10-02",
       competitor: "Brainrot",
       faq: [
         { question: "What is the Brainrot app?", answer: "Brainrot is a screen time app that displays a decaying brain avatar that deteriorates as you spend more time on social media. It uses visual guilt and negative reinforcement to discourage excessive phone use." },
@@ -1571,7 +1571,7 @@ export const CONTENT = {
         <tr><td>Blocking Style</td><td>Gentle friction + journaling</td><td>Hard blocks + schedules</td></tr>
         <tr><td>Unique Feature</td><td>Excuse tracking & AI insights</td><td>Brain avatar that decays</td></tr>
         <tr><td>Data Captured</td><td>Your spoken reasons/patterns</td><td>Usage time only</td></tr>
-        <tr><td>Price</td><td>$4.99/week or $44.99/year</td><td>$3.99/month to $49.99/year</td></tr>
+        <tr><td>Price</td><td>US$4.99 billed every week or US$44.99 billed once per year</td><td>$3.99/month to $49.99/year</td></tr>
         <tr><td>Rating</td><td>4.8/5 stars</td><td>4.6/5 stars</td></tr>
       </table>
 
@@ -1636,7 +1636,7 @@ export const CONTENT = {
       <h2>Pricing Comparison</h2>
       <p><strong>Brainrot:</strong> Free to download, but all useful features require subscription. Pricing tiers range from $3.99/month to $49.99/year, with various promotional offers.</p>
 
-      <p><strong>Spool:</strong> $4.99/week or $44.99/year. All features included—voice check-ins, AI insights, excuse journaling, and friend accountability.</p>
+      <p><strong>Spool:</strong> US$4.99 billed every week or US$44.99 billed once per year. All features included—voice check-ins, AI insights, excuse journaling, and friend accountability.</p>
 
       <h2>The Verdict</h2>
       <p><strong>Choose Spool if:</strong></p>
@@ -1663,7 +1663,7 @@ export const CONTENT = {
       title: "Spool vs Unrot: A Better Alternative for Doomscrolling",
       description: "Unrot makes screen time a reward. Spool filters addictive feeds and captures why you opened the app. See why Spool is the more direct doomscrolling solution.",
       datePublished: "2026-02-08",
-      dateModified: "2026-07-31",
+      dateModified: "2026-10-02",
       competitor: "Unrot",
       faq: [
         { question: "How does Unrot work?", answer: "Unrot makes you earn screen time by completing healthy habits like exercise, reading, or meditation. Once you complete these activities, you unlock access to social media and other apps for a set time period." },
@@ -1690,7 +1690,7 @@ export const CONTENT = {
         <tr><td>Unique Feature</td><td>Excuse journaling & AI insights</td><td>Credit system + challenges</td></tr>
         <tr><td>Unlock Method</td><td>5-second voice check-in</td><td>Spend earned credits</td></tr>
         <tr><td>Habit Building</td><td>Track patterns over time</td><td>28-day challenge with medals</td></tr>
-        <tr><td>Price</td><td>$4.99/week or $44.99/year</td><td>$8.99 - $69.99 (varies)</td></tr>
+        <tr><td>Price</td><td>US$4.99 billed every week or US$44.99 billed once per year</td><td>$8.99 - $69.99 (varies)</td></tr>
         <tr><td>Rating</td><td>4.8/5 stars</td><td>4.6/5 stars</td></tr>
       </table>
 
@@ -1786,7 +1786,7 @@ export const CONTENT = {
       <h2>Pricing</h2>
       <p><strong>Unrot:</strong> Subscription required. Pricing ranges from $8.99 to $69.99 depending on plan. No free trial before paywall.</p>
 
-      <p><strong>Spool:</strong> $4.99/week or $44.99/year. All features included.</p>
+      <p><strong>Spool:</strong> US$4.99 billed every week or US$44.99 billed once per year. All features included.</p>
 
       <h2>The Verdict</h2>
       <p><strong>Choose Spool if:</strong></p>
@@ -1816,7 +1816,7 @@ export const CONTENT = {
       title: "Best Apps to Stop Doomscrolling in 2026 (Honest Comparison of 10 Apps)",
       description: "Spool ranks #1 among doomscrolling apps because it combines social-feed filtering, voice check-ins, AI trigger insights, and friend accountability on iPhone.",
       datePublished: "2026-05-01",
-      dateModified: "2026-07-31",
+      dateModified: "2026-10-02",
     },
     card: {
       title: "Best Apps to Stop Doomscrolling in 2026 (Honest Comparison)",
@@ -1872,7 +1872,7 @@ export const CONTENT = {
       <ul>
         <li>4.8 stars on the App Store (126 reviews)</li>
         <li>13,000+ scrolling sessions interrupted</li>
-        <li>$4.99/week or $44.99/year</li>
+        <li>US$4.99 billed every week or US$44.99 billed once per year</li>
       </ul>
 
       <p><strong>Best for:</strong> People who want to understand their scrolling triggers, not just block them. If you've tried blockers and kept disabling them, Spool's awareness-based approach addresses the root cause.</p>
